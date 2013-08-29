@@ -1,0 +1,3 @@
+[submodule "planck-cl"]
+	path = planck-cl
+	url = git://github.com/zonca/visualize-planck-cl.git
