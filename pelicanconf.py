@@ -42,3 +42,6 @@ ENABLE_DISQUS = False
 
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
+
+PLUGIN_PATH = 'pelican-plugins'
+PLUGINS = ['liquid_tags']
