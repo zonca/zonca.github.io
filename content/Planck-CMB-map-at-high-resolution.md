@@ -10,6 +10,8 @@ The grayed out pixels in the galactic plane represents the fraction of the sky t
 
 The map is a PNG at a resolution of 17469x8796 pixels, which is suitable for printing at 300dpi up to 60x40 inch, or 150x100 cm, file size is about 150MB.
 
+*Update*: now with Planck color scale
+
 * [High Resolution image on FigShare](http://dx.doi.org/10.6084/m9.figshare.795296)
 
 * Small size preview:
