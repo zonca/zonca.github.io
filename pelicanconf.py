@@ -4,14 +4,14 @@ from __future__ import unicode_literals
 
 AUTHOR = u'Andrea Zonca'
 SITENAME = u"Andrea Zonca's blog"
-SITEURL = ''
+SITEURL = 'http://zonca.github.io'
 
-TIMEZONE = 'America/Los Angeles'
+TIMEZONE = 'America/Los_Angeles'
 
 DEFAULT_LANG = u'en'
 
 # Feed generation is usually not desired when developing
-FEED_ALL_ATOM = None
+FEED_ALL_ATOM = 'feeds/all.atom.xml'
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
@@ -36,12 +36,12 @@ TWITTER_USERNAME = "andreazonca"
 GITHUB_USERNAME = "zonca"
 ABOUTME_USERNAME = "zonca"
 EMAIL_ADDRESS = "andrea.zonca|on the google mail service"
-HOMEPAGE_INTRO = "Blog by Andrea Zonca, (random) notes about Python, high performance computing, data analysis"
+HOMEPAGE_INTRO = "Blog by Andrea Zonca: notes about Python, high performance computing, data analysis"
 
 ENABLE_DISQUS = False
 
 # Uncomment following line if you want document-relative URLs when developing
-# RELATIVE_URLS = True
+RELATIVE_URLS = False
 
 PLUGIN_PATH = 'pelican-plugins'
 PLUGINS = ['liquid_tags.img', 'liquid_tags.notebook']
