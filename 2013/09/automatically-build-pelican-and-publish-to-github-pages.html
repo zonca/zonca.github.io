@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>How to automatically build your Pelican blog and publish it to Github Pages | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>How to automatically build your Pelican blog and publish it to Github Pages</h1>
+        </header>
+        <div class='post-content'>
+            <p>Something I like a lot about Jekyll, the Github static blog generator, is that you just push commits to your repository and Github takes care of re-building and publishing your website.
+Thanks to this, it is possible to create a quick blog post from the Github web interface, without the need to use a machine with Python environment.</p>
+<p>The Pelican developers have a <a href="http://blog.getpelican.com/using-pelican-with-heroku.html">method for building and deploying Pelican on Heroku</a>, which is really useful, but I would like instead to use Github Pages.</p>
+<p>I realized that the best way to do this is to rely on <a href="https://travis-ci.org/">Travis-CI</a>, as the build/deploy workflow is pretty similar to install/unit-testing Travis is designed for.</p>
+<h2>How to setup Pelican to build on Travis</h2>
+<p>I suggest to use 2 separate git repositories on Github for the source and the built website, let's first only create the repository for the source:</p>
+<ul>
+<li>create the <code>yourusername.github.io-source</code> repository for Pelican and add it as <code>origin</code> in your Pelican folder repository</li>
+</ul>
+<p>add a <code>requirements.txt</code> file in your Pelican folder:</p>
+<script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/requirements.txt"></script>
+
+<p>add a <code>.travis.yml</code> file to your repository:</p>
+<script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/.travis.yml"></script>
+
+<p>In order to create the encrypted token under env, you can login to the Github web interface to get an <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">Authentication Token</a>, and then install the <code>travis</code> command line tool with:</p>
+<div class="highlight"><pre><span class="cp"># on Ubuntu you need ruby dev</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ruby1</span><span class="mf">.9.1</span><span class="o">-</span><span class="n">dev</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">travis</span>
+</pre></div>
+
+
+<p>and run from inside the repository:</p>
+<div class="highlight"><pre><span class="n">travis</span> <span class="n">encrypt</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">LONGTOKENFROMGITHUB</span> <span class="o">--</span><span class="n">add</span> <span class="n">env</span><span class="p">.</span><span class="n">global</span>
+</pre></div>
+
+
+<p>Then add also the <code>deploy.sh</code> script and update the global variable with yours:</p>
+<script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/deploy.sh"></script>
+
+<p>Then we can create the repository that will host the actual blog:</p>
+<ul>
+<li>create the <code>yourusername.github.io</code> repository for the website (with initial readme, so you can clone it)</li>
+</ul>
+<p>Finally we can connect to <a href="https://travis-ci.org/">Travis-CI</a>, connect our Github profile and activate Continous Integration on our <code>yourusername.github.io-source</code> repository.</p>
+<p>Now, you can push a new commit to your source repository and check on Travis if the build and deploy is successful, hopefully it is (joking, no way it is going to work on the first try!).</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-09-26T13:45:00">Thu 26 September 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+<a href="http://zonca.github.io/tag/travis-ci.html">travis-ci</a> 
+<a href="http://zonca.github.io/tag/github.html">github</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>
