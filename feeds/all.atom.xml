@@ -186,8 +186,8 @@ With MrJob instead the interface is a little different, we implement the mapper 
  &lt;br/&gt;
  &lt;br/&gt;
  &lt;div class="separator" style="clear: both; text-align: center;"&gt;
-  &lt;a href="|filename|/images/run-hadoop-python-jobs-on-amazon-with-mrjob_s1600_awsjobdetails.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
-   &lt;img border="0" height="588" src="|filename|/images/run-hadoop-python-jobs-on-amazon-with-mrjob_s640_awsjobdetails.png" width="640"/&gt;
+  &lt;a href="http://zonca.github.io/images/run-hadoop-python-jobs-on-amazon-with-mrjob_s1600_awsjobdetails.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+   &lt;img border="0" height="588" src="http://zonca.github.io/images/run-hadoop-python-jobs-on-amazon-with-mrjob_s640_awsjobdetails.png" width="640"/&gt;
   &lt;/a&gt;
  &lt;/div&gt;
  &lt;br/&gt;
@@ -415,8 +415,8 @@ With MrJob instead the interface is a little different, we implement the mapper 
 &lt;/p&gt;
 
 &lt;div class="separator" style="clear: both; text-align: center;"&gt;
- &lt;a href="|filename|/images/healpix-map-of-earth-using-healpy_s1600_download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
-  &lt;img border="0" height="230" src="|filename|/images/healpix-map-of-earth-using-healpy_s400_download.png" width="400"/&gt;
+ &lt;a href="http://zonca.github.io/images/healpix-map-of-earth-using-healpy_s1600_download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+  &lt;img border="0" height="230" src="http://zonca.github.io/images/healpix-map-of-earth-using-healpy_s400_download.png" width="400"/&gt;
  &lt;/a&gt;
 &lt;/div&gt;
 
@@ -1004,8 +1004,8 @@ This retrieves from the APIs the visits to the website from search, with keyword
 &lt;div&gt;
  &lt;br/&gt;
  &lt;div class="separator" style="clear: both; text-align: left;"&gt;
-  &lt;a href="|filename|/images/processing-planck-sources-with-hadoop_s1600_download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
-   &lt;img border="0" src="|filename|/images/processing-planck-sources-with-hadoop_s1600_download.png"/&gt;
+  &lt;a href="http://zonca.github.io/images/processing-planck-sources-with-hadoop_s1600_download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+   &lt;img border="0" src="http://zonca.github.io/images/processing-planck-sources-with-hadoop_s1600_download.png"/&gt;
   &lt;/a&gt;
  &lt;/div&gt;
  &lt;h2&gt;
@@ -1681,8 +1681,8 @@ is a Python package from Enthought for 3D visualization, here a simple example o
  &lt;br/&gt;
  &lt;div&gt;
   &lt;div class="separator" style="clear: both; text-align: center;"&gt;
-   &lt;a href="|filename|/images/interactive-3d-plot-of-sky-map_s1600_snapshot.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
-    &lt;img border="0" height="271" src="|filename|/images/interactive-3d-plot-of-sky-map_s400_snapshot.png" width="400"/&gt;
+   &lt;a href="http://zonca.github.io/images/interactive-3d-plot-of-sky-map_s1600_snapshot.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+    &lt;img border="0" height="271" src="http://zonca.github.io/images/interactive-3d-plot-of-sky-map_s400_snapshot.png" width="400"/&gt;
    &lt;/a&gt;
   &lt;/div&gt;
   &lt;div class="separator" style="clear: both; text-align: center;"&gt;
@@ -2067,8 +2067,8 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
 &lt;/a&gt;
 &lt;br/&gt;
 &lt;br/&gt;
-&lt;a href="|filename|/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png"&gt;
- &lt;img alt="" class="alignnone size-medium wp-image-128" height="225" src="|filename|/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png" title="oneoverf" width="300"/&gt;
+&lt;a href="http://zonca.github.io/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png"&gt;
+ &lt;img alt="" class="alignnone size-medium wp-image-128" height="225" src="http://zonca.github.io/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png" title="oneoverf" width="300"/&gt;
 &lt;/a&gt;&lt;/p&gt;</summary><category term="python"></category><category term="physics"></category></entry><entry><title>Vim regular expressions</title><link href="http://zonca.github.io/2011/04/vim-regular-expressions.html" rel="alternate"></link><updated>2011-04-29T02:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-04-29:2011/04/vim-regular-expressions.html</id><summary type="html">&lt;p&gt;
  very good reference of the usage of regular expressions in VIM:
  &lt;br/&gt;
