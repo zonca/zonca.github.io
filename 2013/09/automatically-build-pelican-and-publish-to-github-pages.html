@@ -27,6 +27,7 @@
               <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
               <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
               <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/102215770805040369170?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
               <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
               <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
             </div>
@@ -55,14 +56,14 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 <script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/.travis.yml"></script>
 
 <p>In order to create the encrypted token under env, you can login to the Github web interface to get an <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">Authentication Token</a>, and then install the <code>travis</code> command line tool with:</p>
-<div class="highlight"><pre><span class="cp"># on Ubuntu you need ruby dev</span>
+<div class="highlight"><pre><span class="c1"># on Ubuntu you need ruby dev</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ruby1</span><span class="mf">.9.1</span><span class="o">-</span><span class="n">dev</span>
 <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">travis</span>
 </pre></div>
 
 
 <p>and run from inside the repository:</p>
-<div class="highlight"><pre><span class="n">travis</span> <span class="n">encrypt</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">LONGTOKENFROMGITHUB</span> <span class="o">--</span><span class="n">add</span> <span class="n">env</span><span class="p">.</span><span class="n">global</span>
+<div class="highlight"><pre><span class="n">travis</span> <span class="n">encrypt</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">LONGTOKENFROMGITHUB</span> <span class="o">--</span><span class="n">add</span> <span class="n">env</span><span class="o">.</span><span class="n">global</span>
 </pre></div>
 
 
