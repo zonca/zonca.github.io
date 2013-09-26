@@ -44,4 +44,4 @@ ENABLE_DISQUS = False
 RELATIVE_URLS = False
 
 PLUGIN_PATH = 'pelican-plugins'
-PLUGINS = ['liquid_tags.img', 'liquid_tags.notebook']
+#PLUGINS = ['liquid_tags.img', 'liquid_tags.notebook']
