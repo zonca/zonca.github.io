@@ -1,3 +1,6 @@
 [submodule "planck-cl"]
 	path = planck-cl
 	url = https://github.com/zonca/visualize-planck-cl.git
+[submodule "middle-theme"]
+	path = middle-theme
+	url = https://github.com/zonca/middle-theme
