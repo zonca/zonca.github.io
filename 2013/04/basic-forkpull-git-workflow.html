@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Basic fork/pull git workflow | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Basic fork/pull git workflow</h1>
+        </header>
+        <div class='post-content'>
+            <div dir="ltr">
+ Typical simple workflow for a (github) repository with few users.
+</div>
+
+<div dir="ltr">
+ <b>
+  <br/>
+ </b>
+</div>
+
+<div dir="ltr">
+ <b>
+  Permissions configuration:
+ </b>
+</div>
+
+<div dir="ltr">
+ Main developers have write access to the repository, occasional contributor are supposed to fork and create pull requests.
+</div>
+
+<div dir="ltr">
+</div>
+
+<p><a name="more">
+</a>
+<br/>
+<div dir="ltr">
+ <b>
+  Main developer:
+ </b>
+ Small bug fix just go directly in master:
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  <br/>
+ </span>
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  git  checkout master
+  <br/>
+  # update from repository, better use rebase in case there are unpushed commits
+  <br/>
+  git pull --rebase
+  <br/>
+  git commit -m "commit message"
+  <br/>
+  git push
+ </span>
+</div>
+<div dir="ltr">
+ <br/>
+</div>
+<div dir="ltr">
+ More complex feature, better use a branch:
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  <br/>
+ </span>
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  git checkout -b featurebranch
+  <br/>
+  git commit -am "commit message"
+  <br/>
+  # work and make several commits
+  <br/>
+  # backup and share to github
+  <br/>
+  git push origin featurebranch
+ </span>
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  <br/>
+ </span>
+</div>
+<div dir="ltr">
+ <span style="font-family: inherit;">
+  When ready to merge (cannot push cleanly anymore after any rebasing):
+ </span>
+ <span style="font-family: Courier New, Courier, monospace;">
+  <br/>
+ </span>
+ <br/>
+ <span style="font-family: inherit;">
+  <br/>
+ </span>
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  # reorder, squash some similar commits, better commit msg
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git rebase -i HEAD~10
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  # before merging move commits all together to the end of history
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git rebase master
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git checkout master
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git merge featurebranch
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git push
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  # branch is fully merged, no need to keep it
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git branch -d featurebranch
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  git push origin --delete featurebranch
+ </span>
+</div>
+<div dir="ltr">
+ <br/>
+</div>
+<div dir="ltr">
+ Optional, if the feature requires discussing within the team, better create a pull request.
+ <br/>
+ After cleanup and rebase, instead of merging to master:
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  <br/>
+ </span>
+</div>
+<div dir="ltr">
+ <span style="font-family: Courier New, Courier, monospace;">
+  # create new branch
+  <br/>
+  git checkout -b readyfeaturebranch
+  <br/>
+  git push origin readyfeaurebranch
+ </span>
+</div>
+<div dir="ltr">
+ Connect to github and create a pull request from the new branch to master (now github has a shortcut for creating a pull request from the last branch pushed).
+</div>
+<div dir="ltr">
+ <br/>
+</div>
+<div dir="ltr">
+ During the discussion on the pull request, any commit to the readyfeaturebranch is added to the pull request.
+ <br/>
+ When ready either automatically merge on github, or do it manually as previously.
+</div>
+<div dir="ltr">
+ <br/>
+</div>
+<div dir="ltr">
+ <b>
+  For occasional developers:
+ </b>
+ Just fork the repo on github to their account, work on a branch there, and then create a pull request on the github web interface from the branch to master on the main repository.
+</div></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-04-06T07:52:00">Sat 06 April 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/git.html">git</a> 
+<a href="http://zonca.github.io/tag/github.html">github</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

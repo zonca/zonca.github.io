@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>IPython parallell setup on Carver at NERSC | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>IPython parallell setup on Carver at NERSC</h1>
+        </header>
+        <div class='post-content'>
+            <p>
+ IPython parallel is one of the easiest ways to spawn several Python sessions on a Supercomputing cluster and process jobs in parallel.
+ <br/>
+ <br/>
+ On Carver, the basic setup is running a controller on the login node, and submit engines to the computing nodes via PBS.
+ <br/>
+ <br/>
+ <a name="more">
+ </a>
+ <br/>
+ First create your configuration files running:
+ <br/>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  ipython profile create --parallel
+ </span>
+ <br/>
+ <br/>
+ Therefore in the ~/.config/ipython/profile_default/ipcluster_config.py, just need to set:
+ <br/>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  c.IPClusterStart.controller_launcher_class = 'LocalControllerLauncher'
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  c.IPClusterStart.engine_launcher_class = 'PBS'
+ </span>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  c.PBSLauncher.batch_template_file = u'~/.config/ipython/profile_default/pbs.engine.template'
+ </span>
+ <br/>
+ <br/>
+ You also need to allow connections to the controller from other hosts, setting  in ~/.config/ipython/profile_default/ipcontroller_config.py:
+ <br/>
+ <br/>
+ <span style="font-family: Courier New, Courier, monospace;">
+  c.HubFactory.ip = '*'
+ </span>
+ <br/>
+</p>
+
+<div>
+ <br/>
+</div>
+
+<p>With the path to the pbs engine template.
+<br/>
+<br/>
+Next a couple of examples of pbs templates, for 2 or 8 processes per node:
+<script src="https://gist.github.com/zonca/5334225.js">
+</script>
+<br/>
+IPython configuration does not seem to be flexible enough to add a parameter for specifying the processes per node.
+<br/>
+So I just created a bash script that get as parameters the processes per node and the total number of nodes:
+<br/>
+<br/>
+<span style="font-family: Courier New, Courier, monospace;">
+ ipc 8 2 # 2 nodes with 8ppn, 16 total engines
+</span>
+<br/>
+<span style="font-family: Courier New, Courier, monospace;">
+ ipc 2 3 # 3 nodes with 2ppn, 6 total engines
+</span>
+<br/>
+<br/>
+<span style="font-family: inherit;">
+ Once the engines are running, jobs can be submitted opening an IPython shell on the login node and run:
+</span>
+<br/>
+<span style="font-family: inherit;">
+ <br/>
+</span>
+<br/>
+<span style="font-family: Courier New, Courier, monospace;">
+ from IPython.parallel import Client
+</span>
+<br/>
+<span style="font-family: Courier New, Courier, monospace;">
+ rc = Client()
+</span>
+<br/>
+<br/>
+<span style="font-family: Courier New, Courier, monospace;">
+ lview = rc.load_balanced_view() # default load-balanced view
+</span>
+<br/>
+<div>
+ <span style="font-family: Courier New, Courier, monospace;">
+  def serial_func(argument):
+ </span>
+</div>
+<div>
+ <span style="font-family: Courier New, Courier, monospace;">
+  pass
+ </span>
+</div>
+<div>
+ <span style="font-family: Courier New, Courier, monospace;">
+  parallel_result = lview.map(serial_func, list_of_arguments)
+ </span>
+</div>
+<br/>
+<div style="font-family: inherit;">
+ <br/>
+</div>
+<div>
+ <span style="font-family: inherit;">
+  The serial function is sent to the engines and executed for each element of the list of arguments.
+ </span>
+</div>
+<div>
+ <span style="font-family: inherit;">
+  If the function returns a value, than it is transferred back to the login node.
+ </span>
+</div>
+<div>
+ <span style="font-family: inherit;">
+  In case the returned values are memory consuming, is also possible to still run the controller on the login node, but execute the interactive IPython session in an interactive job.
+ </span>
+</div>
+<div style="font-family: inherit;">
+ <br/>
+</div>
+<div style="font-family: inherit;">
+ <br/>
+</div></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-04-11T05:53:00">Thu 11 April 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/hpc.html">hpc</a> 
+<a href="http://zonca.github.io/tag/supercomputing.html">supercomputing</a> 
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

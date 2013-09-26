@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Noise in spectra and map domain | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Noise in spectra and map domain</h1>
+        </header>
+        <div class='post-content'>
+            <h3>
+ Spectra
+</h3>
+
+<p>NET or $\sigma$ is the standard deviation of the noise, measured in mK/sqrt(Hz), typical values for microwave amplifiers are 0.2-5.
+<br/>
+This is the natural unit of the amplitude spectra (ASD), therefore the high frequency tail of the ASD should get to the expected value of the NET.
+<br/>
+NET can also be expressed in mKsqrt(s), which is NOT the same unit.
+<br/>
+<b>
+ mK/sqrt(Hz)
+</b>
+refers to an integration bandwidth of 1 Hz that assumes a 6dB/octave rolloff, its integration time is only about 0.5 seconds.
+<br/>
+<b>
+ mK/sqrt(s)
+</b>
+instead refers to integration time of 1 second, therefore assumes a top hat bandpass.
+<br/>
+Therefore there is a factor of sqrt(2) difference between the two conventions, therefore mK/sqrt(Hz) = sqrt(2) * mK sqrt(s)
+<br/>
+See appendix B of Noise Properties of the Planck-LFI Receivers
+<br/>
+<a href="http://arxiv.org/abs/1001.4608">
+ http://arxiv.org/abs/1001.4608
+</a>
+<br/>
+<h3>
+ Maps
+</h3>
+To estimate the map domain noise instead we need to integrate the sigma over the time per pixel; in this case it is easier to convert the noise to sigma/sample, therefore we need to multiply by the square root of the sampling frequency:
+<br/>
+<br/>
+sigma_per_sample = NET * sqrt(sampling_freq)
+<br/>
+<br/>
+Then the variance per pixel is sigma_per_sample**2/number_of_hits
+<br/>
+<h3>
+ Angular power spectra
+</h3>
+<div>
+ $C_\ell$ of the variance map is just the variance map multiplied by the pixel area divided by the integration time.
+ <br/>
+ <br/>
+ $$C_\ell = \Omega_{\rm pix} \langle \frac{\sigma^2}{\tau} \rangle = \Omega_{\rm pix} \langle \frac{\sigma^2 f_{\rm samp}}{hits} \rangle$$
+</div></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-04-08T01:32:00">Mon 08 April 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/map.html">map</a> 
+<a href="http://zonca.github.io/tag/power-spectra.html">power spectra</a> 
+<a href="http://zonca.github.io/tag/noise.html">noise</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

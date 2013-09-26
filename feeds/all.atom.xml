@@ -1,0 +1,2785 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-09-17T18:30:00-07:00</updated><entry><title>clviewer, interactive plot of CMB spectra</title><link href="http://zonca.github.io/2013/09/clviewer-interactive-plot-of-CMB-spectra.html" rel="alternate"></link><updated>2013-09-17T18:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-17:2013/09/clviewer-interactive-plot-of-CMB-spectra.html</id><summary type="html">&lt;p&gt;Today it was HackDay at &lt;a href="http://dotastronomy.com"&gt;.Astronomy&lt;/a&gt;, so I felt compelled to hack something around myself,
+creating something I have been thinking for a while after my previous work on &lt;a href="http://zonca.github.io/2013/08/interactive-figures-planck-power-spectra.html"&gt;Interactive CMB power spectra in the browser&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The idea is to get text files from a user and load it in a browser-based interactive display built on top of the &lt;a href="http://d3js.org"&gt;d3.js&lt;/a&gt; and &lt;a href="http://code.shutterstock.com/rickshaw/"&gt;rickshaw&lt;/a&gt; libraries.&lt;/p&gt;
+&lt;p&gt;Similar to &lt;a href="http://nbviewer.ipython.org/"&gt;nbviewer&lt;/a&gt;, I think it is very handy to load data from &lt;a href="https://gist.github.com/"&gt;Github gists&lt;/a&gt;, because then there is no need of uploading files and it is easier to circulate links.&lt;/p&gt;
+&lt;p&gt;So I created a small web app, in &lt;code&gt;Python&lt;/code&gt; of course, using &lt;a href="http://flask.pocoo.org/"&gt;Flask&lt;/a&gt; and deployed on &lt;a href="http://heroku.com"&gt;Heroku&lt;/a&gt;.
+It just gets a gist number, calls the Github APIs to load the files, and displays them in the browser:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Application website: &lt;a href="http://clviewer.herokuapp.com"&gt;http://clviewer.herokuapp.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Example input data: &lt;a href="https://gist.github.com/zonca/6599016"&gt;https://gist.github.com/zonca/6599016&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Example interactive plot: &lt;a href="http://clviewer.herokuapp.com/6599016"&gt;http://clviewer.herokuapp.com/6599016&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Source: &lt;a href="https://github.com/zonca/clviewer"&gt;https://github.com/zonca/clviewer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="cosmology"></category><category term="python"></category><category term="astrophysics"></category><category term="Planck"></category><category term="dotastronomy"></category></entry><entry><title>Planck CMB map at high resolution</title><link href="http://zonca.github.io/2013/09/Planck-CMB-map-at-high-resolution.html" rel="alternate"></link><updated>2013-09-10T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-10:2013/09/Planck-CMB-map-at-high-resolution.html</id><summary type="html">&lt;p&gt;Prompted by a colleague, I created a high-resolution version of the Cosmic Microwave Background map in MollWeide projection released by the Planck collaboration, available on the &lt;a href="http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/previews/COM_CompMap_CMB-smica_2048_R1.20/index.html"&gt;Planck Data Release Website&lt;/a&gt; in FITS format.&lt;/p&gt;
+&lt;p&gt;The map is a PNG at a resolution of 17469x8796 pixels, which is suitable for printing at 300dpi up to 60x40 inch, or 150x100 cm, file size is about 150MB.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Update&lt;/em&gt;: now with Planck color scale&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Update&lt;/em&gt;: previous version had grayed out pixels in the galactic plane represents the fraction of the sky that is not possible to reconstruct due to bright galactic sources. The last version uses inpainting to create a constrained CMB realization with the same statistics as the observed CMB to fill the unobserved pixels, more details in the &lt;a href="http://www.sciops.esa.int/wikiSI/planckpla/index.php?title=CMB_and_astrophysical_component_maps&amp;amp;instance=Planck_Public_PLA"&gt;Planck Explanatory Supplement&lt;/a&gt;. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://dx.doi.org/10.6084/m9.figshare.795296"&gt;High Resolution image on FigShare&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Small size preview:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="Preview of Planck CMB map" src="/images/Planck-CMB-map-at-high-resolution_planck_cmb_map.jpg" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Python code:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;script src="https://gist.github.com/zonca/6515744.js"&gt;&lt;/script&gt;</summary><category term="cosmology"></category><category term="python"></category><category term="astrophysics"></category><category term="Planck"></category></entry><entry><title>Run Hadoop Python jobs on Amazon with MrJob</title><link href="http://zonca.github.io/2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html" rel="alternate"></link><updated>2013-09-02T02:36:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-02:2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html</id><summary type="html">&lt;p&gt;&lt;br/&gt;
+First we need to install mrjob with:
+&lt;br/&gt;
+&lt;blockquote class="tr_bq"&gt;
+ pip install mrjob
+&lt;/blockquote&gt;
+I am starting with a simple example of word counting. Previously I implemented this directly using the hadoop streaming interface, therefore mapper and reducer were scripts that read from standard input and print to standard output, see mapper.py and reducer.py in:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;a href="https://github.com/zonca/python-wordcount-hadoop"&gt;
+ https://github.com/zonca/python-wordcount-hadoop
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+With MrJob instead the interface is a little different, we implement the mapper  method of our subclass of MrJob that already gets a "line" argument and yields the output as a tuple like ("word", 1).
+&lt;br/&gt;
+&lt;div&gt;
+ MrJob makes the implementation of the reducer particularly simple. Using hadoop-streaming directly, we needed also to first parse back the output of the mapper into python objects, while MrJob does it for you and gives directly the key and the list of count, that we just need to sum.
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ The code is pretty simple:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;script src="http://gist-it.appspot.com/github/zonca/python-wordcount-hadoop/blob/master/mrjob/word_count_mrjob.py"&gt;
+ &lt;/script&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ First we can test locally with 2 different methods, either:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;blockquote class="tr_bq"&gt;
+  python word_count_mrjob.py gutemberg/20417.txt.utf-8
+ &lt;/blockquote&gt;
+ &lt;br/&gt;
+ or:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;blockquote class="tr_bq"&gt;
+  python word_count_mrjob.py --runner=local gutemberg/20417.txt.utf-8
+ &lt;/blockquote&gt;
+ &lt;br/&gt;
+ The first is a simple local test, the seconds sets some hadoop variables and uses multiprocessing to run the mapper in parallel.
+ &lt;br/&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ &lt;span style="font-size: large;"&gt;
+  Run on Amazon Elastic Map Reduce
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ Next step is submitting the job to EMR.
+ &lt;br/&gt;
+ First get an account on Amazon Web Services from
+ &lt;a href="http://aws.amazon.com/"&gt;
+  aws.amazon.com
+ &lt;/a&gt;
+ .
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Setup MrJob with Amazon:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="http://pythonhosted.org/mrjob/guides/emr-quickstart.html#amazon-setup"&gt;
+  http://pythonhosted.org/mrjob/guides/emr-quickstart.html#amazon-setup
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;div&gt;
+  Then we just need to choose the "emr" runner for MrJob to take care of:
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;ul&gt;
+   &lt;li&gt;
+    Copy the python module to Amazon S3, with requirements
+   &lt;/li&gt;
+   &lt;li&gt;
+    Copy the input data to S3
+   &lt;/li&gt;
+   &lt;li&gt;
+    Create a small EC2 instance (of course we could set it up to run 1000 instead)
+   &lt;/li&gt;
+   &lt;li&gt;
+    Run Hadoop to process the jobs
+   &lt;/li&gt;
+   &lt;li&gt;
+    Create a local web service that allows easy monitoring of the cluster
+   &lt;/li&gt;
+   &lt;li&gt;
+    When completed, copy the results back (this can be disabled to just leave the results on S3.
+   &lt;/li&gt;
+  &lt;/ul&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  e.g.:
+ &lt;/div&gt;
+ &lt;blockquote class="tr_bq"&gt;
+  python word_count_mrjob.py --runner=emr --aws-region=us-west-2 gutemberg/20417.txt.utf-8
+ &lt;/blockquote&gt;
+ &lt;div&gt;
+  It is important to make sure that the aws-region used by MrJob is the same we used for creating the SSH key on the EC2 console in the MrJob configuration step, i.e. SSH keys are region-specific.
+  &lt;br/&gt;
+  &lt;br/&gt;
+  &lt;span style="font-size: large;"&gt;
+   Logs and output of the run
+  &lt;/span&gt;
+  &lt;br/&gt;
+  &lt;br/&gt;
+  MrJob copies the needed files to S3:
+  &lt;br/&gt;
+  &lt;blockquote class="tr_bq"&gt;
+   . runemr.sh
+   &lt;br/&gt;
+   using configs in /home/zonca/.mrjob.conf
+   &lt;br/&gt;
+   using existing scratch bucket mrjob-ecd1d07aeee083dd
+   &lt;br/&gt;
+   using s3://mrjob-ecd1d07aeee083dd/tmp/ as our scratch dir on S3
+   &lt;br/&gt;
+   creating tmp directory /tmp/mrjobjob.zonca.20130901.192250.785550
+   &lt;br/&gt;
+   Copying non-input files into s3://mrjob-ecd1d07aeee083dd/tmp/mrjobjob.zonca.20130901.192250.785550/files/
+   &lt;br/&gt;
+   Waiting 5.0s for S3 eventual consistency
+   &lt;br/&gt;
+   Creating Elastic MapReduce job flow
+   &lt;br/&gt;
+   Job flow created with ID: j-2E83MO9QZQILB
+   &lt;br/&gt;
+   Created new job flow j-2E83MO9QZQILB
+  &lt;/blockquote&gt;
+  Creates the instances:
+  &lt;br/&gt;
+  &lt;blockquote class="tr_bq"&gt;
+   Job launched 30.9s ago, status STARTING: Starting instances
+   &lt;br/&gt;
+   Job launched 123.9s ago, status BOOTSTRAPPING: Running bootstrap actions
+   &lt;br/&gt;
+   Job launched 250.5s ago, status RUNNING: Running step (mrjobjob.zonca.20130901.192250.785550: Step 1 of 1)
+  &lt;/blockquote&gt;
+  Creates an SSH tunnel to the tracker:
+  &lt;br/&gt;
+  &lt;blockquote class="tr_bq"&gt;
+   Opening ssh tunnel to Hadoop job tracker
+   &lt;br/&gt;
+   Connect to job tracker at: http://localhost:40630/jobtracker.jsp
+  &lt;/blockquote&gt;
+ &lt;/div&gt;
+ Therefore we can connect to that address to check realtime information about the cluster running on EC2, for example:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+  &lt;a href="http://zonca.github.io/images/run-hadoop-python-jobs-on-amazon-with-mrjob_s1600_awsjobdetails.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+   &lt;img border="0" height="588" src="http://zonca.github.io/images/run-hadoop-python-jobs-on-amazon-with-mrjob_s640_awsjobdetails.png" width="640"/&gt;
+  &lt;/a&gt;
+ &lt;/div&gt;
+ &lt;br/&gt;
+ Once the job completes, MrJob copies the output back to the local machine, here are few lines from the file:
+ &lt;br/&gt;
+ &lt;blockquote class="tr_bq"&gt;
+  "maladies"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  1
+  &lt;br/&gt;
+  "malaria"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  5
+  &lt;br/&gt;
+  "male"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  18
+  &lt;br/&gt;
+  "maleproducing"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  1
+  &lt;br/&gt;
+  "males"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  5
+  &lt;br/&gt;
+  "mammal"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  10
+  &lt;br/&gt;
+  "mammalInstinctive"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  1
+  &lt;br/&gt;
+  "mammalian"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  4
+  &lt;br/&gt;
+  "mammallike"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  1
+  &lt;br/&gt;
+  "mammals"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  87
+  &lt;br/&gt;
+  "mammoth"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  5
+  &lt;br/&gt;
+  "mammoths"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  1
+  &lt;br/&gt;
+  "man"
+  &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+  &lt;/span&gt;
+  152
+ &lt;/blockquote&gt;
+ I've been positively impressed that it is so easy to implement and run a MapReduce job with MrJob without need of managing directly EC2 instances or the Hadoop installation.
+ &lt;br/&gt;
+ This same setup could be used on GB of data with hundreds of instances.
+&lt;/div&gt;&lt;/p&gt;</summary><category term="bigdata"></category><category term="github"></category><category term="python"></category><category term="aws"></category><category term="hadoop"></category></entry><entry><title>Interactive figures in the browser: CMB Power Spectra</title><link href="http://zonca.github.io/2013/08/interactive-figures-planck-power-spectra.html" rel="alternate"></link><updated>2013-08-30T08:52:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-30:2013/08/interactive-figures-planck-power-spectra.html</id><summary type="html">&lt;p&gt;
+ For a long time I've been curious about trying out
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  d3.js
+ &lt;/span&gt;
+ , the javascript plotting library which is becoming the standard for interactive plotting in the browser.
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ What is really appealing is the capability of sharing with other people powerful interactive visualization simply via the link to a web page. This will hopefully be the future of scientific publications, as envisioned, for example, by
+ &lt;a href="https://www.authorea.com/"&gt;
+  Authorea
+ &lt;/a&gt;
+ .
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ An interesting example related to my work on Planck is a plot of the high number of Angular Power Spectra of the anisotropies of the Cosmic Microwave Background Temperature.
+&lt;/div&gt;
+
+&lt;div&gt;
+ The CMB Power spectra describe how the temperature fluctuations were distributed in the sky as a function of the angular scale, for example the largest peak at about 1 degree means that the brightest cold/warm spots of the CMB have that angular size, see
+ &lt;a href="http://www.strudel.org.uk/blog/astro/001030.shtml"&gt;
+  The Universe Simulator in the browser
+ &lt;/a&gt;
+ .
+&lt;/div&gt;
+
+&lt;div&gt;
+ The
+ &lt;a href="http://irsa.ipac.caltech.edu/data/Planck/release_1/ancillary-data/"&gt;
+  Planck Collaboration released
+ &lt;/a&gt;
+ a combined spectrum, which aggregates several channels to give the best result, spectra frequency by frequency (for some frequencies split in detector-sets) and a best-fit spectrum given a Universe Model.
+&lt;/div&gt;
+
+&lt;div&gt;
+ It is also interesting to compare to the latest release spectrum by WMAP with 9 years of data.
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ The plan is to create a visualization where it is easier to zoom to different angular scales on the horizontal axis and quickly show/hide each curve.
+&lt;/div&gt;
+
+&lt;div&gt;
+ For this I used
+ &lt;a href="http://code.shutterstock.com/rickshaw/"&gt;
+  rickshaw
+ &lt;/a&gt;
+ , a library based on
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  d3.js
+ &lt;/span&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  which makes it easier to create time-series plots.
+ &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  In fact most of the features are already implemented, it is just a matter of configuring them, see the code on github:
+ &lt;/span&gt;
+ &lt;a href="https://github.com/zonca/visualize-planck-cl"&gt;
+  https://github.com/zonca/visualize-planck-cl
+ &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ The most complex task is actually to load all the data, previously converted to JSON, in the background from the server and push them in a data structure which is understood by rickshaw.
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ Check out the result:
+&lt;/div&gt;
+
+&lt;div style="text-align: center;"&gt;
+ &lt;b&gt;
+  &lt;a href="http://bit.ly/planck-spectra"&gt;
+   http://bit.ly/planck-spectra
+  &lt;/a&gt;
+ &lt;/b&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;</summary><category term="javascript"></category><category term="d3"></category><category term="power spectra"></category><category term="astrophysics"></category><category term="Planck"></category></entry><entry><title>Planck CTP angular power spectrum ell binning</title><link href="http://zonca.github.io/2013/08/planck-ctp-angular-power-spectrum-ell.html" rel="alternate"></link><updated>2013-08-20T23:03:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-20:2013/08/planck-ctp-angular-power-spectrum-ell.html</id><summary type="html">&lt;p&gt;
+ Planck released a binning of the angular power spectrum in the Explanatory supplement,
+ &lt;br/&gt;
+ unfortunately the file is in PDF format, non easily machine-readable:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="http://www.sciops.esa.int/wikiSI/planckpla/index.php?title=Frequency_maps_angular_power_spectra&amp;amp;instance=Planck_Public_PLA"&gt;
+  http://www.sciops.esa.int/wikiSI/planckpla/index.php?title=Frequency_maps_angular_power_spectra&amp;amp;instance=Planck_Public_PLA
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ So here is a csv version:
+ &lt;br/&gt;
+ &lt;a href="https://gist.github.com/zonca/6288439"&gt;
+  https://gist.github.com/zonca/6288439
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Follows embedded gist.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;script src="https://gist.github.com/zonca/6288439.js"&gt;
+ &lt;/script&gt;
+&lt;/p&gt;</summary><category term="power spectra"></category><category term="Planck"></category></entry><entry><title>HEALPix map of the Earth using healpy</title><link href="http://zonca.github.io/2013/08/healpix-map-of-earth-using-healpy.html" rel="alternate"></link><updated>2013-08-08T19:07:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-08:2013/08/healpix-map-of-earth-using-healpy.html</id><summary type="html">&lt;p&gt;
+ HEALPix maps can also be used to create equal-area pixelized maps of the Earth, RGB colors are not supported in healpy, so we need to convert the image to colorscale.
+ &lt;br/&gt;
+ The best user case is for using spherical harmonic transforms, e.g. apply a smoothing filter, in this case HEALPix/healpy tools are really efficient.
+ &lt;br/&gt;
+ However, other tools for transforming between angles (coordinates), 3d vectors and pixels might be useful.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ &lt;br/&gt;
+ I've created an IPython notebook that provides a simple example:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="http://nbviewer.ipython.org/6187504"&gt;
+  http://nbviewer.ipython.org/6187504
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Here is the output Mollweide projection provided by healpy:
+ &lt;br/&gt;
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;div class="separator" style="clear: both; text-align: center;"&gt;
+ &lt;a href="http://zonca.github.io/images/healpix-map-of-earth-using-healpy_s1600_download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+  &lt;img border="0" height="230" src="http://zonca.github.io/images/healpix-map-of-earth-using-healpy_s400_download.png" width="400"/&gt;
+ &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br/&gt;
+Few notes:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;div&gt;
+&lt;/div&gt;
+&lt;br/&gt;
+&lt;ul style="-webkit-text-stroke-width: 0px; color: black; font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px;"&gt;
+ &lt;li&gt;
+  always use
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   flip="geo"
+  &lt;/span&gt;
+  for plotting, otherwise maps are flipped East-West
+ &lt;/li&gt;
+ &lt;li&gt;
+  increase the resolution of the plots (which is different from the resolution of the map array) by providing at least xsize=2000 to mollview and a reso lower than 1 to gnomview
+ &lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;</summary></entry><entry><title>Export google analytics data via API with Python</title><link href="http://zonca.github.io/2013/08/export-google-analytics-data-via-api.html" rel="alternate"></link><updated>2013-08-04T17:47:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-04:2013/08/export-google-analytics-data-via-api.html</id><summary type="html">&lt;p&gt;
+ Fun weekend hacking project: export google analytics data using the google APIs.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Clone the latest version of the API client from:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="https://code.google.com/p/google-api-python-client"&gt;
+  https://code.google.com/p/google-api-python-client
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ there is an example for accessing analytics APIs in the samples/analytics folder,
+ &lt;br/&gt;
+ but you need to fill in client_secrets.json.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ You can get the credentials from the APIs console:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="https://code.google.com/apis/console"&gt;
+  https://code.google.com/apis/console
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ In SERVICES: activate google analytics
+ &lt;br/&gt;
+ In API Access: Create a "Client ID for installed applications" choosing "Other" as a platform
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Copy the client id and the client secret to client_secrets.json.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ &lt;br/&gt;
+ Now you only need the profile ID of the google analytics account, it is in the google analytics web interface, just choose the website, then click on Admin, then on the profile name in the profile tab, and then on profile settings.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ You can then run:
+ &lt;br/&gt;
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;blockquote class="tr_bq"&gt;
+ python core_reporting_v3_reference.py ga:PROFILEID
+&lt;/blockquote&gt;
+
+&lt;p&gt;The first time you run it, it will open a browser for authentication, but then the auth token is saved and used for future requests.
+&lt;br/&gt;
+&lt;br/&gt;
+This retrieves from the APIs the visits to the website from search, with keywords and the number of visits, for example for my blog:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;blockquote class="tr_bq"&gt;
+ Total Metrics For All Results:
+ &lt;br/&gt;
+ This query returned 25 rows.
+ &lt;br/&gt;
+ But the query matched 30 total results.
+ &lt;br/&gt;
+ Here are the metric totals for the matched total results.
+ &lt;br/&gt;
+ Metric Name  = ga:visits
+ &lt;br/&gt;
+ Metric Total = 174
+ &lt;br/&gt;
+ Rows:
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ (not provided)
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 121
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ andrea zonca
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 17
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ butterworth filter python
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 4
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ andrea zonca blog
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 2
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ healpix for ubuntu
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 2
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ healpy install ubuntu
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 2
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ python butterworth filter
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 2
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ zonca andrea
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 2
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ andrea zonca buchrain luzern
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ andrea zonca it
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ astrofisica in pillole
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ bin data healpy
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ ellipticity fwhm
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ enthought and healpy
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ fwhm
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ healpix apt-get
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ healpix repository ubuntu
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ healpix ubuntu 12.04 install
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ healpy ubuntu
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ install healpix ubuntu
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ ipython cluster task output
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ numpy pink noise
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ pink noise numpy
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ python 1/f noise
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+ &lt;br/&gt;
+ google
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ python apply mixin
+ &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+ &lt;/span&gt;
+ 1
+&lt;/blockquote&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>Processing sources in Planck maps with Hadoop and Python</title><link href="http://zonca.github.io/2013/07/processing-planck-sources-with-hadoop.html" rel="alternate"></link><updated>2013-07-15T08:16:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-07-15:2013/07/processing-planck-sources-with-hadoop.html</id><summary type="html">&lt;h2&gt;
+ Purpose
+&lt;/h2&gt;
+
+&lt;div&gt;
+ The purpose of this post is to investigate how to process in parallel sources extracted from full sky maps, in this case the maps release by Planck, using Hadoop instead of more traditional MPI-based HPC custom software.
+&lt;/div&gt;
+
+&lt;div&gt;
+ Hadoop is the MapReduce implementation most used in the enterprise world and it has been traditionally used to process huge amount of text data (~ TBs) , e.g. web pages or logs, over thousands commodity computers connected over ethernet.
+&lt;/div&gt;
+
+&lt;div&gt;
+ It allows to distribute the data across the nodes on a distributed file-system (HDFS) and then analyze them ("map" step) locally on each node, the output of the map step is traditionally a set of text (key, value) pairs, that are then sorted by the framework and passed to the "reduce" algorithm, which typically aggregates them and then save them to the distributed file-system.
+&lt;/div&gt;
+
+&lt;div&gt;
+ Hadoop gives robustness to this process by rerunning failed jobs, distribute the data with redundancy and re-distribute in case of failures, among many other features.
+&lt;/div&gt;
+
+&lt;div&gt;
+ Most scientist use HPC supercomputers for running large data processing software. Using HPC is necessary for algorithms that require frequent communication across the nodes, implemented via MPI calls over a dedicated high speed network (e.g. infiniband). However, often HPC resources are used for running a large number of jobs that are loosely coupled, i.e. each job runs mostly independently of the others, just a sort of aggregation is performed at the end. In this cases the use of a robust and flexible framework like Hadoop could be beneficial.
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;
+ Problem description
+&lt;/h2&gt;
+
+&lt;div&gt;
+ The Planck collaboration (btw I'm part of it...) released in May 2013 a set of full sky maps in Temperature at 9 different frequencies and catalogs of point and extended galactic and extragalactic sources:
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;a href="http://irsa.ipac.caltech.edu/Missions/planck.html"&gt;
+  http://irsa.ipac.caltech.edu/Missions/planck.html
+ &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ Each catalog contains about 1000 sources, and the collaboration released the location and flux of each source.
+&lt;/div&gt;
+
+&lt;div&gt;
+ The purpose of the analysis is to read each of the sky maps, slice out the section of the map around each source and perform some analysis on that patch of sky, as a simple example, to test the infrastructure, I am just going to compute the mean of the pixels located 10 arcminutes around the center of each source.
+&lt;/div&gt;
+
+&lt;div&gt;
+ In a production run, we might for example run aperture photometry on each source, or fitting for the source center to check for pointing accuracy.
+&lt;/div&gt;
+
+&lt;h2&gt;
+ Sources
+&lt;/h2&gt;
+
+&lt;p&gt;All files are available on github:
+&lt;br/&gt;
+&lt;div&gt;
+ &lt;a href="https://github.com/zonca/planck-sources-hadoop"&gt;
+  https://github.com/zonca/planck-sources-hadoop
+ &lt;/a&gt;
+&lt;/div&gt;
+&lt;h2&gt;
+ Hadoop setup
+&lt;/h2&gt;
+&lt;div&gt;
+ I am running on the San Diego Supercomputing data intensive cluster Gordon:
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;a href="http://www.sdsc.edu/us/resources/gordon/"&gt;
+  http://www.sdsc.edu/us/resources/gordon/
+ &lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ SDSC has a simplified Hadoop setup based on shell scripts,
+ &lt;a href="http://www.sdsc.edu/us/resources/gordon/gordon_hadoop.html"&gt;
+  myHadoop
+ &lt;/a&gt;
+ , which allows running Hadoop as a regular PBS job.
+&lt;/div&gt;
+&lt;div&gt;
+ The most interesting feature is that the Hadoop distributed file-system HDFS is setup on the low-latency local flash drives, one of the distinctive features of Gordon.
+&lt;/div&gt;
+&lt;h3&gt;
+ Using Python with Hadoop-streaming
+&lt;/h3&gt;
+&lt;div&gt;
+ Hadoop applications run natively in Java, however thanks to Hadoop-streaming, we can use stdin and stdout to communicate with a script implemented in any programming language.
+&lt;/div&gt;
+&lt;div&gt;
+ One of the most common choices for scientific applications is Python.
+&lt;/div&gt;
+&lt;h3&gt;
+ Application design
+&lt;/h3&gt;
+&lt;div&gt;
+ Best way to decrease the coupling between different parallel jobs for this application is, instead of analyzing one source at a time, analyze a patch of sky at a time, and loop through all the sources in that region.
+&lt;/div&gt;
+&lt;div&gt;
+ Therefore the largest amount data, the sky map, is only read once by a process, and all the sources are processed. I pre-process the sky map by splitting it in 10x10 degrees patches, saving a 2 columns array with pixel index and map temperature (
+ &lt;a href="https://github.com/zonca/planck-sources-hadoop/blob/master/preprocessing.py"&gt;
+  preprocessing.py
+ &lt;/a&gt;
+ ).
+&lt;/div&gt;
+&lt;div&gt;
+ Of course this will produce jobs whose length might be very different, due to the different effective sky area at poles and at equator, and by random number of source per patch, but that's something we do not worry about, that is exactly what Hadoop takes care of.
+&lt;/div&gt;
+&lt;h2&gt;
+ Implementation
+&lt;/h2&gt;
+&lt;h3&gt;
+ Input data
+&lt;/h3&gt;
+&lt;div&gt;
+ The pre-processed patches of sky are available in binary format on a lustre file-system shared by the processes.
+&lt;/div&gt;
+&lt;div&gt;
+ Therefore the text input files for the hadoop jobs are just the list of filenames of the sky patches, one per row.
+&lt;/div&gt;
+&lt;h3&gt;
+ Mapper
+&lt;/h3&gt;
+&lt;div&gt;
+ &lt;a href="https://github.com/zonca/planck-sources-hadoop/blob/master/mapper.py"&gt;
+  mapper.py
+ &lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ The mapper is fed by Hadoop via stdin with a number of lines extracted from the input files and returns a (key, value) text output for each source and for each statistics we compute on the source.
+&lt;/div&gt;
+&lt;div&gt;
+ In this simple scenario, the only returned key printed to stdout is "SOURCENAME_10arcminmean".
+&lt;/div&gt;
+&lt;div&gt;
+ For example, we can run a serial test by running:
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   echo plancktest/submaps/030_045_025 | ./mapper.py
+  &lt;/span&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  and the returned output is:
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   PCCS1 030 G023.00+40.77_10arcminmean
+   &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+   &lt;/span&gt;
+   4.49202e-04
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   PCCS1 030 G023.13+42.14_10arcminmean
+   &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+   &lt;/span&gt;
+   3.37773e-04
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   PCCS1 030 G023.84+45.26_10arcminmean
+   &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+   &lt;/span&gt;
+   4.69427e-04
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   PCCS1 030 G024.32+48.81_10arcminmean
+   &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+   &lt;/span&gt;
+   3.79832e-04
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   PCCS1 030 G029.42+43.41_10arcminmean
+   &lt;span class="Apple-tab-span" style="white-space: pre;"&gt;
+   &lt;/span&gt;
+   4.11600e-04
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div style="font-family: inherit;"&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;
+ Reducer
+&lt;/h3&gt;
+&lt;div&gt;
+ There is no need for a reducer in this scenario, so Hadoop will just use the default IdentityReducer, which just aggregates all the mappers outputs to a single output file.
+&lt;/div&gt;
+&lt;h3&gt;
+ Hadoop call
+&lt;/h3&gt;
+&lt;div&gt;
+ &lt;a href="https://github.com/zonca/planck-sources-hadoop/blob/master/run.pbs"&gt;
+  run.pbs
+ &lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ The hadoop call is:
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   &lt;code&gt;
+    $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR jar $HADOOP_HOME/contrib/streaming/hadoop&lt;em&gt;streaming&lt;/em&gt;.jar -file $FOLDER/mapper.py -mapper $FOLDER/mapper.py -input /user/$USER/Input/* -output /user/$USER/Output
+   &lt;/code&gt;
+  &lt;/span&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ So we are using the Hadoop-streaming interface and providing just the mapper, the input text files (list of sources) had been already copied to HDFS, the output needs then to be copied from HDFS to the local file-system, see run.pbs.
+&lt;/div&gt;
+&lt;h2&gt;
+ Hadoop run and results
+&lt;/h2&gt;
+&lt;div&gt;
+ For testing purposes we have just used 2 of the 9 maps (30 and 70 GHz), and processed all the total of ~2000 sources running Hadoop on 4 nodes.
+&lt;/div&gt;
+&lt;div&gt;
+ Processing takes about 5 minutes, Hadoop automatically chooses the number of mappers, and in this case only uses 2 mappers, as I think it reserves a couple of nodes to run the Scheduler and auxiliary processes.
+&lt;/div&gt;
+&lt;div&gt;
+ The outputs of the mappers are then joined, sorted and written on a single file, see the output file
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;a href="https://github.com/zonca/planck-sources-hadoop/blob/master/output/SAMPLE_RESULT_part-00000"&gt;
+  output/SAMPLE_RESULT_part-00000
+ &lt;/a&gt;
+ .
+&lt;/div&gt;
+&lt;div&gt;
+ See the full log
+ &lt;a href="https://github.com/zonca/planck-sources-hadoop/blob/master/sample_logs.txt"&gt;
+  sample_logs.txt
+ &lt;/a&gt;
+ extracted running:
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  /opt/hadoop/bin/hadoop job -history output
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;h3&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  Comparison of the results with the catalog
+ &lt;/span&gt;
+&lt;/h3&gt;
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  Just for a rough consistency check, I compared the normalized temperatures computed with Hadoop using just the mean of the pixels in a radius of 10 arcmin to the fluxes computed by the Planck collaboration. I find a general agreement with the expected noise excess.
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+ &lt;div class="separator" style="clear: both; text-align: left;"&gt;
+  &lt;a href="http://zonca.github.io/images/processing-planck-sources-with-hadoop_s1600_download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+   &lt;img border="0" src="http://zonca.github.io/images/processing-planck-sources-with-hadoop_s1600_download.png"/&gt;
+  &lt;/a&gt;
+ &lt;/div&gt;
+ &lt;h2&gt;
+  Conclusion
+ &lt;/h2&gt;
+ &lt;div&gt;
+  The advantage of using Hadoop is mainly the scalability, this same setup could be used on AWS or Cloudera using hundreds of nodes. All the complexity of scaling is managed by Hadoop.
+ &lt;/div&gt;
+ &lt;div&gt;
+  The main concern is related to loading the data, in a HPC supercomputer it is easy to load directly from a high-performance shared disk, in a cloud environment instead we might opt for a similar setup loading data from S3, but the best would be to use Hadoop itself and stream the data to the mapper in the input files. This is complicated by the fact that Hadoop-streaming only supports text and not binary, the options would be either find a way to pack the binary data in a text file or use Hadoop-pipes instead of Hadoop-streaming.
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;</summary><category term="hpc"></category><category term="supercomputing"></category><category term="python"></category><category term="Planck"></category><category term="hadoop"></category></entry><entry><title>How to use the IPython notebook on a small computing cluster</title><link href="http://zonca.github.io/2013/06/how-to-use-ipython-notebook-on-small.html" rel="alternate"></link><updated>2013-06-22T11:12:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-06-22:2013/06/how-to-use-ipython-notebook-on-small.html</id><summary type="html">&lt;dl&gt;
+&lt;dt&gt;&lt;span style="font-weight: normal;"&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href="http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html"&gt;&lt;/dt&gt;
+&lt;dt&gt;The IPython notebook&lt;/dt&gt;
+&lt;dt&gt;&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;is a powerful and easy to use interface for using Python and particularly useful when running remotely, because it allows the interface to run locally in your browser, while the computing kernel runs remotely on the cluster.&lt;/dt&gt;
+&lt;dt&gt;&lt;/span&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;span style="font-weight: normal;"&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/span&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;h3&gt;&lt;/dt&gt;
+&lt;dt&gt;1) Configure IPython notebook:&lt;/dt&gt;
+&lt;dt&gt;&lt;/h3&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;First time you use the notebook you need to follow this configuration steps:&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;Login to the cluster&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;Load the python environment, for example:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote class="tr_bq"&gt;&lt;/dt&gt;
+&lt;dt&gt;&amp;gt; module load pythonEPD&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;Create the profile files:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote class="tr_bq"&gt;&lt;/dt&gt;
+&lt;dt&gt;&amp;gt; ipython profile create # creates the configuration files&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&amp;gt; vim .ipython/profile_default/ipython_notebook_config.py&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;set a password, see instructions in the file.&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;Change the port to something specific to you,&lt;/dt&gt;
+&lt;dt&gt;&lt;b&gt;&lt;/dt&gt;
+&lt;dt&gt;please change this to avoid conflict with other users&lt;/dt&gt;
+&lt;dt&gt;&lt;/b&gt;&lt;/dt&gt;
+&lt;dt&gt;:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote class="tr_bq"&gt;&lt;/dt&gt;
+&lt;dt&gt;c.NotebookApp.port = 8900&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;Set a certificate to serve the notebook over https:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;c.NotebookApp.certfile = u'/home/zonca/mycert.pem'&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;or create a new certificate, see&lt;/dt&gt;
+&lt;dt&gt;&lt;a href="http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html"&gt;&lt;/dt&gt;
+&lt;dt&gt;http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html&lt;/dt&gt;
+&lt;dt&gt;&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;.&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;Set:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;c.NotebookApp.open_browser = False&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;h3&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name="more"&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/h3&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;h3&gt;&lt;/dt&gt;
+&lt;dt&gt;2) Run the notebook for testing on the login node.&lt;/dt&gt;
+&lt;dt&gt;&lt;/h3&gt;&lt;/dt&gt;
+&lt;dt&gt;You can use IPython notebook on the login node if you do not use much memory, e.g. &amp;lt; 300MB.&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;ssh into the login node, at the terminal run:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&amp;gt; ipython notebook --pylab=inline&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;open the browser on your local machine and connect to (always use https, replace 8900 with your port):&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote class="tr_bq"&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;b&gt;&lt;/dt&gt;
+&lt;dt&gt;https&lt;/dt&gt;
+&lt;dt&gt;&lt;/b&gt;&lt;/dt&gt;
+&lt;dt&gt;://LOGINNODEURL:8900&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;Dismiss all the browser complaints about the certificate and go ahead.&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;h3&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;b&gt;&lt;/dt&gt;
+&lt;dt&gt;3) Run the notebook on a computing node&lt;/dt&gt;
+&lt;dt&gt;&lt;/b&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/h3&gt;&lt;/dt&gt;
+&lt;dt&gt;You should always use a computing node whenever you need a large amount of resources.&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;Create a folder notebooks/ in your home, just copy this script in runipynb.pbs in your that folder:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;script src="https://gist.github.com/zonca/5840518.js"&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/script&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;replace LOGINNODEURL with the url of the login node of your cluster.&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;NOTICE: you need to ask the sysadmin to set "GatewayPorts yes" in sshd_config on the login node to allow access externally to the notebook.&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;Submit the job to the queue running:&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;qsub runipynb.pbs&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;Then from your local machine connect to (replace 8900 with your port):&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;blockquote class="tr_bq"&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;b&gt;&lt;/dt&gt;
+&lt;dt&gt;https&lt;/dt&gt;
+&lt;dt&gt;&lt;/b&gt;&lt;/dt&gt;
+&lt;dt&gt;://LOGINNODEURL:8900&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/div&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;/blockquote&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;h3&gt;&lt;/dt&gt;
+&lt;dt&gt;Other introductory python resources&lt;/dt&gt;
+&lt;dt&gt;&lt;/h3&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;br/&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;ul&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;li&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a href="http://scipy-lectures.github.io/"&gt;&lt;/dt&gt;
+&lt;dt&gt;Scientific computing with Python&lt;/dt&gt;
+&lt;dt&gt;&lt;/a&gt;&lt;/dt&gt;
+&lt;dt&gt;, large and detailed introduction to Python, Numpy, Matplotlib, Scipy&lt;/dt&gt;
+&lt;dt&gt;&lt;/li&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;li&gt;&lt;/dt&gt;
+&lt;dt&gt;My&lt;/dt&gt;
+&lt;dt&gt;&lt;a href="https://github.com/zonca/PythonHPC"&gt;&lt;/dt&gt;
+&lt;dt&gt;Python for High performance computing&lt;/dt&gt;
+&lt;dt&gt;&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;slides and few ipython notebook examples, see the README
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;a href="http://www.blogger.com/%C2%A0https://github.com/zonca/healpytut/blob/master/healpytut.pdf?raw=true"&gt;
+    My short Python and healpy tutorial
+   &lt;/a&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;
+&lt;/div&gt;&lt;/dd&gt;
+&lt;/dl&gt;</summary><category term="hpc"></category><category term="ipython"></category></entry><entry><title>IPython parallell setup on Carver at NERSC</title><link href="http://zonca.github.io/2013/04/ipython-parallell-setup-on-carver-at.html" rel="alternate"></link><updated>2013-04-11T05:53:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-11:2013/04/ipython-parallell-setup-on-carver-at.html</id><summary type="html">&lt;p&gt;
+ IPython parallel is one of the easiest ways to spawn several Python sessions on a Supercomputing cluster and process jobs in parallel.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ On Carver, the basic setup is running a controller on the login node, and submit engines to the computing nodes via PBS.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ &lt;br/&gt;
+ First create your configuration files running:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  ipython profile create --parallel
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Therefore in the ~/.config/ipython/profile_default/ipcluster_config.py, just need to set:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  c.IPClusterStart.controller_launcher_class = 'LocalControllerLauncher'
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  c.IPClusterStart.engine_launcher_class = 'PBS'
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  c.PBSLauncher.batch_template_file = u'~/.config/ipython/profile_default/pbs.engine.template'
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ You also need to allow connections to the controller from other hosts, setting  in ~/.config/ipython/profile_default/ipcontroller_config.py:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  c.HubFactory.ip = '*'
+ &lt;/span&gt;
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With the path to the pbs engine template.
+&lt;br/&gt;
+&lt;br/&gt;
+Next a couple of examples of pbs templates, for 2 or 8 processes per node:
+&lt;script src="https://gist.github.com/zonca/5334225.js"&gt;
+&lt;/script&gt;
+&lt;br/&gt;
+IPython configuration does not seem to be flexible enough to add a parameter for specifying the processes per node.
+&lt;br/&gt;
+So I just created a bash script that get as parameters the processes per node and the total number of nodes:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ ipc 8 2 # 2 nodes with 8ppn, 16 total engines
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ ipc 2 3 # 3 nodes with 2ppn, 6 total engines
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;span style="font-family: inherit;"&gt;
+ Once the engines are running, jobs can be submitted opening an IPython shell on the login node and run:
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="font-family: inherit;"&gt;
+ &lt;br/&gt;
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ from IPython.parallel import Client
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ rc = Client()
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ lview = rc.load_balanced_view() # default load-balanced view
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  def serial_func(argument):
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  pass
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  parallel_result = lview.map(serial_func, list_of_arguments)
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;br/&gt;
+&lt;div style="font-family: inherit;"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  The serial function is sent to the engines and executed for each element of the list of arguments.
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  If the function returns a value, than it is transferred back to the login node.
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  In case the returned values are memory consuming, is also possible to still run the controller on the login node, but execute the interactive IPython session in an interactive job.
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div style="font-family: inherit;"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div style="font-family: inherit;"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;&lt;/p&gt;</summary><category term="hpc"></category><category term="supercomputing"></category><category term="ipython"></category><category term="python"></category></entry><entry><title>Simple Mixin usage in python</title><link href="http://zonca.github.io/2013/04/simple-mixin-usage-in-python.html" rel="alternate"></link><updated>2013-04-08T01:34:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-08:2013/04/simple-mixin-usage-in-python.html</id><summary type="html">&lt;p&gt;
+ One situation where Mixins are useful in Python is when you need to modify  a method of similar classes that you are importing from a package.
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ For just a single class, it is easier to just create a derived class, but if the same modification must be applied to several classes, then it is cleaner to implement this modification once in a Mixin and then apply it to all of them.
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ Here an example in Django:
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ Django has several generic view classes that allow to pull objects from the database and feed them to the html templates.
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ One for example shows the detail of a specific object:
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  from django.views.generic.detail import DetailView
+ &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  This class has a get_object method that gets an object from the database given a primary key.
+ &lt;/div&gt;
+ &lt;div&gt;
+  We need to modify this method to allow access to an object only to the user that owns them.
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  We first implement a Mixin, i.e. an independent class that only implements the method we wish to override:
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   class OwnedObjectMixin(object):
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   def get_object(self, *args, **kwargs):
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   obj = super(OwnedObjectMixin, self).get_object(*args, **kwargs)
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   if not obj.user == self.request.user:
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   raise Http404
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   return obj
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;br/&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  Then we create a new derived class which inherits both from the Mixin and from the class we want to modify.
+ &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;div&gt;
+  &lt;div&gt;
+   &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+    class ProtectedDetailView(OwnedObjectMixin, DetailView):
+   &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+   &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+    pass
+   &lt;/span&gt;
+  &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+ This overrides the get_object method of DetailView with the get_object method of OwnedObjectMixin, and the call to super calls the get_object method of DetailView, so has the same effect of subclassing DetailView and override the get_object method, but we can be apply the same Mixin to other classes.
+&lt;/div&gt;</summary><category term="python"></category></entry><entry><title>Noise in spectra and map domain</title><link href="http://zonca.github.io/2013/04/noise-in-spectra-and-map-domain.html" rel="alternate"></link><updated>2013-04-08T01:32:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-08:2013/04/noise-in-spectra-and-map-domain.html</id><summary type="html">&lt;h3&gt;
+ Spectra
+&lt;/h3&gt;
+
+&lt;p&gt;NET or $\sigma$ is the standard deviation of the noise, measured in mK/sqrt(Hz), typical values for microwave amplifiers are 0.2-5.
+&lt;br/&gt;
+This is the natural unit of the amplitude spectra (ASD), therefore the high frequency tail of the ASD should get to the expected value of the NET.
+&lt;br/&gt;
+NET can also be expressed in mKsqrt(s), which is NOT the same unit.
+&lt;br/&gt;
+&lt;b&gt;
+ mK/sqrt(Hz)
+&lt;/b&gt;
+refers to an integration bandwidth of 1 Hz that assumes a 6dB/octave rolloff, its integration time is only about 0.5 seconds.
+&lt;br/&gt;
+&lt;b&gt;
+ mK/sqrt(s)
+&lt;/b&gt;
+instead refers to integration time of 1 second, therefore assumes a top hat bandpass.
+&lt;br/&gt;
+Therefore there is a factor of sqrt(2) difference between the two conventions, therefore mK/sqrt(Hz) = sqrt(2) * mK sqrt(s)
+&lt;br/&gt;
+See appendix B of Noise Properties of the Planck-LFI Receivers
+&lt;br/&gt;
+&lt;a href="http://arxiv.org/abs/1001.4608"&gt;
+ http://arxiv.org/abs/1001.4608
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;h3&gt;
+ Maps
+&lt;/h3&gt;
+To estimate the map domain noise instead we need to integrate the sigma over the time per pixel; in this case it is easier to convert the noise to sigma/sample, therefore we need to multiply by the square root of the sampling frequency:
+&lt;br/&gt;
+&lt;br/&gt;
+sigma_per_sample = NET * sqrt(sampling_freq)
+&lt;br/&gt;
+&lt;br/&gt;
+Then the variance per pixel is sigma_per_sample**2/number_of_hits
+&lt;br/&gt;
+&lt;h3&gt;
+ Angular power spectra
+&lt;/h3&gt;
+&lt;div&gt;
+ $C_\ell$ of the variance map is just the variance map multiplied by the pixel area divided by the integration time.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ $$C_\ell = \Omega_{\rm pix} \langle \frac{\sigma^2}{\tau} \rangle = \Omega_{\rm pix} \langle \frac{\sigma^2 f_{\rm samp}}{hits} \rangle$$
+&lt;/div&gt;&lt;/p&gt;</summary><category term="map"></category><category term="power spectra"></category><category term="noise"></category></entry><entry><title>Basic fork/pull git workflow</title><link href="http://zonca.github.io/2013/04/basic-forkpull-git-workflow.html" rel="alternate"></link><updated>2013-04-06T07:52:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-06:2013/04/basic-forkpull-git-workflow.html</id><summary type="html">&lt;div dir="ltr"&gt;
+ Typical simple workflow for a (github) repository with few users.
+&lt;/div&gt;
+
+&lt;div dir="ltr"&gt;
+ &lt;b&gt;
+  &lt;br/&gt;
+ &lt;/b&gt;
+&lt;/div&gt;
+
+&lt;div dir="ltr"&gt;
+ &lt;b&gt;
+  Permissions configuration:
+ &lt;/b&gt;
+&lt;/div&gt;
+
+&lt;div dir="ltr"&gt;
+ Main developers have write access to the repository, occasional contributor are supposed to fork and create pull requests.
+&lt;/div&gt;
+
+&lt;div dir="ltr"&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a name="more"&gt;
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;div dir="ltr"&gt;
+ &lt;b&gt;
+  Main developer:
+ &lt;/b&gt;
+ Small bug fix just go directly in master:
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git  checkout master
+  &lt;br/&gt;
+  # update from repository, better use rebase in case there are unpushed commits
+  &lt;br/&gt;
+  git pull --rebase
+  &lt;br/&gt;
+  git commit -m "commit message"
+  &lt;br/&gt;
+  git push
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ More complex feature, better use a branch:
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git checkout -b featurebranch
+  &lt;br/&gt;
+  git commit -am "commit message"
+  &lt;br/&gt;
+  # work and make several commits
+  &lt;br/&gt;
+  # backup and share to github
+  &lt;br/&gt;
+  git push origin featurebranch
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  When ready to merge (cannot push cleanly anymore after any rebasing):
+ &lt;/span&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: inherit;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  # reorder, squash some similar commits, better commit msg
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git rebase -i HEAD~10
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  # before merging move commits all together to the end of history
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git rebase master
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git checkout master
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git merge featurebranch
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git push
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  # branch is fully merged, no need to keep it
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git branch -d featurebranch
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  git push origin --delete featurebranch
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ Optional, if the feature requires discussing within the team, better create a pull request.
+ &lt;br/&gt;
+ After cleanup and rebase, instead of merging to master:
+ &lt;br/&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  # create new branch
+  &lt;br/&gt;
+  git checkout -b readyfeaturebranch
+  &lt;br/&gt;
+  git push origin readyfeaurebranch
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ Connect to github and create a pull request from the new branch to master (now github has a shortcut for creating a pull request from the last branch pushed).
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ During the discussion on the pull request, any commit to the readyfeaturebranch is added to the pull request.
+ &lt;br/&gt;
+ When ready either automatically merge on github, or do it manually as previously.
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;br/&gt;
+&lt;/div&gt;
+&lt;div dir="ltr"&gt;
+ &lt;b&gt;
+  For occasional developers:
+ &lt;/b&gt;
+ Just fork the repo on github to their account, work on a branch there, and then create a pull request on the github web interface from the branch to master on the main repository.
+&lt;/div&gt;&lt;/p&gt;</summary><category term="git"></category><category term="github"></category></entry><entry><title>Interactive 3D plot of a sky map</title><link href="http://zonca.github.io/2013/03/interactive-3d-plot-of-sky-map.html" rel="alternate"></link><updated>2013-03-12T19:49:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-03-12:2013/03/interactive-3d-plot-of-sky-map.html</id><summary type="html">&lt;p&gt;&lt;a href="http://code.enthought.com/projects/mayavi/"&gt;
+ Mayavi
+&lt;/a&gt;
+is a Python package from Enthought for 3D visualization, here a simple example of creating a 3D interactive map starting from a HEALPix pixelization sky map:
+&lt;br/&gt;
+&lt;div&gt;
+ &lt;br/&gt;
+ &lt;div&gt;
+  &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+   &lt;a href="http://zonca.github.io/images/interactive-3d-plot-of-sky-map_s1600_snapshot.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;
+    &lt;img border="0" height="271" src="http://zonca.github.io/images/interactive-3d-plot-of-sky-map_s400_snapshot.png" width="400"/&gt;
+   &lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+   &lt;br/&gt;
+  &lt;/div&gt;
+  &lt;br/&gt;
+  &lt;a name="more"&gt;
+  &lt;/a&gt;
+  &lt;br/&gt;
+  Here the code:
+  &lt;br/&gt;
+  &lt;script src="https://gist.github.com/zonca/5146356.js"&gt;
+  &lt;/script&gt;
+  &lt;br/&gt;
+  &lt;br/&gt;
+  The output is a beautiful 3D interactive map, Mayavi allows to pan, zoom and rotate.
+  &lt;br/&gt;
+  UPDATE 13 Mar: actually there was a bug (found by Marius Millea) in the script, there is no problem in the projection!
+  &lt;br/&gt;
+  &lt;div class="separator" style="clear: both; text-align: center;"&gt;
+   &lt;br/&gt;
+  &lt;/div&gt;
+  Mayavi can be installed in Ubuntu installing
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   python-vtk
+  &lt;/span&gt;
+  and then
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   sudo pip install mayavi.
+  &lt;/span&gt;
+ &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;</summary><category term="mayavi"></category><category term="python"></category><category term="astrophysics"></category></entry><entry><title>How to cite HDF5 in bibtex</title><link href="http://zonca.github.io/2013/02/how-to-cite-hdf5-in-bibtex.html" rel="alternate"></link><updated>2013-02-27T00:42:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-02-27:2013/02/how-to-cite-hdf5-in-bibtex.html</id><summary type="html">&lt;p&gt;
+ here the bibtex entry:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;script src="https://gist.github.com/zonca/5043796.js"&gt;
+ &lt;/script&gt;
+ &lt;br/&gt;
+ reference:
+ &lt;br/&gt;
+ &lt;a href="http://www.hdfgroup.org/HDF5-FAQ.html#gcite"&gt;
+  http://www.hdfgroup.org/HDF5-FAQ.html#gcite
+ &lt;/a&gt;
+&lt;/p&gt;</summary></entry><entry><title>Compile healpix C++ to javascript</title><link href="http://zonca.github.io/2013/01/tag:blogger.html" rel="alternate"></link><updated>2013-01-28T21:06:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-01-28:2013/01/tag:blogger.html</id><summary type="html">&lt;p&gt;
+ Compile C++ -&amp;gt; LLVM with clang
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Convert LLVM -&amp;gt; Javascript:
+ &lt;br/&gt;
+ &lt;a href="https://github.com/kripken/emscripten/wiki/Tutorial"&gt;
+  https://github.com/kripken/emscripten/wiki/Tutorial
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="javascript"></category><category term="hackideas"></category><category term="healpix"></category></entry><entry><title>Elliptic beams, FWHM and ellipticity</title><link href="http://zonca.github.io/2013/01/elliptic-beams-fwhm-and-ellipticity.html" rel="alternate"></link><updated>2013-01-18T00:58:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-01-18:2013/01/elliptic-beams-fwhm-and-ellipticity.html</id><summary type="html">&lt;p&gt;&lt;span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"&gt;
+ The relationship between the Full Width Half Max, FWHM (min, max, and average) and the
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"&gt;
+ ellipticity is:
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;br style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &lt;span style="background-color: white; color: #222222; font-size: 13px;"&gt;
+  FWHM = sqrt(FWHM_min * FWHM_max)
+ &lt;/span&gt;
+ &lt;br style="background-color: white; color: #222222; font-size: 13px;"/&gt;
+ &lt;span style="background-color: white; color: #222222; font-size: 13px;"&gt;
+  e = FWHM_max/FWHM_min
+ &lt;/span&gt;
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"&gt;
+ &lt;br/&gt;
+&lt;/span&gt;&lt;/p&gt;</summary><category term="astrophysics"></category></entry><entry><title>Ubuntu PPA for HEALPix and healpy</title><link href="http://zonca.github.io/2012/12/ubuntu-ppa-for-healpix-and-healpy.html" rel="alternate"></link><updated>2012-12-17T10:37:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-12-17:2012/12/ubuntu-ppa-for-healpix-and-healpy.html</id><summary type="html">&lt;p&gt;&lt;br/&gt;
+&lt;b&gt;
+ HEALPix C, C++
+&lt;/b&gt;
+version 3.00 and
+&lt;b&gt;
+ healpy
+&lt;/b&gt;
+version 1.4.1 are now available in a PPA repository for Ubuntu 12.04 Precise and Ubuntu 12.10 Quantal.
+&lt;br/&gt;
+&lt;br/&gt;
+First remove your previous version of
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ healpy
+&lt;/span&gt;
+, just find the location of the package:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &amp;gt; python -c "import healpy; print healpy.&lt;strong&gt;file&lt;/strong&gt;"
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+and remove it:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &amp;gt; sudo rm -r /some-base-path/site-packages/healpy*
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;div style="font-family: 'Courier New', Courier, monospace;"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;span style="font-family: inherit;"&gt;
+ Then add the apt repository and install the packages:
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;div style="font-family: 'Courier New', Courier, monospace;"&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+  &lt;br/&gt;
+ &lt;/span&gt;
+&lt;/div&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &amp;gt; sudo add-apt-repository ppa:zonca/healpix
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &amp;gt; sudo apt-get update
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &amp;gt; sudo apt-get install healpix-cxx libhealpix-cxx-dev
+&lt;/span&gt;
+&lt;span style="font-family: 'Courier New', Courier, monospace;"&gt;
+&lt;/span&gt;
+&lt;span style="font-family: 'Courier New', Courier, monospace;"&gt;
+ libchealpix0
+&lt;/span&gt;
+&lt;span style="font-family: 'Courier New', Courier, monospace;"&gt;
+ libchealpix-dev python-healpy
+&lt;/span&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   &amp;gt; which anafast_cxx
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   /usr/bin/anafast_cxx
+  &lt;/span&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   &amp;gt; python -c "import healpy; print healpy.&lt;strong&gt;version&lt;/strong&gt;"
+  &lt;/span&gt;
+ &lt;/div&gt;
+ &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+ &lt;/span&gt;
+ &lt;br/&gt;
+ &lt;div&gt;
+  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
+   1.4.1
+  &lt;/span&gt;
+ &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;</summary><category term="healpix"></category><category term="ubuntu"></category></entry><entry><title>Butterworth filter with Python</title><link href="http://zonca.github.io/2012/10/butterworth-filter-with-python.html" rel="alternate"></link><updated>2012-10-06T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-10-06:2012/10/butterworth-filter-with-python.html</id><summary type="html">&lt;p&gt;
+ Using IPython notebook of course:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="http://nbviewer.ipython.org/3843014/"&gt;
+  http://nbviewer.ipython.org/3843014/
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="ipython"></category><category term="scipy"></category><category term="python"></category></entry><entry><title>IPython.parallel for Planck data analysis at NERSC</title><link href="http://zonca.github.io/2012/09/ipythonparallel-for-planck-data.html" rel="alternate"></link><updated>2012-09-27T06:24:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-09-27:2012/09/ipythonparallel-for-planck-data.html</id><summary type="html">&lt;p&gt;&lt;a href="http://www.esa.int/planck"&gt;
+ Planck
+&lt;/a&gt;
+is a Space mission for high precision measurements of the
+&lt;a href="http://en.wikipedia.org/wiki/Cosmic_microwave_background_radiation"&gt;
+ Cosmic Microwave Background
+&lt;/a&gt;
+(CMB), data are received as timestreams of output voltages from the 2 instruments on-board, the Low and High Frequency Instruments [LFI / HFI].
+&lt;br/&gt;
+&lt;br/&gt;
+The key phase in data reduction is map-making, where data are binned to a map of the microwave emission of our galaxy, the CMB, and extragalactic sources. This phase is intrinsically parallel and requires simultaneous access to all the data, so requires a fully parallel MPI-based software.
+&lt;br/&gt;
+&lt;br/&gt;
+However, preparing the data for map-making requires several tasks that are serial, but are data and I/O intensive, therefore need to be parallelized.
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;a name="more"&gt;
+&lt;/a&gt;
+&lt;br/&gt;
+IPython.parallel offers the easiest solution for managing a large amount of trivially parallel jobs.
+&lt;br/&gt;
+&lt;br/&gt;
+The first task is pointing reconstruction, where we interpolate and apply several rotations and corrections to low-sampled satellite quaternions stored on disk and then write the output dense detector pointing to disk.
+&lt;br/&gt;
+The disk quota of pointing files is about 2.5TB split in about 3000 files, those files can be processed independently, therefore we implement a function that processes 1 file, to be used interactively for debugging and testing.
+&lt;br/&gt;
+Then launch an IPython cluster, typically between 20 and 300 engines on Carver (NERSC), and use the exact same function to process all the ~3000 files in parallel.
+&lt;br/&gt;
+The IPython
+&lt;a href="http://ipython.org/ipython-doc/dev/api/generated/IPython.parallel.client.view.html?highlight=apply_async#IPython.parallel.client.view.LoadBalancedView"&gt;
+ BalancedView
+&lt;/a&gt;
+controller automatically balances the queue therefore we get maximum efficiency, and it is possible to leave the cluster running and submit other instances of the job to be added to its queue.
+&lt;br/&gt;
+&lt;br/&gt;
+Second task is calibration and dipole removal, which processes about 1.2 TB of data, but it needs to read the dense pointing from disk, so it is very I/O intensive. Also in this case we can submit the ~3000 jobs to an IPython.parallel cluster.
+&lt;br/&gt;
+&lt;br/&gt;
+In a next post I'll describe in detail my setup and how I organize my code to make it easy to swap back and forth between debugging code interactively and  running production runs in parallel.&lt;/p&gt;</summary><category term="ipython"></category><category term="python"></category><category term="Planck"></category></entry><entry><title>homepage on about.me</title><link href="http://zonca.github.io/2012/09/homepage-on-aboutme.html" rel="alternate"></link><updated>2012-09-26T22:19:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-09-26:2012/09/homepage-on-aboutme.html</id><summary type="html">&lt;p&gt;
+ moved my homepage to about.me:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="http://about.me/andreazonca"&gt;
+  http://about.me/andreazonca
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ it is quite nice, and essential, as most of it is just links to other websites, i.e. arXiv for publications, Linkedin for CV, github for code.
+ &lt;br/&gt;
+ So I'm going to use andreazonca.com as blog, hosted on blogger.
+&lt;/p&gt;</summary></entry><entry><title>doctests and unittests happiness 2</title><link href="http://zonca.github.io/2012/08/doctests-and-unittests-happiness-2.html" rel="alternate"></link><updated>2012-08-16T14:07:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-08-16:2012/08/doctests-and-unittests-happiness-2.html</id><summary type="html">&lt;blockquote&gt;
+ nosetests -v --with-doctest
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.ang2pix ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.get_all_neighbours ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.get_interp_val ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.get_map_size ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.get_min_valid_nside ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.get_neighbours ... ok
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br/&gt;
+&lt;a name="more"&gt;
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;blockquote&gt;
+ Doctest: healpy.pixelfunc.isnpixok ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.isnsideok ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.ma ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.maptype ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.mask_bad ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.mask_good ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.max_pixrad ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.nest2ring ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.npix2nside ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.nside2npix ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.nside2pixarea ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.nside2resol ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.pix2ang ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.pix2vec ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.reorder ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.ring2nest ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.ud_grade ... ok
+ &lt;br/&gt;
+ Doctest: healpy.pixelfunc.vec2pix ... ok
+ &lt;br/&gt;
+ Doctest: healpy.rotator.Rotator ... ok
+ &lt;br/&gt;
+ test_write_map_C (test_fitsfunc.TestFitsFunc) ... ok
+ &lt;br/&gt;
+ test_write_map_IDL (test_fitsfunc.TestFitsFunc) ... ok
+ &lt;br/&gt;
+ test_write_alm (test_fitsfunc.TestReadWriteAlm) ... ok
+ &lt;br/&gt;
+ test_write_alm_256_128 (test_fitsfunc.TestReadWriteAlm) ... ok
+ &lt;br/&gt;
+ test_ang2pix_nest (test_pixelfunc.TestPixelFunc) ... ok
+ &lt;br/&gt;
+ test_ang2pix_ring (test_pixelfunc.TestPixelFunc) ... ok
+ &lt;br/&gt;
+ test_nside2npix (test_pixelfunc.TestPixelFunc) ... ok
+ &lt;br/&gt;
+ test_nside2pixarea (test_pixelfunc.TestPixelFunc) ... ok
+ &lt;br/&gt;
+ test_nside2resol (test_pixelfunc.TestPixelFunc) ... ok
+ &lt;br/&gt;
+ test_inclusive (test_query_disc.TestQueryDisc) ... ok
+ &lt;br/&gt;
+ test_not_inclusive (test_query_disc.TestQueryDisc) ... ok
+ &lt;br/&gt;
+ test_anafast (test_sphtfunc.TestSphtFunc) ... ok
+ &lt;br/&gt;
+ test_anafast_iqu (test_sphtfunc.TestSphtFunc) ... ok
+ &lt;br/&gt;
+ test_anafast_xspectra (test_sphtfunc.TestSphtFunc) ... ok
+ &lt;br/&gt;
+ test_synfast (test_sphtfunc.TestSphtFunc) ... ok
+ &lt;br/&gt;
+ test_cartview_nocrash (test_visufunc.TestNoCrash) ... ok
+ &lt;br/&gt;
+ test_gnomview_nocrash (test_visufunc.TestNoCrash) ... ok
+ &lt;br/&gt;
+ test_mollview_nocrash (test_visufunc.TestNoCrash) ... ok
+ &lt;br/&gt;
+ &lt;br/&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br/&gt;
+ Ran 43 tests in 19.077s
+ &lt;br/&gt;
+ &lt;br/&gt;
+ OK
+&lt;/blockquote&gt;&lt;/p&gt;</summary><category term="python"></category><category term="Quote"></category></entry><entry><title>compile python module with mpi support</title><link href="http://zonca.github.io/2012/07/compile-python-module-with-mpi-support.html" rel="alternate"></link><updated>2012-07-06T16:08:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-07-06:2012/07/compile-python-module-with-mpi-support.html</id><summary type="html">&lt;p&gt;
+ CC=mpicc LDSHARED="mpicc -shared" python setup.py build_ext -i
+&lt;/p&gt;</summary></entry><entry><title>some python resources</title><link href="http://zonca.github.io/2011/11/some-python-resources.html" rel="alternate"></link><updated>2011-11-01T23:02:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-11-01:2011/11/some-python-resources.html</id><summary type="html">&lt;p&gt;
+ python tutorial:
+ &lt;br/&gt;
+ &lt;a href="http://docs.python.org/tutorial/"&gt;
+  http://docs.python.org/tutorial/
+  &lt;br/&gt;
+ &lt;/a&gt;
+ numpy tutorial [arrays]:
+ &lt;br/&gt;
+ &lt;a href="http://www.scipy.org/Tentative_NumPy_Tutorial"&gt;
+  http://www.scipy.org/Tentative_NumPy_Tutorial
+  &lt;br/&gt;
+ &lt;/a&gt;
+ plotting tutorial:
+ &lt;br/&gt;
+ &lt;a href="http://matplotlib.sourceforge.net/users/pyplot_tutorial.html"&gt;
+  http://matplotlib.sourceforge.net/users/pyplot_tutorial.html
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ free online books:
+ &lt;br/&gt;
+ &lt;a href="http://diveintopython.org/toc/index.html"&gt;
+  http://diveintopython.org/toc/index.html
+  &lt;br/&gt;
+ &lt;/a&gt;
+ &lt;a href="http://www.ibiblio.org/swaroopch/byteofpython/read/"&gt;
+  http://www.ibiblio.org/swaroopch/byteofpython/read/
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ install enthought python:
+ &lt;br/&gt;
+ &lt;a href="http://www.enthought.com/products/edudownload.php"&gt;
+  http://www.enthought.com/products/edudownload.php
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ video tut:
+ &lt;br/&gt;
+ http://www.youtube.com/watch?v=YW8jtSOTRAU&amp;amp;feature=channel
+&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>cfitsio wrapper in python</title><link href="http://zonca.github.io/2011/06/cfitsio-wrapper-in-python.html" rel="alternate"></link><updated>2011-06-21T04:43:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-06-21:2011/06/cfitsio-wrapper-in-python.html</id><summary type="html">&lt;p&gt;
+ After several issues with pyfits, and tired of it being so overengineered, I've wrote my own fits I/O package in python, wrapping the C library cfitsio with ctypes.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Pretty easy, first version completely developed in 1 day.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="https://github.com/zonca/pycfitsio"&gt;
+  https://github.com/zonca/pycfitsio
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>unit testing happiness</title><link href="http://zonca.github.io/2011/06/unit-testing-happiness.html" rel="alternate"></link><updated>2011-06-21T04:39:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-06-21:2011/06/unit-testing-happiness.html</id><summary type="html">&lt;pre&gt;nosetests -v&lt;br/&gt;test_all_cols (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_colnames (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_move (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_open_file (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_read_col (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_read_hdus (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_create (pycfitsio.test.TestPyCfitsIoWrite) ... ok&lt;br/&gt;test_write (pycfitsio.test.TestPyCfitsIoWrite) ... ok&lt;br/&gt;&lt;br/&gt;----------------------------------------------------------------------&lt;br/&gt;Ran 8 tests in 0.016s&lt;br/&gt;&lt;br/&gt;OK&lt;/pre&gt;</summary><category term="python"></category></entry><entry><title>Pink noise (1/f noise) simulations in numpy</title><link href="http://zonca.github.io/2011/05/pink-noise-1f-noise-simulations-in-numpy.html" rel="alternate"></link><updated>2011-05-18T23:49:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-05-18:2011/05/pink-noise-1f-noise-simulations-in-numpy.html</id><summary type="html">&lt;p&gt;&lt;a href="https://gist.github.com/979729"&gt;
+ https://gist.github.com/979729
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;a href="http://zonca.github.io/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png"&gt;
+ &lt;img alt="" class="alignnone size-medium wp-image-128" height="225" src="http://zonca.github.io/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png" title="oneoverf" width="300"/&gt;
+&lt;/a&gt;&lt;/p&gt;</summary><category term="python"></category><category term="physics"></category></entry><entry><title>Vim regular expressions</title><link href="http://zonca.github.io/2011/04/vim-regular-expressions.html" rel="alternate"></link><updated>2011-04-29T02:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-04-29:2011/04/vim-regular-expressions.html</id><summary type="html">&lt;p&gt;
+ very good reference of the usage of regular expressions in VIM:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;a href="http://www.softpanorama.org/Editors/Vimorama/vim_regular_expressions.shtml"&gt;
+  http://www.softpanorama.org/Editors/Vimorama/vim_regular_expressions.shtml
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>set python logging level</title><link href="http://zonca.github.io/2011/04/set-python-logging-level.html" rel="alternate"></link><updated>2011-04-13T01:02:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-04-13:2011/04/set-python-logging-level.html</id><summary type="html">&lt;p&gt;
+ often using logging.basicConfig is useless because if the logging module is already configured upfront by one of the imported libraries this is ignored.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ The solution is to set the level directly in the root logger:
+ &lt;br/&gt;
+ &lt;code&gt;
+  ﻿﻿logging.root.level = logging.DEBUG
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>pyfits memory leak in new_table</title><link href="http://zonca.github.io/2011/03/pyfits-memory-leak-in-newtable.html" rel="alternate"></link><updated>2011-03-28T17:22:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-03-28:2011/03/pyfits-memory-leak-in-newtable.html</id><summary type="html">&lt;p&gt;
+ I found a memory leakage issue in pyfits.new_table, data were NOT deleted when the table was deleted, I prepared a test on github, using
+ &lt;a href="http://mg.pov.lt/objgraph/" title="objgraph"&gt;
+  objgraph
+ &lt;/a&gt;
+ , which shows that data are still in memory:
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ &lt;a href="https://gist.github.com/884298"&gt;
+  https://gist.github.com/884298
+ &lt;/a&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ the issue was solved by Erik Bray of STSCI on March 28th, 2011 , see bug report:
+ &lt;br/&gt;
+ &lt;a href="http://trac6.assembla.com/pyfits/ticket/49"&gt;
+  http://trac6.assembla.com/pyfits/ticket/49
+  &lt;br/&gt;
+ &lt;/a&gt;
+ and changeset:
+ &lt;br/&gt;
+ &lt;a href="http://trac6.assembla.com/pyfits/changeset/844"&gt;
+  http://trac6.assembla.com/pyfits/changeset/844
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="python"></category><category term="astrophysics"></category></entry><entry><title>ipython and PyTrilinos</title><link href="http://zonca.github.io/2011/02/ipython-and-pytrilinos.html" rel="alternate"></link><updated>2011-02-16T19:10:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-02-16:2011/02/ipython-and-pytrilinos.html</id><summary type="html">&lt;ol&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  start ipcontroller
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  start ipengines:
+  &lt;br/&gt;
+  &lt;code&gt;
+   mpiexec -n 4 ipengine --mpi=pytrilinos
+  &lt;/code&gt;
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  start ipython 0.11:
+  &lt;br/&gt;
+  &lt;code&gt;
+   import PyTrilinos
+   &lt;br/&gt;
+   from IPython.kernel import client
+   &lt;br/&gt;
+   mec = client.MultiEngineClient()
+   &lt;br/&gt;
+   %load_ext parallelmagic
+   &lt;br/&gt;
+   mec.activate()
+   &lt;br/&gt;
+   px import PyTrilinos
+   &lt;br/&gt;
+   px comm=PyTrilinos.Epetra.PyComm()
+   &lt;br/&gt;
+   px print(comm.NumProc())
+  &lt;/code&gt;
+ &lt;/li&gt;
+ &lt;br/&gt;
+&lt;/ol&gt;</summary><category term="parallel programming"></category><category term="python"></category></entry><entry><title>git make local branch tracking origin</title><link href="http://zonca.github.io/2011/02/git-make-local-branch-tracking-origin.html" rel="alternate"></link><updated>2011-02-02T02:58:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-02-02:2011/02/git-make-local-branch-tracking-origin.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+ git branch --set-upstream master origin/master
+&lt;/code&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+you obtain the same result as initial cloning&lt;/p&gt;</summary><category term="git"></category></entry><entry><title>memory map npy files</title><link href="http://zonca.github.io/2011/01/memory-map-npy-files.html" rel="alternate"></link><updated>2011-01-07T21:04:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-01-07:2011/01/memory-map-npy-files.html</id><summary type="html">&lt;p&gt;
+ Mem-map the stored array, and then access the second row directly from disk:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;code&gt;
+  X = np.load('/tmp/123.npy', mmap_mode='r')
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>force local install of python module</title><link href="http://zonca.github.io/2010/12/force-local-install-of-python-module.html" rel="alternate"></link><updated>2010-12-03T22:18:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-12-03:2010/12/force-local-install-of-python-module.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+ python setup.py install --prefix FOLDER
+ &lt;br/&gt;
+&lt;/code&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+creates lib/python2.6/site-packages, to force a local install you should use:
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;code&gt;
+ python setup.py install --install-lib FOLDER
+&lt;/code&gt;&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>gnome alt f2 popup launcher</title><link href="http://zonca.github.io/2010/08/gnome-alt-f2-popup-launcher.html" rel="alternate"></link><updated>2010-08-31T18:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-08-31:2010/08/gnome-alt-f2-popup-launcher.html</id><summary type="html">&lt;p&gt;
+ ﻿
+ &lt;br/&gt;
+ &lt;code&gt;
+  gnome-panel-control --run-dialog
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>switch to interactive backend with ipython -pylab</title><link href="http://zonca.github.io/2010/08/switch-to-interactive-backend-with.html" rel="alternate"></link><updated>2010-08-21T00:33:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-08-21:2010/08/switch-to-interactive-backend-with.html</id><summary type="html">&lt;p&gt;
+ objective:
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  when running ipython without pylab or executing scripts you want to use an image matplotlib backend like Agg
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  just when calling ipython -pylab you want to use an interactive backend like GTKAgg or TKAgg
+ &lt;/li&gt;
+ &lt;br/&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br/&gt;
+&lt;a name="more"&gt;
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+you need first to setup as default backend on .matplotlib/matplotlibrc
+&lt;strong&gt;
+ Agg
+&lt;/strong&gt;
+:
+&lt;br/&gt;
+&lt;code&gt;
+ backend      : Agg
+&lt;/code&gt;
+&lt;br/&gt;
+then setup you ipython to switch to interactive, in ipython file Shell.py, in the class MatplotlibShellBase, at about line 516, add:
+&lt;br/&gt;
+&lt;code&gt;
+ matplotlib.use('GTKAgg')
+&lt;/code&gt;
+&lt;br/&gt;
+after the first import of matplotlib&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>numpy dtypes and fits keywords</title><link href="http://zonca.github.io/2010/08/numpy-dtypes-and-fits-keywords.html" rel="alternate"></link><updated>2010-08-04T21:57:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-08-04:2010/08/numpy-dtypes-and-fits-keywords.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+ bool: 'L',
+ &lt;br/&gt;
+ uint8: 'B',
+ &lt;br/&gt;
+ int16: 'I',
+ &lt;br/&gt;
+ int32: 'J',
+ &lt;br/&gt;
+ int64: 'K',
+ &lt;br/&gt;
+ float32: 'E',
+ &lt;br/&gt;
+ float64: 'D',
+ &lt;br/&gt;
+ complex64: 'C',
+ &lt;br/&gt;
+ complex128: 'M'
+&lt;/code&gt;&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>count hits with numpy</title><link href="http://zonca.github.io/2010/07/count-hits-with-numpy.html" rel="alternate"></link><updated>2010-07-23T15:18:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-07-23:2010/07/count-hits-with-numpy.html</id><summary type="html">&lt;p&gt;
+ I have an array where I record hits
+ &lt;br/&gt;
+ &lt;code&gt;
+  a=np.zeros(5)
+ &lt;/code&gt;
+ &lt;br/&gt;
+ and an array with the indices of the hits, for example I have 2 hits on index 2
+ &lt;br/&gt;
+ &lt;code&gt;
+  hits=np.array([2,2])
+ &lt;/code&gt;
+ &lt;br/&gt;
+ so I want to increase index 2 of a by 2
+ &lt;br/&gt;
+ &lt;a name="more"&gt;
+ &lt;/a&gt;
+ &lt;br/&gt;
+ I tried:
+ &lt;br/&gt;
+ &lt;code&gt;
+  a[hits]+=1
+ &lt;/code&gt;
+ &lt;br/&gt;
+ but it gives array([ 0.,  0.,  1.,  0.,  0.])
+ &lt;br/&gt;
+ does someone have a suggestion?
+ &lt;br/&gt;
+ &lt;code&gt;
+  bins=np.bincount(hits)
+  &lt;br/&gt;
+  a[:len(bins)] += bins
+  &lt;br/&gt;
+  a
+  &lt;br/&gt;
+  array([ 0.,  0.,  2.,  0.,  0.])
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>change column name in a fits with pyfits</title><link href="http://zonca.github.io/2010/06/change-column-name-in-fits-with-pyfits.html" rel="alternate"></link><updated>2010-06-30T22:06:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-30:2010/06/change-column-name-in-fits-with-pyfits.html</id><summary type="html">&lt;p&gt;
+ no way to change it manipulating the dtype of the data array.
+ &lt;br/&gt;
+ &lt;code&gt;
+  a=pyfits.open('filename.fits')
+  &lt;br/&gt;
+  a[1].header.update('TTYPE1','newname')
+ &lt;/code&gt;
+ &lt;br/&gt;
+ you need to change the header, using the update method of the right TTYPE and then write again the fits file using a.writeto.
+&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>healpix coordinates</title><link href="http://zonca.github.io/2010/06/healpix-coordinates.html" rel="alternate"></link><updated>2010-06-23T01:01:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-23:2010/06/healpix-coordinates.html</id><summary type="html">&lt;p&gt;
+ Healpix considers
+ &lt;strong&gt;
+  latitude
+ &lt;/strong&gt;
+ theta from 0 on north pole to pi south pole,
+ &lt;br/&gt;
+ so the conversion is:
+ &lt;br/&gt;
+ &lt;code&gt;
+  theta = pi/2 - latitude
+ &lt;/code&gt;
+ &lt;br/&gt;
+ &lt;strong&gt;
+  longitude
+ &lt;/strong&gt;
+ and phi instead are consistently from 0 to 2*pi with
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  zero on vernal equinox (for
+  &lt;a href="http://en.wikipedia.org/wiki/Ecliptic_coordinate_system"&gt;
+   ecliptic
+  &lt;/a&gt;
+  ).
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  zero in the direction from Sun to galactic center (for
+  &lt;a href="http://en.wikipedia.org/wiki/Galactic_coordinate_system"&gt;
+   galactic
+  &lt;/a&gt;
+  )
+ &lt;/li&gt;
+ &lt;br/&gt;
+&lt;/ul&gt;</summary><category term="astrophysics"></category><category term="physics"></category></entry><entry><title>parallel computing the python way</title><link href="http://zonca.github.io/2010/06/parallel-computing-python-way.html" rel="alternate"></link><updated>2010-06-21T07:27:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-21:2010/06/parallel-computing-python-way.html</id><summary type="html">&lt;p&gt;
+ forget MPI:
+ &lt;br/&gt;
+ &lt;a href="http://showmedo.com/videotutorials/series?name=N49qyIFOh"&gt;
+  http://showmedo.com/videotutorials/series?name=N49qyIFOh
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="parallel programming"></category><category term="python"></category></entry><entry><title>quaternions for python</title><link href="http://zonca.github.io/2010/06/quaternions-for-python.html" rel="alternate"></link><updated>2010-06-21T07:21:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-21:2010/06/quaternions-for-python.html</id><summary type="html">&lt;p&gt;
+ the situation is pretty problematic, I hope someday
+ &lt;strong&gt;
+  scipy
+ &lt;/strong&gt;
+ will add a python package for rotating and interpolating quaternions, up to now:
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  &lt;a href="http://cgkit.sourceforge.net/doc2/quat.html"&gt;
+   http://cgkit.sourceforge.net/doc2/quat.html
+  &lt;/a&gt;
+  : slow, bad interaction with numpy, I could not find a simple way to turn a list of N quaternions to a 4xN array without a loop
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  &lt;a href="http://cxc.harvard.edu/mta/ASPECT/tool_doc/pydocs/Quaternion.html"&gt;
+   http://cxc.harvard.edu/mta/ASPECT/tool_doc/pydocs/Quaternion.html
+  &lt;/a&gt;
+  : more lightweight, does not implement quaternion interpolation
+ &lt;/li&gt;
+ &lt;br/&gt;
+&lt;/ul&gt;</summary><category term="python"></category><category term="physics"></category></entry><entry><title>change permission recursively to folders only</title><link href="http://zonca.github.io/2010/03/change-permission-recursively-to.html" rel="alternate"></link><updated>2010-03-23T17:58:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-03-23:2010/03/change-permission-recursively-to.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+ find . -type d -exec chmod 777 {} \;
+&lt;/code&gt;&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>aptitude search 'and'</title><link href="http://zonca.github.io/2010/03/aptitude-search.html" rel="alternate"></link><updated>2010-03-16T22:50:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-03-16:2010/03/aptitude-search.html</id><summary type="html">&lt;p&gt;
+ this is really something
+ &lt;strong&gt;
+  really annoying
+ &lt;/strong&gt;
+ about aptitude, if you run:
+ &lt;br/&gt;
+ &lt;code&gt;
+  aptitude search linux headers
+ &lt;/code&gt;
+ &lt;br/&gt;
+ it will make an 'or' search...to perform a 'and' search, which I need 99.9% of the time, you need quotation marks:
+ &lt;br/&gt;
+ &lt;code&gt;
+  aptitude search 'linux headers'
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>using numpy dtype with loadtxt</title><link href="http://zonca.github.io/2010/03/using-numpy-dtype-with-loadtxt.html" rel="alternate"></link><updated>2010-03-03T22:49:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-03-03:2010/03/using-numpy-dtype-with-loadtxt.html</id><summary type="html">&lt;p&gt;
+ Let's say you want to read a text file like this:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+ #filename start end
+ &lt;br/&gt;
+ fdsafda.fits 23143214 23143214
+ &lt;br/&gt;
+ safdsafafds.fits 21423 23423432
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br/&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;a name="more"&gt;
+&lt;/a&gt;
+&lt;br/&gt;
+you can use dtype to create a custom array, which is very flexible as you can work by row or columns with strings and floats in the same array:
+&lt;br/&gt;
+&lt;code&gt;
+ dt=np.dtype({'names':['filename','start','end'],'formats':['S100',np.float,np.float]})
+ &lt;br/&gt;
+&lt;/code&gt;
+[I tried also using np.str instead of S100 without success, anyone knows why?]
+&lt;br/&gt;
+then give this as input to loadtxt to load the file and create the array.
+&lt;br/&gt;
+&lt;code&gt;
+ a = np.loadtxt(open('yourfile.txt'),dtype=dt)
+&lt;/code&gt;
+&lt;br/&gt;
+so each element is:
+&lt;br/&gt;
+&lt;code&gt;
+ ('dsafsadfsadf.fits', 1.6287776249537126e+18, 1.6290301584937428e+18)
+ &lt;br/&gt;
+&lt;/code&gt;
+&lt;br/&gt;
+but you can get the array of start or end times using:
+&lt;br/&gt;
+&lt;code&gt;
+ a['start']
+&lt;/code&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="python"></category><category term="numpy"></category></entry><entry><title>Stop ipcluster from a script</title><link href="http://zonca.github.io/2010/02/stop-ipcluster-from-script.html" rel="alternate"></link><updated>2010-02-19T02:23:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-02-19:2010/02/stop-ipcluster-from-script.html</id><summary type="html">&lt;p&gt;
+ Ipcluster is easy to start but not trivial to stop from a script, after having finished the processing, here's the solution:
+ &lt;br/&gt;
+ &lt;code&gt;
+  from IPython.kernel import client
+  &lt;br/&gt;
+  mec = client.MultiEngineClient()
+  &lt;br/&gt;
+  mec.kill(controller=True)
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="parallel programming"></category><category term="python"></category></entry><entry><title>Correlation</title><link href="http://zonca.github.io/2010/01/correlation.html" rel="alternate"></link><updated>2010-01-28T00:45:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-28:2010/01/correlation.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;
+ Expectation value
+&lt;/strong&gt;
+or first moment of a random variable is the probability weighted sum of the possible values (weighted mean).
+&lt;br/&gt;
+Expectation value of a 6-dice is 1+2+3+4+5+6 / 6 = 3.5
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;strong&gt;
+ Covariance
+&lt;/strong&gt;
+of 2 random variables is:
+&lt;br/&gt;
+&lt;code&gt;
+ COV(X,Y)=E[(X-E(X))(Y-E(Y))]=E(X&lt;em&gt;Y) - E(X)E(Y)
+&lt;/code&gt;
+&lt;br/&gt;
+i.e. the difference between the expected value of their product and the product of their expected values.
+&lt;br/&gt;
+So if the variables change together, they will have a high covariance, if they are independent, their covariance is zero.
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;strong&gt;
+ Variance
+&lt;/strong&gt;
+is the covariance on the same variable, :
+&lt;br/&gt;
+&lt;code&gt;
+ COV(X,X)=VAR(X)=E(X&lt;strong&gt;2) - E(X)&lt;/strong&gt;2
+&lt;/code&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;strong&gt;
+ Standard deviation
+&lt;/strong&gt;
+is the square root of Variance
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;strong&gt;
+ Correlation
+&lt;/strong&gt;
+is:
+&lt;br/&gt;
+&lt;code&gt;
+ COR(X,Y)=COV(X,Y)/STDEV(X)&lt;/em&gt;STDEV(Y)
+&lt;/code&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+&lt;a href="http://mathworld.wolfram.com/Covariance.html"&gt;
+ http://mathworld.wolfram.com/Covariance.html
+&lt;/a&gt;&lt;/p&gt;</summary><category term="physics"></category></entry><entry><title>execute bash script remotely with ssh</title><link href="http://zonca.github.io/2010/01/execute-bash-script-remotely-with-ssh.html" rel="alternate"></link><updated>2010-01-07T14:37:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-07:2010/01/execute-bash-script-remotely-with-ssh.html</id><summary type="html">&lt;p&gt;
+ a bash script launched remotely via ssh does not load the environment, if this is an issue it is necessary to specify --login when calling bash:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ &lt;code&gt;
+  ssh user@remoteserver.com 'bash --login life_om/cronodproc' | mail your@email.com -s cronodproc
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>lock pin hold a package using apt on ubuntu</title><link href="http://zonca.github.io/2010/01/lock-pin-hold-package-using-apt-on.html" rel="alternate"></link><updated>2010-01-07T13:49:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-07:2010/01/lock-pin-hold-package-using-apt-on.html</id><summary type="html">&lt;p&gt;
+ set hold:
+ &lt;br/&gt;
+ &lt;code&gt;
+  echo packagename hold | dpkg --set-selections
+ &lt;/code&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ check, should be
+ &lt;strong&gt;
+  hi
+ &lt;/strong&gt;
+ :
+ &lt;br/&gt;
+ &lt;code&gt;
+  dpkg -l packagename
+ &lt;/code&gt;
+ &lt;br/&gt;
+ &lt;br/&gt;
+ unset hold:
+ &lt;br/&gt;
+ &lt;code&gt;
+  echo packagename install | dpkg --set-selections
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>load arrays from a text file with numpy</title><link href="http://zonca.github.io/2010/01/load-arrays-from-text-file-with-numpy.html" rel="alternate"></link><updated>2010-01-05T16:32:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-05:2010/01/load-arrays-from-text-file-with-numpy.html</id><summary type="html">&lt;p&gt;
+ space separated text file with 5 arrays in columns:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ [sourcecode language="python"]
+ &lt;br/&gt;
+ ods,rings,gains,offsets,rparams = np.loadtxt(filename,unpack=True)
+ &lt;br/&gt;
+ [/sourcecode]
+ &lt;br/&gt;
+ &lt;br/&gt;
+ quite impressive...
+&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>Latest Maxima and WxMaxima for Ubuntu Karmic</title><link href="http://zonca.github.io/2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html" rel="alternate"></link><updated>2009-12-15T11:20:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2009-12-15:2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html</id><summary type="html">&lt;p&gt;&lt;a href="http://zeus.nyf.hu/~blahota/maxima/karmic/" title="maxima for ubuntu"&gt;
+ http://zeus.nyf.hu/~blahota/maxima/karmic/
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+on maxima mailing lists they suggested to install the sbcl built, so I first installed sbcl from the Ubuntu repositories and then maxima and wxmaxima f
+&lt;br/&gt;
+rom this url.&lt;/p&gt;</summary><category term="linux"></category><category term="maxima"></category><category term="ubuntu"></category></entry><entry><title>number of files in a folder and subfolders</title><link href="http://zonca.github.io/2009/12/number-of-files-in-folder-and-subfolders.html" rel="alternate"></link><updated>2009-12-10T18:16:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2009-12-10:2009/12/number-of-files-in-folder-and-subfolders.html</id><summary type="html">&lt;p&gt;
+ folders are not counted
+ &lt;br/&gt;
+ &lt;code&gt;
+  find . -type f | wc -l
+ &lt;/code&gt;
+&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>forcefully unmount a disk partition</title><link href="http://zonca.github.io/2008/09/forcefully-unmount-disk-partition.html" rel="alternate"></link><updated>2008-09-17T15:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-09-17:2008/09/forcefully-unmount-disk-partition.html</id><summary type="html">&lt;p&gt;
+ check which processes are accessing a partition:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ [sourcecode language="python"]lsof | grep '/opt'[/sourcecode]
+ &lt;br/&gt;
+ &lt;br/&gt;
+ kill all the processes accessing the partition (check what you're killing, you could loose data):
+ &lt;br/&gt;
+ &lt;br/&gt;
+ [sourcecode language="python"]fuser -km /mnt[/sourcecode]
+ &lt;br/&gt;
+ &lt;br/&gt;
+ try to unmount now:
+ &lt;br/&gt;
+ [sourcecode language="python"]umount /opt[/sourcecode]
+&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>netcat: quickly send binaries through network</title><link href="http://zonca.github.io/2008/04/netcat-quickly-send-binaries-through.html" rel="alternate"></link><updated>2008-04-29T12:25:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-04-29:2008/04/netcat-quickly-send-binaries-through.html</id><summary type="html">&lt;p&gt;
+ just start nc in server mode on localhost:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ [sourcecode language='python'] nc -l -p 3333 [/sourcecode]
+ &lt;br/&gt;
+ &lt;br/&gt;
+ send a string to localhost on port 3333:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ [sourcecode language='python'] echo "hello world" | nc localhost 3333 [/sourcecode]
+ &lt;br/&gt;
+ &lt;br/&gt;
+ you'll see on server side appearing the string you sent.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ very useful for sending binaries, see
+ &lt;a href="http://www.g-loaded.eu/2006/11/06/netcat-a-couple-of-useful-examples/"&gt;
+  examples
+ &lt;/a&gt;
+ .
+&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Decibels, dB and dBm, in terms of Power and Amplitude</title><link href="http://zonca.github.io/2008/03/decibels-db-and-dbm-in-terms-of-power.html" rel="alternate"></link><updated>2008-03-29T02:13:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-03-29:2008/03/decibels-db-and-dbm-in-terms-of-power.html</id><summary type="html">&lt;p&gt;
+ It's not difficult, just always having some doubts...
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;h4&gt;
+ Power
+&lt;/h4&gt;
+
+&lt;p&gt;&lt;br/&gt;
+$latex L_{dB} = 10 log_{10} \left( \dfrac{P_1}{P_0} \right) $
+&lt;br/&gt;
+&lt;br/&gt;
+10 dB increase for a factor 10 increase in the ratio
+&lt;br/&gt;
+&lt;br/&gt;
+3 dB = doubling
+&lt;br/&gt;
+&lt;br/&gt;
+40 dB = 10000 times
+&lt;br/&gt;
+&lt;h4&gt;
+ Amplitude
+&lt;/h4&gt;
+&lt;br/&gt;
+$latex L_{dB} = 10 log_{10} \left( \dfrac{A_1^2}{A_0^2} \right) = 20 log_{10} \left( \dfrac{A_1}{A_0} \right)  $
+&lt;br/&gt;
+&lt;h4&gt;
+ dBm
+&lt;/h4&gt;
+&lt;br/&gt;
+dBm is an absolute value obtained by a ratio with 1 mW:
+&lt;br/&gt;
+&lt;br/&gt;
+$latex L_{dBm} = 10 log_{10} \left( \dfrac{P_1}{1 mW} \right) $
+&lt;br/&gt;
+&lt;ul&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  0 dBm = 1 mW
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  3 dBm ≈ 2 mW
+ &lt;/li&gt;
+ &lt;br/&gt;
+&lt;/ul&gt;&lt;/p&gt;</summary><category term="general physics"></category><category term="physics"></category></entry><entry><title>Relation between Power density and temperature in an antenna</title><link href="http://zonca.github.io/2008/03/relation-between-power-density-and.html" rel="alternate"></link><updated>2008-03-28T18:29:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-03-28:2008/03/relation-between-power-density-and.html</id><summary type="html">&lt;p&gt;
+ Considering an antenna placed inside a blackbody enclosure at temperature T, the power received per unit bandwidth is:
+ &lt;br/&gt;
+ $latex \omega = kT$
+ &lt;br/&gt;
+ &lt;br/&gt;
+ where k is Boltzmann constant.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ This relationship derives from considering a constant brightness $latex B$ in all directions, therefore Rayleigh Jeans law tells:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ $latex B = \dfrac{2kT}{\lambda^2}$
+ &lt;br/&gt;
+ &lt;br/&gt;
+ Power per unit bandwidth is obtained by integrating brightness over antenna beam
+ &lt;br/&gt;
+ &lt;br/&gt;
+ $latex \omega = \frac{1}{2} A_e \int \int B \left( \theta , \phi \right) P_n \left( \theta , \phi \right) d \Omega  $
+ &lt;br/&gt;
+ &lt;br/&gt;
+ therefore
+ &lt;br/&gt;
+ &lt;br/&gt;
+ $latex \omega = \dfrac{kT}{\lambda^2}A_e\Omega_A $
+ &lt;br/&gt;
+ &lt;br/&gt;
+ where:
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  $latex A_e$ is antenna effective aperture
+ &lt;/li&gt;
+ &lt;br/&gt;
+ &lt;li&gt;
+  $latex \Omega_A$ is antenna beam area
+ &lt;/li&gt;
+ &lt;br/&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br/&gt;
+$latex \lambda^2 = A_e\Omega_A $ another post should talk about this
+&lt;br/&gt;
+&lt;br/&gt;
+finally:
+&lt;br/&gt;
+&lt;br/&gt;
+$latex \omega = kT $
+&lt;br/&gt;
+&lt;br/&gt;
+which is the same noise power of a resistor.
+&lt;br/&gt;
+&lt;br/&gt;
+source : Kraus Radio Astronomy pag 107&lt;/p&gt;</summary><category term="astrophysics"></category><category term="physics"></category></entry><entry><title>Producing PDF from XML files</title><link href="http://zonca.github.io/2008/03/producing-pdf-from-xml-files.html" rel="alternate"></link><updated>2008-03-28T16:27:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-03-28:2008/03/producing-pdf-from-xml-files.html</id><summary type="html">&lt;p&gt;
+ I need to produce formatted pdf from XML data input file.
+ &lt;br/&gt;
+ The more standard way looks like to use
+ &lt;a href="http://www.w3schools.com/xsl" title="w3schools tutorial"&gt;
+  XSL stylesheets.
+ &lt;/a&gt;
+ &lt;br/&gt;
+ Associating a XSL sheet to an XML file permits most browsers to render them directly as HMTL, this can be used for web publishing XML sheets.
+ &lt;br/&gt;
+ &lt;br/&gt;
+ The quick and dirty way to produce PDF could be printing them from Firefox, but an interesting option is to use
+ &lt;a href="http://http://cyberelk.net/tim/software/xmlto/" title="xmlto homepage"&gt;
+  xmlto
+ &lt;/a&gt;
+ , a script for running a XSL transformation and render an XML in PDF or other formats. It would be interesting to test this script and understand if it needs just docbook XML input or any XML.
+&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>vim costumization</title><link href="http://zonca.github.io/2006/10/vim-costumization.html" rel="alternate"></link><updated>2006-10-17T10:49:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-10-17:2006/10/vim-costumization.html</id><summary type="html">&lt;p&gt;
+ it is about perl but it suggests very useful tricks for programming with vim
+ &lt;br/&gt;
+ http://mamchenkov.net/wordpress/2004/05/10/vim-for-perl-developers/
+&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>using gnu find</title><link href="http://zonca.github.io/2006/10/using-gnu-find.html" rel="alternate"></link><updated>2006-10-03T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-10-03:2006/10/using-gnu-find.html</id><summary type="html">&lt;p&gt;
+ list all the directories excluding ".":
+ &lt;br/&gt;
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+ find . -maxdepth 1 -type d -not -name ".*"
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br/&gt;
+find some string in all files matching a pattern in the subfolders (with grep -r you cannot specify the type of file)
+&lt;br/&gt;
+&lt;blockquote&gt;
+ find . -name '*.py' -exec grep -i pdb '{}' \;
+&lt;/blockquote&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>beginners bash guide</title><link href="http://zonca.github.io/2006/10/beginners-bash-guide.html" rel="alternate"></link><updated>2006-10-03T13:56:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-10-03:2006/10/beginners-bash-guide.html</id><summary type="html">&lt;p&gt;
+ great guide with many examples:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ http://tille.xalasys.com/training/bash/
+&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>tar quickref</title><link href="http://zonca.github.io/2006/09/tar-quickref.html" rel="alternate"></link><updated>2006-09-25T13:19:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-25:2006/09/tar-quickref.html</id><summary type="html">&lt;p&gt;
+ compress: tar cvzf foo.tgz *.cc *.h
+ &lt;br/&gt;
+ check inside: tar tzf foo.tgz | grep file.txt
+ &lt;br/&gt;
+ extract: tar xvzf foo.tgz
+ &lt;br/&gt;
+ extract 1 file only: tar xvzf foo.tgz path/to/file.txt
+&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>software carpentry</title><link href="http://zonca.github.io/2006/09/software-carpentry.html" rel="alternate"></link><updated>2006-09-25T12:51:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-25:2006/09/software-carpentry.html</id><summary type="html">&lt;p&gt;
+ basic software for scientists and engineers:
+ &lt;br/&gt;
+ http://www.swc.scipy.org/
+ &lt;br/&gt;
+&lt;/p&gt;</summary><category term="linux"></category><category term="physics"></category></entry><entry><title>Software libero per il trattamento di dati scientifici</title><link href="http://zonca.github.io/2006/09/software-libero-per-il-trattamento-di.html" rel="alternate"></link><updated>2006-09-22T13:35:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-22:2006/09/software-libero-per-il-trattamento-di.html</id><summary type="html">&lt;p&gt;
+ nella ricerca del miglior ambiente per analisi di dati scientifici da leggere questi articoli:
+ &lt;br/&gt;
+ &lt;br/&gt;
+ http://www.pluto.it/files/journal/pj0501/swlibero-scie1.html
+ &lt;br/&gt;
+ &lt;br/&gt;
+ http://www.pluto.it/files/journal/pj0504/swlibero-scie2.html
+ &lt;br/&gt;
+ &lt;br/&gt;
+ http://www.pluto.it/files/journal/pj0505/swlibero-scie3.html
+&lt;/p&gt;</summary><category term="italian"></category><category term="linux"></category><category term="physics"></category></entry><entry><title>command line processing</title><link href="http://zonca.github.io/2006/09/command-line-processing.html" rel="alternate"></link><updated>2006-09-22T13:34:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-22:2006/09/command-line-processing.html</id><summary type="html">&lt;p&gt;
+ Very useful summary of many linux command line processing tools (great perl onliners)
+ &lt;br/&gt;
+ &lt;br/&gt;
+ http://grad.physics.sunysb.edu/~leckey/personal/forget/
+&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>awk made easy</title><link href="http://zonca.github.io/2006/09/awk-made-easy.html" rel="alternate"></link><updated>2006-09-22T13:20:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-22:2006/09/awk-made-easy.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;
+ awk '/REGEX/ {print NR "\t" $9 "\t" $4"_"$5 ;}' file.txt
+&lt;/strong&gt;
+&lt;br/&gt;
+supports extended REGEX like perl (       e.g. [:blank:]  Space or tab characters )
+&lt;br/&gt;
+NR is line number
+&lt;br/&gt;
+NF                Number of fields
+&lt;br/&gt;
+$n is the column to be printed, $0 is the whole row
+&lt;br/&gt;
+&lt;br/&gt;
+if it only necessary to print columns of a file it is easier to use cut:
+&lt;br/&gt;
+&lt;br/&gt;
+name -a | cut -d" " -f1,3,11,12
+&lt;br/&gt;
+&lt;br/&gt;
+-d: or -d" " is the delimiter
+&lt;br/&gt;
+-f1,3 are the fields to be displayed
+&lt;br/&gt;
+other options: -s doesnt show lines without delimiters, --complement is selfesplicative
+&lt;br/&gt;
+condition on a specific field:
+&lt;br/&gt;
+$&amp;lt;field&amp;gt; ~ /&amp;lt;string&amp;gt;/   Search for string in specified field.
+&lt;br/&gt;
+&lt;br/&gt;
+you can use awk also in pipes:
+&lt;br/&gt;
+ll | awk 'NR!=1 {s+=$5} END {print "Average: " s/(NR-1)}'
+&lt;br/&gt;
+END to process al file and then print results
+&lt;br/&gt;
+&lt;br/&gt;
+tutorial on using awk from the command line:
+&lt;br/&gt;
+&lt;a href="http://www.vectorsite.net/tsawk_3.html#m1" target="_blank" title="awk tutorial"&gt;
+ http://www.vectorsite.net/tsawk_3.html#m1
+&lt;/a&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>pillole di astrofisica</title><link href="http://zonca.github.io/2006/09/pillole-di-astrofisica.html" rel="alternate"></link><updated>2006-09-20T13:39:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-20:2006/09/pillole-di-astrofisica.html</id><summary type="html">&lt;p&gt;
+ curiosita' ben spiegate da annibale d'ercole, interessante l'idea di avere un livello base e un livello avanzato
+ &lt;br/&gt;
+ &lt;a href="http://www.bo.astro.it/sait/spigolature/spigostart.html" target="_blank" title="spigolature astronomiche"&gt;
+  http://www.bo.astro.it/sait/spigolature/spigostart.html
+ &lt;/a&gt;
+&lt;/p&gt;</summary><category term="italian"></category><category term="astrophysics"></category><category term="physics"></category></entry></feed>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>IPython.parallel for Planck data analysis at NERSC | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>IPython.parallel for Planck data analysis at NERSC</h1>
+        </header>
+        <div class='post-content'>
+            <p><a href="http://www.esa.int/planck">
+ Planck
+</a>
+is a Space mission for high precision measurements of the
+<a href="http://en.wikipedia.org/wiki/Cosmic_microwave_background_radiation">
+ Cosmic Microwave Background
+</a>
+(CMB), data are received as timestreams of output voltages from the 2 instruments on-board, the Low and High Frequency Instruments [LFI / HFI].
+<br/>
+<br/>
+The key phase in data reduction is map-making, where data are binned to a map of the microwave emission of our galaxy, the CMB, and extragalactic sources. This phase is intrinsically parallel and requires simultaneous access to all the data, so requires a fully parallel MPI-based software.
+<br/>
+<br/>
+However, preparing the data for map-making requires several tasks that are serial, but are data and I/O intensive, therefore need to be parallelized.
+<br/>
+<br/>
+<a name="more">
+</a>
+<br/>
+IPython.parallel offers the easiest solution for managing a large amount of trivially parallel jobs.
+<br/>
+<br/>
+The first task is pointing reconstruction, where we interpolate and apply several rotations and corrections to low-sampled satellite quaternions stored on disk and then write the output dense detector pointing to disk.
+<br/>
+The disk quota of pointing files is about 2.5TB split in about 3000 files, those files can be processed independently, therefore we implement a function that processes 1 file, to be used interactively for debugging and testing.
+<br/>
+Then launch an IPython cluster, typically between 20 and 300 engines on Carver (NERSC), and use the exact same function to process all the ~3000 files in parallel.
+<br/>
+The IPython
+<a href="http://ipython.org/ipython-doc/dev/api/generated/IPython.parallel.client.view.html?highlight=apply_async#IPython.parallel.client.view.LoadBalancedView">
+ BalancedView
+</a>
+controller automatically balances the queue therefore we get maximum efficiency, and it is possible to leave the cluster running and submit other instances of the job to be added to its queue.
+<br/>
+<br/>
+Second task is calibration and dipole removal, which processes about 1.2 TB of data, but it needs to read the dense pointing from disk, so it is very I/O intensive. Also in this case we can submit the ~3000 jobs to an IPython.parallel cluster.
+<br/>
+<br/>
+In a next post I'll describe in detail my setup and how I organize my code to make it easy to swap back and forth between debugging code interactively and  running production runs in parallel.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2012-09-27T06:24:00">Thu 27 September 2012</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+<a href="http://zonca.github.io/tag/planck.html">Planck</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

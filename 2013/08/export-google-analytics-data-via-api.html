@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Export google analytics data via API with Python | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Export google analytics data via API with Python</h1>
+        </header>
+        <div class='post-content'>
+            <p>
+ Fun weekend hacking project: export google analytics data using the google APIs.
+ <br/>
+ <br/>
+ Clone the latest version of the API client from:
+ <br/>
+ <br/>
+ <a href="https://code.google.com/p/google-api-python-client">
+  https://code.google.com/p/google-api-python-client
+ </a>
+ <br/>
+ <br/>
+ there is an example for accessing analytics APIs in the samples/analytics folder,
+ <br/>
+ but you need to fill in client_secrets.json.
+ <br/>
+ <br/>
+ You can get the credentials from the APIs console:
+ <br/>
+ <br/>
+ <a href="https://code.google.com/apis/console">
+  https://code.google.com/apis/console
+ </a>
+ <br/>
+ <br/>
+ In SERVICES: activate google analytics
+ <br/>
+ In API Access: Create a "Client ID for installed applications" choosing "Other" as a platform
+ <br/>
+ <br/>
+ Copy the client id and the client secret to client_secrets.json.
+ <br/>
+ <br/>
+ <a name="more">
+ </a>
+ <br/>
+ Now you only need the profile ID of the google analytics account, it is in the google analytics web interface, just choose the website, then click on Admin, then on the profile name in the profile tab, and then on profile settings.
+ <br/>
+ <br/>
+ You can then run:
+ <br/>
+ <br/>
+</p>
+
+<blockquote class="tr_bq">
+ python core_reporting_v3_reference.py ga:PROFILEID
+</blockquote>
+
+<p>The first time you run it, it will open a browser for authentication, but then the auth token is saved and used for future requests.
+<br/>
+<br/>
+This retrieves from the APIs the visits to the website from search, with keywords and the number of visits, for example for my blog:
+<br/>
+<br/>
+<blockquote class="tr_bq">
+ Total Metrics For All Results:
+ <br/>
+ This query returned 25 rows.
+ <br/>
+ But the query matched 30 total results.
+ <br/>
+ Here are the metric totals for the matched total results.
+ <br/>
+ Metric Name  = ga:visits
+ <br/>
+ Metric Total = 174
+ <br/>
+ Rows:
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ (not provided)
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 121
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ andrea zonca
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 17
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ butterworth filter python
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 4
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ andrea zonca blog
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 2
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ healpix for ubuntu
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 2
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ healpy install ubuntu
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 2
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ python butterworth filter
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 2
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ zonca andrea
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 2
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ andrea zonca buchrain luzern
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ andrea zonca it
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ astrofisica in pillole
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ bin data healpy
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ ellipticity fwhm
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ enthought and healpy
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ fwhm
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ healpix apt-get
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ healpix repository ubuntu
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ healpix ubuntu 12.04 install
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ healpy ubuntu
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ install healpix ubuntu
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ ipython cluster task output
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ numpy pink noise
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ pink noise numpy
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ python 1/f noise
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+ <br/>
+ google
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ python apply mixin
+ <span class="Apple-tab-span" style="white-space: pre;">
+ </span>
+ 1
+</blockquote>
+<div>
+ <br/>
+</div></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-08-04T17:47:00">Sun 04 August 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

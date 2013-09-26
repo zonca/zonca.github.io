@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>How to use the IPython notebook on a small computing cluster | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>How to use the IPython notebook on a small computing cluster</h1>
+        </header>
+        <div class='post-content'>
+            <dl>
+<dt><span style="font-weight: normal;"></dt>
+<dt><a href="http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html"></dt>
+<dt>The IPython notebook</dt>
+<dt></a></dt>
+<dt>is a powerful and easy to use interface for using Python and particularly useful when running remotely, because it allows the interface to run locally in your browser, while the computing kernel runs remotely on the cluster.</dt>
+<dt></span></dt>
+<dt><br/></dt>
+<dt><span style="font-weight: normal;"></dt>
+<dt><br/></dt>
+<dt></span></dt>
+<dt><br/></dt>
+<dt><h3></dt>
+<dt>1) Configure IPython notebook:</dt>
+<dt></h3></dt>
+<dt><div></dt>
+<dt>First time you use the notebook you need to follow this configuration steps:</dt>
+<dt></div></dt>
+<dt><div></dt>
+<dt><br/></dt>
+<dt></div></dt>
+<dt>Login to the cluster</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>Load the python environment, for example:</dt>
+<dt><br/></dt>
+<dt><blockquote class="tr_bq"></dt>
+<dt>&gt; module load pythonEPD</dt>
+<dt></blockquote></dt>
+<dt>Create the profile files:</dt>
+<dt><br/></dt>
+<dt><blockquote class="tr_bq"></dt>
+<dt>&gt; ipython profile create # creates the configuration files</dt>
+<dt><br/></dt>
+<dt>&gt; vim .ipython/profile_default/ipython_notebook_config.py</dt>
+<dt></blockquote></dt>
+<dt>set a password, see instructions in the file.</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>Change the port to something specific to you,</dt>
+<dt><b></dt>
+<dt>please change this to avoid conflict with other users</dt>
+<dt></b></dt>
+<dt>:</dt>
+<dt><br/></dt>
+<dt><blockquote class="tr_bq"></dt>
+<dt>c.NotebookApp.port = 8900</dt>
+<dt></blockquote></dt>
+<dt>Set a certificate to serve the notebook over https:</dt>
+<dt><br/></dt>
+<dt><blockquote></dt>
+<dt>c.NotebookApp.certfile = u'/home/zonca/mycert.pem'</dt>
+<dt></blockquote></dt>
+<dt>or create a new certificate, see</dt>
+<dt><a href="http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html"></dt>
+<dt>http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html</dt>
+<dt></a></dt>
+<dt>.</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>Set:</dt>
+<dt><br/></dt>
+<dt><blockquote></dt>
+<dt>c.NotebookApp.open_browser = False</dt>
+<dt></blockquote></dt>
+<dt><h3></dt>
+<dt><a name="more"></dt>
+<dt></a></dt>
+<dt></h3></dt>
+<dt><h3></dt>
+<dt>2) Run the notebook for testing on the login node.</dt>
+<dt></h3></dt>
+<dt>You can use IPython notebook on the login node if you do not use much memory, e.g. &lt; 300MB.</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>ssh into the login node, at the terminal run:</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>&gt; ipython notebook --pylab=inline</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>open the browser on your local machine and connect to (always use https, replace 8900 with your port):</dt>
+<dt><br/></dt>
+<dt><blockquote class="tr_bq"></dt>
+<dt><b></dt>
+<dt>https</dt>
+<dt></b></dt>
+<dt>://LOGINNODEURL:8900</dt>
+<dt></blockquote></dt>
+<dt>Dismiss all the browser complaints about the certificate and go ahead.</dt>
+<dt><br/></dt>
+<dt><h3></dt>
+<dt><b></dt>
+<dt>3) Run the notebook on a computing node</dt>
+<dt></b></dt>
+<dt></h3></dt>
+<dt>You should always use a computing node whenever you need a large amount of resources.</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>Create a folder notebooks/ in your home, just copy this script in runipynb.pbs in your that folder:</dt>
+<dt><br/></dt>
+<dt><script src="https://gist.github.com/zonca/5840518.js"></dt>
+<dt></script></dt>
+<dt><br/></dt>
+<dt><div></dt>
+<dt>replace LOGINNODEURL with the url of the login node of your cluster.</dt>
+<dt></div></dt>
+<dt><div></dt>
+<dt><br/></dt>
+<dt></div></dt>
+<dt><div></dt>
+<dt>NOTICE: you need to ask the sysadmin to set "GatewayPorts yes" in sshd_config on the login node to allow access externally to the notebook.</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>Submit the job to the queue running:</dt>
+<dt><br/></dt>
+<dt><br/></dt>
+<dt>qsub runipynb.pbs</dt>
+<dt></div></dt>
+<dt><div></dt>
+<dt><br/></dt>
+<dt></div></dt>
+<dt><div></dt>
+<dt>Then from your local machine connect to (replace 8900 with your port):</dt>
+<dt></div></dt>
+<dt><div></dt>
+<dt><blockquote class="tr_bq"></dt>
+<dt><b></dt>
+<dt>https</dt>
+<dt></b></dt>
+<dt>://LOGINNODEURL:8900</dt>
+<dt><br/></dt>
+<dt><div></dt>
+<dt><br/></dt>
+<dt></div></dt>
+<dt></blockquote></dt>
+<dt><h3></dt>
+<dt>Other introductory python resources</dt>
+<dt></h3></dt>
+<dt><br/></dt>
+<dt><ul></dt>
+<dt><li></dt>
+<dt><a href="http://scipy-lectures.github.io/"></dt>
+<dt>Scientific computing with Python</dt>
+<dt></a></dt>
+<dt>, large and detailed introduction to Python, Numpy, Matplotlib, Scipy</dt>
+<dt></li></dt>
+<dt><li></dt>
+<dt>My</dt>
+<dt><a href="https://github.com/zonca/PythonHPC"></dt>
+<dt>Python for High performance computing</dt>
+<dt></a></dt>
+<dd>slides and few ipython notebook examples, see the README
+  </li>
+  <li>
+   <a href="http://www.blogger.com/%C2%A0https://github.com/zonca/healpytut/blob/master/healpytut.pdf?raw=true">
+    My short Python and healpy tutorial
+   </a>
+  </li>
+ </ul>
+</div></dd>
+</dl>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-06-22T11:12:00">Sat 22 June 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/hpc.html">hpc</a> 
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

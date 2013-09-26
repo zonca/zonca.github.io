@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Simple Mixin usage in python | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Simple Mixin usage in python</h1>
+        </header>
+        <div class='post-content'>
+            <p>
+ One situation where Mixins are useful in Python is when you need to modify  a method of similar classes that you are importing from a package.
+ <br/>
+</p>
+
+<div>
+ <br/>
+</div>
+
+<div>
+ For just a single class, it is easier to just create a derived class, but if the same modification must be applied to several classes, then it is cleaner to implement this modification once in a Mixin and then apply it to all of them.
+</div>
+
+<div>
+ <br/>
+ <a name="more">
+ </a>
+</div>
+
+<div>
+ Here an example in Django:
+</div>
+
+<div>
+ <br/>
+</div>
+
+<div>
+ Django has several generic view classes that allow to pull objects from the database and feed them to the html templates.
+</div>
+
+<div>
+ <br/>
+</div>
+
+<div>
+ One for example shows the detail of a specific object:
+</div>
+
+<div>
+ <br/>
+</div>
+
+<div>
+ <span style="font-family: Courier New, Courier, monospace;">
+  from django.views.generic.detail import DetailView
+ </span>
+</div>
+
+<div>
+ <div>
+  <br/>
+ </div>
+ <div>
+  This class has a get_object method that gets an object from the database given a primary key.
+ </div>
+ <div>
+  We need to modify this method to allow access to an object only to the user that owns them.
+ </div>
+ <div>
+  <br/>
+ </div>
+ <div>
+  We first implement a Mixin, i.e. an independent class that only implements the method we wish to override:
+ </div>
+ <div>
+  <br/>
+ </div>
+ <div>
+  <span style="font-family: Courier New, Courier, monospace;">
+   class OwnedObjectMixin(object):
+  </span>
+ </div>
+ <div>
+  <span style="font-family: Courier New, Courier, monospace;">
+   def get_object(self, *args, **kwargs):
+  </span>
+ </div>
+ <div>
+  <span style="font-family: Courier New, Courier, monospace;">
+   obj = super(OwnedObjectMixin, self).get_object(*args, **kwargs)
+  </span>
+ </div>
+ <div>
+  <span style="font-family: Courier New, Courier, monospace;">
+   if not obj.user == self.request.user:
+  </span>
+ </div>
+ <div>
+  <span style="font-family: Courier New, Courier, monospace;">
+   raise Http404
+  </span>
+ </div>
+ <div>
+  <span style="font-family: Courier New, Courier, monospace;">
+   return obj
+  </span>
+ </div>
+ <div>
+  <br/>
+ </div>
+</div>
+
+<div>
+ <span style="font-family: inherit;">
+  Then we create a new derived class which inherits both from the Mixin and from the class we want to modify.
+ </span>
+</div>
+
+<div>
+ <span style="font-family: inherit;">
+  <br/>
+ </span>
+</div>
+
+<div>
+ <div>
+  <div>
+   <span style="font-family: Courier New, Courier, monospace;">
+    class ProtectedDetailView(OwnedObjectMixin, DetailView):
+   </span>
+  </div>
+  <div>
+   <span style="font-family: Courier New, Courier, monospace;">
+    pass
+   </span>
+  </div>
+ </div>
+</div>
+
+<div>
+ <span style="font-family: Courier New, Courier, monospace;">
+  <br/>
+ </span>
+</div>
+
+<div>
+ This overrides the get_object method of DetailView with the get_object method of OwnedObjectMixin, and the call to super calls the get_object method of DetailView, so has the same effect of subclassing DetailView and override the get_object method, but we can be apply the same Mixin to other classes.
+</div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-04-08T01:34:00">Mon 08 April 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>

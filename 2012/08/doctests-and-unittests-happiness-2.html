@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>doctests and unittests happiness 2 | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/zonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>doctests and unittests happiness 2</h1>
+        </header>
+        <div class='post-content'>
+            <blockquote>
+ nosetests -v --with-doctest
+ <br/>
+ Doctest: healpy.pixelfunc.ang2pix ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.get_all_neighbours ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.get_interp_val ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.get_map_size ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.get_min_valid_nside ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.get_neighbours ... ok
+</blockquote>
+
+<p><br/>
+<a name="more">
+</a>
+<br/>
+<blockquote>
+ Doctest: healpy.pixelfunc.isnpixok ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.isnsideok ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.ma ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.maptype ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.mask_bad ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.mask_good ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.max_pixrad ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.nest2ring ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.npix2nside ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.nside2npix ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.nside2pixarea ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.nside2resol ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.pix2ang ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.pix2vec ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.reorder ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.ring2nest ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.ud_grade ... ok
+ <br/>
+ Doctest: healpy.pixelfunc.vec2pix ... ok
+ <br/>
+ Doctest: healpy.rotator.Rotator ... ok
+ <br/>
+ test_write_map_C (test_fitsfunc.TestFitsFunc) ... ok
+ <br/>
+ test_write_map_IDL (test_fitsfunc.TestFitsFunc) ... ok
+ <br/>
+ test_write_alm (test_fitsfunc.TestReadWriteAlm) ... ok
+ <br/>
+ test_write_alm_256_128 (test_fitsfunc.TestReadWriteAlm) ... ok
+ <br/>
+ test_ang2pix_nest (test_pixelfunc.TestPixelFunc) ... ok
+ <br/>
+ test_ang2pix_ring (test_pixelfunc.TestPixelFunc) ... ok
+ <br/>
+ test_nside2npix (test_pixelfunc.TestPixelFunc) ... ok
+ <br/>
+ test_nside2pixarea (test_pixelfunc.TestPixelFunc) ... ok
+ <br/>
+ test_nside2resol (test_pixelfunc.TestPixelFunc) ... ok
+ <br/>
+ test_inclusive (test_query_disc.TestQueryDisc) ... ok
+ <br/>
+ test_not_inclusive (test_query_disc.TestQueryDisc) ... ok
+ <br/>
+ test_anafast (test_sphtfunc.TestSphtFunc) ... ok
+ <br/>
+ test_anafast_iqu (test_sphtfunc.TestSphtFunc) ... ok
+ <br/>
+ test_anafast_xspectra (test_sphtfunc.TestSphtFunc) ... ok
+ <br/>
+ test_synfast (test_sphtfunc.TestSphtFunc) ... ok
+ <br/>
+ test_cartview_nocrash (test_visufunc.TestNoCrash) ... ok
+ <br/>
+ test_gnomview_nocrash (test_visufunc.TestNoCrash) ... ok
+ <br/>
+ test_mollview_nocrash (test_visufunc.TestNoCrash) ... ok
+ <br/>
+ <br/></p>
+<hr />
+<p><br/>
+ Ran 43 tests in 19.077s
+ <br/>
+ <br/>
+ OK
+</blockquote></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2012-08-16T14:07:00">Thu 16 August 2012</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+<a href="http://zonca.github.io/tag/quote.html">Quote</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </body>
+</html>
