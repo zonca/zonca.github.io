@@ -22,7 +22,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
 <script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
-
+<script src="https://apis.google.com/js/plusone.js"></script>
     </head>
     <body>
         <div class="header">
@@ -111,6 +111,11 @@
     </div>
 
 
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+
 <script src="/theme/js/social.js"></script>
         </footer>
 
@@ -129,7 +134,6 @@
 <script>
 $(document).ready(function () {
     $("pre").each(function(i, e){
-        console.log(e);
         if (e.textContent.match("^github")) {
             var parts = e.textContent.split(":")[1].split("/");
             $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
@@ -138,6 +142,12 @@ $(document).ready(function () {
                 hljs.highlightBlock(e);
             } );
         };
+    });
+    gapi.comments.render('comments', {
+        href: window.location,
+        width: '600',
+        first_party_property: 'BLOGGER',
+        view_type: 'FILTERED_POSTMOD'
     });
  });
 </script>

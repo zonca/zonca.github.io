@@ -1,6 +1,7 @@
 body {
   font-family: "proxima_nova_regular", Helvetica, Arial, sans-serif;
 }
+
 a {
   color: #444;
   text-decoration: none;
@@ -213,4 +214,9 @@ div.index .list ul li span {
     max-width:750px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#commentswrap {
+    width: 650px;
+    margin:0 auto;
 }
