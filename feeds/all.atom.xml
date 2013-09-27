@@ -9,10 +9,14 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 &lt;li&gt;create the &lt;code&gt;yourusername.github.io-source&lt;/code&gt; repository for Pelican and add it as &lt;code&gt;origin&lt;/code&gt; in your Pelican folder repository&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;add a &lt;code&gt;requirements.txt&lt;/code&gt; file in your Pelican folder:&lt;/p&gt;
-&lt;script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/requirements.txt"&gt;&lt;/script&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="sr"&gt;/zonca.github.io-source/&lt;/span&gt;&lt;span class="n"&gt;requirements&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;txt&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
 
 &lt;p&gt;add a &lt;code&gt;.travis.yml&lt;/code&gt; file to your repository:&lt;/p&gt;
-&lt;script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/.travis.yml"&gt;&lt;/script&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="sr"&gt;/zonca.github.io-source/&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;travis&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;yml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
 
 &lt;p&gt;In order to create the encrypted token under env, you can login to the Github web interface to get an &lt;a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use"&gt;Authentication Token&lt;/a&gt;, and then install the &lt;code&gt;travis&lt;/code&gt; command line tool with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# on Ubuntu you need ruby dev&lt;/span&gt;
@@ -27,7 +31,9 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 
 
 &lt;p&gt;Then add also the &lt;code&gt;deploy.sh&lt;/code&gt; script and update the global variable with yours:&lt;/p&gt;
-&lt;script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/deploy.sh"&gt;&lt;/script&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="sr"&gt;/zonca.github.io-source/&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
 
 &lt;p&gt;Then we can create the repository that will host the actual blog:&lt;/p&gt;
 &lt;ul&gt;

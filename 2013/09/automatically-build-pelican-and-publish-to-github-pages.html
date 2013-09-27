@@ -18,6 +18,11 @@
         <link rel="stylesheet" href="/theme/css/pygments.css">
         <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
         <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
     </head>
     <body>
         <div class="header">
@@ -50,10 +55,14 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 <li>create the <code>yourusername.github.io-source</code> repository for Pelican and add it as <code>origin</code> in your Pelican folder repository</li>
 </ul>
 <p>add a <code>requirements.txt</code> file in your Pelican folder:</p>
-<script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/requirements.txt"></script>
+<div class="highlight"><pre><span class="n">github</span><span class="o">:</span><span class="n">zonca</span><span class="sr">/zonca.github.io-source/</span><span class="n">requirements</span><span class="o">.</span><span class="na">txt</span>
+</pre></div>
+
 
 <p>add a <code>.travis.yml</code> file to your repository:</p>
-<script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/.travis.yml"></script>
+<div class="highlight"><pre><span class="n">github</span><span class="o">:</span><span class="n">zonca</span><span class="sr">/zonca.github.io-source/</span><span class="o">.</span><span class="na">travis</span><span class="o">.</span><span class="na">yml</span>
+</pre></div>
+
 
 <p>In order to create the encrypted token under env, you can login to the Github web interface to get an <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">Authentication Token</a>, and then install the <code>travis</code> command line tool with:</p>
 <div class="highlight"><pre><span class="cp"># on Ubuntu you need ruby dev</span>
@@ -68,7 +77,9 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 
 
 <p>Then add also the <code>deploy.sh</code> script and update the global variable with yours:</p>
-<script src="http://gist-it.appspot.com/github/zonca/zonca.github.io-source/blob/master/deploy.sh"></script>
+<div class="highlight"><pre><span class="n">github</span><span class="o">:</span><span class="n">zonca</span><span class="sr">/zonca.github.io-source/</span><span class="n">deploy</span><span class="o">.</span><span class="na">sh</span>
+</pre></div>
+
 
 <p>Then we can create the repository that will host the actual blog:</p>
 <ul>
@@ -139,5 +150,20 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
         </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
     </body>
 </html>

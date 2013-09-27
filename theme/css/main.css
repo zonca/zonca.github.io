@@ -145,7 +145,6 @@ div.index .list ul li span {
   border: 1px solid #e1e1e1;
   padding: 2px 4px;
   font-size: 14px;
-  white-space: nowrap;
   page-break-inside: avoid;
   word-wrap: break-word;
 }
