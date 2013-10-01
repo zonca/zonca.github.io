@@ -19,7 +19,7 @@ First of all, we want to catch any exception, but also being able to access all 
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;In the following gist everything together, with also &lt;a href="http://stackoverflow.com/questions/2380073/how-to-identify-what-function-call-raise-an-exception-in-python"&gt;function name detection from Alex Martelli&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://gist.github.com/zonca/6782980"&gt;In the following gist&lt;/a&gt; everything together, with also &lt;a href="http://stackoverflow.com/questions/2380073/how-to-identify-what-function-call-raise-an-exception-in-python"&gt;function name detection from Alex Martelli&lt;/a&gt;:&lt;/p&gt;
 &lt;script src="https://gist.github.com/zonca/6782980.js"&gt;&lt;/script&gt;
 
 &lt;p&gt;Here the output log:&lt;/p&gt;
