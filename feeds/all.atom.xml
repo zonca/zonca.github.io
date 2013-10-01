@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-09-27T17:45:00-07:00</updated><entry><title>Google Plus comments plugin for Pelican</title><link href="http://zonca.github.io/2013/09/google-plus-comments-plugin-for-pelican.html" rel="alternate"></link><updated>2013-09-27T17:45:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-27:2013/09/google-plus-comments-plugin-for-pelican.html</id><summary type="html">&lt;p&gt;There has been recently several discussions about 
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-10-01T10:30:00-07:00</updated><entry><title>How to log exceptions in Python</title><link href="http://zonca.github.io/2013/10/how-to-log-exceptions-in-python.html" rel="alternate"></link><updated>2013-10-01T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-01:2013/10/how-to-log-exceptions-in-python.html</id><summary type="html">&lt;p&gt;Sometimes it is useful to just catch any exception, write details to a log file and continue execution.&lt;/p&gt;
+&lt;p&gt;In the &lt;code&gt;Python&lt;/code&gt; standard library, it is possible to use the &lt;code&gt;logging&lt;/code&gt; and &lt;code&gt;exceptions&lt;/code&gt; modules to achieve this.
+First of all, we want to catch any exception, but also being able to access all information about it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;my_function_1&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="n"&gt;exception&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Exception&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__class__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__doc__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then we want to write those to a logging file, so we need to setup the logging module:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;basicConfig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main.log&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;filemode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(levelname)s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                   &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In the following gist everything together, with also &lt;a href="http://stackoverflow.com/questions/2380073/how-to-identify-what-function-call-raise-an-exception-in-python"&gt;function name detection from Alex Martelli&lt;/a&gt;:&lt;/p&gt;
+&lt;script src="https://gist.github.com/zonca/6782980.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;Here the output log:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;2013-10-01 11:32:56,466 - ERROR - Function my_function_1() raised &amp;lt;type &amp;#39;exceptions.IndexError&amp;#39;&amp;gt; (Sequence index out of range.): Some indexing error
+2013-10-01 11:32:56,466 - ERROR - Function my_function_2() raised &amp;lt;class &amp;#39;my_module.MyException&amp;#39;&amp;gt; (This is my own Exception): Something went quite wrong
+2013-10-01 11:32:56,466 - ERROR - Function my_function_1_wrapper() raised &amp;lt;type &amp;#39;exceptions.IndexError&amp;#39;&amp;gt; (Sequence index out of range.): Some indexing error
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="exceptions"></category></entry><entry><title>Google Plus comments plugin for Pelican</title><link href="http://zonca.github.io/2013/09/google-plus-comments-plugin-for-pelican.html" rel="alternate"></link><updated>2013-09-27T17:45:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-27:2013/09/google-plus-comments-plugin-for-pelican.html</id><summary type="html">&lt;p&gt;There has been recently several discussions about 
 &lt;a href="http://www.popsci.com/science/article/2013-09/why-were-shutting-our-comments"&gt;whether comments are any useful on blogs&lt;/a&gt;
 I think it is important to find better ways to connect blogs to social networks.
 In my opinion the most suitable social network for this is Google+, because there is space for larger discussion, without Twitter's character limit.&lt;/p&gt;
