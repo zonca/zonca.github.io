@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-10-01T10:30:00-07:00</updated><entry><title>How to log exceptions in Python</title><link href="http://zonca.github.io/2013/10/how-to-log-exceptions-in-python.html" rel="alternate"></link><updated>2013-10-01T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-01:2013/10/how-to-log-exceptions-in-python.html</id><summary type="html">&lt;p&gt;Sometimes it is useful to just catch any exception, write details to a log file and continue execution.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-10-14T10:30:00-07:00</updated><entry><title>Jiffylab multiuser python notebooks</title><link href="http://zonca.github.io/2013/10/jiffylab-multiuser-python-notebooks.html" rel="alternate"></link><updated>2013-10-14T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-14:2013/10/jiffylab-multiuser-python-notebooks.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/ptone/jiffylab"&gt;jiffylab&lt;/a&gt; is a very interesting project by &lt;a href="https://twitter.com/ptone"&gt;Preston Holmes&lt;/a&gt; to provide sandboxed IPython notebooks instances on a server using &lt;a href="http://www.docker.io/"&gt;docker&lt;/a&gt;.
+There are several user cases, for example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In a tutorial about &lt;code&gt;python&lt;/code&gt;, give users instant access to a working IPython notebook&lt;/li&gt;
+&lt;li&gt;In a tutorial about some specific &lt;code&gt;python&lt;/code&gt; package, give users instant access to a python environment with that package already installed&lt;/li&gt;
+&lt;li&gt;Give students in a research group access to &lt;code&gt;python&lt;/code&gt; on a server with preinstalled several packages maintained and updated by an expert user.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How to install &lt;a href="https://github.com/ptone/jiffylab"&gt;jiffylab&lt;/a&gt; on Ubuntu 12.04&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise"&gt;Install &lt;code&gt;docker&lt;/code&gt; on Ubuntu Precise&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Copy-paste each line of &lt;code&gt;linux-setup.sh&lt;/code&gt; to a terminal, to check what is going on step by step&lt;/li&gt;
+&lt;li&gt;To start the application, change user to &lt;code&gt;jiffylabweb&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo su jiffylabweb
+&lt;span class="nb"&gt;cd&lt;/span&gt; /usr/local/etc/jiffylab/webapp/
+python app.py &lt;span class="c"&gt;#run in debug mode&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Point your browser to the server to check debugging messages, if any.&lt;/li&gt;
+&lt;li&gt;Finally start the application in production mode:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python server.py &lt;span class="c"&gt;#run in production mode&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;How &lt;code&gt;jiffylab&lt;/code&gt; works&lt;/h2&gt;
+&lt;p&gt;Each users gets a sandboxed IPython notebook instance, the user can save the notebooks and reconnect to the same session later. Main things missing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;No real authentication system / no HTTPS connection, easy workaround would be to allow access only from local network/VPN/SSH tunnel&lt;/li&gt;
+&lt;li&gt;No scientific packages preinstalled, need to customize the docker image to have &lt;code&gt;numpy&lt;/code&gt;, &lt;code&gt;matplotlib&lt;/code&gt;, &lt;code&gt;pandas&lt;/code&gt;...&lt;/li&gt;
+&lt;li&gt;No access to common filesystem, read-only, this I think is the most pressing feature missing, &lt;a href="https://github.com/ptone/jiffylab/issues/12"&gt;issue already on Github&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I think that just adding the common filesystem would be enough to make the project already usable to provide students a way to easily get started with python.&lt;/p&gt;
+&lt;h2&gt;Few screenshots&lt;/h2&gt;
+&lt;h3&gt;Login page&lt;/h3&gt;
+&lt;p&gt;&lt;img width="730" alt="Jiffylab Login page" title="Jiffylab Login page" src="/images/jiffylab_intro.png"&gt;&lt;/p&gt;
+&lt;h3&gt;IPython notebook dashboard&lt;/h3&gt;
+&lt;p&gt;&lt;img width="730" alt="Jiffylab IPython notebook dashboard" title="Jiffylab IPython notebook dashboard" src="/images/jiffylab_dashboard.png"&gt;&lt;/p&gt;
+&lt;h3&gt;IPython notebook&lt;/h3&gt;
+&lt;p&gt;&lt;img width="730" alt="Jiffylab IPython notebook" title="Jiffylab IPython notebook" src="/images/jiffylab_notebook.png"&gt;&lt;/p&gt;</summary><category term="python"></category><category term="ipython-notebook"></category></entry><entry><title>How to log exceptions in Python</title><link href="http://zonca.github.io/2013/10/how-to-log-exceptions-in-python.html" rel="alternate"></link><updated>2013-10-01T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-01:2013/10/how-to-log-exceptions-in-python.html</id><summary type="html">&lt;p&gt;Sometimes it is useful to just catch any exception, write details to a log file and continue execution.&lt;/p&gt;
 &lt;p&gt;In the &lt;code&gt;Python&lt;/code&gt; standard library, it is possible to use the &lt;code&gt;logging&lt;/code&gt; and &lt;code&gt;exceptions&lt;/code&gt; modules to achieve this.
 First of all, we want to catch any exception, but also being able to access all information about it:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;

@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2013-10-01T21:45:03-00:00</lastmod>
+<lastmod>2013-10-14T19:43:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2013-10-01T21:45:03-00:00</lastmod>
+<lastmod>2013-10-14T19:43:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2013-10-01T21:45:03-00:00</lastmod>
+<lastmod>2013-10-14T19:43:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2013-10-01T21:45:03-00:00</lastmod>
+<lastmod>2013-10-14T19:43:21-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2013/10/jiffylab-multiuser-python-notebooks.html</loc>
+<lastmod>2013-10-14T10:30:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -516,7 +523,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2013-10-01T10:30:00-00:00</lastmod>
+<lastmod>2013-10-14T10:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -635,7 +642,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/python.html</loc>
-<lastmod>2013-10-01T10:30:00-00:00</lastmod>
+<lastmod>2013-10-14T10:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -704,6 +711,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/italian.html</loc>
+<lastmod>2006-09-22T13:35:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/bash.html</loc>
 <lastmod>2010-01-07T14:37:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -746,8 +760,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/italian.html</loc>
-<lastmod>2006-09-22T13:35:00-00:00</lastmod>
+<loc>http://zonca.github.io/tag/ipython-notebook.html</loc>
+<lastmod>2013-10-14T10:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -768,7 +782,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2013-10-01T10:30:00-00:00</lastmod>
+<lastmod>2013-10-14T10:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
