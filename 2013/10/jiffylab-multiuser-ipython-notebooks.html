@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Jiffylab multiuser IPython notebooks | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/102215770805040369170?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Jiffylab multiuser IPython notebooks</h1>
+        </header>
+        <div class='post-content'>
+            <p><a href="https://github.com/ptone/jiffylab">jiffylab</a> is a very interesting project by <a href="https://twitter.com/ptone">Preston Holmes</a> to provide sandboxed IPython notebooks instances on a server using <a href="http://www.docker.io/">docker</a>.
+There are several user cases, for example:</p>
+<ul>
+<li>In a tutorial about <code>python</code>, give users instant access to a working IPython notebook</li>
+<li>In a tutorial about some specific <code>python</code> package, give users instant access to a python environment with that package already installed</li>
+<li>Give students in a research group access to <code>python</code> on a server with preinstalled several packages maintained and updated by an expert user.</li>
+</ul>
+<h2>How to install <a href="https://github.com/ptone/jiffylab">jiffylab</a> on Ubuntu 12.04</h2>
+<ul>
+<li><a href="http://docs.docker.io/en/latest/installation/ubuntulinux/#ubuntu-precise">Install <code>docker</code> on Ubuntu Precise</a></li>
+<li>Copy-paste each line of <code>linux-setup.sh</code> to a terminal, to check what is going on step by step</li>
+<li>To start the application, change user to <code>jiffylabweb</code>:</li>
+</ul>
+<div class="highlight"><pre>sudo su jiffylabweb
+<span class="nb">cd</span> /usr/local/etc/jiffylab/webapp/
+python app.py <span class="c">#run in debug mode</span>
+</pre></div>
+
+
+<ul>
+<li>Point your browser to the server to check debugging messages, if any.</li>
+<li>Finally start the application in production mode:</li>
+</ul>
+<div class="highlight"><pre>python server.py <span class="c">#run in production mode</span>
+</pre></div>
+
+
+<h2>How <code>jiffylab</code> works</h2>
+<p>Each users gets a sandboxed IPython notebook instance, the user can save the notebooks and reconnect to the same session later. Main things missing:</p>
+<ul>
+<li>No real authentication system / no HTTPS connection, easy workaround would be to allow access only from local network/VPN/SSH tunnel</li>
+<li>No scientific packages preinstalled, need to customize the docker image to have <code>numpy</code>, <code>matplotlib</code>, <code>pandas</code>...</li>
+<li>No access to common filesystem, read-only, this I think is the most pressing feature missing, <a href="https://github.com/ptone/jiffylab/issues/12">issue already on Github</a></li>
+</ul>
+<p>I think that just adding the common filesystem would be enough to make the project already usable to provide students a way to easily get started with python.</p>
+<h2>Few screenshots</h2>
+<h3>Login page</h3>
+<p><img width="730" alt="Jiffylab Login page" title="Jiffylab Login page" src="/images/jiffylab_intro.png"></p>
+<h3>IPython notebook dashboard</h3>
+<p><img width="730" alt="Jiffylab IPython notebook dashboard" title="Jiffylab IPython notebook dashboard" src="/images/jiffylab_dashboard.png"></p>
+<h3>IPython notebook</h3>
+<p><img width="730" alt="Jiffylab IPython notebook" title="Jiffylab IPython notebook" src="/images/jiffylab_notebook.png"></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2013-10-14T10:30:00">Mon 14 October 2013</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+<a href="http://zonca.github.io/tag/ipython-notebook.html">ipython-notebook</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
