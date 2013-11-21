@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-10-14T10:30:00-07:00</updated><entry><title>Jiffylab multiuser IPython notebooks</title><link href="http://zonca.github.io/2013/10/jiffylab-multiuser-ipython-notebooks.html" rel="alternate"></link><updated>2013-10-14T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-14:2013/10/jiffylab-multiuser-ipython-notebooks.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/ptone/jiffylab"&gt;jiffylab&lt;/a&gt; is a very interesting project by &lt;a href="https://twitter.com/ptone"&gt;Preston Holmes&lt;/a&gt; to provide sandboxed IPython notebooks instances on a server using &lt;a href="http://www.docker.io/"&gt;docker&lt;/a&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-11-20T21:30:00-08:00</updated><entry><title>Published paper on Destriping Cosmic Microwave Background Polarimeter data</title><link href="http://zonca.github.io/2013/11/published-paper-destriping-CMB-polarimeter.html" rel="alternate"></link><updated>2013-11-20T21:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-11-20:2013/11/published-paper-destriping-CMB-polarimeter.html</id><summary type="html">&lt;p&gt;TL;DR version:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Preprint on arxiv: &lt;a href="http://arxiv.org/abs/1309.5609"&gt;Destriping Cosmic Microwave Background Polarimeter data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Destriping &lt;code&gt;python&lt;/code&gt; code on github: &lt;a href="https://github.com/zonca/dst"&gt;&lt;code&gt;dst&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Output maps and sample input data on figshare: &lt;a href="http://figshare.com/articles/BMachine_40GHz_CMB_Polarimeter_sky_maps/644507"&gt;BMachine 40GHz CMB Polarimeter sky maps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;(Paywalled published paper: &lt;a href="http://dx.doi.org/10.1016/j.ascom.2013.10.002"&gt;Destriping Cosmic Microwave Background Polarimeter data&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;My last paper was published by &lt;a href="http://www.journals.elsevier.com/astronomy-and-computing/"&gt;Astronomy and Computing&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The paper is focused on Cosmic Microwave Background data destriping, a map-making tecnique which exploits the fast
+scanning of instruments in order to efficiently remove correlated low frequency noise, generally caused by thermal
+fluctuations and gain instability of the amplifiers.&lt;/p&gt;
+&lt;p&gt;The paper treats in particular the case of destriping data from a polarimeter, i.e. an instrument which directly measures
+the polarized signal from the sky, which allows some simplification compared to the case of a simply polarization-sensitive
+radiometer.&lt;/p&gt;
+&lt;p&gt;I implemented a fully parallel &lt;code&gt;python&lt;/code&gt; implementation of the algorithm based on:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://trilinos.sandia.gov/packages/pytrilinos/"&gt;&lt;code&gt;PyTrilinos&lt;/code&gt;&lt;/a&gt; for Distributed Linear Algebra via MPI&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HDF5&lt;/code&gt; for I/O&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cython&lt;/code&gt; for improving the performance of the inner loops&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The code is available on Github under GPL.&lt;/p&gt;
+&lt;p&gt;The output maps for about 30 days of the UCSB B-Machine polarimeter at 37.5 GHz are available on FigShare.&lt;/p&gt;
+&lt;p&gt;The experience of publishing with ASCOM was really positive, I received 2 very helpful reviews that drove me to
+work on several improvements on the paper.&lt;/p&gt;</summary><category term="python"></category><category term="paper"></category><category term="destriping"></category><category term="openscience"></category></entry><entry><title>Jiffylab multiuser IPython notebooks</title><link href="http://zonca.github.io/2013/10/jiffylab-multiuser-ipython-notebooks.html" rel="alternate"></link><updated>2013-10-14T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-14:2013/10/jiffylab-multiuser-ipython-notebooks.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/ptone/jiffylab"&gt;jiffylab&lt;/a&gt; is a very interesting project by &lt;a href="https://twitter.com/ptone"&gt;Preston Holmes&lt;/a&gt; to provide sandboxed IPython notebooks instances on a server using &lt;a href="http://www.docker.io/"&gt;docker&lt;/a&gt;.
 There are several user cases, for example:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;In a tutorial about &lt;code&gt;python&lt;/code&gt;, give users instant access to a working IPython notebook&lt;/li&gt;
