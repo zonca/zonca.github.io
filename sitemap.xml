@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2013-12-19T00:23:29-00:00</lastmod>
+<lastmod>2013-12-19T00:45:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2013-12-19T00:23:29-00:00</lastmod>
+<lastmod>2013-12-19T00:45:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2013-12-19T00:23:29-00:00</lastmod>
+<lastmod>2013-12-19T00:45:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2013-12-19T00:23:29-00:00</lastmod>
+<lastmod>2013-12-19T00:45:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -557,13 +557,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/ipythonnotebook.html</loc>
-<lastmod>2013-12-18T16:30:00-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>http://zonca.github.io/tag/destriping.html</loc>
 <lastmod>2013-11-20T21:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -817,7 +810,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/ipython-notebook.html</loc>
-<lastmod>2013-10-14T10:30:00-00:00</lastmod>
+<lastmod>2013-12-18T16:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
