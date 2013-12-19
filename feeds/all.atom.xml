@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-12-10T13:30:00-08:00</updated><entry><title>Joining San Diego Supercomputer Center</title><link href="http://zonca.github.io/2013/12/joining-sandiego-supercomputer-center.html" rel="alternate"></link><updated>2013-12-10T13:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-10:2013/12/joining-sandiego-supercomputer-center.html</id><summary type="html">&lt;p&gt;&lt;code&gt;TL;DR&lt;/code&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-12-18T16:30:00-08:00</updated><entry><title>Run IPython Notebook on a HPC Cluster via PBS</title><link href="http://zonca.github.io/2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html" rel="alternate"></link><updated>2013-12-18T16:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-18:2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</id><summary type="html">&lt;p&gt;The &lt;a href="http://ipython.org/notebook.html"&gt;IPython notebook&lt;/a&gt; is a great tool for data exploration
+and visualization.
+It is suitable in particular for analyzing a large amount of data remotely on a computing node
+of a HPC cluster and visualize it in a browser that runs on a local machine.
+In this configuration, the interface is local, it is very responsive, but the amount of memory
+and heavy computing is performed remotely in a node.&lt;/p&gt;
+&lt;p&gt;Also, it is possible to keep the notebook server running, disconnect and reconnect later from
+another machine and connect to the same session.&lt;/p&gt;
+&lt;p&gt;I created a script which is very general and can be used on most HPC cluster and published on Github:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/zonca/ipynbhpc"&gt;https://github.com/zonca/ipynbhpc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Once the script is running, it is possible to connect to &lt;code&gt;localhost:PORT&lt;/code&gt; and visualize the 
+IPython notebook, see the following screenshot of Chromium running locally on my machine
+connected to a IPython notebook running on a Gordon computing node:&lt;/p&gt;
+&lt;p&gt;&lt;img width="730" alt="IPython notebook on Gordon" title="IPython notebook on Gordon" src="/images/run-ipython-notebook-on-HPC-cluster-via-PBS_screenshot.png"&gt;&lt;/p&gt;</summary><category term="ipython"></category><category term="ipythonnotebook"></category><category term="HPC"></category></entry><entry><title>Joining San Diego Supercomputer Center</title><link href="http://zonca.github.io/2013/12/joining-sandiego-supercomputer-center.html" rel="alternate"></link><updated>2013-12-10T13:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-10:2013/12/joining-sandiego-supercomputer-center.html</id><summary type="html">&lt;p&gt;&lt;code&gt;TL;DR&lt;/code&gt;
 Left UCSB after 4 years, got staff position at San Diego Supercomputer Center within UCSD, will be helping research groups analyze their data on Gordon and more. Still 20% on Planck.&lt;/p&gt;
 &lt;p&gt;I spent 4 great years at UCSB with Peter Meinhold working on analyzing Cosmic Microwave Background data from the ESA Planck space mission.
 Cosmology is fascinating, also I enjoyed working with a very open minded team, that always left large freedom in choosing the techniques and the software tools for the job.&lt;/p&gt;
