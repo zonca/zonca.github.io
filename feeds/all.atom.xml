@@ -8,7 +8,7 @@ and CPU horsepower is provided by a HPC computing node.&lt;/p&gt;
 &lt;p&gt;Also, it is possible to keep the notebook server running, disconnect and reconnect later from
 another machine to the same session.&lt;/p&gt;
 &lt;p&gt;I created a script which is very general and can be used on most HPC cluster and published it on Github:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://github.com/zonca/ipynbhpc"&gt;https://github.com/zonca/ipynbhpc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/pyHPC/ipynbhpc"&gt;https://github.com/pyHPC/ipynbhpc&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Once the script is running, it is possible to connect to &lt;code&gt;localhost:PORT&lt;/code&gt; and visualize the 
 IPython notebook, see the following screenshot of Chromium running locally on my machine
 connected to a IPython notebook running on a Gordon computing node:&lt;/p&gt;
