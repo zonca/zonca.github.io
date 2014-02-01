@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2013-12-18T16:30:00-08:00</updated><entry><title>Run IPython Notebook on a HPC Cluster via PBS</title><link href="http://zonca.github.io/2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html" rel="alternate"></link><updated>2013-12-18T16:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-18:2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</id><summary type="html">&lt;p&gt;The &lt;a href="http://ipython.org/notebook.html"&gt;IPython notebook&lt;/a&gt; is a great tool for data exploration
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-01-31T18:00:00-08:00</updated><entry><title>wget file from google drive</title><link href="http://zonca.github.io/2014/01/wget-file-from-google-drive.html" rel="alternate"></link><updated>2014-01-31T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-01-31:2014/01/wget-file-from-google-drive.html</id><summary type="html">&lt;p&gt;Sometimes it is useful, even more if you have a chromebook, to upload a file to Google Drive and then use &lt;code&gt;wget&lt;/code&gt; to retrieve it from a server remotely.&lt;/p&gt;
+&lt;p&gt;In order to do this you need to make the file available to "Anyone with the link", then click on that link from your local machine and get to the download page that displays a Download button.
+Now right-click and select "Show page source" (in Chrome), and search for "downloadUrl", copy the url that starts with &lt;code&gt;https://docs.google.com&lt;/code&gt;, for example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;https:&lt;/span&gt;&lt;span class="c1"&gt;//docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is unicode, so open &lt;code&gt;Python&lt;/code&gt; and do:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;download_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;PASTE HERE&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;download_url&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;unicode_escape&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;export=download&amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The last url can be pasted into a terminal and used with &lt;code&gt;wget&lt;/code&gt;.&lt;/p&gt;</summary><category term="bash"></category></entry><entry><title>Run IPython Notebook on a HPC Cluster via PBS</title><link href="http://zonca.github.io/2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html" rel="alternate"></link><updated>2013-12-18T16:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-18:2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</id><summary type="html">&lt;p&gt;The &lt;a href="http://ipython.org/notebook.html"&gt;IPython notebook&lt;/a&gt; is a great tool for data exploration
 and visualization.
 It is suitable in particular for analyzing a large amount of data remotely on a computing node
 of a HPC cluster and visualize it in a browser that runs on a local machine.
