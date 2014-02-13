@@ -133,6 +133,10 @@ mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile <span
 
 
 <p>basically <code>ipcluster</code> runs an <code>ipcontroller</code> on the login node and submits a job to PBS for running the <code>ipengines</code> on the computing nodes.</p>
+<p>Once the PBS job is running, check that the engines are connected by opening a IPython on the login node and print the <code>ids</code>:</p>
+<p>In [1]: from IPython.parallel import Client
+In [2]: rc = Client()
+In [3]: rc.ids</p>
 <h3>Submit jobs to IPython parallel</h3>
 <p>Once the the <code>ipcluster</code> is running (no need to wait for the PBS job to </p>
         </div>
