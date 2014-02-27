@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-02-13T23:30:00-08:00</updated><entry><title>openproceedings: Github/FigShare based publishing platform for conference proceedings</title><link href="http://zonca.github.io/2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html" rel="alternate"></link><updated>2014-02-13T23:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-02-13:2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</id><summary type="html">&lt;p&gt;Github provides a great interface for gathering, peer reviewing and accepting papers for conference proceedings, the second step is to publish them on a website either in HTML or PDF form or both.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-02-26T23:00:00-08:00</updated><entry><title>Build Software Carpentry lessons with Pelican</title><link href="http://zonca.github.io/2014/02/build-software-carpentry-with-pelican.html" rel="alternate"></link><updated>2014-02-26T23:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-02-26:2014/02/build-software-carpentry-with-pelican.html</id><summary type="html">&lt;p&gt;&lt;a href="http://www.software-carpentry.org"&gt;Software Carpentry&lt;/a&gt; offers bootcamps for scientist to teach basic programming skills.
+All the material, mainly about bash, git, Python and R is &lt;a href="http://github.com/swcarpentry/bc"&gt;available on Github&lt;/a&gt; under Creative Commons.&lt;/p&gt;
+&lt;p&gt;The content is either in Markdown or in IPython notebook format, and is currently built using Jekyll, nbconvert and Pandoc.
+Basicly the requirement is be to make it easy for bootcamp instructors to setup their own website, modify the content, and have the website updated.&lt;/p&gt;
+&lt;p&gt;I created a fork of the Software Carpentry repository and configured Pelican for creating the website:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/swcarpentry-pelican/bootcamp-pelican"&gt;bootcamp-pelican repository&lt;/a&gt;: contains Markdown lessons in &lt;code&gt;lessons&lt;/code&gt; (version v5), &lt;code&gt;.ipynb&lt;/code&gt; in &lt;code&gt;notebooks&lt;/code&gt; and news items in &lt;code&gt;news&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/swcarpentry-pelican/swcarpentry-pelican.github.io"&gt;bootcamp-pelican Github pages&lt;/a&gt;: This repository contains the output HTML&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://swcarpentry-pelican.github.io/"&gt;bootcamp-pelican website&lt;/a&gt;: this is the URL where Github publishes automatically the content of the previous repository&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Pelican handles fenced code blocks, see &lt;a href="http://swcarpentry-pelican.github.io/"&gt;http://swcarpentry-pelican.github.io/&lt;/a&gt; and conversion of IPython notebooks, see &lt;a href="http://swcarpentry-pelican.github.io/lessons/numpy-notebook.html"&gt;http://swcarpentry-pelican.github.io/lessons/numpy-notebook.html&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;How to setup the repositories for a new bootcamp&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://github.com/organizations/new"&gt;create a new Organization on Github&lt;/a&gt; and add all the other instructors, name it: &lt;code&gt;swcarpentry-YYYY-MM-DD-INST&lt;/code&gt; where &lt;code&gt;INST&lt;/code&gt; is the institution name, e.g. &lt;code&gt;NYU&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/swcarpentry-pelican/bootcamp-pelican/fork"&gt;Fork the &lt;code&gt;bootcamp-pelican&lt;/code&gt; repository&lt;/a&gt; under the organization account&lt;/li&gt;
+&lt;li&gt;Create a new repository in your organization named &lt;code&gt;swcarpentry-YYYY-MM-DD-INST.github.io&lt;/code&gt; that will host the HTML of the website, also tick &lt;strong&gt;initialize with README&lt;/strong&gt;, it will help later.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now you can either prepare the build environment on your laptop or have the web service &lt;code&gt;travis-ci&lt;/code&gt; automatically update the website whenever you update the repository (even from the Github web interface!).&lt;/p&gt;
+&lt;h2&gt;Build/Update the website from your laptop&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Clone the &lt;code&gt;bootcamp-pelican&lt;/code&gt; repository of your organization locally&lt;/li&gt;
+&lt;li&gt;Create a &lt;code&gt;Python&lt;/code&gt; virtual environment and install requirements with:
+        cd bootcamp-pelican
+        virtualenv swcpy
+        . swcpy/bin/activate
+        pip install -r requirements.txt&lt;/li&gt;
+&lt;li&gt;Clone the &lt;code&gt;swcarpentry-YYYY-MM-DD-INST.github.io&lt;/code&gt; in the output folder as:
+        git clone git@github.com:swcarpentry-YYYY-MM-DD-INST.github.io.git output&lt;/li&gt;
+&lt;li&gt;Build or Update the website with Pelican running
+        fab build&lt;/li&gt;
+&lt;li&gt;You can display the website in your browser locally with:
+        fab serve&lt;/li&gt;
+&lt;li&gt;Finally you can publish it to Github with:
+        cd output
+        git add .
+        git push origin master&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Configure Travis-ci to automatically build and publish the website&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to &lt;a href="http://travis-ci.org"&gt;http://travis-ci.org&lt;/a&gt; and login with Github credentials&lt;/li&gt;
+&lt;li&gt;Under &lt;a href="https://travis-ci.org/profile"&gt;https://travis-ci.org/profile&lt;/a&gt; click on the organization name on the left and activate the webhook setting &lt;code&gt;ON&lt;/code&gt; on your &lt;code&gt;bootcamp-pelican&lt;/code&gt; repository&lt;/li&gt;
+&lt;li&gt;Now it is necessary to setup the credentials for &lt;code&gt;travis-ci&lt;/code&gt; to write to the repository&lt;/li&gt;
+&lt;li&gt;Go to https://github.com/settings/tokens/new, create a new token with default permissions&lt;/li&gt;
+&lt;li&gt;Install the &lt;code&gt;travis&lt;/code&gt; tool (in debian/ubuntu &lt;code&gt;sudo gem install travis&lt;/code&gt;) and run from any machine (not necessary to have a clone of the repository):
+        travis encrypt -r swcarpentry-YYYY-MM-DD-INST/bootcamp-pelican GH_TOKEN=TOKENGOTATTHEPREVIOUSSTEP&lt;/li&gt;
+&lt;li&gt;Open &lt;code&gt;.travis.yml&lt;/code&gt; on the website and replace the string under &lt;code&gt;env: global: secure:&lt;/code&gt; with the string from &lt;code&gt;travis encrypt&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Push the modified &lt;code&gt;.travis.yml&lt;/code&gt; to trigger the first build by Travis, and then check the log on &lt;a href="http://travis-ci.org"&gt;http://travis-ci.org&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now any change on the source repository will be picked up automatically by Travis and used to update the website.&lt;/p&gt;</summary><category term="python"></category><category term="software-carpentry"></category><category term="pelican"></category></entry><entry><title>openproceedings: Github/FigShare based publishing platform for conference proceedings</title><link href="http://zonca.github.io/2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html" rel="alternate"></link><updated>2014-02-13T23:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-02-13:2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</id><summary type="html">&lt;p&gt;Github provides a great interface for gathering, peer reviewing and accepting papers for conference proceedings, the second step is to publish them on a website either in HTML or PDF form or both.
 The Scipy conference is at the forefront on this and did great work in peer reviewing on Github, see: &lt;a href="https://github.com/scipy-conference/scipy_proceedings/pull/61"&gt;https://github.com/scipy-conference/scipy_proceedings/pull/61&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I wanted to develop a system to make it easier to continously publish updated versions of the papers and also leverage FigShare to provide a long term repository, a sharing interface and a &lt;a href="http://en.wikipedia.org/wiki/Digital_object_identifier"&gt;DOI&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I based it on the blog engine &lt;a href="http://getpelican.com"&gt;&lt;code&gt;Pelican&lt;/code&gt;&lt;/a&gt;, developed a plugin &lt;a href="http://github.com/openproceedings/pelican_figshare_pdf"&gt;&lt;code&gt;figshare_pdf&lt;/code&gt;&lt;/a&gt; to upload a PDF of an article via API and configured &lt;a href="http://travis-ci.org"&gt;Travis-ci&lt;/a&gt; as building platform.&lt;/p&gt;
