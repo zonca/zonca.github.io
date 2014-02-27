@@ -43,12 +43,13 @@ Basicly the requirement is be to make it easy for bootcamp instructors to setup 
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;ol&gt;
+&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;You can display the website in your browser locally with:&lt;/p&gt;
-&lt;p&gt;fab serve&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fab&lt;/span&gt; &lt;span class="n"&gt;serve&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Finally you can publish it to Github with:&lt;/p&gt;
