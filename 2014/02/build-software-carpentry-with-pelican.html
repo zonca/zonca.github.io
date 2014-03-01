@@ -112,18 +112,15 @@ Basicly the requirement is to make it easy for bootcamp instructors to setup the
 <li>Under <a href="https://travis-ci.org/profile">https://travis-ci.org/profile</a> click on the organization name on the left and activate the webhook setting <code>ON</code> on your <code>bootcamp-pelican</code> repository</li>
 <li>Now it is necessary to setup the credentials for <code>travis-ci</code> to write to the repository</li>
 <li>Go to https://github.com/settings/tokens/new, create a new token with default permissions</li>
-<li>
-<p>Install the <code>travis</code> tool (in debian/ubuntu <code>sudo gem install travis</code>) and run from any machine (not necessary to have a clone of the repository):</p>
-<div class="highlight"><pre><span class="n">travis</span> <span class="n">encrypt</span> <span class="o">-</span><span class="n">r</span> <span class="n">swcarpentry</span><span class="o">-</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">INST</span><span class="o">/</span><span class="n">bootcamp</span><span class="o">-</span><span class="n">pelican</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">TOKENGOTATTHEPREVIOUSSTEP</span>
+<li>Install the <code>travis</code> tool (in debian/ubuntu <code>sudo gem install travis</code>) and run from any machine (not necessary to have a clone of the repository):<div class="highlight"><pre><span class="n">travis</span> <span class="n">encrypt</span> <span class="o">-</span><span class="n">r</span> <span class="n">swcarpentry</span><span class="o">-</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">INST</span><span class="o">/</span><span class="n">bootcamp</span><span class="o">-</span><span class="n">pelican</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">TOKENGOTATTHEPREVIOUSSTEP</span>
 </pre></div>
 
 
 </li>
-<li>
-<p>Open <code>.travis.yml</code> on the website and replace the string under <code>env: global: secure:</code> with the string from <code>travis encrypt</code></p>
-</li>
-<li>Push the modified <code>.travis.yml</code> to trigger the first build by Travis, and then check the log on <a href="http://travis-ci.org">http://travis-ci.org</a></li>
 </ol>
+<p>otherwise I've setup a web application that does the encryption in your browser, see: <a href="http://travis-encrypt.github.io">http://travis-encrypt.github.io</a>
+1. Open <code>.travis.yml</code> on the website and replace the string under <code>env: global: secure:</code> with the string from <code>travis encrypt</code>
+1. Push the modified <code>.travis.yml</code> to trigger the first build by Travis, and then check the log on <a href="http://travis-ci.org">http://travis-ci.org</a></p>
 <p>Now any change on the source repository will be picked up automatically by Travis and used to update the website.</p>
         </div>
     </article>
