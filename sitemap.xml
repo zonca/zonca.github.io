@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2014-03-21T02:53:00-00:00</lastmod>
+<lastmod>2014-03-21T03:09:15-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2014-03-21T02:53:00-00:00</lastmod>
+<lastmod>2014-03-21T03:09:15-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2014-03-21T02:53:00-00:00</lastmod>
+<lastmod>2014-03-21T03:09:15-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2014-03-21T02:53:00-00:00</lastmod>
+<lastmod>2014-03-21T03:09:15-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2014/03/machine-learning-at-scale-with-python.html</loc>
+<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -572,7 +579,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2014-03-20T19:30:00-00:00</lastmod>
+<lastmod>2014-03-20T20:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -669,6 +676,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/machine-learning.html</loc>
+<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/hpc.html</loc>
 <lastmod>2014-03-20T19:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -712,7 +726,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/python.html</loc>
-<lastmod>2014-03-20T19:30:00-00:00</lastmod>
+<lastmod>2014-03-20T20:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -873,7 +887,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2014-03-20T19:30:00-00:00</lastmod>
+<lastmod>2014-03-20T20:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
