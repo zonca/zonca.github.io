@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-03-20T20:00:00-07:00</updated><entry><title>Machine learning at scale with Python</title><link href="http://zonca.github.io/2014/03/machine-learning-at-scale-with-python.html" rel="alternate"></link><updated>2014-03-20T20:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/machine-learning-at-scale-with-python.html</id><summary type="html">&lt;p&gt;My talk for the San Diego Data Science meetup: http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-03-20T20:00:00-07:00</updated><entry><title>Machine learning at scale with Python</title><link href="http://zonca.github.io/2014/03/machine-learning-at-scale-with-python.html" rel="alternate"></link><updated>2014-03-20T20:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/machine-learning-at-scale-with-python.html</id><summary type="html">&lt;p&gt;My talk for the San Diego Data Science meetup: &lt;a href="http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/"&gt;http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;About:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Setup &lt;a href="http://star.mit.edu/cluster/"&gt;StarCluster&lt;/a&gt; to launch EC2 instances&lt;/li&gt;
 &lt;li&gt;Running IPython Notebook on Amazon EC2&lt;/li&gt;
 &lt;li&gt;Running single node Machine Learning jobs using multiple cores&lt;/li&gt;
-&lt;li&gt;Distributing jobs with IPython parallel to multiple EC2 instances&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Distributing jobs with IPython parallel to multiple EC2 instances&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;See HTML5 &lt;strong&gt;slides&lt;/strong&gt;: &lt;a href="http://bit.ly/ml-ec2"&gt;http://bit.ly/ml-ec2&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;See the IPython notebook sources of the slides: &lt;a href="http://bit.ly/ml-ec2-ipynb"&gt;http://bit.ly/ml-ec2-ipynb&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;See HTML5 slides: http://bit.ly/ml-ec2
-See the IPython notebook sources of the slides: http://bit.ly/ml-ec2-ipynb&lt;/p&gt;
 &lt;p&gt;Finally the Github repository with additional material, under MIT license:
-https://github.com/zonca/machine-learning-at-scale-with-python&lt;/p&gt;</summary><category term="python"></category><category term="machine-learning"></category></entry><entry><title>Python on Gordon</title><link href="http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html" rel="alternate"></link><updated>2014-03-20T19:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/setup-ipython-notebook-parallel-Gordon.html</id><summary type="html">&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
+&lt;a href="https://github.com/zonca/machine-learning-at-scale-with-python"&gt;https://github.com/zonca/machine-learning-at-scale-with-python&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Any feedback is appreciated, google+, twitter or email.&lt;/p&gt;</summary><category term="python"></category><category term="machine-learning"></category></entry><entry><title>Python on Gordon</title><link href="http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html" rel="alternate"></link><updated>2014-03-20T19:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/setup-ipython-notebook-parallel-Gordon.html</id><summary type="html">&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;this&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="n"&gt;every&lt;/span&gt; &lt;span class="n"&gt;login&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
