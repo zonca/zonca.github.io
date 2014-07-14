@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Thoughts on a career as a computational scientist | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Thoughts on a career as a computational scientist</h1>
+        </header>
+        <div class='post-content'>
+            <p>Recently I've been asked what are the prospects of a wannabe computational scientist, 
+both in terms of training and in terms of job opportunities.</p>
+<p>So I am writing this blog post about my personal experience.</p>
+<h2>What is a computational scientist?</h2>
+<p>In my understanding, a computational scientist is a scientist with strong skills in scientific computing who
+most of the day is building software.</p>
+<p>Usually there are 2 main areas, in any field of science:</p>
+<ol>
+<li><em>Data analysis</em>: historically only few fields of science had to deal with large amount
+    of experimental data, e.g. Astrophysics, nowadays instead every field can generate 
+    extremely large amounts of data thanks to modern technology.
+    The task of the computational scientist is generally to analyze the data, i.e. cleanup, check systematic effects,
+    calibrate, understand and reduce to a form to be used for scientific exploitation.
+    Generally a second phase of data analysis involves model fitting, i.e. check which theoretical models best fit the
+    data and estimate their parameters with error bars, this requires knowledge of Statistics and Bayesian techniques,
+    like Markov Chain Monte Carlo (MCMC).</li>
+<li><em>Simulations</em>: production of artificial data used for their own good in the understanding of scientific models or
+    by trying to reproduce experimental data in order to characterize the response of a scientific instrument. </li>
+</ol>
+<h2>Skills of a computational scientist</h2>
+<p>Starting out as a computational scientist nowadays is quite easy; with a background in any field of science, it is possible to improve computational skills thanks to several learning resources, for example:</p>
+<ul>
+<li>Free online video classes on <a href="https://www.coursera.org/courses?search=python">Coursera</a>, <a href="https://www.udacity.com/courses#!/data-science">Udacity</a> and others</li>
+<li><a href="http://software-carpentry.org">Software Carpentry</a> runs bootcamps for scientists to improve their computational skills</li>
+<li>Online tutorials on <a href="http://scipy-lectures.github.io/">Python for scientific computing</a></li>
+<li>Books, e.g. <a href="http://shop.oreilly.com/product/0636920023784.do">Python for Data Analysis</a></li>
+</ul>
+<p>Basically it is important to have a good experience with at least one programming language, Python is the safest option because:</p>
+<ul>
+<li>it is well enstabilished in many fields of science</li>
+<li>its syntax is easier to learn than most other common programming languages</li>
+<li>it has the largest number of scientific libraries </li>
+<li>it is easy to interface with other languages, i.e. we can reuse legacy code implemented in C/C++/FORTRAN</li>
+<li>it can be used also when developing something unusual for a computational scientist, like web development (<code>django</code>) or interfacing with hardware (<code>pyserial</code>).</li>
+</ul>
+<p>Python performance is comparable to C/C++/Java when we make use of optimized libraries like <code>numpy</code>, <code>pandas</code>, <code>scipy</code>, which
+have Python frontends to highly optimized C or Fortran code; therefore is necessary to avoid explicit for loops and learn
+to write "vectorized" code, that allows entire arrays and matrices to be processed in one step.</p>
+<p>Some important Python tools to learn are:</p>
+<ul>
+<li><code>IPython</code> notebooks to write documents with code, documentatin and plots embedded </li>
+<li><code>numpy</code> and <code>pandas</code> for data management</li>
+<li><code>matplotlib</code> for plotting</li>
+<li><code>h5py</code> or <code>pytables</code>, HDF5 binary files manipulation</li>
+<li><a href="http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/">how to publish a Python package</a></li>
+<li><code>emcee</code> for MCMC</li>
+<li><code>scipy</code> for signal processing, FFT, optimization, integration, 2d array processing</li>
+<li><code>scikit-learn</code> for Machine Learning</li>
+<li><code>scikit-image</code> for image processing </li>
+<li>Object oriented programming</li>
+</ul>
+<p>For parallel programming:</p>
+<ul>
+<li><code>IPython parallel</code> for distributing large amount of serial and independent job on a cluster</li>
+<li><code>PyTrilinos</code> for distributed linear algebra (high level operations with data distributed across nodes, automatic MPI communication)</li>
+<li><code>mpi4py</code> for manually create communication of data via MPI</li>
+</ul>
+<p>On top of Python is also useful to learn a bit about shell scripting with <code>bash</code>, which for simple automation tasks is better suited,
+and it is fundamental to learn version control with git or mercurial.</p>
+<h2>My experience</h2>
+<p>I trained as Aerospace Engineer for my Master degree, and then moved to a PhD in Astrophysics, in Milano,
+where I worked in the Planck collaboration and took care of simulating the inband response of the Low Frequency Instrument
+detectors.
+During my PhD I developed a good proficiency with Python, mainly using it for task automation and plotting. 
+My previous programming experience was very low, only some Matlab during last year of my Master degree, but I found Python really easy to use,
+and learned it myself with books and online tutorials.
+With no formal education in Computer Science, the most complicated concept to grasp is Object Oriented programming; at the time
+I was moonlighting as a web developer and I familiarized with OO using Django models.
+After my PhD I got a PostDoc position at the University of California, Santa Barbara, there I had for the first time
+access to supercomputers and my job involved analyzing large amount of data.
+During 4 years at UCSB I had the great opportunity of choosing my own tools, implementing my own software for data processing,
+so I immediately saw the value of improving my understanding of software development best practices.</p>
+<p>Unfortunately in science there is usually a push toward hacking around a quick and dirty solution to get out results and go forward,
+I instead focused on learning how to build easily-maintenable libraries that I could re-use in the future. This
+involved learning more advanced Python, version control, unit testing and so on. I learned these tools by reading tutorials and 
+documentation on the web, answers on StackOverflow, blog posts.
+It also helped that I became one of the core developers of <code>healpy</code>, a Python package for pixelized sky maps processing.</p>
+<p>In 2013, at the 4th year of my PostDoc and with the Planck mission near to the end in 2015, I was looking for a position
+as a computational scientist, mainly as a research scientist (i.e. doing research/data analysis full time, with a long term contract) 
+at research labs like Berkeley Lab or Jet Propulsion Laboratory, or in a research group in Cosmology/Astrophysics or in
+High Performance Computing.</p>
+<p>I got hired at the San Diego Supercomputer Center in December 2013 as a permanent staff, mainly thanks to my experience with data analysis,
+Python and parallel programming, here I collaborate with research groups in any field of Science and help them deploy and optimize their software on supercomputers here at SDSC or in other XSEDE centers.</p>
+<h2>Thoughts about a career as a computational scientist</h2>
+<p>After a PhD program, a computational scientist with experience either in data analysis or simulation, especially if has experience in parallel programming, should quite easily find a position as a PostDoc, lots of research groups have huge amount of data and need software development skilled labor.</p>
+<p>I believe what is complicated is the next step, faculty jobs favour scientists with the best scientific publications, and software development generally is not recognized as a first class scientific product.
+Very interesting opportunities in Academia are Research Scientist positions either at research facilities, for example Lawrence Berkeley Labs and NASA Jet Propulsion Laboratory, or supercomputer centers. These jobs are often permament positions, unless the institution runs out of funding, and allow to work 100% on research.
+Another opportunity is to work as Research Scientist in a specific research group in a University, this is less common, and depends on their availability of long-term funding.</p>
+<p>Still, the total number of available positions in Academia is not very high, therefore it is very important to also keep open the opportunity of a job in Industry. Fortunately nowadays most  skills of a computational scientist are very well recognized in Industry, so I recommend to choose, whenever possible, to learn and use tools that are widely used also outside of Academia, for example Python, version control with Git, shell scripting, unit testing, databases, multi-core programming, parallel programming, GPU programming and so on.</p>
+<p><em>Acknowledgement</em>: thanks to Priscilla Kelly for discussion on this topic and review of the post</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2014-06-05T14:00:00">Thu 05 June 2014</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/career.html">career</a> 
+<a href="http://zonca.github.io/tag/hpc.html">hpc</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

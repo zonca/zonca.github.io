@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2014-06-10T06:32:07-00:00</lastmod>
+<lastmod>2014-07-14T15:22:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2014-06-10T06:32:07-00:00</lastmod>
+<lastmod>2014-07-14T15:22:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2014-06-10T06:32:07-00:00</lastmod>
+<lastmod>2014-07-14T15:22:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2014-06-10T06:32:07-00:00</lastmod>
+<lastmod>2014-07-14T15:22:25-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2014/06/career-as-a-computational-scientist.html</loc>
+<lastmod>2014-06-05T14:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -579,7 +586,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<lastmod>2014-06-05T14:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -684,7 +691,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/hpc.html</loc>
-<lastmod>2014-03-20T19:30:00-00:00</lastmod>
+<lastmod>2014-06-05T14:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -830,6 +837,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/career.html</loc>
+<lastmod>2014-06-05T14:00:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/cosmology.html</loc>
 <lastmod>2013-09-17T18:30:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -887,7 +901,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<lastmod>2014-06-05T14:00:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

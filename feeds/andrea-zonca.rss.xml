@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-06-05T14:00:00-07:00</updated><entry><title>Thoughts on a career as a computational scientist</title><link href="http://zonca.github.io/2014/06/career-as-a-computational-scientist.html" rel="alternate"></link><updated>2014-06-05T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-06-05:2014/06/career-as-a-computational-scientist.html</id><summary type="html">&lt;p&gt;Recently I've been asked what are the prospects of a wannabe computational scientist, 
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><atom:link href="http://zonca.github.io/feeds/andrea-zonca.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 05 Jun 2014 14:00:00 -0700</lastBuildDate><item><title>Thoughts on a career as a computational scientist</title><link>http://zonca.github.io/2014/06/career-as-a-computational-scientist.html</link><description>&lt;p&gt;Recently I've been asked what are the prospects of a wannabe computational scientist, 
 both in terms of training and in terms of job opportunities.&lt;/p&gt;
 &lt;p&gt;So I am writing this blog post about my personal experience.&lt;/p&gt;
 &lt;h2&gt;What is a computational scientist?&lt;/h2&gt;
@@ -88,7 +88,7 @@ Python and parallel programming, here I collaborate with research groups in any 
 Very interesting opportunities in Academia are Research Scientist positions either at research facilities, for example Lawrence Berkeley Labs and NASA Jet Propulsion Laboratory, or supercomputer centers. These jobs are often permament positions, unless the institution runs out of funding, and allow to work 100% on research.
 Another opportunity is to work as Research Scientist in a specific research group in a University, this is less common, and depends on their availability of long-term funding.&lt;/p&gt;
 &lt;p&gt;Still, the total number of available positions in Academia is not very high, therefore it is very important to also keep open the opportunity of a job in Industry. Fortunately nowadays most  skills of a computational scientist are very well recognized in Industry, so I recommend to choose, whenever possible, to learn and use tools that are widely used also outside of Academia, for example Python, version control with Git, shell scripting, unit testing, databases, multi-core programming, parallel programming, GPU programming and so on.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Acknowledgement&lt;/em&gt;: thanks to Priscilla Kelly for discussion on this topic and review of the post&lt;/p&gt;</summary><category term="career"></category><category term="hpc"></category></entry><entry><title>Machine learning at scale with Python</title><link href="http://zonca.github.io/2014/03/machine-learning-at-scale-with-python.html" rel="alternate"></link><updated>2014-03-20T20:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/machine-learning-at-scale-with-python.html</id><summary type="html">&lt;p&gt;My talk for the San Diego Data Science meetup: &lt;a href="http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/"&gt;http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Acknowledgement&lt;/em&gt;: thanks to Priscilla Kelly for discussion on this topic and review of the post&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 05 Jun 2014 14:00:00 -0700</pubDate><guid>tag:zonca.github.io,2014-06-05:2014/06/career-as-a-computational-scientist.html</guid><category>career</category><category>hpc</category></item><item><title>Machine learning at scale with Python</title><link>http://zonca.github.io/2014/03/machine-learning-at-scale-with-python.html</link><description>&lt;p&gt;My talk for the San Diego Data Science meetup: &lt;a href="http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/"&gt;http://www.meetup.com/San-Diego-Data-Science-R-Users-Group/events/170967362/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;About:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Setup &lt;a href="http://star.mit.edu/cluster/"&gt;StarCluster&lt;/a&gt; to launch EC2 instances&lt;/li&gt;
@@ -104,7 +104,7 @@ Another opportunity is to work as Research Scientist in a specific research grou
 &lt;/ul&gt;
 &lt;p&gt;Finally the Github repository with additional material, under MIT license:
 &lt;a href="https://github.com/zonca/machine-learning-at-scale-with-python"&gt;https://github.com/zonca/machine-learning-at-scale-with-python&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Any feedback is appreciated, google+, twitter or email.&lt;/p&gt;</summary><category term="python"></category><category term="machine-learning"></category></entry><entry><title>Python on Gordon</title><link href="http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html" rel="alternate"></link><updated>2014-03-20T19:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/setup-ipython-notebook-parallel-Gordon.html</id><summary type="html">&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
+&lt;p&gt;Any feedback is appreciated, google+, twitter or email.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 20 Mar 2014 20:00:00 -0700</pubDate><guid>tag:zonca.github.io,2014-03-20:2014/03/machine-learning-at-scale-with-python.html</guid><category>python</category><category>machine-learning</category></item><item><title>Python on Gordon</title><link>http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html</link><description>&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;this&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="n"&gt;every&lt;/span&gt; &lt;span class="n"&gt;login&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -246,7 +246,7 @@ The easiest method to submit jobs with automatic load balancing is to create a l
 
 &lt;p&gt;I created a script that automates this process, see https://gist.github.com/zonca/8994544, you can run as:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ipcluster_run_commands&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="n"&gt;commands&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="hpc"></category><category term="python"></category><category term="Gordon"></category></entry><entry><title>Build Software Carpentry lessons with Pelican</title><link href="http://zonca.github.io/2014/02/build-software-carpentry-with-pelican.html" rel="alternate"></link><updated>2014-02-26T23:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-02-26:2014/02/build-software-carpentry-with-pelican.html</id><summary type="html">&lt;p&gt;&lt;a href="http://www.software-carpentry.org"&gt;Software Carpentry&lt;/a&gt; offers bootcamps for scientist to teach basic programming skills.
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 20 Mar 2014 19:30:00 -0700</pubDate><guid>tag:zonca.github.io,2014-03-20:2014/03/setup-ipython-notebook-parallel-Gordon.html</guid><category>hpc</category><category>python</category><category>Gordon</category></item><item><title>Build Software Carpentry lessons with Pelican</title><link>http://zonca.github.io/2014/02/build-software-carpentry-with-pelican.html</link><description>&lt;p&gt;&lt;a href="http://www.software-carpentry.org"&gt;Software Carpentry&lt;/a&gt; offers bootcamps for scientist to teach basic programming skills.
 All the material, mainly about bash, git, Python and R is &lt;a href="http://github.com/swcarpentry/bc"&gt;available on Github&lt;/a&gt; under Creative Commons.&lt;/p&gt;
 &lt;p&gt;The content is either in Markdown or in IPython notebook format, and is currently built using Jekyll, nbconvert and Pandoc.
 Basicly the requirement is to make it easy for bootcamp instructors to setup their own website, modify the content, and have the website updated.&lt;/p&gt;
@@ -325,12 +325,12 @@ Basicly the requirement is to make it easy for bootcamp instructors to setup the
 1. Push the modified &lt;code&gt;.travis.yml&lt;/code&gt; to trigger the first build by Travis, and then check the log on &lt;a href="http://travis-ci.org"&gt;http://travis-ci.org&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Now any change on the source repository will be picked up automatically by Travis and used to update the website.&lt;/p&gt;</summary><category term="python"></category><category term="software-carpentry"></category><category term="pelican"></category></entry><entry><title>openproceedings: Github/FigShare based publishing platform for conference proceedings</title><link href="http://zonca.github.io/2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html" rel="alternate"></link><updated>2014-02-13T23:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-02-13:2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</id><summary type="html">&lt;p&gt;Github provides a great interface for gathering, peer reviewing and accepting papers for conference proceedings, the second step is to publish them on a website either in HTML or PDF form or both.
+&lt;p&gt;Now any change on the source repository will be picked up automatically by Travis and used to update the website.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 26 Feb 2014 23:00:00 -0800</pubDate><guid>tag:zonca.github.io,2014-02-26:2014/02/build-software-carpentry-with-pelican.html</guid><category>python</category><category>software-carpentry</category><category>pelican</category></item><item><title>openproceedings: Github/FigShare based publishing platform for conference proceedings</title><link>http://zonca.github.io/2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</link><description>&lt;p&gt;Github provides a great interface for gathering, peer reviewing and accepting papers for conference proceedings, the second step is to publish them on a website either in HTML or PDF form or both.
 The Scipy conference is at the forefront on this and did great work in peer reviewing on Github, see: &lt;a href="https://github.com/scipy-conference/scipy_proceedings/pull/61"&gt;https://github.com/scipy-conference/scipy_proceedings/pull/61&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I wanted to develop a system to make it easier to continously publish updated versions of the papers and also leverage FigShare to provide a long term repository, a sharing interface and a &lt;a href="http://en.wikipedia.org/wiki/Digital_object_identifier"&gt;DOI&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I based it on the blog engine &lt;a href="http://getpelican.com"&gt;&lt;code&gt;Pelican&lt;/code&gt;&lt;/a&gt;, developed a plugin &lt;a href="http://github.com/openproceedings/pelican_figshare_pdf"&gt;&lt;code&gt;figshare_pdf&lt;/code&gt;&lt;/a&gt; to upload a PDF of an article via API and configured &lt;a href="http://travis-ci.org"&gt;Travis-ci&lt;/a&gt; as building platform.&lt;/p&gt;
 &lt;p&gt;See more details on the project page on Github:
-&lt;a href="https://github.com/openproceedings/openproceedings-buildbot"&gt;https://github.com/openproceedings/openproceedings-buildbot&lt;/a&gt;&lt;/p&gt;</summary><category term="python"></category><category term="pelican"></category><category term="openscience"></category></entry><entry><title>wget file from google drive</title><link href="http://zonca.github.io/2014/01/wget-file-from-google-drive.html" rel="alternate"></link><updated>2014-01-31T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-01-31:2014/01/wget-file-from-google-drive.html</id><summary type="html">&lt;p&gt;Sometimes it is useful, even more if you have a chromebook, to upload a file to Google Drive and then use &lt;code&gt;wget&lt;/code&gt; to retrieve it from a server remotely.&lt;/p&gt;
+&lt;a href="https://github.com/openproceedings/openproceedings-buildbot"&gt;https://github.com/openproceedings/openproceedings-buildbot&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 13 Feb 2014 23:30:00 -0800</pubDate><guid>tag:zonca.github.io,2014-02-13:2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</guid><category>python</category><category>pelican</category><category>openscience</category></item><item><title>wget file from google drive</title><link>http://zonca.github.io/2014/01/wget-file-from-google-drive.html</link><description>&lt;p&gt;Sometimes it is useful, even more if you have a chromebook, to upload a file to Google Drive and then use &lt;code&gt;wget&lt;/code&gt; to retrieve it from a server remotely.&lt;/p&gt;
 &lt;p&gt;In order to do this you need to make the file available to "Anyone with the link", then click on that link from your local machine and get to the download page that displays a Download button.
 Now right-click and select "Show page source" (in Chrome), and search for "downloadUrl", copy the url that starts with &lt;code&gt;https://docs.google.com&lt;/code&gt;, for example:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;https:&lt;/span&gt;&lt;span class="c1"&gt;//docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&lt;/span&gt;
@@ -344,7 +344,7 @@ Now right-click and select "Show page source" (in Chrome), and search for "downl
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The last url can be pasted into a terminal and used with &lt;code&gt;wget&lt;/code&gt;.&lt;/p&gt;</summary><category term="bash"></category></entry><entry><title>Run IPython Notebook on a HPC Cluster via PBS</title><link href="http://zonca.github.io/2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html" rel="alternate"></link><updated>2013-12-18T16:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-18:2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</id><summary type="html">&lt;p&gt;The &lt;a href="http://ipython.org/notebook.html"&gt;IPython notebook&lt;/a&gt; is a great tool for data exploration
+&lt;p&gt;The last url can be pasted into a terminal and used with &lt;code&gt;wget&lt;/code&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 31 Jan 2014 18:00:00 -0800</pubDate><guid>tag:zonca.github.io,2014-01-31:2014/01/wget-file-from-google-drive.html</guid><category>bash</category></item><item><title>Run IPython Notebook on a HPC Cluster via PBS</title><link>http://zonca.github.io/2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</link><description>&lt;p&gt;The &lt;a href="http://ipython.org/notebook.html"&gt;IPython notebook&lt;/a&gt; is a great tool for data exploration
 and visualization.
 It is suitable in particular for analyzing a large amount of data remotely on a computing node
 of a HPC cluster and visualize it in a browser that runs on a local machine.
@@ -357,14 +357,14 @@ another machine to the same session.&lt;/p&gt;
 &lt;p&gt;Once the script is running, it is possible to connect to &lt;code&gt;localhost:PORT&lt;/code&gt; and visualize the 
 IPython notebook, see the following screenshot of Chromium running locally on my machine
 connected to a IPython notebook running on a Gordon computing node:&lt;/p&gt;
-&lt;p&gt;&lt;img width="730" alt="IPython notebook on Gordon" title="IPython notebook on Gordon" src="/images/run-ipython-notebook-on-HPC-cluster-via-PBS_screenshot.png"&gt;&lt;/p&gt;</summary><category term="ipython"></category><category term="ipython-notebook"></category><category term="HPC"></category></entry><entry><title>Joining San Diego Supercomputer Center</title><link href="http://zonca.github.io/2013/12/joining-sandiego-supercomputer-center.html" rel="alternate"></link><updated>2013-12-10T13:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-12-10:2013/12/joining-sandiego-supercomputer-center.html</id><summary type="html">&lt;p&gt;&lt;code&gt;TL;DR&lt;/code&gt;
+&lt;p&gt;&lt;img width="730" alt="IPython notebook on Gordon" title="IPython notebook on Gordon" src="/images/run-ipython-notebook-on-HPC-cluster-via-PBS_screenshot.png"&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 18 Dec 2013 16:30:00 -0800</pubDate><guid>tag:zonca.github.io,2013-12-18:2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</guid><category>ipython</category><category>ipython-notebook</category><category>HPC</category></item><item><title>Joining San Diego Supercomputer Center</title><link>http://zonca.github.io/2013/12/joining-sandiego-supercomputer-center.html</link><description>&lt;p&gt;&lt;code&gt;TL;DR&lt;/code&gt;
 Left UCSB after 4 years, got staff position at San Diego Supercomputer Center within UCSD, will be helping research groups analyze their data on Gordon and more. Still 20% on Planck.&lt;/p&gt;
 &lt;p&gt;I spent 4 great years at UCSB with Peter Meinhold working on analyzing Cosmic Microwave Background data from the ESA Planck space mission.
 Cosmology is fascinating, also I enjoyed working with a very open minded team, that always left large freedom in choosing the techniques and the software tools for the job.&lt;/p&gt;
 &lt;p&gt;My work has been mainly focused on understanding and characterizing large amount of data using &lt;code&gt;Python&lt;/code&gt; (and &lt;code&gt;C++&lt;/code&gt;) on NERSC supercomputers.
 I was neither interested nor fit for a traditional academic career, and I was looking for a job that allowed me to focus on doing research/data analysis full time.&lt;/p&gt;
 &lt;p&gt;The perfect opportunity showed up, as the San Diego Supercomputer Center was looking for a computational scientist with a strong scientific background in any field of science to help research teams jump into supercomputing, specifically newcomers.  This involves having the opportunity to collaborate with groups in any area of science, the first projects I am going to work on will be in Astrophysics, Quantum Chemistry and Genomics!&lt;/p&gt;
-&lt;p&gt;I also have the opportunity to continue my work on calibration and mapmaking of Planck data in collaboration with UCSB for 20% of my time.&lt;/p&gt;</summary><category term="jobs"></category></entry><entry><title>Published paper on Destriping Cosmic Microwave Background Polarimeter data</title><link href="http://zonca.github.io/2013/11/published-paper-destriping-CMB-polarimeter.html" rel="alternate"></link><updated>2013-11-20T21:30:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-11-20:2013/11/published-paper-destriping-CMB-polarimeter.html</id><summary type="html">&lt;p&gt;TL;DR version:&lt;/p&gt;
+&lt;p&gt;I also have the opportunity to continue my work on calibration and mapmaking of Planck data in collaboration with UCSB for 20% of my time.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 10 Dec 2013 13:30:00 -0800</pubDate><guid>tag:zonca.github.io,2013-12-10:2013/12/joining-sandiego-supercomputer-center.html</guid><category>jobs</category></item><item><title>Published paper on Destriping Cosmic Microwave Background Polarimeter data</title><link>http://zonca.github.io/2013/11/published-paper-destriping-CMB-polarimeter.html</link><description>&lt;p&gt;TL;DR version:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Preprint on arxiv: &lt;a href="http://arxiv.org/abs/1309.5609"&gt;Destriping Cosmic Microwave Background Polarimeter data&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Destriping &lt;code&gt;python&lt;/code&gt; code on github: &lt;a href="https://github.com/zonca/dst"&gt;&lt;code&gt;dst&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
@@ -387,7 +387,7 @@ radiometer.&lt;/p&gt;
 &lt;p&gt;The code is available on Github under GPL.&lt;/p&gt;
 &lt;p&gt;The output maps for about 30 days of the UCSB B-Machine polarimeter at 37.5 GHz are available on FigShare.&lt;/p&gt;
 &lt;p&gt;The experience of publishing with ASCOM was really positive, I received 2 very helpful reviews that drove me to
-work on several improvements on the paper.&lt;/p&gt;</summary><category term="python"></category><category term="paper"></category><category term="destriping"></category><category term="openscience"></category></entry><entry><title>Jiffylab multiuser IPython notebooks</title><link href="http://zonca.github.io/2013/10/jiffylab-multiuser-ipython-notebooks.html" rel="alternate"></link><updated>2013-10-14T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-14:2013/10/jiffylab-multiuser-ipython-notebooks.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/ptone/jiffylab"&gt;jiffylab&lt;/a&gt; is a very interesting project by &lt;a href="https://twitter.com/ptone"&gt;Preston Holmes&lt;/a&gt; to provide sandboxed IPython notebooks instances on a server using &lt;a href="http://www.docker.io/"&gt;docker&lt;/a&gt;.
+work on several improvements on the paper.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 20 Nov 2013 21:30:00 -0800</pubDate><guid>tag:zonca.github.io,2013-11-20:2013/11/published-paper-destriping-CMB-polarimeter.html</guid><category>python</category><category>paper</category><category>destriping</category><category>openscience</category></item><item><title>Jiffylab multiuser IPython notebooks</title><link>http://zonca.github.io/2013/10/jiffylab-multiuser-ipython-notebooks.html</link><description>&lt;p&gt;&lt;a href="https://github.com/ptone/jiffylab"&gt;jiffylab&lt;/a&gt; is a very interesting project by &lt;a href="https://twitter.com/ptone"&gt;Preston Holmes&lt;/a&gt; to provide sandboxed IPython notebooks instances on a server using &lt;a href="http://www.docker.io/"&gt;docker&lt;/a&gt;.
 There are several user cases, for example:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;In a tutorial about &lt;code&gt;python&lt;/code&gt;, give users instant access to a working IPython notebook&lt;/li&gt;
@@ -428,7 +428,7 @@ python app.py &lt;span class="c"&gt;#run in debug mode&lt;/span&gt;
 &lt;h3&gt;IPython notebook dashboard&lt;/h3&gt;
 &lt;p&gt;&lt;img width="730" alt="Jiffylab IPython notebook dashboard" title="Jiffylab IPython notebook dashboard" src="/images/jiffylab_dashboard.png"&gt;&lt;/p&gt;
 &lt;h3&gt;IPython notebook&lt;/h3&gt;
-&lt;p&gt;&lt;img width="730" alt="Jiffylab IPython notebook" title="Jiffylab IPython notebook" src="/images/jiffylab_notebook.png"&gt;&lt;/p&gt;</summary><category term="python"></category><category term="ipython-notebook"></category></entry><entry><title>How to log exceptions in Python</title><link href="http://zonca.github.io/2013/10/how-to-log-exceptions-in-python.html" rel="alternate"></link><updated>2013-10-01T10:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-10-01:2013/10/how-to-log-exceptions-in-python.html</id><summary type="html">&lt;p&gt;Sometimes it is useful to just catch any exception, write details to a log file and continue execution.&lt;/p&gt;
+&lt;p&gt;&lt;img width="730" alt="Jiffylab IPython notebook" title="Jiffylab IPython notebook" src="/images/jiffylab_notebook.png"&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 14 Oct 2013 10:30:00 -0700</pubDate><guid>tag:zonca.github.io,2013-10-14:2013/10/jiffylab-multiuser-ipython-notebooks.html</guid><category>python</category><category>ipython-notebook</category></item><item><title>How to log exceptions in Python</title><link>http://zonca.github.io/2013/10/how-to-log-exceptions-in-python.html</link><description>&lt;p&gt;Sometimes it is useful to just catch any exception, write details to a log file and continue execution.&lt;/p&gt;
 &lt;p&gt;In the &lt;code&gt;Python&lt;/code&gt; standard library, it is possible to use the &lt;code&gt;logging&lt;/code&gt; and &lt;code&gt;exceptions&lt;/code&gt; modules to achieve this.
 First of all, we want to catch any exception, but also being able to access all information about it:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -455,14 +455,14 @@ First of all, we want to catch any exception, but also being able to access all 
 &lt;div class="highlight"&gt;&lt;pre&gt;2013-10-01 11:32:56,466 - ERROR - Function my_function_1() raised &amp;lt;type &amp;#39;exceptions.IndexError&amp;#39;&amp;gt; (Sequence index out of range.): Some indexing error
 2013-10-01 11:32:56,466 - ERROR - Function my_function_2() raised &amp;lt;class &amp;#39;my_module.MyException&amp;#39;&amp;gt; (This is my own Exception): Something went quite wrong
 2013-10-01 11:32:56,466 - ERROR - Function my_function_1_wrapper() raised &amp;lt;type &amp;#39;exceptions.IndexError&amp;#39;&amp;gt; (Sequence index out of range.): Some indexing error
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="exceptions"></category></entry><entry><title>Google Plus comments plugin for Pelican</title><link href="http://zonca.github.io/2013/09/google-plus-comments-plugin-for-pelican.html" rel="alternate"></link><updated>2013-09-27T17:45:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-27:2013/09/google-plus-comments-plugin-for-pelican.html</id><summary type="html">&lt;p&gt;There has been recently several discussions about 
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 01 Oct 2013 10:30:00 -0700</pubDate><guid>tag:zonca.github.io,2013-10-01:2013/10/how-to-log-exceptions-in-python.html</guid><category>python</category><category>exceptions</category></item><item><title>Google Plus comments plugin for Pelican</title><link>http://zonca.github.io/2013/09/google-plus-comments-plugin-for-pelican.html</link><description>&lt;p&gt;There has been recently several discussions about 
 &lt;a href="http://www.popsci.com/science/article/2013-09/why-were-shutting-our-comments"&gt;whether comments are any useful on blogs&lt;/a&gt;
 I think it is important to find better ways to connect blogs to social networks.
 In my opinion the most suitable social network for this is Google+, because there is space for larger discussion, without Twitter's character limit.&lt;/p&gt;
 &lt;p&gt;So, for my small blog I've decided to implement the Google+ commenting system, which Google originally implemented just for Blogger but that &lt;a href="http://browsingthenet.blogspot.com/2013/04/google-plus-comments-on-any-website.html"&gt;works on any website&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;See it in action below.&lt;/p&gt;
 &lt;p&gt;The plugin is available in the &lt;code&gt;googleplus_comments&lt;/code&gt; branch in:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://github.com/zonca/pelican-plugins/tree/googleplus_comments/googleplus_comments"&gt;https://github.com/zonca/pelican-plugins/tree/googleplus_comments/googleplus_comments&lt;/a&gt;&lt;/p&gt;</summary><category term="python"></category><category term="pelican"></category><category term="github"></category></entry><entry><title>How to automatically build your Pelican blog and publish it to Github Pages</title><link href="http://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html" rel="alternate"></link><updated>2013-09-26T13:45:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-26:2013/09/automatically-build-pelican-and-publish-to-github-pages.html</id><summary type="html">&lt;p&gt;Something I like a lot about Jekyll, the Github static blog generator, is that you just push commits to your repository and Github takes care of re-building and publishing your website.
+&lt;p&gt;&lt;a href="https://github.com/zonca/pelican-plugins/tree/googleplus_comments/googleplus_comments"&gt;https://github.com/zonca/pelican-plugins/tree/googleplus_comments/googleplus_comments&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 27 Sep 2013 17:45:00 -0700</pubDate><guid>tag:zonca.github.io,2013-09-27:2013/09/google-plus-comments-plugin-for-pelican.html</guid><category>python</category><category>pelican</category><category>github</category></item><item><title>How to automatically build your Pelican blog and publish it to Github Pages</title><link>http://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html</link><description>&lt;p&gt;Something I like a lot about Jekyll, the Github static blog generator, is that you just push commits to your repository and Github takes care of re-building and publishing your website.
 Thanks to this, it is possible to create a quick blog post from the Github web interface, without the need to use a machine with Python environment.&lt;/p&gt;
 &lt;p&gt;The Pelican developers have a &lt;a href="http://blog.getpelican.com/using-pelican-with-heroku.html"&gt;method for building and deploying Pelican on Heroku&lt;/a&gt;, which is really useful, but I would like instead to use Github Pages.&lt;/p&gt;
 &lt;p&gt;I realized that the best way to do this is to rely on &lt;a href="https://travis-ci.org/"&gt;Travis-CI&lt;/a&gt;, as the build/deploy workflow is pretty similar to install/unit-testing Travis is designed for.&lt;/p&gt;
@@ -503,7 +503,7 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 &lt;li&gt;create the &lt;code&gt;yourusername.github.io&lt;/code&gt; repository for the website (with initial readme, so you can clone it)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Finally we can connect to &lt;a href="https://travis-ci.org/"&gt;Travis-CI&lt;/a&gt;, connect our Github profile and activate Continous Integration on our &lt;code&gt;yourusername.github.io-source&lt;/code&gt; repository.&lt;/p&gt;
-&lt;p&gt;Now, you can push a new commit to your source repository and check on Travis if the build and deploy is successful, hopefully it is (joking, no way it is going to work on the first try!).&lt;/p&gt;</summary><category term="python"></category><category term="travis-ci"></category><category term="github"></category></entry><entry><title>clviewer, interactive plot of CMB spectra</title><link href="http://zonca.github.io/2013/09/clviewer-interactive-plot-of-CMB-spectra.html" rel="alternate"></link><updated>2013-09-17T18:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-17:2013/09/clviewer-interactive-plot-of-CMB-spectra.html</id><summary type="html">&lt;p&gt;Today it was HackDay at &lt;a href="http://dotastronomy.com"&gt;.Astronomy&lt;/a&gt;, so I felt compelled to hack something around myself,
+&lt;p&gt;Now, you can push a new commit to your source repository and check on Travis if the build and deploy is successful, hopefully it is (joking, no way it is going to work on the first try!).&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 26 Sep 2013 13:45:00 -0700</pubDate><guid>tag:zonca.github.io,2013-09-26:2013/09/automatically-build-pelican-and-publish-to-github-pages.html</guid><category>python</category><category>travis-ci</category><category>github</category></item><item><title>clviewer, interactive plot of CMB spectra</title><link>http://zonca.github.io/2013/09/clviewer-interactive-plot-of-CMB-spectra.html</link><description>&lt;p&gt;Today it was HackDay at &lt;a href="http://dotastronomy.com"&gt;.Astronomy&lt;/a&gt;, so I felt compelled to hack something around myself,
 creating something I have been thinking for a while after my previous work on &lt;a href="http://zonca.github.io/2013/08/interactive-figures-planck-power-spectra.html"&gt;Interactive CMB power spectra in the browser&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The idea is to get text files from a user and load it in a browser-based interactive display built on top of the &lt;a href="http://d3js.org"&gt;d3.js&lt;/a&gt; and &lt;a href="http://code.shutterstock.com/rickshaw/"&gt;rickshaw&lt;/a&gt; libraries.&lt;/p&gt;
 &lt;p&gt;Similar to &lt;a href="http://nbviewer.ipython.org/"&gt;nbviewer&lt;/a&gt;, I think it is very handy to load data from &lt;a href="https://gist.github.com/"&gt;Github gists&lt;/a&gt;, because then there is no need of uploading files and it is easier to circulate links.&lt;/p&gt;
@@ -514,7 +514,7 @@ It just gets a gist number, calls the Github APIs to load the files, and display
 &lt;li&gt;Example input data: &lt;a href="https://gist.github.com/zonca/6599016"&gt;https://gist.github.com/zonca/6599016&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Example interactive plot: &lt;a href="http://clviewer.herokuapp.com/6599016"&gt;http://clviewer.herokuapp.com/6599016&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Source: &lt;a href="https://github.com/zonca/clviewer"&gt;https://github.com/zonca/clviewer&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="cosmology"></category><category term="python"></category><category term="astrophysics"></category><category term="Planck"></category><category term="dotastronomy"></category></entry><entry><title>Planck CMB map at high resolution</title><link href="http://zonca.github.io/2013/09/Planck-CMB-map-at-high-resolution.html" rel="alternate"></link><updated>2013-09-10T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-10:2013/09/Planck-CMB-map-at-high-resolution.html</id><summary type="html">&lt;p&gt;Prompted by a colleague, I created a high-resolution version of the Cosmic Microwave Background map in MollWeide projection released by the Planck collaboration, available on the &lt;a href="http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/previews/COM_CompMap_CMB-smica_2048_R1.20/index.html"&gt;Planck Data Release Website&lt;/a&gt; in FITS format.&lt;/p&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 17 Sep 2013 18:30:00 -0700</pubDate><guid>tag:zonca.github.io,2013-09-17:2013/09/clviewer-interactive-plot-of-CMB-spectra.html</guid><category>cosmology</category><category>python</category><category>astrophysics</category><category>Planck</category><category>dotastronomy</category></item><item><title>Planck CMB map at high resolution</title><link>http://zonca.github.io/2013/09/Planck-CMB-map-at-high-resolution.html</link><description>&lt;p&gt;Prompted by a colleague, I created a high-resolution version of the Cosmic Microwave Background map in MollWeide projection released by the Planck collaboration, available on the &lt;a href="http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/previews/COM_CompMap_CMB-smica_2048_R1.20/index.html"&gt;Planck Data Release Website&lt;/a&gt; in FITS format.&lt;/p&gt;
 &lt;p&gt;The map is a PNG at a resolution of 17469x8796 pixels, which is suitable for printing at 300dpi up to 60x40 inch, or 150x100 cm, file size is about 150MB.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Update&lt;/em&gt;: now with Planck color scale&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Update&lt;/em&gt;: previous version had grayed out pixels in the galactic plane represents the fraction of the sky that is not possible to reconstruct due to bright galactic sources. The last version uses inpainting to create a constrained CMB realization with the same statistics as the observed CMB to fill the unobserved pixels, more details in the &lt;a href="http://www.sciops.esa.int/wikiSI/planckpla/index.php?title=CMB_and_astrophysical_component_maps&amp;amp;instance=Planck_Public_PLA"&gt;Planck Explanatory Supplement&lt;/a&gt;. &lt;/p&gt;
@@ -530,7 +530,7 @@ It just gets a gist number, calls the Github APIs to load the files, and display
 &lt;ul&gt;
 &lt;li&gt;Python code:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;script src="https://gist.github.com/zonca/6515744.js"&gt;&lt;/script&gt;</summary><category term="cosmology"></category><category term="python"></category><category term="astrophysics"></category><category term="Planck"></category></entry><entry><title>Run Hadoop Python jobs on Amazon with MrJob</title><link href="http://zonca.github.io/2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html" rel="alternate"></link><updated>2013-09-02T02:36:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-09-02:2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html</id><summary type="html">&lt;p&gt;&lt;br/&gt;
+&lt;script src="https://gist.github.com/zonca/6515744.js"&gt;&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 10 Sep 2013 14:00:00 -0700</pubDate><guid>tag:zonca.github.io,2013-09-10:2013/09/Planck-CMB-map-at-high-resolution.html</guid><category>cosmology</category><category>python</category><category>astrophysics</category><category>Planck</category></item><item><title>Run Hadoop Python jobs on Amazon with MrJob</title><link>http://zonca.github.io/2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html</link><description>&lt;p&gt;&lt;br/&gt;
 First we need to install mrjob with:
 &lt;br/&gt;
 &lt;blockquote class="tr_bq"&gt;
@@ -766,7 +766,7 @@ With MrJob instead the interface is a little different, we implement the mapper 
  I've been positively impressed that it is so easy to implement and run a MapReduce job with MrJob without need of managing directly EC2 instances or the Hadoop installation.
  &lt;br/&gt;
  This same setup could be used on GB of data with hundreds of instances.
-&lt;/div&gt;&lt;/p&gt;</summary><category term="bigdata"></category><category term="github"></category><category term="python"></category><category term="aws"></category><category term="hadoop"></category></entry><entry><title>Interactive figures in the browser: CMB Power Spectra</title><link href="http://zonca.github.io/2013/08/interactive-figures-planck-power-spectra.html" rel="alternate"></link><updated>2013-08-30T08:52:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-30:2013/08/interactive-figures-planck-power-spectra.html</id><summary type="html">&lt;p&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 02 Sep 2013 02:36:00 -0700</pubDate><guid>tag:zonca.github.io,2013-09-02:2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html</guid><category>bigdata</category><category>github</category><category>python</category><category>aws</category><category>hadoop</category></item><item><title>Interactive figures in the browser: CMB Power Spectra</title><link>http://zonca.github.io/2013/08/interactive-figures-planck-power-spectra.html</link><description>&lt;p&gt;
  For a long time I've been curious about trying out
  &lt;span style="font-family: Courier New, Courier, monospace;"&gt;
   d3.js
@@ -866,7 +866,7 @@ With MrJob instead the interface is a little different, we implement the mapper 
 
 &lt;div&gt;
  &lt;br/&gt;
-&lt;/div&gt;</summary><category term="javascript"></category><category term="d3"></category><category term="power spectra"></category><category term="astrophysics"></category><category term="Planck"></category></entry><entry><title>Planck CTP angular power spectrum ell binning</title><link href="http://zonca.github.io/2013/08/planck-ctp-angular-power-spectrum-ell.html" rel="alternate"></link><updated>2013-08-20T23:03:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-20:2013/08/planck-ctp-angular-power-spectrum-ell.html</id><summary type="html">&lt;p&gt;
+&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 30 Aug 2013 08:52:00 -0700</pubDate><guid>tag:zonca.github.io,2013-08-30:2013/08/interactive-figures-planck-power-spectra.html</guid><category>javascript</category><category>d3</category><category>power spectra</category><category>astrophysics</category><category>Planck</category></item><item><title>Planck CTP angular power spectrum ell binning</title><link>http://zonca.github.io/2013/08/planck-ctp-angular-power-spectrum-ell.html</link><description>&lt;p&gt;
  Planck released a binning of the angular power spectrum in the Explanatory supplement,
  &lt;br/&gt;
  unfortunately the file is in PDF format, non easily machine-readable:
@@ -894,7 +894,7 @@ With MrJob instead the interface is a little different, we implement the mapper 
  &lt;br/&gt;
  &lt;script src="https://gist.github.com/zonca/6288439.js"&gt;
  &lt;/script&gt;
-&lt;/p&gt;</summary><category term="power spectra"></category><category term="Planck"></category></entry><entry><title>HEALPix map of the Earth using healpy</title><link href="http://zonca.github.io/2013/08/healpix-map-of-earth-using-healpy.html" rel="alternate"></link><updated>2013-08-08T19:07:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-08:2013/08/healpix-map-of-earth-using-healpy.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 20 Aug 2013 23:03:00 -0700</pubDate><guid>tag:zonca.github.io,2013-08-20:2013/08/planck-ctp-angular-power-spectrum-ell.html</guid><category>power spectra</category><category>Planck</category></item><item><title>HEALPix map of the Earth using healpy</title><link>http://zonca.github.io/2013/08/healpix-map-of-earth-using-healpy.html</link><description>&lt;p&gt;
  HEALPix maps can also be used to create equal-area pixelized maps of the Earth, RGB colors are not supported in healpy, so we need to convert the image to colorscale.
  &lt;br/&gt;
  The best user case is for using spherical harmonic transforms, e.g. apply a smoothing filter, in this case HEALPix/healpy tools are really efficient.
@@ -942,7 +942,7 @@ Few notes:
  &lt;li&gt;
   increase the resolution of the plots (which is different from the resolution of the map array) by providing at least xsize=2000 to mollview and a reso lower than 1 to gnomview
  &lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</summary></entry><entry><title>Export google analytics data via API with Python</title><link href="http://zonca.github.io/2013/08/export-google-analytics-data-via-api.html" rel="alternate"></link><updated>2013-08-04T17:47:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-08-04:2013/08/export-google-analytics-data-via-api.html</id><summary type="html">&lt;p&gt;
+&lt;/ul&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 08 Aug 2013 19:07:00 -0700</pubDate><guid>tag:zonca.github.io,2013-08-08:2013/08/healpix-map-of-earth-using-healpy.html</guid></item><item><title>Export google analytics data via API with Python</title><link>http://zonca.github.io/2013/08/export-google-analytics-data-via-api.html</link><description>&lt;p&gt;
  Fun weekend hacking project: export google analytics data using the google APIs.
  &lt;br/&gt;
  &lt;br/&gt;
@@ -1213,7 +1213,7 @@ This retrieves from the APIs the visits to the website from search, with keyword
 &lt;/blockquote&gt;
 &lt;div&gt;
  &lt;br/&gt;
-&lt;/div&gt;&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>Processing sources in Planck maps with Hadoop and Python</title><link href="http://zonca.github.io/2013/07/processing-planck-sources-with-hadoop.html" rel="alternate"></link><updated>2013-07-15T08:16:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-07-15:2013/07/processing-planck-sources-with-hadoop.html</id><summary type="html">&lt;h2&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sun, 04 Aug 2013 17:47:00 -0700</pubDate><guid>tag:zonca.github.io,2013-08-04:2013/08/export-google-analytics-data-via-api.html</guid><category>python</category></item><item><title>Processing sources in Planck maps with Hadoop and Python</title><link>http://zonca.github.io/2013/07/processing-planck-sources-with-hadoop.html</link><description>&lt;h2&gt;
  Purpose
 &lt;/h2&gt;
 
@@ -1530,7 +1530,7 @@ This retrieves from the APIs the visits to the website from search, with keyword
  &lt;div class="separator" style="clear: both; text-align: center;"&gt;
   &lt;br/&gt;
  &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;</summary><category term="hpc"></category><category term="supercomputing"></category><category term="python"></category><category term="Planck"></category><category term="hadoop"></category></entry><entry><title>How to use the IPython notebook on a small computing cluster</title><link href="http://zonca.github.io/2013/06/how-to-use-ipython-notebook-on-small.html" rel="alternate"></link><updated>2013-06-22T11:12:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-06-22:2013/06/how-to-use-ipython-notebook-on-small.html</id><summary type="html">&lt;p&gt;&lt;a href="http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html"&gt;The IPython notebook&lt;/a&gt; is a powerful and easy to use interface for using Python and particularly useful when running remotely, because it allows the interface to run locally in your browser, while the computing kernel runs remotely on the cluster.&lt;/p&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 15 Jul 2013 08:16:00 -0700</pubDate><guid>tag:zonca.github.io,2013-07-15:2013/07/processing-planck-sources-with-hadoop.html</guid><category>hpc</category><category>supercomputing</category><category>python</category><category>Planck</category><category>hadoop</category></item><item><title>How to use the IPython notebook on a small computing cluster</title><link>http://zonca.github.io/2013/06/how-to-use-ipython-notebook-on-small.html</link><description>&lt;p&gt;&lt;a href="http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html"&gt;The IPython notebook&lt;/a&gt; is a powerful and easy to use interface for using Python and particularly useful when running remotely, because it allows the interface to run locally in your browser, while the computing kernel runs remotely on the cluster.&lt;/p&gt;
 &lt;h2&gt;1) Configure IPython notebook:&lt;/h2&gt;
 &lt;p&gt;First time you use the notebook you need to follow this configuration steps:&lt;/p&gt;
 &lt;ul&gt;
@@ -1610,7 +1610,7 @@ ssh into the login node, at the terminal run:&lt;/p&gt;
 &lt;li&gt;&lt;a href="http://scipy-lectures.github.io/"&gt;Scientific computing with Python&lt;/a&gt;, large and detailed introduction to Python, Numpy, Matplotlib, Scipy&lt;/li&gt;
 &lt;li&gt;My &lt;a href="https://github.com/zonca/PythonHPC"&gt;Python for High performance computing&lt;/a&gt;: slides and few ipython notebook examples, see the README&lt;/li&gt;
 &lt;li&gt;My &lt;a href="https://github.com/zonca/healpytut/blob/master/healpytut.pdf?raw=true"&gt;short Python and healpy tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="hpc"></category><category term="ipython"></category></entry><entry><title>IPython parallell setup on Carver at NERSC</title><link href="http://zonca.github.io/2013/04/ipython-parallell-setup-on-carver-at.html" rel="alternate"></link><updated>2013-04-11T05:53:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-11:2013/04/ipython-parallell-setup-on-carver-at.html</id><summary type="html">&lt;p&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 22 Jun 2013 11:12:00 -0700</pubDate><guid>tag:zonca.github.io,2013-06-22:2013/06/how-to-use-ipython-notebook-on-small.html</guid><category>hpc</category><category>ipython</category></item><item><title>IPython parallell setup on Carver at NERSC</title><link>http://zonca.github.io/2013/04/ipython-parallell-setup-on-carver-at.html</link><description>&lt;p&gt;
  IPython parallel is one of the easiest ways to spawn several Python sessions on a Supercomputing cluster and process jobs in parallel.
  &lt;br/&gt;
  &lt;br/&gt;
@@ -1738,7 +1738,7 @@ So I just created a bash script that get as parameters the processes per node an
 &lt;/div&gt;
 &lt;div style="font-family: inherit;"&gt;
  &lt;br/&gt;
-&lt;/div&gt;&lt;/p&gt;</summary><category term="hpc"></category><category term="supercomputing"></category><category term="ipython"></category><category term="python"></category></entry><entry><title>Simple Mixin usage in python</title><link href="http://zonca.github.io/2013/04/simple-mixin-usage-in-python.html" rel="alternate"></link><updated>2013-04-08T01:34:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-08:2013/04/simple-mixin-usage-in-python.html</id><summary type="html">&lt;p&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 11 Apr 2013 05:53:00 -0700</pubDate><guid>tag:zonca.github.io,2013-04-11:2013/04/ipython-parallell-setup-on-carver-at.html</guid><category>hpc</category><category>supercomputing</category><category>ipython</category><category>python</category></item><item><title>Simple Mixin usage in python</title><link>http://zonca.github.io/2013/04/simple-mixin-usage-in-python.html</link><description>&lt;p&gt;
  One situation where Mixins are useful in Python is when you need to modify  a method of similar classes that you are importing from a package.
  &lt;br/&gt;
 &lt;/p&gt;
@@ -1876,7 +1876,7 @@ So I just created a bash script that get as parameters the processes per node an
 
 &lt;div&gt;
  This overrides the get_object method of DetailView with the get_object method of OwnedObjectMixin, and the call to super calls the get_object method of DetailView, so has the same effect of subclassing DetailView and override the get_object method, but we can be apply the same Mixin to other classes.
-&lt;/div&gt;</summary><category term="python"></category></entry><entry><title>Noise in spectra and map domain</title><link href="http://zonca.github.io/2013/04/noise-in-spectra-and-map-domain.html" rel="alternate"></link><updated>2013-04-08T01:32:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-08:2013/04/noise-in-spectra-and-map-domain.html</id><summary type="html">&lt;h3&gt;
+&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 08 Apr 2013 01:34:00 -0700</pubDate><guid>tag:zonca.github.io,2013-04-08:2013/04/simple-mixin-usage-in-python.html</guid><category>python</category></item><item><title>Noise in spectra and map domain</title><link>http://zonca.github.io/2013/04/noise-in-spectra-and-map-domain.html</link><description>&lt;h3&gt;
  Spectra
 &lt;/h3&gt;
 
@@ -1923,7 +1923,7 @@ Then the variance per pixel is sigma_per_sample**2/number_of_hits
  &lt;br/&gt;
  &lt;br/&gt;
  $$C_\ell = \Omega_{\rm pix} \langle \frac{\sigma^2}{\tau} \rangle = \Omega_{\rm pix} \langle \frac{\sigma^2 f_{\rm samp}}{hits} \rangle$$
-&lt;/div&gt;&lt;/p&gt;</summary><category term="map"></category><category term="power spectra"></category><category term="noise"></category></entry><entry><title>Basic fork/pull git workflow</title><link href="http://zonca.github.io/2013/04/basic-forkpull-git-workflow.html" rel="alternate"></link><updated>2013-04-06T07:52:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-04-06:2013/04/basic-forkpull-git-workflow.html</id><summary type="html">&lt;div dir="ltr"&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 08 Apr 2013 01:32:00 -0700</pubDate><guid>tag:zonca.github.io,2013-04-08:2013/04/noise-in-spectra-and-map-domain.html</guid><category>map</category><category>power spectra</category><category>noise</category></item><item><title>Basic fork/pull git workflow</title><link>http://zonca.github.io/2013/04/basic-forkpull-git-workflow.html</link><description>&lt;div dir="ltr"&gt;
  Typical simple workflow for a (github) repository with few users.
 &lt;/div&gt;
 
@@ -2095,7 +2095,7 @@ Then the variance per pixel is sigma_per_sample**2/number_of_hits
   For occasional developers:
  &lt;/b&gt;
  Just fork the repo on github to their account, work on a branch there, and then create a pull request on the github web interface from the branch to master on the main repository.
-&lt;/div&gt;&lt;/p&gt;</summary><category term="git"></category><category term="github"></category></entry><entry><title>Interactive 3D plot of a sky map</title><link href="http://zonca.github.io/2013/03/interactive-3d-plot-of-sky-map.html" rel="alternate"></link><updated>2013-03-12T19:49:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-03-12:2013/03/interactive-3d-plot-of-sky-map.html</id><summary type="html">&lt;p&gt;&lt;a href="http://code.enthought.com/projects/mayavi/"&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 06 Apr 2013 07:52:00 -0700</pubDate><guid>tag:zonca.github.io,2013-04-06:2013/04/basic-forkpull-git-workflow.html</guid><category>git</category><category>github</category></item><item><title>Interactive 3D plot of a sky map</title><link>http://zonca.github.io/2013/03/interactive-3d-plot-of-sky-map.html</link><description>&lt;p&gt;&lt;a href="http://code.enthought.com/projects/mayavi/"&gt;
  Mayavi
 &lt;/a&gt;
 is a Python package from Enthought for 3D visualization, here a simple example of creating a 3D interactive map starting from a HEALPix pixelization sky map:
@@ -2137,7 +2137,7 @@ is a Python package from Enthought for 3D visualization, here a simple example o
    sudo pip install mayavi.
   &lt;/span&gt;
  &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;</summary><category term="mayavi"></category><category term="python"></category><category term="astrophysics"></category></entry><entry><title>How to cite HDF5 in bibtex</title><link href="http://zonca.github.io/2013/02/how-to-cite-hdf5-in-bibtex.html" rel="alternate"></link><updated>2013-02-27T00:42:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-02-27:2013/02/how-to-cite-hdf5-in-bibtex.html</id><summary type="html">&lt;p&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 12 Mar 2013 19:49:00 -0700</pubDate><guid>tag:zonca.github.io,2013-03-12:2013/03/interactive-3d-plot-of-sky-map.html</guid><category>mayavi</category><category>python</category><category>astrophysics</category></item><item><title>How to cite HDF5 in bibtex</title><link>http://zonca.github.io/2013/02/how-to-cite-hdf5-in-bibtex.html</link><description>&lt;p&gt;
  here the bibtex entry:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2149,7 +2149,7 @@ is a Python package from Enthought for 3D visualization, here a simple example o
  &lt;a href="http://www.hdfgroup.org/HDF5-FAQ.html#gcite"&gt;
   http://www.hdfgroup.org/HDF5-FAQ.html#gcite
  &lt;/a&gt;
-&lt;/p&gt;</summary></entry><entry><title>Compile healpix C++ to javascript</title><link href="http://zonca.github.io/2013/01/tag:blogger.html" rel="alternate"></link><updated>2013-01-28T21:06:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-01-28:2013/01/tag:blogger.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 27 Feb 2013 00:42:00 -0800</pubDate><guid>tag:zonca.github.io,2013-02-27:2013/02/how-to-cite-hdf5-in-bibtex.html</guid></item><item><title>Compile healpix C++ to javascript</title><link>http://zonca.github.io/2013/01/tag:blogger.html</link><description>&lt;p&gt;
  Compile C++ -&amp;gt; LLVM with clang
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2158,7 +2158,7 @@ is a Python package from Enthought for 3D visualization, here a simple example o
  &lt;a href="https://github.com/kripken/emscripten/wiki/Tutorial"&gt;
   https://github.com/kripken/emscripten/wiki/Tutorial
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="javascript"></category><category term="hackideas"></category><category term="healpix"></category></entry><entry><title>Elliptic beams, FWHM and ellipticity</title><link href="http://zonca.github.io/2013/01/elliptic-beams-fwhm-and-ellipticity.html" rel="alternate"></link><updated>2013-01-18T00:58:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2013-01-18:2013/01/elliptic-beams-fwhm-and-ellipticity.html</id><summary type="html">&lt;p&gt;&lt;span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 28 Jan 2013 21:06:00 -0800</pubDate><guid>tag:zonca.github.io,2013-01-28:2013/01/tag:blogger.html</guid><category>javascript</category><category>hackideas</category><category>healpix</category></item><item><title>Elliptic beams, FWHM and ellipticity</title><link>http://zonca.github.io/2013/01/elliptic-beams-fwhm-and-ellipticity.html</link><description>&lt;p&gt;&lt;span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"&gt;
  The relationship between the Full Width Half Max, FWHM (min, max, and average) and the
 &lt;/span&gt;
 &lt;br/&gt;
@@ -2179,7 +2179,7 @@ is a Python package from Enthought for 3D visualization, here a simple example o
 &lt;br/&gt;
 &lt;span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;"&gt;
  &lt;br/&gt;
-&lt;/span&gt;&lt;/p&gt;</summary><category term="astrophysics"></category></entry><entry><title>Ubuntu PPA for HEALPix and healpy</title><link href="http://zonca.github.io/2012/12/ubuntu-ppa-for-healpix-and-healpy.html" rel="alternate"></link><updated>2012-12-17T10:37:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-12-17:2012/12/ubuntu-ppa-for-healpix-and-healpy.html</id><summary type="html">&lt;p&gt;&lt;br/&gt;
+&lt;/span&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 18 Jan 2013 00:58:00 -0800</pubDate><guid>tag:zonca.github.io,2013-01-18:2013/01/elliptic-beams-fwhm-and-ellipticity.html</guid><category>astrophysics</category></item><item><title>Ubuntu PPA for HEALPix and healpy</title><link>http://zonca.github.io/2012/12/ubuntu-ppa-for-healpix-and-healpy.html</link><description>&lt;p&gt;&lt;br/&gt;
 &lt;b&gt;
  HEALPix C, C++
 &lt;/b&gt;
@@ -2273,14 +2273,14 @@ and remove it:
    1.4.1
   &lt;/span&gt;
  &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;</summary><category term="healpix"></category><category term="ubuntu"></category></entry><entry><title>Butterworth filter with Python</title><link href="http://zonca.github.io/2012/10/butterworth-filter-with-python.html" rel="alternate"></link><updated>2012-10-06T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-10-06:2012/10/butterworth-filter-with-python.html</id><summary type="html">&lt;p&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 17 Dec 2012 10:37:00 -0800</pubDate><guid>tag:zonca.github.io,2012-12-17:2012/12/ubuntu-ppa-for-healpix-and-healpy.html</guid><category>healpix</category><category>ubuntu</category></item><item><title>Butterworth filter with Python</title><link>http://zonca.github.io/2012/10/butterworth-filter-with-python.html</link><description>&lt;p&gt;
  Using IPython notebook of course:
  &lt;br/&gt;
  &lt;br/&gt;
  &lt;a href="http://nbviewer.ipython.org/3843014/"&gt;
   http://nbviewer.ipython.org/3843014/
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="ipython"></category><category term="scipy"></category><category term="python"></category></entry><entry><title>IPython.parallel for Planck data analysis at NERSC</title><link href="http://zonca.github.io/2012/09/ipythonparallel-for-planck-data.html" rel="alternate"></link><updated>2012-09-27T06:24:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-09-27:2012/09/ipythonparallel-for-planck-data.html</id><summary type="html">&lt;p&gt;&lt;a href="http://www.esa.int/planck"&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 06 Oct 2012 00:00:00 -0700</pubDate><guid>tag:zonca.github.io,2012-10-06:2012/10/butterworth-filter-with-python.html</guid><category>ipython</category><category>scipy</category><category>python</category></item><item><title>IPython.parallel for Planck data analysis at NERSC</title><link>http://zonca.github.io/2012/09/ipythonparallel-for-planck-data.html</link><description>&lt;p&gt;&lt;a href="http://www.esa.int/planck"&gt;
  Planck
 &lt;/a&gt;
 is a Space mission for high precision measurements of the
@@ -2318,7 +2318,7 @@ controller automatically balances the queue therefore we get maximum efficiency,
 Second task is calibration and dipole removal, which processes about 1.2 TB of data, but it needs to read the dense pointing from disk, so it is very I/O intensive. Also in this case we can submit the ~3000 jobs to an IPython.parallel cluster.
 &lt;br/&gt;
 &lt;br/&gt;
-In a next post I'll describe in detail my setup and how I organize my code to make it easy to swap back and forth between debugging code interactively and  running production runs in parallel.&lt;/p&gt;</summary><category term="ipython"></category><category term="python"></category><category term="Planck"></category></entry><entry><title>homepage on about.me</title><link href="http://zonca.github.io/2012/09/homepage-on-aboutme.html" rel="alternate"></link><updated>2012-09-26T22:19:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-09-26:2012/09/homepage-on-aboutme.html</id><summary type="html">&lt;p&gt;
+In a next post I'll describe in detail my setup and how I organize my code to make it easy to swap back and forth between debugging code interactively and  running production runs in parallel.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 27 Sep 2012 06:24:00 -0700</pubDate><guid>tag:zonca.github.io,2012-09-27:2012/09/ipythonparallel-for-planck-data.html</guid><category>ipython</category><category>python</category><category>Planck</category></item><item><title>homepage on about.me</title><link>http://zonca.github.io/2012/09/homepage-on-aboutme.html</link><description>&lt;p&gt;
  moved my homepage to about.me:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2330,7 +2330,7 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
  it is quite nice, and essential, as most of it is just links to other websites, i.e. arXiv for publications, Linkedin for CV, github for code.
  &lt;br/&gt;
  So I'm going to use andreazonca.com as blog, hosted on blogger.
-&lt;/p&gt;</summary></entry><entry><title>doctests and unittests happiness 2</title><link href="http://zonca.github.io/2012/08/doctests-and-unittests-happiness-2.html" rel="alternate"></link><updated>2012-08-16T14:07:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-08-16:2012/08/doctests-and-unittests-happiness-2.html</id><summary type="html">&lt;blockquote&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 26 Sep 2012 22:19:00 -0700</pubDate><guid>tag:zonca.github.io,2012-09-26:2012/09/homepage-on-aboutme.html</guid></item><item><title>doctests and unittests happiness 2</title><link>http://zonca.github.io/2012/08/doctests-and-unittests-happiness-2.html</link><description>&lt;blockquote&gt;
  nosetests -v --with-doctest
  &lt;br/&gt;
  Doctest: healpy.pixelfunc.ang2pix ... ok
@@ -2432,9 +2432,9 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
  &lt;br/&gt;
  &lt;br/&gt;
  OK
-&lt;/blockquote&gt;&lt;/p&gt;</summary><category term="python"></category><category term="Quote"></category></entry><entry><title>compile python module with mpi support</title><link href="http://zonca.github.io/2012/07/compile-python-module-with-mpi-support.html" rel="alternate"></link><updated>2012-07-06T16:08:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2012-07-06:2012/07/compile-python-module-with-mpi-support.html</id><summary type="html">&lt;p&gt;
+&lt;/blockquote&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 16 Aug 2012 14:07:00 -0700</pubDate><guid>tag:zonca.github.io,2012-08-16:2012/08/doctests-and-unittests-happiness-2.html</guid><category>python</category><category>Quote</category></item><item><title>compile python module with mpi support</title><link>http://zonca.github.io/2012/07/compile-python-module-with-mpi-support.html</link><description>&lt;p&gt;
  CC=mpicc LDSHARED="mpicc -shared" python setup.py build_ext -i
-&lt;/p&gt;</summary></entry><entry><title>some python resources</title><link href="http://zonca.github.io/2011/11/some-python-resources.html" rel="alternate"></link><updated>2011-11-01T23:02:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-11-01:2011/11/some-python-resources.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 06 Jul 2012 16:08:00 -0700</pubDate><guid>tag:zonca.github.io,2012-07-06:2012/07/compile-python-module-with-mpi-support.html</guid></item><item><title>some python resources</title><link>http://zonca.github.io/2011/11/some-python-resources.html</link><description>&lt;p&gt;
  python tutorial:
  &lt;br/&gt;
  &lt;a href="http://docs.python.org/tutorial/"&gt;
@@ -2475,7 +2475,7 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
  video tut:
  &lt;br/&gt;
  http://www.youtube.com/watch?v=YW8jtSOTRAU&amp;amp;feature=channel
-&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>cfitsio wrapper in python</title><link href="http://zonca.github.io/2011/06/cfitsio-wrapper-in-python.html" rel="alternate"></link><updated>2011-06-21T04:43:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-06-21:2011/06/cfitsio-wrapper-in-python.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 01 Nov 2011 23:02:00 -0700</pubDate><guid>tag:zonca.github.io,2011-11-01:2011/11/some-python-resources.html</guid><category>python</category></item><item><title>cfitsio wrapper in python</title><link>http://zonca.github.io/2011/06/cfitsio-wrapper-in-python.html</link><description>&lt;p&gt;
  After several issues with pyfits, and tired of it being so overengineered, I've wrote my own fits I/O package in python, wrapping the C library cfitsio with ctypes.
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2485,21 +2485,21 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
  &lt;a href="https://github.com/zonca/pycfitsio"&gt;
   https://github.com/zonca/pycfitsio
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>unit testing happiness</title><link href="http://zonca.github.io/2011/06/unit-testing-happiness.html" rel="alternate"></link><updated>2011-06-21T04:39:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-06-21:2011/06/unit-testing-happiness.html</id><summary type="html">&lt;pre&gt;nosetests -v&lt;br/&gt;test_all_cols (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_colnames (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_move (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_open_file (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_read_col (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_read_hdus (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_create (pycfitsio.test.TestPyCfitsIoWrite) ... ok&lt;br/&gt;test_write (pycfitsio.test.TestPyCfitsIoWrite) ... ok&lt;br/&gt;&lt;br/&gt;----------------------------------------------------------------------&lt;br/&gt;Ran 8 tests in 0.016s&lt;br/&gt;&lt;br/&gt;OK&lt;/pre&gt;</summary><category term="python"></category></entry><entry><title>Pink noise (1/f noise) simulations in numpy</title><link href="http://zonca.github.io/2011/05/pink-noise-1f-noise-simulations-in-numpy.html" rel="alternate"></link><updated>2011-05-18T23:49:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-05-18:2011/05/pink-noise-1f-noise-simulations-in-numpy.html</id><summary type="html">&lt;p&gt;&lt;a href="https://gist.github.com/979729"&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 21 Jun 2011 04:43:00 -0700</pubDate><guid>tag:zonca.github.io,2011-06-21:2011/06/cfitsio-wrapper-in-python.html</guid><category>python</category><category>numpy</category></item><item><title>unit testing happiness</title><link>http://zonca.github.io/2011/06/unit-testing-happiness.html</link><description>&lt;pre&gt;nosetests -v&lt;br/&gt;test_all_cols (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_colnames (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_move (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_open_file (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_read_col (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_read_hdus (pycfitsio.test.TestPyCfitsIoRead) ... ok&lt;br/&gt;test_create (pycfitsio.test.TestPyCfitsIoWrite) ... ok&lt;br/&gt;test_write (pycfitsio.test.TestPyCfitsIoWrite) ... ok&lt;br/&gt;&lt;br/&gt;----------------------------------------------------------------------&lt;br/&gt;Ran 8 tests in 0.016s&lt;br/&gt;&lt;br/&gt;OK&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 21 Jun 2011 04:39:00 -0700</pubDate><guid>tag:zonca.github.io,2011-06-21:2011/06/unit-testing-happiness.html</guid><category>python</category></item><item><title>Pink noise (1/f noise) simulations in numpy</title><link>http://zonca.github.io/2011/05/pink-noise-1f-noise-simulations-in-numpy.html</link><description>&lt;p&gt;&lt;a href="https://gist.github.com/979729"&gt;
  https://gist.github.com/979729
 &lt;/a&gt;
 &lt;br/&gt;
 &lt;br/&gt;
 &lt;a href="http://zonca.github.io/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png"&gt;
  &lt;img alt="" class="alignnone size-medium wp-image-128" height="225" src="http://zonca.github.io/images/pink-noise-1f-noise-simulations-in-numpy_05_oneoverf1.png" title="oneoverf" width="300"/&gt;
-&lt;/a&gt;&lt;/p&gt;</summary><category term="python"></category><category term="physics"></category></entry><entry><title>Vim regular expressions</title><link href="http://zonca.github.io/2011/04/vim-regular-expressions.html" rel="alternate"></link><updated>2011-04-29T02:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-04-29:2011/04/vim-regular-expressions.html</id><summary type="html">&lt;p&gt;
+&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 18 May 2011 23:49:00 -0700</pubDate><guid>tag:zonca.github.io,2011-05-18:2011/05/pink-noise-1f-noise-simulations-in-numpy.html</guid><category>python</category><category>physics</category></item><item><title>Vim regular expressions</title><link>http://zonca.github.io/2011/04/vim-regular-expressions.html</link><description>&lt;p&gt;
  very good reference of the usage of regular expressions in VIM:
  &lt;br/&gt;
  &lt;br/&gt;
  &lt;a href="http://www.softpanorama.org/Editors/Vimorama/vim_regular_expressions.shtml"&gt;
   http://www.softpanorama.org/Editors/Vimorama/vim_regular_expressions.shtml
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>set python logging level</title><link href="http://zonca.github.io/2011/04/set-python-logging-level.html" rel="alternate"></link><updated>2011-04-13T01:02:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-04-13:2011/04/set-python-logging-level.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 29 Apr 2011 02:14:00 -0700</pubDate><guid>tag:zonca.github.io,2011-04-29:2011/04/vim-regular-expressions.html</guid><category>linux</category></item><item><title>set python logging level</title><link>http://zonca.github.io/2011/04/set-python-logging-level.html</link><description>&lt;p&gt;
  often using logging.basicConfig is useless because if the logging module is already configured upfront by one of the imported libraries this is ignored.
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2508,7 +2508,7 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
  &lt;code&gt;
   ﻿﻿logging.root.level = logging.DEBUG
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>pyfits memory leak in new_table</title><link href="http://zonca.github.io/2011/03/pyfits-memory-leak-in-newtable.html" rel="alternate"></link><updated>2011-03-28T17:22:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-03-28:2011/03/pyfits-memory-leak-in-newtable.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 13 Apr 2011 01:02:00 -0700</pubDate><guid>tag:zonca.github.io,2011-04-13:2011/04/set-python-logging-level.html</guid><category>python</category></item><item><title>pyfits memory leak in new_table</title><link>http://zonca.github.io/2011/03/pyfits-memory-leak-in-newtable.html</link><description>&lt;p&gt;
  I found a memory leakage issue in pyfits.new_table, data were NOT deleted when the table was deleted, I prepared a test on github, using
  &lt;a href="http://mg.pov.lt/objgraph/" title="objgraph"&gt;
   objgraph
@@ -2533,7 +2533,7 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
  &lt;a href="http://trac6.assembla.com/pyfits/changeset/844"&gt;
   http://trac6.assembla.com/pyfits/changeset/844
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="python"></category><category term="astrophysics"></category></entry><entry><title>ipython and PyTrilinos</title><link href="http://zonca.github.io/2011/02/ipython-and-pytrilinos.html" rel="alternate"></link><updated>2011-02-16T19:10:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-02-16:2011/02/ipython-and-pytrilinos.html</id><summary type="html">&lt;ol&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 28 Mar 2011 17:22:00 -0700</pubDate><guid>tag:zonca.github.io,2011-03-28:2011/03/pyfits-memory-leak-in-newtable.html</guid><category>python</category><category>astrophysics</category></item><item><title>ipython and PyTrilinos</title><link>http://zonca.github.io/2011/02/ipython-and-pytrilinos.html</link><description>&lt;ol&gt;
  &lt;br/&gt;
  &lt;li&gt;
   start ipcontroller
@@ -2569,19 +2569,19 @@ In a next post I'll describe in detail my setup and how I organize my code to ma
   &lt;/code&gt;
  &lt;/li&gt;
  &lt;br/&gt;
-&lt;/ol&gt;</summary><category term="parallel programming"></category><category term="python"></category></entry><entry><title>git make local branch tracking origin</title><link href="http://zonca.github.io/2011/02/git-make-local-branch-tracking-origin.html" rel="alternate"></link><updated>2011-02-02T02:58:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-02-02:2011/02/git-make-local-branch-tracking-origin.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 16 Feb 2011 19:10:00 -0800</pubDate><guid>tag:zonca.github.io,2011-02-16:2011/02/ipython-and-pytrilinos.html</guid><category>parallel programming</category><category>python</category></item><item><title>git make local branch tracking origin</title><link>http://zonca.github.io/2011/02/git-make-local-branch-tracking-origin.html</link><description>&lt;p&gt;&lt;code&gt;
  git branch --set-upstream master origin/master
 &lt;/code&gt;
 &lt;br/&gt;
 &lt;br/&gt;
-you obtain the same result as initial cloning&lt;/p&gt;</summary><category term="git"></category></entry><entry><title>memory map npy files</title><link href="http://zonca.github.io/2011/01/memory-map-npy-files.html" rel="alternate"></link><updated>2011-01-07T21:04:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2011-01-07:2011/01/memory-map-npy-files.html</id><summary type="html">&lt;p&gt;
+you obtain the same result as initial cloning&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 02 Feb 2011 02:58:00 -0800</pubDate><guid>tag:zonca.github.io,2011-02-02:2011/02/git-make-local-branch-tracking-origin.html</guid><category>git</category></item><item><title>memory map npy files</title><link>http://zonca.github.io/2011/01/memory-map-npy-files.html</link><description>&lt;p&gt;
  Mem-map the stored array, and then access the second row directly from disk:
  &lt;br/&gt;
  &lt;br/&gt;
  &lt;code&gt;
   X = np.load('/tmp/123.npy', mmap_mode='r')
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>force local install of python module</title><link href="http://zonca.github.io/2010/12/force-local-install-of-python-module.html" rel="alternate"></link><updated>2010-12-03T22:18:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-12-03:2010/12/force-local-install-of-python-module.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 07 Jan 2011 21:04:00 -0800</pubDate><guid>tag:zonca.github.io,2011-01-07:2011/01/memory-map-npy-files.html</guid><category>python</category><category>numpy</category></item><item><title>force local install of python module</title><link>http://zonca.github.io/2010/12/force-local-install-of-python-module.html</link><description>&lt;p&gt;&lt;code&gt;
  python setup.py install --prefix FOLDER
  &lt;br/&gt;
 &lt;/code&gt;
@@ -2592,13 +2592,13 @@ creates lib/python2.6/site-packages, to force a local install you should use:
 &lt;br/&gt;
 &lt;code&gt;
  python setup.py install --install-lib FOLDER
-&lt;/code&gt;&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>gnome alt f2 popup launcher</title><link href="http://zonca.github.io/2010/08/gnome-alt-f2-popup-launcher.html" rel="alternate"></link><updated>2010-08-31T18:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-08-31:2010/08/gnome-alt-f2-popup-launcher.html</id><summary type="html">&lt;p&gt;
+&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 03 Dec 2010 22:18:00 -0800</pubDate><guid>tag:zonca.github.io,2010-12-03:2010/12/force-local-install-of-python-module.html</guid><category>python</category></item><item><title>gnome alt f2 popup launcher</title><link>http://zonca.github.io/2010/08/gnome-alt-f2-popup-launcher.html</link><description>&lt;p&gt;
  ﻿
  &lt;br/&gt;
  &lt;code&gt;
   gnome-panel-control --run-dialog
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>switch to interactive backend with ipython -pylab</title><link href="http://zonca.github.io/2010/08/switch-to-interactive-backend-with.html" rel="alternate"></link><updated>2010-08-21T00:33:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-08-21:2010/08/switch-to-interactive-backend-with.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 31 Aug 2010 18:14:00 -0700</pubDate><guid>tag:zonca.github.io,2010-08-31:2010/08/gnome-alt-f2-popup-launcher.html</guid><category>linux</category><category>ubuntu</category></item><item><title>switch to interactive backend with ipython -pylab</title><link>http://zonca.github.io/2010/08/switch-to-interactive-backend-with.html</link><description>&lt;p&gt;
  objective:
  &lt;br/&gt;
 &lt;/p&gt;
@@ -2636,7 +2636,7 @@ then setup you ipython to switch to interactive, in ipython file Shell.py, in th
  matplotlib.use('GTKAgg')
 &lt;/code&gt;
 &lt;br/&gt;
-after the first import of matplotlib&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>numpy dtypes and fits keywords</title><link href="http://zonca.github.io/2010/08/numpy-dtypes-and-fits-keywords.html" rel="alternate"></link><updated>2010-08-04T21:57:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-08-04:2010/08/numpy-dtypes-and-fits-keywords.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+after the first import of matplotlib&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 21 Aug 2010 00:33:00 -0700</pubDate><guid>tag:zonca.github.io,2010-08-21:2010/08/switch-to-interactive-backend-with.html</guid><category>python</category></item><item><title>numpy dtypes and fits keywords</title><link>http://zonca.github.io/2010/08/numpy-dtypes-and-fits-keywords.html</link><description>&lt;p&gt;&lt;code&gt;
  bool: 'L',
  &lt;br/&gt;
  uint8: 'B',
@@ -2654,7 +2654,7 @@ after the first import of matplotlib&lt;/p&gt;</summary><category term="python">
  complex64: 'C',
  &lt;br/&gt;
  complex128: 'M'
-&lt;/code&gt;&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>count hits with numpy</title><link href="http://zonca.github.io/2010/07/count-hits-with-numpy.html" rel="alternate"></link><updated>2010-07-23T15:18:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-07-23:2010/07/count-hits-with-numpy.html</id><summary type="html">&lt;p&gt;
+&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 04 Aug 2010 21:57:00 -0700</pubDate><guid>tag:zonca.github.io,2010-08-04:2010/08/numpy-dtypes-and-fits-keywords.html</guid><category>python</category><category>numpy</category></item><item><title>count hits with numpy</title><link>http://zonca.github.io/2010/07/count-hits-with-numpy.html</link><description>&lt;p&gt;
  I have an array where I record hits
  &lt;br/&gt;
  &lt;code&gt;
@@ -2691,7 +2691,7 @@ after the first import of matplotlib&lt;/p&gt;</summary><category term="python">
   &lt;br/&gt;
   array([ 0.,  0.,  2.,  0.,  0.])
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>change column name in a fits with pyfits</title><link href="http://zonca.github.io/2010/06/change-column-name-in-fits-with-pyfits.html" rel="alternate"></link><updated>2010-06-30T22:06:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-30:2010/06/change-column-name-in-fits-with-pyfits.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 23 Jul 2010 15:18:00 -0700</pubDate><guid>tag:zonca.github.io,2010-07-23:2010/07/count-hits-with-numpy.html</guid><category>python</category><category>numpy</category></item><item><title>change column name in a fits with pyfits</title><link>http://zonca.github.io/2010/06/change-column-name-in-fits-with-pyfits.html</link><description>&lt;p&gt;
  no way to change it manipulating the dtype of the data array.
  &lt;br/&gt;
  &lt;code&gt;
@@ -2701,7 +2701,7 @@ after the first import of matplotlib&lt;/p&gt;</summary><category term="python">
  &lt;/code&gt;
  &lt;br/&gt;
  you need to change the header, using the update method of the right TTYPE and then write again the fits file using a.writeto.
-&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>healpix coordinates</title><link href="http://zonca.github.io/2010/06/healpix-coordinates.html" rel="alternate"></link><updated>2010-06-23T01:01:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-23:2010/06/healpix-coordinates.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 30 Jun 2010 22:06:00 -0700</pubDate><guid>tag:zonca.github.io,2010-06-30:2010/06/change-column-name-in-fits-with-pyfits.html</guid><category>python</category></item><item><title>healpix coordinates</title><link>http://zonca.github.io/2010/06/healpix-coordinates.html</link><description>&lt;p&gt;
  Healpix considers
  &lt;strong&gt;
   latitude
@@ -2739,13 +2739,13 @@ after the first import of matplotlib&lt;/p&gt;</summary><category term="python">
   )
  &lt;/li&gt;
  &lt;br/&gt;
-&lt;/ul&gt;</summary><category term="astrophysics"></category><category term="physics"></category></entry><entry><title>parallel computing the python way</title><link href="http://zonca.github.io/2010/06/parallel-computing-python-way.html" rel="alternate"></link><updated>2010-06-21T07:27:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-21:2010/06/parallel-computing-python-way.html</id><summary type="html">&lt;p&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 23 Jun 2010 01:01:00 -0700</pubDate><guid>tag:zonca.github.io,2010-06-23:2010/06/healpix-coordinates.html</guid><category>astrophysics</category><category>physics</category></item><item><title>parallel computing the python way</title><link>http://zonca.github.io/2010/06/parallel-computing-python-way.html</link><description>&lt;p&gt;
  forget MPI:
  &lt;br/&gt;
  &lt;a href="http://showmedo.com/videotutorials/series?name=N49qyIFOh"&gt;
   http://showmedo.com/videotutorials/series?name=N49qyIFOh
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="parallel programming"></category><category term="python"></category></entry><entry><title>quaternions for python</title><link href="http://zonca.github.io/2010/06/quaternions-for-python.html" rel="alternate"></link><updated>2010-06-21T07:21:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-06-21:2010/06/quaternions-for-python.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 21 Jun 2010 07:27:00 -0700</pubDate><guid>tag:zonca.github.io,2010-06-21:2010/06/parallel-computing-python-way.html</guid><category>parallel programming</category><category>python</category></item><item><title>quaternions for python</title><link>http://zonca.github.io/2010/06/quaternions-for-python.html</link><description>&lt;p&gt;
  the situation is pretty problematic, I hope someday
  &lt;strong&gt;
   scipy
@@ -2770,9 +2770,9 @@ after the first import of matplotlib&lt;/p&gt;</summary><category term="python">
   : more lightweight, does not implement quaternion interpolation
  &lt;/li&gt;
  &lt;br/&gt;
-&lt;/ul&gt;</summary><category term="python"></category><category term="physics"></category></entry><entry><title>change permission recursively to folders only</title><link href="http://zonca.github.io/2010/03/change-permission-recursively-to.html" rel="alternate"></link><updated>2010-03-23T17:58:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-03-23:2010/03/change-permission-recursively-to.html</id><summary type="html">&lt;p&gt;&lt;code&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 21 Jun 2010 07:21:00 -0700</pubDate><guid>tag:zonca.github.io,2010-06-21:2010/06/quaternions-for-python.html</guid><category>python</category><category>physics</category></item><item><title>change permission recursively to folders only</title><link>http://zonca.github.io/2010/03/change-permission-recursively-to.html</link><description>&lt;p&gt;&lt;code&gt;
  find . -type d -exec chmod 777 {} \;
-&lt;/code&gt;&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>aptitude search 'and'</title><link href="http://zonca.github.io/2010/03/aptitude-search.html" rel="alternate"></link><updated>2010-03-16T22:50:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-03-16:2010/03/aptitude-search.html</id><summary type="html">&lt;p&gt;
+&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 23 Mar 2010 17:58:00 -0700</pubDate><guid>tag:zonca.github.io,2010-03-23:2010/03/change-permission-recursively-to.html</guid><category>linux</category></item><item><title>aptitude search 'and'</title><link>http://zonca.github.io/2010/03/aptitude-search.html</link><description>&lt;p&gt;
  this is really something
  &lt;strong&gt;
   really annoying
@@ -2788,7 +2788,7 @@ after the first import of matplotlib&lt;/p&gt;</summary><category term="python">
  &lt;code&gt;
   aptitude search 'linux headers'
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>using numpy dtype with loadtxt</title><link href="http://zonca.github.io/2010/03/using-numpy-dtype-with-loadtxt.html" rel="alternate"></link><updated>2010-03-03T22:49:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-03-03:2010/03/using-numpy-dtype-with-loadtxt.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 16 Mar 2010 22:50:00 -0700</pubDate><guid>tag:zonca.github.io,2010-03-16:2010/03/aptitude-search.html</guid><category>linux</category><category>ubuntu</category></item><item><title>using numpy dtype with loadtxt</title><link>http://zonca.github.io/2010/03/using-numpy-dtype-with-loadtxt.html</link><description>&lt;p&gt;
  Let's say you want to read a text file like this:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2834,7 +2834,7 @@ but you can get the array of start or end times using:
 &lt;br/&gt;
 &lt;code&gt;
  a['start']
-&lt;/code&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="python"></category><category term="numpy"></category></entry><entry><title>Stop ipcluster from a script</title><link href="http://zonca.github.io/2010/02/stop-ipcluster-from-script.html" rel="alternate"></link><updated>2010-02-19T02:23:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-02-19:2010/02/stop-ipcluster-from-script.html</id><summary type="html">&lt;p&gt;
+&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 03 Mar 2010 22:49:00 -0800</pubDate><guid>tag:zonca.github.io,2010-03-03:2010/03/using-numpy-dtype-with-loadtxt.html</guid><category>linux</category><category>python</category><category>numpy</category></item><item><title>Stop ipcluster from a script</title><link>http://zonca.github.io/2010/02/stop-ipcluster-from-script.html</link><description>&lt;p&gt;
  Ipcluster is easy to start but not trivial to stop from a script, after having finished the processing, here's the solution:
  &lt;br/&gt;
  &lt;code&gt;
@@ -2844,7 +2844,7 @@ but you can get the array of start or end times using:
   &lt;br/&gt;
   mec.kill(controller=True)
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="parallel programming"></category><category term="python"></category></entry><entry><title>Correlation</title><link href="http://zonca.github.io/2010/01/correlation.html" rel="alternate"></link><updated>2010-01-28T00:45:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-28:2010/01/correlation.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 19 Feb 2010 02:23:00 -0800</pubDate><guid>tag:zonca.github.io,2010-02-19:2010/02/stop-ipcluster-from-script.html</guid><category>parallel programming</category><category>python</category></item><item><title>Correlation</title><link>http://zonca.github.io/2010/01/correlation.html</link><description>&lt;p&gt;&lt;strong&gt;
  Expectation value
 &lt;/strong&gt;
 or first moment of a random variable is the probability weighted sum of the possible values (weighted mean).
@@ -2895,14 +2895,14 @@ is:
 &lt;br/&gt;
 &lt;a href="http://mathworld.wolfram.com/Covariance.html"&gt;
  http://mathworld.wolfram.com/Covariance.html
-&lt;/a&gt;&lt;/p&gt;</summary><category term="physics"></category></entry><entry><title>execute bash script remotely with ssh</title><link href="http://zonca.github.io/2010/01/execute-bash-script-remotely-with-ssh.html" rel="alternate"></link><updated>2010-01-07T14:37:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-07:2010/01/execute-bash-script-remotely-with-ssh.html</id><summary type="html">&lt;p&gt;
+&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 28 Jan 2010 00:45:00 -0800</pubDate><guid>tag:zonca.github.io,2010-01-28:2010/01/correlation.html</guid><category>physics</category></item><item><title>execute bash script remotely with ssh</title><link>http://zonca.github.io/2010/01/execute-bash-script-remotely-with-ssh.html</link><description>&lt;p&gt;
  a bash script launched remotely via ssh does not load the environment, if this is an issue it is necessary to specify --login when calling bash:
  &lt;br/&gt;
  &lt;br/&gt;
  &lt;code&gt;
   ssh user@remoteserver.com 'bash --login life_om/cronodproc' | mail your@email.com -s cronodproc
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>lock pin hold a package using apt on ubuntu</title><link href="http://zonca.github.io/2010/01/lock-pin-hold-package-using-apt-on.html" rel="alternate"></link><updated>2010-01-07T13:49:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-07:2010/01/lock-pin-hold-package-using-apt-on.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 07 Jan 2010 14:37:00 -0800</pubDate><guid>tag:zonca.github.io,2010-01-07:2010/01/execute-bash-script-remotely-with-ssh.html</guid><category>linux</category><category>bash</category></item><item><title>lock pin hold a package using apt on ubuntu</title><link>http://zonca.github.io/2010/01/lock-pin-hold-package-using-apt-on.html</link><description>&lt;p&gt;
  set hold:
  &lt;br/&gt;
  &lt;code&gt;
@@ -2926,7 +2926,7 @@ is:
  &lt;code&gt;
   echo packagename install | dpkg --set-selections
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>load arrays from a text file with numpy</title><link href="http://zonca.github.io/2010/01/load-arrays-from-text-file-with-numpy.html" rel="alternate"></link><updated>2010-01-05T16:32:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2010-01-05:2010/01/load-arrays-from-text-file-with-numpy.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 07 Jan 2010 13:49:00 -0800</pubDate><guid>tag:zonca.github.io,2010-01-07:2010/01/lock-pin-hold-package-using-apt-on.html</guid><category>linux</category><category>ubuntu</category></item><item><title>load arrays from a text file with numpy</title><link>http://zonca.github.io/2010/01/load-arrays-from-text-file-with-numpy.html</link><description>&lt;p&gt;
  space separated text file with 5 arrays in columns:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2938,20 +2938,20 @@ is:
  &lt;br/&gt;
  &lt;br/&gt;
  quite impressive...
-&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>Latest Maxima and WxMaxima for Ubuntu Karmic</title><link href="http://zonca.github.io/2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html" rel="alternate"></link><updated>2009-12-15T11:20:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2009-12-15:2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html</id><summary type="html">&lt;p&gt;&lt;a href="http://zeus.nyf.hu/~blahota/maxima/karmic/" title="maxima for ubuntu"&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 05 Jan 2010 16:32:00 -0800</pubDate><guid>tag:zonca.github.io,2010-01-05:2010/01/load-arrays-from-text-file-with-numpy.html</guid><category>python</category><category>numpy</category></item><item><title>Latest Maxima and WxMaxima for Ubuntu Karmic</title><link>http://zonca.github.io/2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html</link><description>&lt;p&gt;&lt;a href="http://zeus.nyf.hu/~blahota/maxima/karmic/" title="maxima for ubuntu"&gt;
  http://zeus.nyf.hu/~blahota/maxima/karmic/
 &lt;/a&gt;
 &lt;br/&gt;
 &lt;br/&gt;
 on maxima mailing lists they suggested to install the sbcl built, so I first installed sbcl from the Ubuntu repositories and then maxima and wxmaxima f
 &lt;br/&gt;
-rom this url.&lt;/p&gt;</summary><category term="linux"></category><category term="maxima"></category><category term="ubuntu"></category></entry><entry><title>number of files in a folder and subfolders</title><link href="http://zonca.github.io/2009/12/number-of-files-in-folder-and-subfolders.html" rel="alternate"></link><updated>2009-12-10T18:16:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2009-12-10:2009/12/number-of-files-in-folder-and-subfolders.html</id><summary type="html">&lt;p&gt;
+rom this url.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 15 Dec 2009 11:20:00 -0800</pubDate><guid>tag:zonca.github.io,2009-12-15:2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html</guid><category>linux</category><category>maxima</category><category>ubuntu</category></item><item><title>number of files in a folder and subfolders</title><link>http://zonca.github.io/2009/12/number-of-files-in-folder-and-subfolders.html</link><description>&lt;p&gt;
  folders are not counted
  &lt;br/&gt;
  &lt;code&gt;
   find . -type f | wc -l
  &lt;/code&gt;
-&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>forcefully unmount a disk partition</title><link href="http://zonca.github.io/2008/09/forcefully-unmount-disk-partition.html" rel="alternate"></link><updated>2008-09-17T15:14:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-09-17:2008/09/forcefully-unmount-disk-partition.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 10 Dec 2009 18:16:00 -0800</pubDate><guid>tag:zonca.github.io,2009-12-10:2009/12/number-of-files-in-folder-and-subfolders.html</guid><category>linux</category><category>bash</category></item><item><title>forcefully unmount a disk partition</title><link>http://zonca.github.io/2008/09/forcefully-unmount-disk-partition.html</link><description>&lt;p&gt;
  check which processes are accessing a partition:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2967,7 +2967,7 @@ rom this url.&lt;/p&gt;</summary><category term="linux"></category><category ter
  try to unmount now:
  &lt;br/&gt;
  [sourcecode language="python"]umount /opt[/sourcecode]
-&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>netcat: quickly send binaries through network</title><link href="http://zonca.github.io/2008/04/netcat-quickly-send-binaries-through.html" rel="alternate"></link><updated>2008-04-29T12:25:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-04-29:2008/04/netcat-quickly-send-binaries-through.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 17 Sep 2008 15:14:00 -0700</pubDate><guid>tag:zonca.github.io,2008-09-17:2008/09/forcefully-unmount-disk-partition.html</guid><category>linux</category></item><item><title>netcat: quickly send binaries through network</title><link>http://zonca.github.io/2008/04/netcat-quickly-send-binaries-through.html</link><description>&lt;p&gt;
  just start nc in server mode on localhost:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -2988,7 +2988,7 @@ rom this url.&lt;/p&gt;</summary><category term="linux"></category><category ter
   examples
  &lt;/a&gt;
  .
-&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>Decibels, dB and dBm, in terms of Power and Amplitude</title><link href="http://zonca.github.io/2008/03/decibels-db-and-dbm-in-terms-of-power.html" rel="alternate"></link><updated>2008-03-29T02:13:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-03-29:2008/03/decibels-db-and-dbm-in-terms-of-power.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 29 Apr 2008 12:25:00 -0700</pubDate><guid>tag:zonca.github.io,2008-04-29:2008/04/netcat-quickly-send-binaries-through.html</guid><category>linux</category></item><item><title>Decibels, dB and dBm, in terms of Power and Amplitude</title><link>http://zonca.github.io/2008/03/decibels-db-and-dbm-in-terms-of-power.html</link><description>&lt;p&gt;
  It's not difficult, just always having some doubts...
  &lt;br/&gt;
 &lt;/p&gt;
@@ -3034,7 +3034,7 @@ $latex L_{dBm} = 10 log_{10} \left( \dfrac{P_1}{1 mW} \right) $
   3 dBm ≈ 2 mW
  &lt;/li&gt;
  &lt;br/&gt;
-&lt;/ul&gt;&lt;/p&gt;</summary><category term="general physics"></category><category term="physics"></category></entry><entry><title>Relation between Power density and temperature in an antenna</title><link href="http://zonca.github.io/2008/03/relation-between-power-density-and.html" rel="alternate"></link><updated>2008-03-28T18:29:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-03-28:2008/03/relation-between-power-density-and.html</id><summary type="html">&lt;p&gt;
+&lt;/ul&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 29 Mar 2008 02:13:00 -0700</pubDate><guid>tag:zonca.github.io,2008-03-29:2008/03/decibels-db-and-dbm-in-terms-of-power.html</guid><category>general physics</category><category>physics</category></item><item><title>Relation between Power density and temperature in an antenna</title><link>http://zonca.github.io/2008/03/relation-between-power-density-and.html</link><description>&lt;p&gt;
  Considering an antenna placed inside a blackbody enclosure at temperature T, the power received per unit bandwidth is:
  &lt;br/&gt;
  $latex \omega = kT$
@@ -3090,7 +3090,7 @@ $latex \omega = kT $
 which is the same noise power of a resistor.
 &lt;br/&gt;
 &lt;br/&gt;
-source : Kraus Radio Astronomy pag 107&lt;/p&gt;</summary><category term="astrophysics"></category><category term="physics"></category></entry><entry><title>Producing PDF from XML files</title><link href="http://zonca.github.io/2008/03/producing-pdf-from-xml-files.html" rel="alternate"></link><updated>2008-03-28T16:27:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2008-03-28:2008/03/producing-pdf-from-xml-files.html</id><summary type="html">&lt;p&gt;
+source : Kraus Radio Astronomy pag 107&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 28 Mar 2008 18:29:00 -0700</pubDate><guid>tag:zonca.github.io,2008-03-28:2008/03/relation-between-power-density-and.html</guid><category>astrophysics</category><category>physics</category></item><item><title>Producing PDF from XML files</title><link>http://zonca.github.io/2008/03/producing-pdf-from-xml-files.html</link><description>&lt;p&gt;
  I need to produce formatted pdf from XML data input file.
  &lt;br/&gt;
  The more standard way looks like to use
@@ -3106,11 +3106,11 @@ source : Kraus Radio Astronomy pag 107&lt;/p&gt;</summary><category term="astrop
   xmlto
  &lt;/a&gt;
  , a script for running a XSL transformation and render an XML in PDF or other formats. It would be interesting to test this script and understand if it needs just docbook XML input or any XML.
-&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>vim costumization</title><link href="http://zonca.github.io/2006/10/vim-costumization.html" rel="alternate"></link><updated>2006-10-17T10:49:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-10-17:2006/10/vim-costumization.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 28 Mar 2008 16:27:00 -0700</pubDate><guid>tag:zonca.github.io,2008-03-28:2008/03/producing-pdf-from-xml-files.html</guid><category>linux</category></item><item><title>vim costumization</title><link>http://zonca.github.io/2006/10/vim-costumization.html</link><description>&lt;p&gt;
  it is about perl but it suggests very useful tricks for programming with vim
  &lt;br/&gt;
  http://mamchenkov.net/wordpress/2004/05/10/vim-for-perl-developers/
-&lt;/p&gt;</summary><category term="linux"></category></entry><entry><title>using gnu find</title><link href="http://zonca.github.io/2006/10/using-gnu-find.html" rel="alternate"></link><updated>2006-10-03T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-10-03:2006/10/using-gnu-find.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 17 Oct 2006 10:49:00 -0700</pubDate><guid>tag:zonca.github.io,2006-10-17:2006/10/vim-costumization.html</guid><category>linux</category></item><item><title>using gnu find</title><link>http://zonca.github.io/2006/10/using-gnu-find.html</link><description>&lt;p&gt;
  list all the directories excluding ".":
  &lt;br/&gt;
 &lt;/p&gt;
@@ -3124,12 +3124,12 @@ find some string in all files matching a pattern in the subfolders (with grep -r
 &lt;br/&gt;
 &lt;blockquote&gt;
  find . -name '*.py' -exec grep -i pdb '{}' \;
-&lt;/blockquote&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>beginners bash guide</title><link href="http://zonca.github.io/2006/10/beginners-bash-guide.html" rel="alternate"></link><updated>2006-10-03T13:56:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-10-03:2006/10/beginners-bash-guide.html</id><summary type="html">&lt;p&gt;
+&lt;/blockquote&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 03 Oct 2006 14:00:00 -0700</pubDate><guid>tag:zonca.github.io,2006-10-03:2006/10/using-gnu-find.html</guid><category>linux</category><category>bash</category></item><item><title>beginners bash guide</title><link>http://zonca.github.io/2006/10/beginners-bash-guide.html</link><description>&lt;p&gt;
  great guide with many examples:
  &lt;br/&gt;
  &lt;br/&gt;
  http://tille.xalasys.com/training/bash/
-&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>tar quickref</title><link href="http://zonca.github.io/2006/09/tar-quickref.html" rel="alternate"></link><updated>2006-09-25T13:19:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-25:2006/09/tar-quickref.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 03 Oct 2006 13:56:00 -0700</pubDate><guid>tag:zonca.github.io,2006-10-03:2006/10/beginners-bash-guide.html</guid><category>linux</category><category>bash</category></item><item><title>tar quickref</title><link>http://zonca.github.io/2006/09/tar-quickref.html</link><description>&lt;p&gt;
  compress: tar cvzf foo.tgz *.cc *.h
  &lt;br/&gt;
  check inside: tar tzf foo.tgz | grep file.txt
@@ -3137,12 +3137,12 @@ find some string in all files matching a pattern in the subfolders (with grep -r
  extract: tar xvzf foo.tgz
  &lt;br/&gt;
  extract 1 file only: tar xvzf foo.tgz path/to/file.txt
-&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>software carpentry</title><link href="http://zonca.github.io/2006/09/software-carpentry.html" rel="alternate"></link><updated>2006-09-25T12:51:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-25:2006/09/software-carpentry.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 25 Sep 2006 13:19:00 -0700</pubDate><guid>tag:zonca.github.io,2006-09-25:2006/09/tar-quickref.html</guid><category>linux</category><category>bash</category></item><item><title>software carpentry</title><link>http://zonca.github.io/2006/09/software-carpentry.html</link><description>&lt;p&gt;
  basic software for scientists and engineers:
  &lt;br/&gt;
  http://www.swc.scipy.org/
  &lt;br/&gt;
-&lt;/p&gt;</summary><category term="linux"></category><category term="physics"></category></entry><entry><title>Software libero per il trattamento di dati scientifici</title><link href="http://zonca.github.io/2006/09/software-libero-per-il-trattamento-di.html" rel="alternate"></link><updated>2006-09-22T13:35:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-22:2006/09/software-libero-per-il-trattamento-di.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 25 Sep 2006 12:51:00 -0700</pubDate><guid>tag:zonca.github.io,2006-09-25:2006/09/software-carpentry.html</guid><category>linux</category><category>physics</category></item><item><title>Software libero per il trattamento di dati scientifici</title><link>http://zonca.github.io/2006/09/software-libero-per-il-trattamento-di.html</link><description>&lt;p&gt;
  nella ricerca del miglior ambiente per analisi di dati scientifici da leggere questi articoli:
  &lt;br/&gt;
  &lt;br/&gt;
@@ -3153,12 +3153,12 @@ find some string in all files matching a pattern in the subfolders (with grep -r
  &lt;br/&gt;
  &lt;br/&gt;
  http://www.pluto.it/files/journal/pj0505/swlibero-scie3.html
-&lt;/p&gt;</summary><category term="italian"></category><category term="linux"></category><category term="physics"></category></entry><entry><title>command line processing</title><link href="http://zonca.github.io/2006/09/command-line-processing.html" rel="alternate"></link><updated>2006-09-22T13:34:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-22:2006/09/command-line-processing.html</id><summary type="html">&lt;p&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 22 Sep 2006 13:35:00 -0700</pubDate><guid>tag:zonca.github.io,2006-09-22:2006/09/software-libero-per-il-trattamento-di.html</guid><category>italian</category><category>linux</category><category>physics</category></item><item><title>command line processing</title><link>http://zonca.github.io/2006/09/command-line-processing.html</link><description>&lt;p&gt;
  Very useful summary of many linux command line processing tools (great perl onliners)
  &lt;br/&gt;
  &lt;br/&gt;
  http://grad.physics.sunysb.edu/~leckey/personal/forget/
-&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>awk made easy</title><link href="http://zonca.github.io/2006/09/awk-made-easy.html" rel="alternate"></link><updated>2006-09-22T13:20:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-22:2006/09/awk-made-easy.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 22 Sep 2006 13:34:00 -0700</pubDate><guid>tag:zonca.github.io,2006-09-22:2006/09/command-line-processing.html</guid><category>linux</category><category>bash</category></item><item><title>awk made easy</title><link>http://zonca.github.io/2006/09/awk-made-easy.html</link><description>&lt;p&gt;&lt;strong&gt;
  awk '/REGEX/ {print NR "\t" $9 "\t" $4"_"$5 ;}' file.txt
 &lt;/strong&gt;
 &lt;br/&gt;
@@ -3199,10 +3199,10 @@ tutorial on using awk from the command line:
 &lt;br/&gt;
 &lt;a href="http://www.vectorsite.net/tsawk_3.html#m1" target="_blank" title="awk tutorial"&gt;
  http://www.vectorsite.net/tsawk_3.html#m1
-&lt;/a&gt;&lt;/p&gt;</summary><category term="linux"></category><category term="bash"></category></entry><entry><title>pillole di astrofisica</title><link href="http://zonca.github.io/2006/09/pillole-di-astrofisica.html" rel="alternate"></link><updated>2006-09-20T13:39:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2006-09-20:2006/09/pillole-di-astrofisica.html</id><summary type="html">&lt;p&gt;
+&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Fri, 22 Sep 2006 13:20:00 -0700</pubDate><guid>tag:zonca.github.io,2006-09-22:2006/09/awk-made-easy.html</guid><category>linux</category><category>bash</category></item><item><title>pillole di astrofisica</title><link>http://zonca.github.io/2006/09/pillole-di-astrofisica.html</link><description>&lt;p&gt;
  curiosita' ben spiegate da annibale d'ercole, interessante l'idea di avere un livello base e un livello avanzato
  &lt;br/&gt;
  &lt;a href="http://www.bo.astro.it/sait/spigolature/spigostart.html" target="_blank" title="spigolature astronomiche"&gt;
   http://www.bo.astro.it/sait/spigolature/spigostart.html
  &lt;/a&gt;
-&lt;/p&gt;</summary><category term="italian"></category><category term="astrophysics"></category><category term="physics"></category></entry></feed>
+&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 20 Sep 2006 13:39:00 -0700</pubDate><guid>tag:zonca.github.io,2006-09-20:2006/09/pillole-di-astrofisica.html</guid><category>italian</category><category>astrophysics</category><category>physics</category></item></channel></rss>
