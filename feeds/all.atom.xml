@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-08-19T15:00:00-07:00</updated><entry><title>Create a Github account for your research group with free private repositories</title><link href="http://zonca.github.io/2014/08/github-for-research-groups.html" rel="alternate"></link><updated>2014-08-19T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-08-19:2014/08/github-for-research-groups.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; allows a research group to create their own webpage where they can host, share and develop their software using the &lt;code&gt;git&lt;/code&gt; version control system and the powerful Github online issue-tracking interface.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-08-28T17:00:00-07:00</updated><entry><title>Code review for scientific computing</title><link href="http://zonca.github.io/2014/08/code-review-for-scientific-computing.html" rel="alternate"></link><updated>2014-08-28T17:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-08-28:2014/08/code-review-for-scientific-computing.html</id><summary type="html">&lt;p&gt;Code review is the formal process where a programmer inspects in detail a piece of software developed by somebody else in order to improve code quality by catching bugs, improve readibility and usability.
+It is used extensively in industry, not much in academia.&lt;/p&gt;
+&lt;p&gt;There has been some discussion about this lately, see:
+&lt;em&gt; &lt;a href="http://ivory.idyll.org/blog/on-code-review-of-scientific-code.html"&gt;A few thoughts on code review of scientific code&lt;/a&gt; by Titus Brown
+&lt;/em&gt; &lt;a href="http://mozillascience.org/code-review-for-science-what-we-learned/"&gt;Code review for science: What we learned&lt;/a&gt; by Kaitlin Thaney&lt;/p&gt;
+&lt;p&gt;I participated in the &lt;a href="http://software-carpentry.org/blog/2014/01/code-review-round-2.html"&gt;second code review pilot study of Software Carpentry&lt;/a&gt; where I was paired to a research group in Genomics and I reviewed some of their analysis code.
+In this blog post I'd like to write about some guidelines and practical details on how to perform code review of scientific code.&lt;/p&gt;
+&lt;p&gt;Best use of code review is on libraries, prior to publication, because an improvement in code quality can help future users of the code. One-off analysis scripts benefit less from the process.&lt;/p&gt;
+&lt;h2&gt;How to do a code review of a large codebase&lt;/h2&gt;
+&lt;p&gt;The code review process should be performed on ~200-400 lines of code at a time.
+First thing is to ask the code author if she can identify different functionalities of the code that could be packaged and distributed separately. Modularity really helps maintaining software in the long term.&lt;/p&gt;
+&lt;p&gt;Then the author should follow these steps to get ready for the code review:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For each of the packages identified previously, the code author should create a separate repository, generally on Github, possibly under an organization account (see &lt;a href="http://zonca.github.io/2014/08/github-for-research-groups.html"&gt;Github for research groups&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Create a blank project in the programming language of choice (hopefully Python!) using a pre-defined standard template, I recommend using &lt;a href="https://github.com/audreyr/cookiecutter"&gt;CookieCutter&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Write a &lt;code&gt;README.md&lt;/code&gt; file explaining exactly the functionality of the code in general&lt;/li&gt;
+&lt;li&gt;Clone the repository locally, add, commit and push the blank project with &lt;code&gt;README.md&lt;/code&gt; to the &lt;code&gt;master&lt;/code&gt; branch on Github&lt;/li&gt;
+&lt;li&gt;Identify a portion of the software of about ~200-400 lines that has a defined functionality and that could be reviewed together. It doesn't necessarily need to be in a runnable state, at the beginning we can start the code review without running the code.&lt;/li&gt;
+&lt;li&gt;Create a new branch locally and copy, add, commit this file or this set of files to the repository and push to Github&lt;/li&gt;
+&lt;li&gt;Access the web interface of Github, it should have detected that you just pushed a new branch and asked if you want to create a pull request. Create a pull request with a few details on the code under review.&lt;/li&gt;
+&lt;li&gt;Point the reviewer to the pull request&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How to review an improvement to the software&lt;/h2&gt;
+&lt;p&gt;The implementation of a feature should be performed on a separate branch, then it is straightforward to push it to Github, create a pull request and ask reviewers to look at the set of changes.&lt;/p&gt;
+&lt;h2&gt;How to perform the actual code review&lt;/h2&gt;
+&lt;p&gt;Coding style should not be the main focus of the review, the most important feedback for the author are high-level comments on software organization. The reviewer should focus on what makes the software more usable and more maintenable.&lt;/p&gt;
+&lt;p&gt;A few examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;can some parts of the code be simplified?&lt;/li&gt;
+&lt;li&gt;is there any functionality that could be replaced by an existing library?&lt;/li&gt;
+&lt;li&gt;is it clear what each part of the software is doing?&lt;/li&gt;
+&lt;li&gt;is there a more straightforward way of splitting the code into files?&lt;/li&gt;
+&lt;li&gt;is documentation enough?&lt;/li&gt;
+&lt;li&gt;are there some function arguments or function names that could be easily misinterpreted by a user?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The purpose is to improve the code, but also to help the code author to improve her coding skills.&lt;/p&gt;
+&lt;p&gt;On the Github pull requests interface, it is possible both to write general comments, and to click on a single line of code and write an inline comment.&lt;/p&gt;
+&lt;h2&gt;How to implement reviewer's recommendations&lt;/h2&gt;
+&lt;p&gt;The author can improve the code locally on the same branch used in the pull request, then commit and push the changes to Github, the changes will be automatically added to the existing pull request, so the reviewer can start another iteration of the review process.&lt;/p&gt;</summary><category term="github"></category><category term="git"></category><category term="openscience"></category><category term="software-carpentry"></category></entry><entry><title>Create a Github account for your research group with free private repositories</title><link href="http://zonca.github.io/2014/08/github-for-research-groups.html" rel="alternate"></link><updated>2014-08-19T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-08-19:2014/08/github-for-research-groups.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; allows a research group to create their own webpage where they can host, share and develop their software using the &lt;code&gt;git&lt;/code&gt; version control system and the powerful Github online issue-tracking interface.&lt;/p&gt;
 &lt;p&gt;Since February 2014 Github also offers 20 private repositories to research groups and classrooms, plus unlimited public repositories.
 Private repositories are useful for early stages of development or if it is necessary to keep software secret before publication, at publication they can easily switched to public repositories and free up their slot.&lt;/p&gt;
 &lt;p&gt;Here the steps to set this up:&lt;/p&gt;

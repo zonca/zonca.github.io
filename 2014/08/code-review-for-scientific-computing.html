@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Code review for scientific computing | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Code review for scientific computing</h1>
+        </header>
+        <div class='post-content'>
+            <p>Code review is the formal process where a programmer inspects in detail a piece of software developed by somebody else in order to improve code quality by catching bugs, improve readibility and usability.
+It is used extensively in industry, not much in academia.</p>
+<p>There has been some discussion about this lately, see:
+<em> <a href="http://ivory.idyll.org/blog/on-code-review-of-scientific-code.html">A few thoughts on code review of scientific code</a> by Titus Brown
+</em> <a href="http://mozillascience.org/code-review-for-science-what-we-learned/">Code review for science: What we learned</a> by Kaitlin Thaney</p>
+<p>I participated in the <a href="http://software-carpentry.org/blog/2014/01/code-review-round-2.html">second code review pilot study of Software Carpentry</a> where I was paired to a research group in Genomics and I reviewed some of their analysis code.
+In this blog post I'd like to write about some guidelines and practical details on how to perform code review of scientific code.</p>
+<p>Best use of code review is on libraries, prior to publication, because an improvement in code quality can help future users of the code. One-off analysis scripts benefit less from the process.</p>
+<h2>How to do a code review of a large codebase</h2>
+<p>The code review process should be performed on ~200-400 lines of code at a time.
+First thing is to ask the code author if she can identify different functionalities of the code that could be packaged and distributed separately. Modularity really helps maintaining software in the long term.</p>
+<p>Then the author should follow these steps to get ready for the code review:</p>
+<ul>
+<li>For each of the packages identified previously, the code author should create a separate repository, generally on Github, possibly under an organization account (see <a href="http://zonca.github.io/2014/08/github-for-research-groups.html">Github for research groups</a>).</li>
+<li>Create a blank project in the programming language of choice (hopefully Python!) using a pre-defined standard template, I recommend using <a href="https://github.com/audreyr/cookiecutter">CookieCutter</a>.</li>
+<li>Write a <code>README.md</code> file explaining exactly the functionality of the code in general</li>
+<li>Clone the repository locally, add, commit and push the blank project with <code>README.md</code> to the <code>master</code> branch on Github</li>
+<li>Identify a portion of the software of about ~200-400 lines that has a defined functionality and that could be reviewed together. It doesn't necessarily need to be in a runnable state, at the beginning we can start the code review without running the code.</li>
+<li>Create a new branch locally and copy, add, commit this file or this set of files to the repository and push to Github</li>
+<li>Access the web interface of Github, it should have detected that you just pushed a new branch and asked if you want to create a pull request. Create a pull request with a few details on the code under review.</li>
+<li>Point the reviewer to the pull request</li>
+</ul>
+<h2>How to review an improvement to the software</h2>
+<p>The implementation of a feature should be performed on a separate branch, then it is straightforward to push it to Github, create a pull request and ask reviewers to look at the set of changes.</p>
+<h2>How to perform the actual code review</h2>
+<p>Coding style should not be the main focus of the review, the most important feedback for the author are high-level comments on software organization. The reviewer should focus on what makes the software more usable and more maintenable.</p>
+<p>A few examples:</p>
+<ul>
+<li>can some parts of the code be simplified?</li>
+<li>is there any functionality that could be replaced by an existing library?</li>
+<li>is it clear what each part of the software is doing?</li>
+<li>is there a more straightforward way of splitting the code into files?</li>
+<li>is documentation enough?</li>
+<li>are there some function arguments or function names that could be easily misinterpreted by a user?</li>
+</ul>
+<p>The purpose is to improve the code, but also to help the code author to improve her coding skills.</p>
+<p>On the Github pull requests interface, it is possible both to write general comments, and to click on a single line of code and write an inline comment.</p>
+<h2>How to implement reviewer's recommendations</h2>
+<p>The author can improve the code locally on the same branch used in the pull request, then commit and push the changes to Github, the changes will be automatically added to the existing pull request, so the reviewer can start another iteration of the review process.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2014-08-28T17:00:00">Thu 28 August 2014</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/github.html">github</a> 
+<a href="http://zonca.github.io/tag/git.html">git</a> 
+<a href="http://zonca.github.io/tag/openscience.html">openscience</a> 
+<a href="http://zonca.github.io/tag/software-carpentry.html">software-carpentry</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
