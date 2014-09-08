@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Code review for scientific computing | Andrea Zonca's blog</title>
+        <title>How to perform code review for scientific software | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -41,7 +41,7 @@
 <div class="post">
     <article>
         <header>
-            <h1>Code review for scientific computing</h1>
+            <h1>How to perform code review for scientific software</h1>
         </header>
         <div class='post-content'>
             <p>Code review is the formal process where a programmer inspects in detail a piece of software developed by somebody else in order to improve code quality by catching bugs, improve readibility and usability.
@@ -50,7 +50,7 @@ It is used extensively in industry, not much in academia.</p>
 <em> <a href="http://ivory.idyll.org/blog/on-code-review-of-scientific-code.html">A few thoughts on code review of scientific code</a> by Titus Brown
 </em> <a href="http://mozillascience.org/code-review-for-science-what-we-learned/">Code review for science: What we learned</a> by Kaitlin Thaney</p>
 <p>I participated in the <a href="http://software-carpentry.org/blog/2014/01/code-review-round-2.html">second code review pilot study of Software Carpentry</a> where I was paired to a research group in Genomics and I reviewed some of their analysis code.
-In this blog post I'd like to write about some guidelines and practical details on how to perform code review of scientific code.</p>
+In this blog post I'd like to write about some guidelines and best practices on how to perform code review of scientific code.</p>
 <p>Best use of code review is on libraries, prior to publication, because an improvement in code quality can help future users of the code. One-off analysis scripts benefit less from the process.</p>
 <h2>How to do a code review of a large codebase</h2>
 <p>The code review process should be performed on ~200-400 lines of code at a time.
@@ -83,6 +83,7 @@ First thing is to ask the code author if she can identify different functionalit
 <p>On the Github pull requests interface, it is possible both to write general comments, and to click on a single line of code and write an inline comment.</p>
 <h2>How to implement reviewer's recommendations</h2>
 <p>The author can improve the code locally on the same branch used in the pull request, then commit and push the changes to Github, the changes will be automatically added to the existing pull request, so the reviewer can start another iteration of the review process.</p>
+<p>Comments and suggestions are welcome.</p>
         </div>
     </article>
 
