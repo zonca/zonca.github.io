@@ -1,0 +1,82 @@
+==================================================================
+https://keybase.io/zonca
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://zonca.github.io
+  * I am zonca (https://keybase.io/zonca) on keybase.
+  * I have a public key with fingerprint 0C08 D4F4 F17A CC53 8341  73A5 B808 0B28 5340 02D4
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.7.1"
+        },
+        "key": {
+            "fingerprint": "0c08d4f4f17acc53834173a5b8080b28534002d4",
+            "host": "keybase.io",
+            "key_id": "B8080B28534002D4",
+            "uid": "c5881eb822fe0ad218afb42d4b9f4100",
+            "username": "zonca"
+        },
+        "merkle_root": {
+            "ctime": 1411499122,
+            "hash": "d7f25de2d57c2cf69b072fa02055446a177bcf523ef5156679e62f223c6c90466b6b5f5bd755f9251dbc19b3a6a6d838f6ec93114ac2bacd675c85dd7a69ff4e",
+            "seqno": 57684
+        },
+        "service": {
+            "hostname": "zonca.github.io",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1411499168,
+    "expire_in": 157680000,
+    "prev": "b50296b53519ac16d85f30e316a54dec46b724dd4b294e6384fcf825f992799e",
+    "seqno": 3,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v2
+
+owFdkn1MVXUYxy8XKATK2xApCYVDL0B0O2+/80IjEBlDrCBeGjbsdl5+B05c7rmc
+ewERWENj05Dh7iYjTWA2SbdLaSCBM+cMVF5XDLFZmBmvK+xGUBYqnUO4Ueevc87z
++X2f7/d5foce8zYYvbr8AqKyEo2jXgOzvCE7oqelAuEVsRyJq0AEqwxtTv3NxhVB
+JA4phOU854BmWQm3KSI0v+sIX2VikVKoOmTFplGomTZjSFWsjuuHJdmWD1W7Kuta
+CCqgjEhKpITRnCAAgiFIjCY4wDMog/I4AwgSRXGR1CQLFIfzP12RFU2LLGp/k3Q+
+6SGfrPMlKwUBMAwGeQbHJYhyIo4xnMSTmiLPSiSGojrogOpqpD2KTeB0s0VQLbRC
+i6ooK4kFp6zXMRLDSJbFcFyzwzkKtBMiLeFAhLgIaAEXJIrlURqXOBRHASBJisNo
+mhckgBNQAhigKJqFFC7hOCFQAouSFMVTPJAAL9IASCwOMJEXMJYnOIqjRIZgJAoK
+LKG15QSc5wSRooHAAFGkOYqVJBJq/h2w2KYgcYCmGLJK/1RLZQHqtvWRrU1mzped
+BSX8v7Ozq4pTERSrVixwOu2OOD23s9yu02WQt7StCll42SZqS1u7VUxD/zcTiolF
+4G67rEKLrBO6HVR79EawVNPkAYqzWlgCYCwnYFo6IBEoJDCKA6QIBZLiaZwUtc3g
+LAkpgiElQWJwbSosTrPsmqSE5pPL1yQdcr6Nc5aoEKk6YHzax+BlNDzia9SvrcF/
+nenhXW5rNBnqzx4e6PNt90vvfeKTpqKO+OdPf/yc6fJ4vGe8OHfyTsODL1JG1fl9
+MyYxraArtMTjvXnX9vbyyZ3uxdq3f/aUDA0+m1xmdHYMH7k3Ubt4Jcd47dSd6svn
+ErmTJhjlPzH50zHr5Fz/6THZHHr8kHrE+wV3Ai1nsszenKaESzFhWU+ll05tyrBG
+37gQOZrDj3Wr90OWF9I+q6nZk5t5Ie1qS1LGdPFAW13iyYwzIbkXhwrznOznf7bG
+bgxIuF09In9vSOPTwfZh77+WJkLbg853XB29Pdo3nWuc+2FXtnLC4Xf8mRNVgXW3
+OptNP07tmP/ua7dfWKW7037D/9WR9Mzuc8vzv4fVXwksdnzqSf2StVflH7xHNE3v
+/aamiwIvh2SnujYec81GtC/s2HIUrTzbGRny1uYznpmJu27fmWupwalbh1/c2r0h
+L3ciwyck+YOplqFtp/y/LX0vaN5n/cHGw/0bhovr+vOGJ7aQf/9202OifKtnri/4
+uWYjpxtiMuZ3BwxW9jRF24LXRdVPPWnxyqm5mbQv2PD+HHitx33pvqP5j4TqkTc/
+rGCCXB0NHY+OtYV/ZY15o/eVd9CUrE21rb4f3RpHPckzF+Oyls7/crewrKephshP
+p6+3pdCvWwaXtwUefQlGlP7aPLg/u08eGYluXEL4/b2P97j8Ugb6PA92xsesdy16
+ylr/AQ==
+=T3MT
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/zonca
+
+==================================================================
