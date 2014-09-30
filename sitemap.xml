@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2014-09-08T21:40:17-00:00</lastmod>
+<lastmod>2014-09-30T22:07:13-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2014-09-08T21:40:17-00:00</lastmod>
+<lastmod>2014-09-30T22:07:13-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2014-09-08T21:40:17-00:00</lastmod>
+<lastmod>2014-09-30T22:07:13-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2014-09-08T21:40:17-00:00</lastmod>
+<lastmod>2014-09-30T22:07:13-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2014/09/unit-tests-ipython-notebook.html</loc>
+<lastmod>2014-09-30T14:00:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -600,322 +607,329 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-09-30T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/pelican.html</loc>
-<lastmod>2014-02-26T23:00:00-00:00</lastmod>
+<lastmod>2014-02-26T23:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/destriping.html</loc>
-<lastmod>2013-11-20T21:30:00-00:00</lastmod>
+<lastmod>2013-11-20T21:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/supercomputing.html</loc>
-<lastmod>2013-07-15T08:16:00-00:00</lastmod>
+<lastmod>2013-07-15T08:16:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/dotastronomy.html</loc>
-<lastmod>2013-09-17T18:30:00-00:00</lastmod>
+<lastmod>2013-09-17T18:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/linux.html</loc>
-<lastmod>2011-04-29T02:14:00-00:00</lastmod>
+<lastmod>2011-04-29T02:14:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/hackideas.html</loc>
-<lastmod>2013-01-28T21:06:00-00:00</lastmod>
+<lastmod>2013-01-28T21:06:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/general-physics.html</loc>
-<lastmod>2008-03-29T02:13:00-00:00</lastmod>
+<lastmod>2008-03-29T02:13:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/software-carpentry.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-08-28T17:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/planck.html</loc>
-<lastmod>2013-09-17T18:30:00-00:00</lastmod>
+<lastmod>2013-09-17T18:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/git.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-08-28T17:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/hadoop.html</loc>
-<lastmod>2013-09-02T02:36:00-00:00</lastmod>
+<lastmod>2013-09-02T02:36:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/d3.html</loc>
-<lastmod>2013-08-30T08:52:00-00:00</lastmod>
+<lastmod>2013-08-30T08:52:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/parallel-programming.html</loc>
-<lastmod>2011-02-16T19:10:00-00:00</lastmod>
+<lastmod>2011-02-16T19:10:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/machine-learning.html</loc>
-<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<lastmod>2014-03-20T20:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/hpc.html</loc>
-<lastmod>2014-06-05T14:00:00-00:00</lastmod>
+<lastmod>2014-06-05T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/numpy.html</loc>
-<lastmod>2011-06-21T04:43:00-00:00</lastmod>
+<lastmod>2011-06-21T04:43:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/openscience.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-08-28T17:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/map.html</loc>
-<lastmod>2013-04-08T01:32:00-00:00</lastmod>
+<lastmod>2013-04-08T01:32:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/noise.html</loc>
-<lastmod>2013-04-08T01:32:00-00:00</lastmod>
+<lastmod>2013-04-08T01:32:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/jobs.html</loc>
-<lastmod>2013-12-10T13:30:00-00:00</lastmod>
+<lastmod>2013-12-10T13:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/python.html</loc>
-<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<lastmod>2014-03-20T20:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/quote.html</loc>
-<lastmod>2012-08-16T14:07:00-00:00</lastmod>
+<lastmod>2012-08-16T14:07:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/healpix.html</loc>
-<lastmod>2013-01-28T21:06:00-00:00</lastmod>
+<lastmod>2013-01-28T21:06:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/javascript.html</loc>
-<lastmod>2013-08-30T08:52:00-00:00</lastmod>
+<lastmod>2013-08-30T08:52:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/aws.html</loc>
-<lastmod>2013-09-02T02:36:00-00:00</lastmod>
+<lastmod>2013-09-02T02:36:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/mayavi.html</loc>
-<lastmod>2013-03-12T19:49:00-00:00</lastmod>
+<lastmod>2013-03-12T19:49:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/astrophysics.html</loc>
-<lastmod>2013-09-17T18:30:00-00:00</lastmod>
+<lastmod>2013-09-17T18:30:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/tag/unit-test.html</loc>
+<lastmod>2014-09-30T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/scipy.html</loc>
-<lastmod>2012-10-06T00:00:00-00:00</lastmod>
+<lastmod>2012-10-06T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/ubuntu.html</loc>
-<lastmod>2012-12-17T10:37:00-00:00</lastmod>
+<lastmod>2012-12-17T10:37:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/ipython.html</loc>
-<lastmod>2013-12-18T16:30:00-00:00</lastmod>
+<lastmod>2014-09-30T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/italian.html</loc>
-<lastmod>2006-09-22T13:35:00-00:00</lastmod>
+<lastmod>2006-09-22T13:35:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/bigdata.html</loc>
-<lastmod>2013-09-02T02:36:00-00:00</lastmod>
+<lastmod>2013-09-02T02:36:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/bash.html</loc>
-<lastmod>2014-01-31T18:00:00-00:00</lastmod>
+<lastmod>2014-01-31T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/github.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-08-28T17:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/power-spectra.html</loc>
-<lastmod>2013-08-30T08:52:00-00:00</lastmod>
+<lastmod>2013-08-30T08:52:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/career.html</loc>
-<lastmod>2014-06-05T14:00:00-00:00</lastmod>
+<lastmod>2014-06-05T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/cosmology.html</loc>
-<lastmod>2013-09-17T18:30:00-00:00</lastmod>
+<lastmod>2013-09-17T18:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/travis-ci.html</loc>
-<lastmod>2013-09-26T13:45:00-00:00</lastmod>
+<lastmod>2013-09-26T13:45:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/paper.html</loc>
-<lastmod>2013-11-20T21:30:00-00:00</lastmod>
+<lastmod>2013-11-20T21:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/gordon.html</loc>
-<lastmod>2014-03-20T19:30:00-00:00</lastmod>
+<lastmod>2014-03-20T19:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/exceptions.html</loc>
-<lastmod>2013-10-01T10:30:00-00:00</lastmod>
+<lastmod>2013-10-01T10:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/ipython-notebook.html</loc>
-<lastmod>2013-12-18T16:30:00-00:00</lastmod>
+<lastmod>2014-09-30T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/physics.html</loc>
-<lastmod>2011-05-18T23:49:00-00:00</lastmod>
+<lastmod>2011-05-18T23:49:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/maxima.html</loc>
-<lastmod>2009-12-15T11:20:00-00:00</lastmod>
+<lastmod>2009-12-15T11:20:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-09-30T14:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

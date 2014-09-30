@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Run IPython Notebook on a HPC Cluster via PBS | Andrea Zonca's blog</title>
+        <title>Write unit tests as cells of IPython notebooks | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -41,23 +41,24 @@
 <div class="post">
     <article>
         <header>
-            <h1>Run IPython Notebook on a HPC Cluster via PBS</h1>
+            <h1>Write unit tests as cells of IPython notebooks</h1>
         </header>
         <div class='post-content'>
-            <p>The <a href="http://ipython.org/notebook.html">IPython notebook</a> is a great tool for data exploration
-and visualization.
-It is suitable in particular for analyzing a large amount of data remotely on a computing node
-of a HPC cluster and visualize it in a browser that runs on a local machine.
-In this configuration, the interface is local, it is very responsive, but the amount of memory
-and CPU horsepower is provided by a HPC computing node.</p>
-<p>Also, it is possible to keep the notebook server running, disconnect and reconnect later from
-another machine to the same session.</p>
-<p>I created a script which is very general and can be used on most HPC cluster and published it on Github:</p>
-<p><a href="https://github.com/pyHPC/ipynbhpc">https://github.com/pyHPC/ipynbhpc</a></p>
-<p>Once the script is running, it is possible to connect to <code>localhost:PORT</code> and visualize the 
-IPython notebook, see the following screenshot of Chromium running locally on my machine
-connected to a IPython notebook running on a Gordon computing node:</p>
-<p><img src="/images/run-ipython-notebook-on-HPC-cluster-via-PBS_screenshot.png" alt="IPython notebook on Gordon" style="width: 730px;"/></p>
+            <h2>What?</h2>
+<p>Plugin for <code>py.text</code> to write unit tests as cells in IPython notebooks:</p>
+<ul>
+<li>Homepage on Github: <a href="https://github.com/zonca/pytest-ipynb">https://github.com/zonca/pytest-ipynb</a></li>
+<li>PyPi : <a href="https://pypi.python.org/pypi/pytest-ipynb/">https://pypi.python.org/pypi/pytest-ipynb/</a></li>
+<li>Install with <code>pip install pytest-ipynb</code></li>
+</ul>
+<h2>Why?</h2>
+<p>Many unit testing fromeworks in Python, first of all the <code>unittest</code> package in the standard library, work very well for automating unit tests, but make it very difficult to debug interactively any failed test.</p>
+<p><a href="http://pytest.org"><code>py.test</code></a> alleviates this problem by allowing to write just plain Python functions with <code>assert</code> statements (no boilerplate code), discover them automatically in any file that starts with <code>test</code> and write a useful report.</p>
+<p>I wrote a plugin for <code>py.test</code>, <a href="https://pypi.python.org/pypi/pytest-ipynb"><code>pytest-ipynb</code></a>, that goes a step further and runs unit tests written as cells of any IPython notebook named <code>test*.ipynb</code>.</p>
+<p>The advantage is that it is easy to create and debug interactively any issue by opening the testing notebook interactively, then clean the notebook outputs and add it to the software repository.</p>
+<p>More details on Github: <a href="https://github.com/zonca/pytest-ipynb">https://github.com/zonca/pytest-ipynb</a></p>
+<p>Suggestions welcome as comments or github issues.</p>
+<p>(Yes, works with Python 3)</p>
         </div>
     </article>
 
@@ -65,7 +66,7 @@ connected to a IPython notebook running on a Gordon computing node:</p>
         <ul>
             <li>
                 <strong>Published:</strong>
-                <i><time datetime="2013-12-18T16:30:00">Wed 18 December 2013</time></i>
+                <i><time datetime="2014-09-30T14:00:00">Tue 30 September 2014</time></i>
             </li>
             <li>
                 <strong>In:</strong>
@@ -73,9 +74,9 @@ connected to a IPython notebook running on a Gordon computing node:</p>
             </li>
             <li>
                 <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/unit-test.html">unit-test</a> 
 <a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
 <a href="http://zonca.github.io/tag/ipython-notebook.html">ipython-notebook</a> 
-<a href="http://zonca.github.io/tag/hpc.html">HPC</a> 
             </li>
             <li>
                 <strong>Written by:</strong>
