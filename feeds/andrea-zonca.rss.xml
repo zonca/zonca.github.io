@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><atom:link href="http://zonca.github.io/feeds/andrea-zonca.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 22 Oct 2014 10:00:00 -0700</lastBuildDate><item><title>Zero based indexing</title><link>http://zonca.github.io/2014/10/zero-based-indexing.html</link><description>&lt;h2&gt;Reads&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Dijkstra: https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html&lt;/li&gt;
-&lt;li&gt;Guido van Rossum: https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi&lt;/li&gt;
+&lt;li&gt;Dijkstra: &lt;a href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html"&gt;https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Guido van Rossum: &lt;a href="https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi"&gt;https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Comment&lt;/h2&gt;
 &lt;p&gt;For Europeans zero based indexing feels sensible if we think of floors in a house,
