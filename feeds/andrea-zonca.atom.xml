@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-09-30T14:00:00-07:00</updated><entry><title>Write unit tests as cells of IPython notebooks</title><link href="http://zonca.github.io/2014/09/unit-tests-ipython-notebook.html" rel="alternate"></link><updated>2014-09-30T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-09-30:2014/09/unit-tests-ipython-notebook.html</id><summary type="html">&lt;h2&gt;What?&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-10-22T10:00:00-07:00</updated><entry><title>Zero based indexing</title><link href="http://zonca.github.io/2014/10/zero-based-indexing.html" rel="alternate"></link><updated>2014-10-22T10:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-10-22:2014/10/zero-based-indexing.html</id><summary type="html">&lt;h2&gt;Reads&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Dijkstra: https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html&lt;/li&gt;
+&lt;li&gt;Guido van Rossum: https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Comment&lt;/h2&gt;
+&lt;p&gt;For Europeans zero based indexing feels sensible if we think of floors in a house,
+the lowest floor is ground floor, then 1st floor and so on.&lt;/p&gt;
+&lt;p&gt;A house with 2 stories has ground and 1st floor. It is natural in this way to index
+zero-based and to count 1-based.&lt;/p&gt;
+&lt;p&gt;What about &lt;strong&gt;slicing&lt;/strong&gt; instead? This is a separate issue from indexing.
+The main problem here is that if you include the upper bound then you cannot express
+the empty slice.
+Also it is elegant to print the first &lt;code&gt;n&lt;/code&gt; elements as &lt;code&gt;a[:n]&lt;/code&gt;. Slicing &lt;code&gt;a[i:j]&lt;/code&gt; excludes
+the upper bound, so it probably easier to understand if we express it as &lt;code&gt;a[i:i+n]&lt;/code&gt;.&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>Write unit tests as cells of IPython notebooks</title><link href="http://zonca.github.io/2014/09/unit-tests-ipython-notebook.html" rel="alternate"></link><updated>2014-09-30T14:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-09-30:2014/09/unit-tests-ipython-notebook.html</id><summary type="html">&lt;h2&gt;What?&lt;/h2&gt;
 &lt;p&gt;Plugin for &lt;code&gt;py.test&lt;/code&gt; to write unit tests as cells in IPython notebooks:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Homepage on Github: &lt;a href="https://github.com/zonca/pytest-ipynb"&gt;https://github.com/zonca/pytest-ipynb&lt;/a&gt;&lt;/li&gt;
