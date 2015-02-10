@@ -5,609 +5,609 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2014-10-22T17:45:02-00:00</lastmod>
+<lastmod>2015-02-10T20:38:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2014-10-22T17:45:02-00:00</lastmod>
+<lastmod>2015-02-10T20:38:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2014-10-22T17:45:02-00:00</lastmod>
+<lastmod>2015-02-10T20:38:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2014-10-22T17:45:02-00:00</lastmod>
+<lastmod>2015-02-10T20:38:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/10/zero-based-indexing.html</loc>
-<lastmod>2014-10-22T10:00:00-00:00</lastmod>
+<lastmod>2014-10-22T10:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/09/unit-tests-ipython-notebook.html</loc>
-<lastmod>2014-09-30T14:00:00-00:00</lastmod>
+<lastmod>2014-09-30T14:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/08/code-review-for-scientific-computing.html</loc>
-<lastmod>2014-08-28T17:00:00-00:00</lastmod>
+<lastmod>2014-08-28T17:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/08/github-for-research-groups.html</loc>
-<lastmod>2014-08-19T15:00:00-00:00</lastmod>
+<lastmod>2014-08-19T15:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/06/career-as-a-computational-scientist.html</loc>
-<lastmod>2014-06-05T14:00:00-00:00</lastmod>
+<lastmod>2014-06-05T14:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/03/machine-learning-at-scale-with-python.html</loc>
-<lastmod>2014-03-20T20:00:00-00:00</lastmod>
+<lastmod>2014-03-20T20:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html</loc>
-<lastmod>2014-03-20T19:30:00-00:00</lastmod>
+<lastmod>2014-03-20T19:30:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/02/build-software-carpentry-with-pelican.html</loc>
-<lastmod>2014-02-26T23:00:00-00:00</lastmod>
+<lastmod>2014-02-26T23:00:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</loc>
-<lastmod>2014-02-13T23:30:00-00:00</lastmod>
+<lastmod>2014-02-13T23:30:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2014/01/wget-file-from-google-drive.html</loc>
-<lastmod>2014-01-31T18:00:00-00:00</lastmod>
+<lastmod>2014-01-31T18:00:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/12/run-ipython-notebook-on-HPC-cluster-via-PBS.html</loc>
-<lastmod>2013-12-18T16:30:00-00:00</lastmod>
+<lastmod>2013-12-18T16:30:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/12/joining-sandiego-supercomputer-center.html</loc>
-<lastmod>2013-12-10T13:30:00-00:00</lastmod>
+<lastmod>2013-12-10T13:30:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/11/published-paper-destriping-CMB-polarimeter.html</loc>
-<lastmod>2013-11-20T21:30:00-00:00</lastmod>
+<lastmod>2013-11-20T21:30:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/10/jiffylab-multiuser-ipython-notebooks.html</loc>
-<lastmod>2013-10-14T10:30:00-00:00</lastmod>
+<lastmod>2013-10-14T10:30:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/10/how-to-log-exceptions-in-python.html</loc>
-<lastmod>2013-10-01T10:30:00-00:00</lastmod>
+<lastmod>2013-10-01T10:30:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/09/google-plus-comments-plugin-for-pelican.html</loc>
-<lastmod>2013-09-27T17:45:00-00:00</lastmod>
+<lastmod>2013-09-27T17:45:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html</loc>
-<lastmod>2013-09-26T13:45:00-00:00</lastmod>
+<lastmod>2013-09-26T13:45:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/09/clviewer-interactive-plot-of-CMB-spectra.html</loc>
-<lastmod>2013-09-17T18:30:00-00:00</lastmod>
+<lastmod>2013-09-17T18:30:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/09/Planck-CMB-map-at-high-resolution.html</loc>
-<lastmod>2013-09-10T14:00:00-00:00</lastmod>
+<lastmod>2013-09-10T14:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/09/run-hadoop-python-jobs-on-amazon-with-mrjob.html</loc>
-<lastmod>2013-09-02T02:36:00-00:00</lastmod>
+<lastmod>2013-09-02T02:36:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/08/interactive-figures-planck-power-spectra.html</loc>
-<lastmod>2013-08-30T08:52:00-00:00</lastmod>
+<lastmod>2013-08-30T08:52:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/08/planck-ctp-angular-power-spectrum-ell.html</loc>
-<lastmod>2013-08-20T23:03:00-00:00</lastmod>
+<lastmod>2013-08-20T23:03:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/08/healpix-map-of-earth-using-healpy.html</loc>
-<lastmod>2013-08-08T19:07:00-00:00</lastmod>
+<lastmod>2013-08-08T19:07:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/08/export-google-analytics-data-via-api.html</loc>
-<lastmod>2013-08-04T17:47:00-00:00</lastmod>
+<lastmod>2013-08-04T17:47:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/07/processing-planck-sources-with-hadoop.html</loc>
-<lastmod>2013-07-15T08:16:00-00:00</lastmod>
+<lastmod>2013-07-15T08:16:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/06/how-to-use-ipython-notebook-on-small.html</loc>
-<lastmod>2013-06-22T11:12:00-00:00</lastmod>
+<lastmod>2013-06-22T11:12:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/04/ipython-parallell-setup-on-carver-at.html</loc>
-<lastmod>2013-04-11T05:53:00-00:00</lastmod>
+<lastmod>2013-04-11T05:53:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/04/simple-mixin-usage-in-python.html</loc>
-<lastmod>2013-04-08T01:34:00-00:00</lastmod>
+<lastmod>2013-04-08T01:34:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/04/noise-in-spectra-and-map-domain.html</loc>
-<lastmod>2013-04-08T01:32:00-00:00</lastmod>
+<lastmod>2013-04-08T01:32:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/04/basic-forkpull-git-workflow.html</loc>
-<lastmod>2013-04-06T07:52:00-00:00</lastmod>
+<lastmod>2013-04-06T07:52:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/03/interactive-3d-plot-of-sky-map.html</loc>
-<lastmod>2013-03-12T19:49:00-00:00</lastmod>
+<lastmod>2013-03-12T19:49:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/02/how-to-cite-hdf5-in-bibtex.html</loc>
-<lastmod>2013-02-27T00:42:00-00:00</lastmod>
+<lastmod>2013-02-27T00:42:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/01/tag:blogger.html</loc>
-<lastmod>2013-01-28T21:06:00-00:00</lastmod>
+<lastmod>2013-01-28T21:06:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2013/01/elliptic-beams-fwhm-and-ellipticity.html</loc>
-<lastmod>2013-01-18T00:58:00-00:00</lastmod>
+<lastmod>2013-01-18T00:58:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2012/12/ubuntu-ppa-for-healpix-and-healpy.html</loc>
-<lastmod>2012-12-17T10:37:00-00:00</lastmod>
+<lastmod>2012-12-17T10:37:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2012/10/butterworth-filter-with-python.html</loc>
-<lastmod>2012-10-06T00:00:00-00:00</lastmod>
+<lastmod>2012-10-06T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2012/09/ipythonparallel-for-planck-data.html</loc>
-<lastmod>2012-09-27T06:24:00-00:00</lastmod>
+<lastmod>2012-09-27T06:24:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2012/09/homepage-on-aboutme.html</loc>
-<lastmod>2012-09-26T22:19:00-00:00</lastmod>
+<lastmod>2012-09-26T22:19:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2012/08/doctests-and-unittests-happiness-2.html</loc>
-<lastmod>2012-08-16T14:07:00-00:00</lastmod>
+<lastmod>2012-08-16T14:07:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2012/07/compile-python-module-with-mpi-support.html</loc>
-<lastmod>2012-07-06T16:08:00-00:00</lastmod>
+<lastmod>2012-07-06T16:08:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/11/some-python-resources.html</loc>
-<lastmod>2011-11-01T23:02:00-00:00</lastmod>
+<lastmod>2011-11-01T23:02:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/06/cfitsio-wrapper-in-python.html</loc>
-<lastmod>2011-06-21T04:43:00-00:00</lastmod>
+<lastmod>2011-06-21T04:43:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/06/unit-testing-happiness.html</loc>
-<lastmod>2011-06-21T04:39:00-00:00</lastmod>
+<lastmod>2011-06-21T04:39:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/05/pink-noise-1f-noise-simulations-in-numpy.html</loc>
-<lastmod>2011-05-18T23:49:00-00:00</lastmod>
+<lastmod>2011-05-18T23:49:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/04/vim-regular-expressions.html</loc>
-<lastmod>2011-04-29T02:14:00-00:00</lastmod>
+<lastmod>2011-04-29T02:14:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/04/set-python-logging-level.html</loc>
-<lastmod>2011-04-13T01:02:00-00:00</lastmod>
+<lastmod>2011-04-13T01:02:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/03/pyfits-memory-leak-in-newtable.html</loc>
-<lastmod>2011-03-28T17:22:00-00:00</lastmod>
+<lastmod>2011-03-28T17:22:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/02/ipython-and-pytrilinos.html</loc>
-<lastmod>2011-02-16T19:10:00-00:00</lastmod>
+<lastmod>2011-02-16T19:10:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/02/git-make-local-branch-tracking-origin.html</loc>
-<lastmod>2011-02-02T02:58:00-00:00</lastmod>
+<lastmod>2011-02-02T02:58:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2011/01/memory-map-npy-files.html</loc>
-<lastmod>2011-01-07T21:04:00-00:00</lastmod>
+<lastmod>2011-01-07T21:04:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/12/force-local-install-of-python-module.html</loc>
-<lastmod>2010-12-03T22:18:00-00:00</lastmod>
+<lastmod>2010-12-03T22:18:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/08/gnome-alt-f2-popup-launcher.html</loc>
-<lastmod>2010-08-31T18:14:00-00:00</lastmod>
+<lastmod>2010-08-31T18:14:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/08/switch-to-interactive-backend-with.html</loc>
-<lastmod>2010-08-21T00:33:00-00:00</lastmod>
+<lastmod>2010-08-21T00:33:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/08/numpy-dtypes-and-fits-keywords.html</loc>
-<lastmod>2010-08-04T21:57:00-00:00</lastmod>
+<lastmod>2010-08-04T21:57:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/07/count-hits-with-numpy.html</loc>
-<lastmod>2010-07-23T15:18:00-00:00</lastmod>
+<lastmod>2010-07-23T15:18:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/06/change-column-name-in-fits-with-pyfits.html</loc>
-<lastmod>2010-06-30T22:06:00-00:00</lastmod>
+<lastmod>2010-06-30T22:06:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/06/healpix-coordinates.html</loc>
-<lastmod>2010-06-23T01:01:00-00:00</lastmod>
+<lastmod>2010-06-23T01:01:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/06/parallel-computing-python-way.html</loc>
-<lastmod>2010-06-21T07:27:00-00:00</lastmod>
+<lastmod>2010-06-21T07:27:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/06/quaternions-for-python.html</loc>
-<lastmod>2010-06-21T07:21:00-00:00</lastmod>
+<lastmod>2010-06-21T07:21:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/03/change-permission-recursively-to.html</loc>
-<lastmod>2010-03-23T17:58:00-00:00</lastmod>
+<lastmod>2010-03-23T17:58:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/03/aptitude-search.html</loc>
-<lastmod>2010-03-16T22:50:00-00:00</lastmod>
+<lastmod>2010-03-16T22:50:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/03/using-numpy-dtype-with-loadtxt.html</loc>
-<lastmod>2010-03-03T22:49:00-00:00</lastmod>
+<lastmod>2010-03-03T22:49:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/02/stop-ipcluster-from-script.html</loc>
-<lastmod>2010-02-19T02:23:00-00:00</lastmod>
+<lastmod>2010-02-19T02:23:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/01/correlation.html</loc>
-<lastmod>2010-01-28T00:45:00-00:00</lastmod>
+<lastmod>2010-01-28T00:45:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/01/execute-bash-script-remotely-with-ssh.html</loc>
-<lastmod>2010-01-07T14:37:00-00:00</lastmod>
+<lastmod>2010-01-07T14:37:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/01/lock-pin-hold-package-using-apt-on.html</loc>
-<lastmod>2010-01-07T13:49:00-00:00</lastmod>
+<lastmod>2010-01-07T13:49:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2010/01/load-arrays-from-text-file-with-numpy.html</loc>
-<lastmod>2010-01-05T16:32:00-00:00</lastmod>
+<lastmod>2010-01-05T16:32:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2009/12/latest-maxima-and-wxmaxima-for-ubuntu.html</loc>
-<lastmod>2009-12-15T11:20:00-00:00</lastmod>
+<lastmod>2009-12-15T11:20:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2009/12/number-of-files-in-folder-and-subfolders.html</loc>
-<lastmod>2009-12-10T18:16:00-00:00</lastmod>
+<lastmod>2009-12-10T18:16:00-08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2008/09/forcefully-unmount-disk-partition.html</loc>
-<lastmod>2008-09-17T15:14:00-00:00</lastmod>
+<lastmod>2008-09-17T15:14:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2008/04/netcat-quickly-send-binaries-through.html</loc>
-<lastmod>2008-04-29T12:25:00-00:00</lastmod>
+<lastmod>2008-04-29T12:25:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2008/03/decibels-db-and-dbm-in-terms-of-power.html</loc>
-<lastmod>2008-03-29T02:13:00-00:00</lastmod>
+<lastmod>2008-03-29T02:13:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2008/03/relation-between-power-density-and.html</loc>
-<lastmod>2008-03-28T18:29:00-00:00</lastmod>
+<lastmod>2008-03-28T18:29:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2008/03/producing-pdf-from-xml-files.html</loc>
-<lastmod>2008-03-28T16:27:00-00:00</lastmod>
+<lastmod>2008-03-28T16:27:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/10/vim-costumization.html</loc>
-<lastmod>2006-10-17T10:49:00-00:00</lastmod>
+<lastmod>2006-10-17T10:49:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/10/using-gnu-find.html</loc>
-<lastmod>2006-10-03T14:00:00-00:00</lastmod>
+<lastmod>2006-10-03T14:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/10/beginners-bash-guide.html</loc>
-<lastmod>2006-10-03T13:56:00-00:00</lastmod>
+<lastmod>2006-10-03T13:56:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/09/tar-quickref.html</loc>
-<lastmod>2006-09-25T13:19:00-00:00</lastmod>
+<lastmod>2006-09-25T13:19:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/09/software-carpentry.html</loc>
-<lastmod>2006-09-25T12:51:00-00:00</lastmod>
+<lastmod>2006-09-25T12:51:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/09/software-libero-per-il-trattamento-di.html</loc>
-<lastmod>2006-09-22T13:35:00-00:00</lastmod>
+<lastmod>2006-09-22T13:35:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/09/command-line-processing.html</loc>
-<lastmod>2006-09-22T13:34:00-00:00</lastmod>
+<lastmod>2006-09-22T13:34:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/09/awk-made-easy.html</loc>
-<lastmod>2006-09-22T13:20:00-00:00</lastmod>
+<lastmod>2006-09-22T13:20:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/2006/09/pillole-di-astrofisica.html</loc>
-<lastmod>2006-09-20T13:39:00-00:00</lastmod>
+<lastmod>2006-09-20T13:39:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>

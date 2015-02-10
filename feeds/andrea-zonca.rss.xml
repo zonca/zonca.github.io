@@ -5,7 +5,7 @@
 &lt;li&gt;Guido van Rossum: &lt;a href="https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi"&gt;https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Comment&lt;/h2&gt;
-&lt;p&gt;For Europeans zero based indexing feels sensible if we think of floors in a house,
+&lt;p&gt;For Europeans zero based indexing feels reasonable if we think of floors in a house,
 the lowest floor is ground floor, then 1st floor and so on.&lt;/p&gt;
 &lt;p&gt;A house with 2 stories has ground and 1st floor. It is natural in this way to index
 zero-based and to count 1-based.&lt;/p&gt;
@@ -190,32 +190,32 @@ Another opportunity is to work as Research Scientist in a specific research grou
 &lt;p&gt;Finally the Github repository with additional material, under MIT license:
 &lt;a href="https://github.com/zonca/machine-learning-at-scale-with-python"&gt;https://github.com/zonca/machine-learning-at-scale-with-python&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Any feedback is appreciated, google+, twitter or email.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 20 Mar 2014 20:00:00 -0700</pubDate><guid>tag:zonca.github.io,2014-03-20:2014/03/machine-learning-at-scale-with-python.html</guid><category>python</category><category>machine-learning</category></item><item><title>Python on Gordon</title><link>http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html</link><description>&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;this&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="n"&gt;every&lt;/span&gt; &lt;span class="n"&gt;login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c-Singleline"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Install virtualenv&lt;/h3&gt;
 &lt;p&gt;Then we need to setup a sandboxed local environment to install other packages, by using &lt;code&gt;virtualenv&lt;/code&gt;, get the link to the latest version from &lt;a href="https://pypi.python.org/pypi/virtualenv"&gt;https://pypi.python.org/pypi/virtualenv&lt;/a&gt;, then download it on gordon and unpack it, e.g.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;wget&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;no&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;check&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;certificate&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.2.tar.gz&lt;/span&gt;
-&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="n"&gt;xzvf&lt;/span&gt; &lt;span class="n"&gt;virtualenv&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;tar&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gz&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.2.tar.gz
+tar xzvf virtualenv*tar.gz
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then create your own virtualenv and load it:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;venv&lt;/span&gt;
-&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;virtualenv&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="err"&gt;*/&lt;/span&gt;&lt;span class="n"&gt;virtualenv&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;venv&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;
-&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="n"&gt;venv&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;activate&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;this&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="n"&gt;every&lt;/span&gt; &lt;span class="n"&gt;login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mkdir ~/venv
+python virtualenv-*/virtualenv.py ~/venv/py
+source ~/venv/py/bin/activate # add this to .bashrc to load it at every login
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;you can restore your previous environment by deactivating the virtualenv:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;deactivate&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;prompt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;deactivate # from your bash prompt
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Install IPython&lt;/h3&gt;
 &lt;p&gt;Using &lt;code&gt;pip&lt;/code&gt; you can install &lt;code&gt;IPython&lt;/code&gt; and all dependencies for the notebook and parallel tools running:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;ipython&lt;/span&gt; &lt;span class="n"&gt;pyzmq&lt;/span&gt; &lt;span class="n"&gt;tornado&lt;/span&gt; &lt;span class="n"&gt;jinja&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install ipython pyzmq tornado jinja
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -225,20 +225,20 @@ Configuring the tunnelling over SSH is complicated, so I created a script, takes
 &lt;h3&gt;Configure IPython parallel&lt;/h3&gt;
 &lt;p&gt;&lt;a href="http://ipython.org/ipython-doc/stable/parallel/"&gt;IPython parallel&lt;/a&gt; on Gordon allows to launch a &lt;code&gt;PBS&lt;/code&gt; job with tens (or hundreds) of Python engines and then easily submit hundreds (or thousands) of serial jobs to be executed with automatic load balancing.
 First of all create the default configuration files:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ipython&lt;/span&gt; &lt;span class="n"&gt;profile&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;parallel&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ipython profile create --parallel
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then, in &lt;code&gt;~/.ipython/profile_default/ipcluster_config.py&lt;/code&gt;, you need to setup:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IPClusterStart&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;controller_launcher_class&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;LocalControllerLauncher&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; 
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IPClusterStart&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;engine_launcher_class&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;PBS&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; 
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;PBSLauncher&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;batch_template_file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;REPLACEWITHYOURUSER&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ipython&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;profile_default&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pbs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;engine&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;template&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;~&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;does&lt;/span&gt; &lt;span class="n"&gt;not&lt;/span&gt; &lt;span class="n"&gt;work&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;c.IPClusterStart.controller_launcher_class = &amp;#39;LocalControllerLauncher&amp;#39; 
+c.IPClusterStart.engine_launcher_class = &amp;#39;PBS&amp;#39; 
+c.PBSLauncher.batch_template_file = u&amp;#39;/home/REPLACEWITHYOURUSER/.ipython/profile_default/pbs.engine.template&amp;#39; # &amp;quot;~&amp;quot; does not work
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;You also need to allow connections to the controller from other hosts, setting  in &lt;code&gt;~/.ipython/profile_default/ipcontroller_config.py&lt;/code&gt;: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HubFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;*&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HubFactory&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;engine_ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;*&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;c.HubFactory.ip = &amp;#39;*&amp;#39;
+c.HubFactory.engine_ip = &amp;#39;*&amp;#39;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -268,69 +268,69 @@ mpirun_rsh -np &lt;span class="o"&gt;{&lt;/span&gt;n&lt;span class="o"&gt;}&lt;/
 &lt;p&gt;Here we chose to run 16 IPython engines per Gordon node, so each has access to 4GB of ram, if you need more just change 16 to 8 for example.&lt;/p&gt;
 &lt;h3&gt;Run IPython parallel&lt;/h3&gt;
 &lt;p&gt;You can submit a job to the queue running, &lt;code&gt;n&lt;/code&gt; is equal to the number of processes you want to use, so it needs to be a multiple of the &lt;code&gt;ppn&lt;/code&gt; chosen in the PBS template:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ipcluster&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ipcluster start --n=32 &amp;amp;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;in this case we are requesting 2 nodes, with 16 IPython engines each, check with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;qstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;qstat -u &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;USER&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;basically &lt;code&gt;ipcluster&lt;/code&gt; runs an &lt;code&gt;ipcontroller&lt;/code&gt; on the login node and submits a job to PBS for running the &lt;code&gt;ipengines&lt;/code&gt; on the computing nodes.&lt;/p&gt;
 &lt;p&gt;Once the PBS job is running, check that the engines are connected by opening a IPython on the login node and print the &lt;code&gt;ids&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;IPython&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parallel&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ids&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.parallel&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ids&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;You can stop the cluster (kills &lt;code&gt;ipcontroller&lt;/code&gt; and runs &lt;code&gt;qdel&lt;/code&gt; on the PBS job) either by sending CTRL-c to &lt;code&gt;ipcluster&lt;/code&gt; or running:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ipcluster&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;console&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ipcluster stop # from bash console
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Submit jobs to IPython parallel&lt;/h3&gt;
 &lt;p&gt;As soon as &lt;code&gt;ipcluster&lt;/code&gt; is executed, &lt;code&gt;ipcontroller&lt;/code&gt; is ready to queue jobs up, which will be then consumed by the engines once they will be running.
 The easiest method to submit jobs with automatic load balancing is to create a load balanced view:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;IPython&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parallel&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;lview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load_balanced_view&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;balanced&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.parallel&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;lview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load_balanced_view&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;# default load-balanced view&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;and then use its &lt;code&gt;map&lt;/code&gt; method:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;exp_10&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;def exp_10(x):
+    return x**10
 
-&lt;span class="n"&gt;list_of_args&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;lview&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exp_10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;list_of_args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+list_of_args = range(100)
+result = lview.map(exp_10, list_of_args)
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;In this code &lt;code&gt;IPython&lt;/code&gt; will distribute uniformly the list of arguments to the engines and the function will be evalutated for each of them and the result copied back to the connecting client running on the login node.&lt;/p&gt;
 &lt;h3&gt;Submit non-python jobs to IPython parallel&lt;/h3&gt;
 &lt;p&gt;Let's assume you have a list of commands you want to run in a text file, one command per line, those could be implemented in any programming language, e.g.:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;date&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;
-&lt;span class="n"&gt;hostname&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;hostname&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;date &amp;amp;&amp;gt; date.log
+hostname &amp;amp;&amp;gt; hostname.log
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then you create a function that executes one of those commands:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;run_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;subprocess&lt;/span&gt;
-    &lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;subprocess&lt;/span&gt;
+    &lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Popen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then apply this function to the list of commands:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;list_of_commands&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;commands.txt&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;readlines&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;lview&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;run_command&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;list_of_commands&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;list_of_commands = open(&amp;quot;commands.txt&amp;quot;).readlines()
+lview.map(run_command, list_of_commands)
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;I created a script that automates this process, see https://gist.github.com/zonca/8994544, you can run as:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ipcluster_run_commands&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="n"&gt;commands&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;./ipcluster_run_commands.py commands.txt
 &lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 20 Mar 2014 19:30:00 -0700</pubDate><guid>tag:zonca.github.io,2014-03-20:2014/03/setup-ipython-notebook-parallel-Gordon.html</guid><category>hpc</category><category>python</category><category>Gordon</category></item><item><title>Build Software Carpentry lessons with Pelican</title><link>http://zonca.github.io/2014/02/build-software-carpentry-with-pelican.html</link><description>&lt;p&gt;&lt;a href="http://www.software-carpentry.org"&gt;Software Carpentry&lt;/a&gt; offers bootcamps for scientist to teach basic programming skills.
 All the material, mainly about bash, git, Python and R is &lt;a href="http://github.com/swcarpentry/bc"&gt;available on Github&lt;/a&gt; under Creative Commons.&lt;/p&gt;
 &lt;p&gt;The content is either in Markdown or in IPython notebook format, and is currently built using Jekyll, nbconvert and Pandoc.
@@ -354,40 +354,40 @@ Basicly the requirement is to make it easy for bootcamp instructors to setup the
 &lt;li&gt;Clone the &lt;code&gt;bootcamp-pelican&lt;/code&gt; repository of your organization locally&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Create a &lt;code&gt;Python&lt;/code&gt; virtual environment and install requirements with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;bootcamp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;
-&lt;span class="n"&gt;virtualenv&lt;/span&gt; &lt;span class="n"&gt;swcpy&lt;/span&gt;
-&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="n"&gt;swcpy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;activate&lt;/span&gt;
-&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="n"&gt;requirements&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cd bootcamp-pelican
+virtualenv swcpy
+. swcpy/bin/activate
+pip install -r requirements.txt
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Clone the &lt;code&gt;swcarpentry-YYYY-MM-DD-INST.github.io&lt;/code&gt; in the output folder as:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;swcarpentry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;YYYY&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;MM&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;DD&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;INST&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;git clone git@github.com:swcarpentry-YYYY-MM-DD-INST.github.io.git output
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Build or Update the website with Pelican running&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fab&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fab build
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;You can display the website in your browser locally with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fab&lt;/span&gt; &lt;span class="n"&gt;serve&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fab serve
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Finally you can publish it to Github with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;
-&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cd output
+git add .
+git push origin master
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -401,7 +401,7 @@ Basicly the requirement is to make it easy for bootcamp instructors to setup the
 &lt;li&gt;Go to https://github.com/settings/tokens/new, create a new token with default permissions&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Install the &lt;code&gt;travis&lt;/code&gt; tool (in debian/ubuntu &lt;code&gt;sudo gem install travis&lt;/code&gt;) and run from any machine (not necessary to have a clone of the repository):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;travis&lt;/span&gt; &lt;span class="n"&gt;encrypt&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="n"&gt;swcarpentry&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;YYYY&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;MM&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;DD&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;INST&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bootcamp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pelican&lt;/span&gt; &lt;span class="n"&gt;GH_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;TOKENGOTATTHEPREVIOUSSTEP&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;travis encrypt -r swcarpentry-YYYY-MM-DD-INST/bootcamp-pelican GH_TOKEN=TOKENGOTATTHEPREVIOUSSTEP
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -418,14 +418,14 @@ The Scipy conference is at the forefront on this and did great work in peer revi
 &lt;a href="https://github.com/openproceedings/openproceedings-buildbot"&gt;https://github.com/openproceedings/openproceedings-buildbot&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 13 Feb 2014 23:30:00 -0800</pubDate><guid>tag:zonca.github.io,2014-02-13:2014/02/openproceedings-github-figshare-pelican-conference-proceedings.html</guid><category>python</category><category>pelican</category><category>openscience</category></item><item><title>wget file from google drive</title><link>http://zonca.github.io/2014/01/wget-file-from-google-drive.html</link><description>&lt;p&gt;Sometimes it is useful, even more if you have a chromebook, to upload a file to Google Drive and then use &lt;code&gt;wget&lt;/code&gt; to retrieve it from a server remotely.&lt;/p&gt;
 &lt;p&gt;In order to do this you need to make the file available to "Anyone with the link", then click on that link from your local machine and get to the download page that displays a Download button.
 Now right-click and select "Show page source" (in Chrome), and search for "downloadUrl", copy the url that starts with &lt;code&gt;https://docs.google.com&lt;/code&gt;, for example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;https:&lt;/span&gt;&lt;span class="c1"&gt;//docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;https://docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;This is unicode, so open &lt;code&gt;Python&lt;/code&gt; and do:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;download_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;PASTE HERE&amp;quot;&lt;/span&gt;
-&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;download_url&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;unicode_escape&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;export=download&amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;download_url = &amp;quot;PASTE HERE&amp;quot;
+print download_url.decode(&amp;quot;unicode_escape&amp;quot;)
+u&amp;#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;export=download&amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -567,14 +567,14 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 
 
 &lt;p&gt;In order to create the encrypted token under env, you can login to the Github web interface to get an &lt;a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use"&gt;Authentication Token&lt;/a&gt;, and then install the &lt;code&gt;travis&lt;/code&gt; command line tool with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# on Ubuntu you need ruby dev&lt;/span&gt;
-&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;apt&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;ruby1&lt;/span&gt;&lt;span class="mf"&gt;.9.1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;
-&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;travis&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;# on Ubuntu you need ruby dev
+sudo apt-get install ruby1.9.1-dev
+sudo gem install travis
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;and run from inside the repository:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;travis&lt;/span&gt; &lt;span class="n"&gt;encrypt&lt;/span&gt; &lt;span class="n"&gt;GH_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;LONGTOKENFROMGITHUB&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;travis encrypt GH_TOKEN=LONGTOKENFROMGITHUB --add env.global
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1622,15 +1622,15 @@ This retrieves from the APIs the visits to the website from search, with keyword
 &lt;li&gt;Login to the cluster&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Load the python environment, for example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;pythonEPD&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;pythonEPD&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Create the profile files:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ipython&lt;/span&gt; &lt;span class="n"&gt;profile&lt;/span&gt; &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;creates&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt;
-&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ipython&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;profile_default&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ipython_notebook_config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ipython profile create # creates the configuration files
+vim .ipython/profile_default/ipython_notebook_config.py
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1638,14 +1638,14 @@ This retrieves from the APIs the visits to the website from search, with keyword
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Change the port to something specific to you, &lt;strong&gt;please change this to avoid conflict with other users&lt;/strong&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NotebookApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;8900&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;c.NotebookApp.port = 8900
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Set a certificate to serve the notebook over https:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NotebookApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;certfile&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;mycert&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pem&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;c.NotebookApp.certfile = u&amp;#39;/home/zonca/mycert.pem&amp;#39;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1653,7 +1653,7 @@ This retrieves from the APIs the visits to the website from search, with keyword
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Set:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NotebookApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open_browser&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;False&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;c.NotebookApp.open_browser = False
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1662,12 +1662,12 @@ This retrieves from the APIs the visits to the website from search, with keyword
 &lt;h2&gt;2) Run the notebook for testing on the login node.&lt;/h2&gt;
 &lt;p&gt;You can use IPython notebook on the login node if you do not use much memory, e.g. &amp;lt; 300MB.
 ssh into the login node, at the terminal run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ipython&lt;/span&gt; &lt;span class="n"&gt;notebook&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;pylab&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kr"&gt;inline&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ipython notebook --pylab=inline
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;open the browser on your local machine and connect to (always use https, replace 8900 with your port):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;https:&lt;/span&gt;&lt;span class="c1"&gt;//LOGINNODEURL:8900&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;https://LOGINNODEURL:8900
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1681,12 +1681,12 @@ ssh into the login node, at the terminal run:&lt;/p&gt;
 &lt;p&gt;replace &lt;code&gt;LOGINNODEURL&lt;/code&gt; with the url of the login node of your cluster.&lt;/p&gt;
 &lt;p&gt;NOTICE: you need to ask the sysadmin to set &lt;code&gt;GatewayPorts yes&lt;/code&gt; in &lt;code&gt;sshd_config&lt;/code&gt; on the login node to allow access externally to the notebook.&lt;/p&gt;
 &lt;p&gt;Submit the job to the queue running:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;qsub&lt;/span&gt; &lt;span class="n"&gt;runipynb&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pbs&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qsub runipynb.pbs
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then from your local machine connect to (replace 8900 with your port):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;https:&lt;/span&gt;&lt;span class="c1"&gt;//LOGINNODEURL:8900&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;https://LOGINNODEURL:8900
 &lt;/pre&gt;&lt;/div&gt;
 
 

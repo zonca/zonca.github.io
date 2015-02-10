@@ -45,32 +45,32 @@
         </header>
         <div class='post-content'>
             <p>Gordon has already a <code>python</code> environment setup which can be activated by loading the <code>python</code> module:</p>
-<div class="highlight"><pre><span class="n">module</span> <span class="n">load</span> <span class="n">python</span> <span class="err">#</span> <span class="n">add</span> <span class="n">this</span> <span class="n">to</span> <span class="p">.</span><span class="n">bashrc</span> <span class="n">to</span> <span class="n">load</span> <span class="n">it</span> <span class="n">at</span> <span class="n">every</span> <span class="n">login</span>
+<div class="highlight"><pre><span class="k">module</span> <span class="n">load</span> <span class="n">python</span> <span class="c-Singleline"># add this to .bashrc to load it at every login</span>
 </pre></div>
 
 
 <h3>Install virtualenv</h3>
 <p>Then we need to setup a sandboxed local environment to install other packages, by using <code>virtualenv</code>, get the link to the latest version from <a href="https://pypi.python.org/pypi/virtualenv">https://pypi.python.org/pypi/virtualenv</a>, then download it on gordon and unpack it, e.g.</p>
-<div class="highlight"><pre><span class="n">wget</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">check</span><span class="o">-</span><span class="n">certificate</span> <span class="n">https</span><span class="o">:</span><span class="c1">//pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.2.tar.gz</span>
-<span class="n">tar</span> <span class="n">xzvf</span> <span class="n">virtualenv</span><span class="o">*</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>
+<div class="highlight"><pre>wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.2.tar.gz
+tar xzvf virtualenv*tar.gz
 </pre></div>
 
 
 <p>Then create your own virtualenv and load it:</p>
-<div class="highlight"><pre><span class="n">mkdir</span> <span class="o">~/</span><span class="n">venv</span>
-<span class="n">python</span> <span class="n">virtualenv</span><span class="o">-</span><span class="err">*/</span><span class="n">virtualenv</span><span class="p">.</span><span class="n">py</span> <span class="o">~/</span><span class="n">venv</span><span class="o">/</span><span class="n">py</span>
-<span class="n">source</span> <span class="o">~/</span><span class="n">venv</span><span class="o">/</span><span class="n">py</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">activate</span> <span class="err">#</span> <span class="n">add</span> <span class="n">this</span> <span class="n">to</span> <span class="p">.</span><span class="n">bashrc</span> <span class="n">to</span> <span class="n">load</span> <span class="n">it</span> <span class="n">at</span> <span class="n">every</span> <span class="n">login</span>
+<div class="highlight"><pre>mkdir ~/venv
+python virtualenv-*/virtualenv.py ~/venv/py
+source ~/venv/py/bin/activate # add this to .bashrc to load it at every login
 </pre></div>
 
 
 <p>you can restore your previous environment by deactivating the virtualenv:</p>
-<div class="highlight"><pre><span class="n">deactivate</span> <span class="err">#</span> <span class="n">from</span> <span class="n">your</span> <span class="n">bash</span> <span class="n">prompt</span>
+<div class="highlight"><pre>deactivate # from your bash prompt
 </pre></div>
 
 
 <h3>Install IPython</h3>
 <p>Using <code>pip</code> you can install <code>IPython</code> and all dependencies for the notebook and parallel tools running:</p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">ipython</span> <span class="n">pyzmq</span> <span class="n">tornado</span> <span class="n">jinja</span>
+<div class="highlight"><pre>pip install ipython pyzmq tornado jinja
 </pre></div>
 
 
@@ -80,20 +80,20 @@ Configuring the tunnelling over SSH is complicated, so I created a script, takes
 <h3>Configure IPython parallel</h3>
 <p><a href="http://ipython.org/ipython-doc/stable/parallel/">IPython parallel</a> on Gordon allows to launch a <code>PBS</code> job with tens (or hundreds) of Python engines and then easily submit hundreds (or thousands) of serial jobs to be executed with automatic load balancing.
 First of all create the default configuration files:</p>
-<div class="highlight"><pre><span class="n">ipython</span> <span class="n">profile</span> <span class="n">create</span> <span class="o">--</span><span class="n">parallel</span>
+<div class="highlight"><pre>ipython profile create --parallel
 </pre></div>
 
 
 <p>Then, in <code>~/.ipython/profile_default/ipcluster_config.py</code>, you need to setup:</p>
-<div class="highlight"><pre><span class="n">c</span><span class="p">.</span><span class="n">IPClusterStart</span><span class="p">.</span><span class="n">controller_launcher_class</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">LocalControllerLauncher</span><span class="err">&#39;</span> 
-<span class="n">c</span><span class="p">.</span><span class="n">IPClusterStart</span><span class="p">.</span><span class="n">engine_launcher_class</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">PBS</span><span class="err">&#39;</span> 
-<span class="n">c</span><span class="p">.</span><span class="n">PBSLauncher</span><span class="p">.</span><span class="n">batch_template_file</span> <span class="o">=</span> <span class="n">u</span><span class="err">&#39;</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">REPLACEWITHYOURUSER</span><span class="o">/</span><span class="p">.</span><span class="n">ipython</span><span class="o">/</span><span class="n">profile_default</span><span class="o">/</span><span class="n">pbs</span><span class="p">.</span><span class="n">engine</span><span class="p">.</span><span class="n">template</span><span class="err">&#39;</span> <span class="err">#</span> <span class="s">&quot;~&quot;</span> <span class="n">does</span> <span class="n">not</span> <span class="n">work</span>
+<div class="highlight"><pre>c.IPClusterStart.controller_launcher_class = &#39;LocalControllerLauncher&#39; 
+c.IPClusterStart.engine_launcher_class = &#39;PBS&#39; 
+c.PBSLauncher.batch_template_file = u&#39;/home/REPLACEWITHYOURUSER/.ipython/profile_default/pbs.engine.template&#39; # &quot;~&quot; does not work
 </pre></div>
 
 
 <p>You also need to allow connections to the controller from other hosts, setting  in <code>~/.ipython/profile_default/ipcontroller_config.py</code>: </p>
-<div class="highlight"><pre><span class="n">c</span><span class="p">.</span><span class="n">HubFactory</span><span class="p">.</span><span class="n">ip</span> <span class="o">=</span> <span class="sc">&#39;*&#39;</span>
-<span class="n">c</span><span class="p">.</span><span class="n">HubFactory</span><span class="p">.</span><span class="n">engine_ip</span> <span class="o">=</span> <span class="sc">&#39;*&#39;</span>
+<div class="highlight"><pre>c.HubFactory.ip = &#39;*&#39;
+c.HubFactory.engine_ip = &#39;*&#39;
 </pre></div>
 
 
@@ -123,69 +123,69 @@ mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile <span
 <p>Here we chose to run 16 IPython engines per Gordon node, so each has access to 4GB of ram, if you need more just change 16 to 8 for example.</p>
 <h3>Run IPython parallel</h3>
 <p>You can submit a job to the queue running, <code>n</code> is equal to the number of processes you want to use, so it needs to be a multiple of the <code>ppn</code> chosen in the PBS template:</p>
-<div class="highlight"><pre><span class="n">ipcluster</span> <span class="n">start</span> <span class="o">--</span><span class="n">n</span><span class="o">=</span><span class="mi">32</span> <span class="o">&amp;</span>
+<div class="highlight"><pre>ipcluster start --n=32 &amp;
 </pre></div>
 
 
 <p>in this case we are requesting 2 nodes, with 16 IPython engines each, check with:</p>
-<div class="highlight"><pre><span class="n">qstat</span> <span class="o">-</span><span class="n">u</span> <span class="err">$</span><span class="n">USER</span>
+<div class="highlight"><pre><span class="x">qstat -u </span><span class="p">$</span><span class="nv">USER</span><span class="x"></span>
 </pre></div>
 
 
 <p>basically <code>ipcluster</code> runs an <code>ipcontroller</code> on the login node and submits a job to PBS for running the <code>ipengines</code> on the computing nodes.</p>
 <p>Once the PBS job is running, check that the engines are connected by opening a IPython on the login node and print the <code>ids</code>:</p>
-<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">IPython</span><span class="p">.</span><span class="n">parallel</span> <span class="n">import</span> <span class="n">Client</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">rc</span><span class="p">.</span><span class="n">ids</span>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">IPython.parallel</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">rc</span><span class="o">.</span><span class="n">ids</span>
 </pre></div>
 
 
 <p>You can stop the cluster (kills <code>ipcontroller</code> and runs <code>qdel</code> on the PBS job) either by sending CTRL-c to <code>ipcluster</code> or running:</p>
-<div class="highlight"><pre><span class="n">ipcluster</span> <span class="n">stop</span> <span class="err">#</span> <span class="n">from</span> <span class="n">bash</span> <span class="n">console</span>
+<div class="highlight"><pre>ipcluster stop # from bash console
 </pre></div>
 
 
 <h3>Submit jobs to IPython parallel</h3>
 <p>As soon as <code>ipcluster</code> is executed, <code>ipcontroller</code> is ready to queue jobs up, which will be then consumed by the engines once they will be running.
 The easiest method to submit jobs with automatic load balancing is to create a load balanced view:</p>
-<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">IPython</span><span class="p">.</span><span class="n">parallel</span> <span class="n">import</span> <span class="n">Client</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">lview</span> <span class="o">=</span> <span class="n">rc</span><span class="p">.</span><span class="n">load_balanced_view</span><span class="p">()</span> <span class="err">#</span> <span class="k">default</span> <span class="n">load</span><span class="o">-</span><span class="n">balanced</span> <span class="n">view</span>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">IPython.parallel</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">lview</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">load_balanced_view</span><span class="p">()</span> <span class="c"># default load-balanced view</span>
 </pre></div>
 
 
 <p>and then use its <code>map</code> method:</p>
-<div class="highlight"><pre><span class="n">def</span> <span class="n">exp_10</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">:</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">10</span>
+<div class="highlight"><pre>def exp_10(x):
+    return x**10
 
-<span class="n">list_of_args</span> <span class="o">=</span> <span class="n">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">lview</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">exp_10</span><span class="p">,</span> <span class="n">list_of_args</span><span class="p">)</span>
+list_of_args = range(100)
+result = lview.map(exp_10, list_of_args)
 </pre></div>
 
 
 <p>In this code <code>IPython</code> will distribute uniformly the list of arguments to the engines and the function will be evalutated for each of them and the result copied back to the connecting client running on the login node.</p>
 <h3>Submit non-python jobs to IPython parallel</h3>
 <p>Let's assume you have a list of commands you want to run in a text file, one command per line, those could be implemented in any programming language, e.g.:</p>
-<div class="highlight"><pre><span class="n">date</span> <span class="o">&amp;&gt;</span> <span class="n">date</span><span class="p">.</span><span class="n">log</span>
-<span class="n">hostname</span> <span class="o">&amp;&gt;</span> <span class="n">hostname</span><span class="p">.</span><span class="n">log</span>
+<div class="highlight"><pre>date &amp;&gt; date.log
+hostname &amp;&gt; hostname.log
 </pre></div>
 
 
 <p>Then you create a function that executes one of those commands:</p>
-<div class="highlight"><pre><span class="n">def</span> <span class="n">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span><span class="o">:</span>
-    <span class="n">import</span> <span class="n">subprocess</span>
-    <span class="n">subprocess</span><span class="p">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span> <span class="o">=</span> <span class="n">True</span><span class="p">)</span>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">subprocess</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">shell</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
 </pre></div>
 
 
 <p>Then apply this function to the list of commands:</p>
-<div class="highlight"><pre><span class="n">list_of_commands</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&quot;commands.txt&quot;</span><span class="p">).</span><span class="n">readlines</span><span class="p">()</span>
-<span class="n">lview</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">run_command</span><span class="p">,</span> <span class="n">list_of_commands</span><span class="p">)</span>
+<div class="highlight"><pre>list_of_commands = open(&quot;commands.txt&quot;).readlines()
+lview.map(run_command, list_of_commands)
 </pre></div>
 
 
 <p>I created a script that automates this process, see https://gist.github.com/zonca/8994544, you can run as:</p>
-<div class="highlight"><pre><span class="p">.</span><span class="o">/</span><span class="n">ipcluster_run_commands</span><span class="p">.</span><span class="n">py</span> <span class="n">commands</span><span class="p">.</span><span class="n">txt</span>
+<div class="highlight"><pre>./ipcluster_run_commands.py commands.txt
 </pre></div>
         </div>
     </article>
@@ -194,7 +194,7 @@ The easiest method to submit jobs with automatic load balancing is to create a l
         <ul>
             <li>
                 <strong>Published:</strong>
-                <i><time datetime="2014-03-20T19:30:00">Thu 20 March 2014</time></i>
+                <i><time datetime="2014-03-20T19:30:00-07:00">Thu 20 March 2014</time></i>
             </li>
             <li>
                 <strong>In:</strong>
