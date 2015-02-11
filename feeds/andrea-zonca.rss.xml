@@ -45,7 +45,7 @@ inside the Ubuntu window.&lt;/p&gt;
 &lt;h2&gt;Final note&lt;/h2&gt;
 &lt;p&gt;I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2.&lt;/p&gt;
 &lt;p&gt;See a screenshot on my Chromebook with the Ubuntu window on the right with &lt;code&gt;git&lt;/code&gt;, &lt;code&gt;nano&lt;/code&gt; and &lt;code&gt;IPython notebook&lt;/code&gt; running, the &lt;code&gt;IPython notebook&lt;/code&gt; window opens in Chrome, see the left window.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Screenshot-chromebook" src="/content/Screenshot" title="2015-02-10 at 21.22.41.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Screenshot-chromebook" src="/content/screenshot-chromebook.png" /&gt;&lt;/p&gt;
 &lt;p&gt;It is also possible to switch the Chromebook to Developer mode and install Anaconda and git directly there, however I think that in order to have
 a complete platform for scientific computing is a lot better to have all of the packages provided by Ubuntu.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 10 Feb 2015 20:00:00 -0800</pubDate><guid>tag:zonca.github.io,2015-02-10:2015/02/software-carpentry-setup-chromebook.html</guid><category>software-carpentry</category><category>chromebook</category><category>ipython</category></item><item><title>Zero based indexing</title><link>http://zonca.github.io/2014/10/zero-based-indexing.html</link><description>&lt;h2&gt;Reads&lt;/h2&gt;
 &lt;ul&gt;
