@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2014-10-22T10:00:00-07:00</updated><entry><title>Zero based indexing</title><link href="http://zonca.github.io/2014/10/zero-based-indexing.html" rel="alternate"></link><updated>2014-10-22T10:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-10-22:2014/10/zero-based-indexing.html</id><summary type="html">&lt;h2&gt;Reads&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2015-02-10T20:00:00-08:00</updated><entry><title>Software Carpentry setup for Chromebook</title><link href="http://zonca.github.io/2015/02/software-carpentry-setup-chromebook.html" rel="alternate"></link><updated>2015-02-10T20:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-02-10:2015/02/software-carpentry-setup-chromebook.html</id><summary type="html">&lt;p&gt;In this post I'll provide instructions on how to install the main requirements of a &lt;a href="http://software-carpentry.org"&gt;Software Carpentry workshop&lt;/a&gt; on
+a Chromebook.
+Bash, git and IPython notebook.&lt;/p&gt;
+&lt;h2&gt;Switch the Chromebook to Developer mode&lt;/h2&gt;
+&lt;p&gt;ChromeOS is very restrictive on what users can install on the machine.
+The only way to get around this is to switch to developer mode.&lt;/p&gt;
+&lt;p&gt;Switching to Developer mode &lt;strong&gt;wipes&lt;/strong&gt; all the data on the local disk and 
+may void warranty, do it at your own risk.&lt;/p&gt;
+&lt;p&gt;Instructions are available on the &lt;a href="http://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices"&gt;ChromeOS wiki&lt;/a&gt;, you need
+to click on your device name and follow instructions.
+For most devices you need to switch the device off, then hold down&lt;code&gt;`ESC&lt;/code&gt; and &lt;code&gt;Refresh&lt;/code&gt; and poke the &lt;code&gt;Power&lt;/code&gt; button, then press &lt;code&gt;Ctrl-D&lt;/code&gt; at the
+Recovery screen (there is no prompt, you have to know to do it).
+This will wipe the device and activate Developer mode.&lt;/p&gt;
+&lt;p&gt;Once you reboot and enter your Google credentials, the Chromebook will copy back from Google servers all of your settings.&lt;/p&gt;
+&lt;p&gt;Now you are in Developer mode, the main feature is that you have a &lt;code&gt;root&lt;/code&gt; (superuser) shell you can activate using &lt;code&gt;Ctrl-Alt-t&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The worst issue of Developer mode is that at each boot the system will display a scary screen warning that OS verification is off and asks you if you would like to leave Developer
+mode. If you either press &lt;code&gt;Ctrl-D&lt;/code&gt; or wait 30 seconds, it will boot ChromeOS in Developer mode, if you instead hit the Space, it will wipe
+everything and switch back to Normal mode.&lt;/p&gt;
+&lt;h2&gt;Install Ubuntu with crouton&lt;/h2&gt;
+&lt;p&gt;You can now install Ubuntu using &lt;a href="https://github.com/dnschneid/crouton"&gt;crouton&lt;/a&gt;, you can read the instructions on the page, in summary:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;First you need to install the &lt;a href="https://goo.gl/OVQOEt"&gt;Crouton Chrome extension&lt;/a&gt; on ChromeOS&lt;/li&gt;
+&lt;li&gt;Download the last release from &lt;a href="https://goo.gl/fd3zc"&gt;https://goo.gl/fd3zc&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Open the ChromeOS shell using &lt;code&gt;Ctrl-Alt-t&lt;/code&gt;, digit &lt;code&gt;shell&lt;/code&gt; at the prompt and hit enter&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;sudo sh ~/Downloads/crouton -t xfce -r trusty,xiwi&lt;/code&gt;, this instlls Ubuntu Trutyty with xfce desktop and uses &lt;code&gt;kiwi&lt;/code&gt; to be able to run in a window.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now you can have Ubuntu running in a window of the Chromebook browser by:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Press &lt;code&gt;Ctrl-Alt-T&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;digit &lt;code&gt;shell&lt;/code&gt; at the prompt and hit enter&lt;/li&gt;
+&lt;li&gt;digit &lt;code&gt;sudo startxfce4&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Install scientific computing stack&lt;/h2&gt;
+&lt;p&gt;You can now follow the instructions for linux at &lt;a href="http://software-carpentry.org/v5/setup.html"&gt;http://software-carpentry.org/v5/setup.html&lt;/a&gt;, summary of commands to run in a terminal:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sudo apt install nano&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo apt install git&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;In order to install R &lt;code&gt;sudo apt install r-base&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Download Anaconda Python 2.7 64bit for Linux from &lt;a href="http://continuum.io/downloads"&gt;http://continuum.io/downloads&lt;/a&gt; and execute it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Anaconda will run under Ubuntu but when you open an IPython notebook, it will automatically open a new tab in the main browser of ChromeOS, not
+inside the Ubuntu window.&lt;/p&gt;
+&lt;h2&gt;Final note&lt;/h2&gt;
+&lt;p&gt;I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2. &lt;/p&gt;
+&lt;p&gt;It is also possible to switch the Chromebook to Developer mode and install Anaconda and git directly there, however I think that in order to have
+a complete platform for scientific computing is a lot better to have all of the packages provided by Ubuntu.&lt;/p&gt;</summary><category term="software-carpentry"></category><category term="chromebook"></category><category term="ipython"></category></entry><entry><title>Zero based indexing</title><link href="http://zonca.github.io/2014/10/zero-based-indexing.html" rel="alternate"></link><updated>2014-10-22T10:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-10-22:2014/10/zero-based-indexing.html</id><summary type="html">&lt;h2&gt;Reads&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Dijkstra: &lt;a href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html"&gt;https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Guido van Rossum: &lt;a href="https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi"&gt;https://plus.google.com/115212051037621986145/posts/YTUxbXYZyfi&lt;/a&gt;&lt;/li&gt;

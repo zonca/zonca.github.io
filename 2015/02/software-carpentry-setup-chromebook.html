@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Software Carpentry setup for Chromebook | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Software Carpentry setup for Chromebook</h1>
+        </header>
+        <div class='post-content'>
+            <p>In this post I'll provide instructions on how to install the main requirements of a <a href="http://software-carpentry.org">Software Carpentry workshop</a> on
+a Chromebook.
+Bash, git and IPython notebook.</p>
+<h2>Switch the Chromebook to Developer mode</h2>
+<p>ChromeOS is very restrictive on what users can install on the machine.
+The only way to get around this is to switch to developer mode.</p>
+<p>Switching to Developer mode <strong>wipes</strong> all the data on the local disk and 
+may void warranty, do it at your own risk.</p>
+<p>Instructions are available on the <a href="http://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices">ChromeOS wiki</a>, you need
+to click on your device name and follow instructions.
+For most devices you need to switch the device off, then hold down<code>`ESC</code> and <code>Refresh</code> and poke the <code>Power</code> button, then press <code>Ctrl-D</code> at the
+Recovery screen (there is no prompt, you have to know to do it).
+This will wipe the device and activate Developer mode.</p>
+<p>Once you reboot and enter your Google credentials, the Chromebook will copy back from Google servers all of your settings.</p>
+<p>Now you are in Developer mode, the main feature is that you have a <code>root</code> (superuser) shell you can activate using <code>Ctrl-Alt-t</code>.</p>
+<p>The worst issue of Developer mode is that at each boot the system will display a scary screen warning that OS verification is off and asks you if you would like to leave Developer
+mode. If you either press <code>Ctrl-D</code> or wait 30 seconds, it will boot ChromeOS in Developer mode, if you instead hit the Space, it will wipe
+everything and switch back to Normal mode.</p>
+<h2>Install Ubuntu with crouton</h2>
+<p>You can now install Ubuntu using <a href="https://github.com/dnschneid/crouton">crouton</a>, you can read the instructions on the page, in summary:</p>
+<ul>
+<li>First you need to install the <a href="https://goo.gl/OVQOEt">Crouton Chrome extension</a> on ChromeOS</li>
+<li>Download the last release from <a href="https://goo.gl/fd3zc">https://goo.gl/fd3zc</a></li>
+<li>Open the ChromeOS shell using <code>Ctrl-Alt-t</code>, digit <code>shell</code> at the prompt and hit enter</li>
+<li>Run <code>sudo sh ~/Downloads/crouton -t xfce -r trusty,xiwi</code>, this instlls Ubuntu Trutyty with xfce desktop and uses <code>kiwi</code> to be able to run in a window.</li>
+</ul>
+<p>Now you can have Ubuntu running in a window of the Chromebook browser by:</p>
+<ul>
+<li>Press <code>Ctrl-Alt-T</code></li>
+<li>digit <code>shell</code> at the prompt and hit enter</li>
+<li>digit <code>sudo startxfce4</code></li>
+</ul>
+<h2>Install scientific computing stack</h2>
+<p>You can now follow the instructions for linux at <a href="http://software-carpentry.org/v5/setup.html">http://software-carpentry.org/v5/setup.html</a>, summary of commands to run in a terminal:</p>
+<ul>
+<li><code>sudo apt install nano</code></li>
+<li><code>sudo apt install git</code></li>
+<li>In order to install R <code>sudo apt install r-base</code></li>
+<li>Download Anaconda Python 2.7 64bit for Linux from <a href="http://continuum.io/downloads">http://continuum.io/downloads</a> and execute it</li>
+</ul>
+<p>Anaconda will run under Ubuntu but when you open an IPython notebook, it will automatically open a new tab in the main browser of ChromeOS, not
+inside the Ubuntu window.</p>
+<h2>Final note</h2>
+<p>I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2. </p>
+<p>It is also possible to switch the Chromebook to Developer mode and install Anaconda and git directly there, however I think that in order to have
+a complete platform for scientific computing is a lot better to have all of the packages provided by Ubuntu.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2015-02-10T20:00:00-08:00">Tue 10 February 2015</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/software-carpentry.html">software-carpentry</a> 
+<a href="http://zonca.github.io/tag/chromebook.html">chromebook</a> 
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
