@@ -43,7 +43,7 @@ Linux at &lt;a href="http://software-carpentry.org/v5/setup.html"&gt;http://soft
 &lt;p&gt;Anaconda will run under Ubuntu but when you open an IPython notebook, it will automatically open a new tab in the main browser of ChromeOS, not
 inside the Ubuntu window.&lt;/p&gt;
 &lt;h2&gt;Final note&lt;/h2&gt;
-&lt;p&gt;I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2.&lt;/p&gt;
+&lt;p&gt;I admit it looks scary, I personally followed this procedure successfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2.&lt;/p&gt;
 &lt;p&gt;See a screenshot on my Chromebook with the Ubuntu window on the right with &lt;code&gt;git&lt;/code&gt;, &lt;code&gt;nano&lt;/code&gt; and &lt;code&gt;IPython notebook&lt;/code&gt; running, the &lt;code&gt;IPython notebook&lt;/code&gt; window opens in Chrome, see the left window.&lt;/p&gt;
 &lt;p&gt;&lt;a href="/images/screenshot-chromebook.png"&gt;&lt;img src="/images/screenshot-chromebook.png" alt="Screenshot Chromebook click for full resolution" style="width: 730px;"/&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;It is also possible to switch the Chromebook to Developer mode and install Anaconda and git directly there, however I think that in order to have
