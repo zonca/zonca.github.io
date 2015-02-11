@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><atom:link href="http://zonca.github.io/feeds/andrea-zonca.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 10 Feb 2015 20:00:00 -0800</lastBuildDate><item><title>Software Carpentry setup for Chromebook</title><link>http://zonca.github.io/2015/02/software-carpentry-setup-chromebook.html</link><description>&lt;p&gt;In this post I'll provide instructions on how to install the main requirements of a &lt;a href="http://software-carpentry.org"&gt;Software Carpentry workshop&lt;/a&gt; on
 a Chromebook.
-Bash, git and IPython notebook.&lt;/p&gt;
+Bash, git, IPython notebook and R.&lt;/p&gt;
 &lt;h2&gt;Switch the Chromebook to Developer mode&lt;/h2&gt;
 &lt;p&gt;ChromeOS is very restrictive on what users can install on the machine.
 The only way to get around this is to switch to developer mode.&lt;/p&gt;
@@ -9,13 +9,12 @@ The only way to get around this is to switch to developer mode.&lt;/p&gt;
 may void warranty, do it at your own risk.&lt;/p&gt;
 &lt;p&gt;Instructions are available on the &lt;a href="http://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices"&gt;ChromeOS wiki&lt;/a&gt;, you need
 to click on your device name and follow instructions.
-For most devices you need to switch the device off, then hold down&lt;code&gt;`ESC&lt;/code&gt; and &lt;code&gt;Refresh&lt;/code&gt; and poke the &lt;code&gt;Power&lt;/code&gt; button, then press &lt;code&gt;Ctrl-D&lt;/code&gt; at the
+For most devices you need to switch the device off, then hold down &lt;code&gt;ESC&lt;/code&gt; and &lt;code&gt;Refresh&lt;/code&gt; and poke the &lt;code&gt;Power&lt;/code&gt; button, then press &lt;code&gt;Ctrl-D&lt;/code&gt; at the
 Recovery screen (there is no prompt, you have to know to do it).
 This will wipe the device and activate Developer mode.&lt;/p&gt;
 &lt;p&gt;Once you reboot and enter your Google credentials, the Chromebook will copy back from Google servers all of your settings.&lt;/p&gt;
-&lt;p&gt;Now you are in Developer mode, the main feature is that you have a &lt;code&gt;root&lt;/code&gt; (superuser) shell you can activate using &lt;code&gt;Ctrl-Alt-t&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The worst issue of Developer mode is that at each boot the system will display a scary screen warning that OS verification is off and asks you if you would like to leave Developer
-mode. If you either press &lt;code&gt;Ctrl-D&lt;/code&gt; or wait 30 seconds, it will boot ChromeOS in Developer mode, if you instead hit the Space, it will wipe
+&lt;p&gt;Now you are in Developer mode, the main feature is that you have a &lt;code&gt;root&lt;/code&gt; (superuser) shell you can activate using &lt;code&gt;Ctrl-Alt-T&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The worst issue of Developer mode is that at each boot the system will display a scary screen warning that OS verification is off and asks you if you would like to leave Developer mode. If you either press &lt;code&gt;Ctrl-D&lt;/code&gt; or wait 30 seconds, it will boot ChromeOS in Developer mode, if you instead hit the Space, it will wipe
 everything and switch back to Normal mode.&lt;/p&gt;
 &lt;h2&gt;Install Ubuntu with crouton&lt;/h2&gt;
 &lt;p&gt;You can now install Ubuntu using &lt;a href="https://github.com/dnschneid/crouton"&gt;crouton&lt;/a&gt;, you can read the instructions on the page, in summary:&lt;/p&gt;
@@ -31,8 +30,10 @@ everything and switch back to Normal mode.&lt;/p&gt;
 &lt;li&gt;digit &lt;code&gt;shell&lt;/code&gt; at the prompt and hit enter&lt;/li&gt;
 &lt;li&gt;digit &lt;code&gt;sudo startxfce4&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;What is great about &lt;code&gt;crouton&lt;/code&gt; is that it is not like a Virtual Machine, Ubuntu runs at full performance on the same linux kernel of ChromeOS.&lt;/p&gt;
 &lt;h2&gt;Install scientific computing stack&lt;/h2&gt;
-&lt;p&gt;You can now follow the instructions for linux at &lt;a href="http://software-carpentry.org/v5/setup.html"&gt;http://software-carpentry.org/v5/setup.html&lt;/a&gt;, summary of commands to run in a terminal:&lt;/p&gt;
+&lt;p&gt;You can now follow the instructions for 
+Linux at &lt;a href="http://software-carpentry.org/v5/setup.html"&gt;http://software-carpentry.org/v5/setup.html&lt;/a&gt;, summary of commands to run in a terminal:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;sudo apt install nano&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sudo apt install git&lt;/code&gt;&lt;/li&gt;
@@ -42,7 +43,9 @@ everything and switch back to Normal mode.&lt;/p&gt;
 &lt;p&gt;Anaconda will run under Ubuntu but when you open an IPython notebook, it will automatically open a new tab in the main browser of ChromeOS, not
 inside the Ubuntu window.&lt;/p&gt;
 &lt;h2&gt;Final note&lt;/h2&gt;
-&lt;p&gt;I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2. &lt;/p&gt;
+&lt;p&gt;I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2.&lt;/p&gt;
+&lt;p&gt;See a screenshot on my Chromebook with the Ubuntu window on the right with &lt;code&gt;git&lt;/code&gt;, &lt;code&gt;nano&lt;/code&gt; and &lt;code&gt;IPython notebook&lt;/code&gt; running, the &lt;code&gt;IPython notebook&lt;/code&gt; window opens in Chrome, see the left window.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Screenshot-chromebook" src="/content/Screenshot" title="2015-02-10 at 21.22.41.png" /&gt;&lt;/p&gt;
 &lt;p&gt;It is also possible to switch the Chromebook to Developer mode and install Anaconda and git directly there, however I think that in order to have
 a complete platform for scientific computing is a lot better to have all of the packages provided by Ubuntu.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Tue, 10 Feb 2015 20:00:00 -0800</pubDate><guid>tag:zonca.github.io,2015-02-10:2015/02/software-carpentry-setup-chromebook.html</guid><category>software-carpentry</category><category>chromebook</category><category>ipython</category></item><item><title>Zero based indexing</title><link>http://zonca.github.io/2014/10/zero-based-indexing.html</link><description>&lt;h2&gt;Reads&lt;/h2&gt;
 &lt;ul&gt;

@@ -46,7 +46,7 @@
         <div class='post-content'>
             <p>In this post I'll provide instructions on how to install the main requirements of a <a href="http://software-carpentry.org">Software Carpentry workshop</a> on
 a Chromebook.
-Bash, git and IPython notebook.</p>
+Bash, git, IPython notebook and R.</p>
 <h2>Switch the Chromebook to Developer mode</h2>
 <p>ChromeOS is very restrictive on what users can install on the machine.
 The only way to get around this is to switch to developer mode.</p>
@@ -54,13 +54,12 @@ The only way to get around this is to switch to developer mode.</p>
 may void warranty, do it at your own risk.</p>
 <p>Instructions are available on the <a href="http://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices">ChromeOS wiki</a>, you need
 to click on your device name and follow instructions.
-For most devices you need to switch the device off, then hold down<code>`ESC</code> and <code>Refresh</code> and poke the <code>Power</code> button, then press <code>Ctrl-D</code> at the
+For most devices you need to switch the device off, then hold down <code>ESC</code> and <code>Refresh</code> and poke the <code>Power</code> button, then press <code>Ctrl-D</code> at the
 Recovery screen (there is no prompt, you have to know to do it).
 This will wipe the device and activate Developer mode.</p>
 <p>Once you reboot and enter your Google credentials, the Chromebook will copy back from Google servers all of your settings.</p>
-<p>Now you are in Developer mode, the main feature is that you have a <code>root</code> (superuser) shell you can activate using <code>Ctrl-Alt-t</code>.</p>
-<p>The worst issue of Developer mode is that at each boot the system will display a scary screen warning that OS verification is off and asks you if you would like to leave Developer
-mode. If you either press <code>Ctrl-D</code> or wait 30 seconds, it will boot ChromeOS in Developer mode, if you instead hit the Space, it will wipe
+<p>Now you are in Developer mode, the main feature is that you have a <code>root</code> (superuser) shell you can activate using <code>Ctrl-Alt-T</code>.</p>
+<p>The worst issue of Developer mode is that at each boot the system will display a scary screen warning that OS verification is off and asks you if you would like to leave Developer mode. If you either press <code>Ctrl-D</code> or wait 30 seconds, it will boot ChromeOS in Developer mode, if you instead hit the Space, it will wipe
 everything and switch back to Normal mode.</p>
 <h2>Install Ubuntu with crouton</h2>
 <p>You can now install Ubuntu using <a href="https://github.com/dnschneid/crouton">crouton</a>, you can read the instructions on the page, in summary:</p>
@@ -76,8 +75,10 @@ everything and switch back to Normal mode.</p>
 <li>digit <code>shell</code> at the prompt and hit enter</li>
 <li>digit <code>sudo startxfce4</code></li>
 </ul>
+<p>What is great about <code>crouton</code> is that it is not like a Virtual Machine, Ubuntu runs at full performance on the same linux kernel of ChromeOS.</p>
 <h2>Install scientific computing stack</h2>
-<p>You can now follow the instructions for linux at <a href="http://software-carpentry.org/v5/setup.html">http://software-carpentry.org/v5/setup.html</a>, summary of commands to run in a terminal:</p>
+<p>You can now follow the instructions for 
+Linux at <a href="http://software-carpentry.org/v5/setup.html">http://software-carpentry.org/v5/setup.html</a>, summary of commands to run in a terminal:</p>
 <ul>
 <li><code>sudo apt install nano</code></li>
 <li><code>sudo apt install git</code></li>
@@ -87,7 +88,9 @@ everything and switch back to Normal mode.</p>
 <p>Anaconda will run under Ubuntu but when you open an IPython notebook, it will automatically open a new tab in the main browser of ChromeOS, not
 inside the Ubuntu window.</p>
 <h2>Final note</h2>
-<p>I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2. </p>
+<p>I admit it looks scary, I prsonally followed this procedure osuccessfully on 2 chromebooks: Samsung Chromebook 1 and Toshiba Chromebook 2.</p>
+<p>See a screenshot on my Chromebook with the Ubuntu window on the right with <code>git</code>, <code>nano</code> and <code>IPython notebook</code> running, the <code>IPython notebook</code> window opens in Chrome, see the left window.</p>
+<p><img alt="Screenshot-chromebook" src="/content/Screenshot" title="2015-02-10 at 21.22.41.png" /></p>
 <p>It is also possible to switch the Chromebook to Developer mode and install Anaconda and git directly there, however I think that in order to have
 a complete platform for scientific computing is a lot better to have all of the packages provided by Ubuntu.</p>
         </div>
