@@ -1,5 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2015-02-10T20:00:00-08:00</updated><entry><title>Software Carpentry setup for Chromebook</title><link href="http://zonca.github.io/2015/02/software-carpentry-setup-chromebook.html" rel="alternate"></link><updated>2015-02-10T20:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-02-10:2015/02/software-carpentry-setup-chromebook.html</id><summary type="html">&lt;p&gt;In this post I'll provide instructions on how to install the main requirements of a &lt;a href="http://software-carpentry.org"&gt;Software Carpentry workshop&lt;/a&gt; on
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2015-03-24T09:00:00-07:00</updated><entry><title>Accelerate groupby operation on pixels with Numba</title><link href="http://zonca.github.io/2015/03/numba-groupby-pixels.html" rel="alternate"></link><updated>2015-03-24T09:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-03-24:2015/03/numba-groupby-pixels.html</id><summary type="html">&lt;p&gt;&lt;a href="/notebooks/numba-groupby-pixels.ipynb"&gt;Download the original IPython notebook&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Astrophysics background&lt;/h2&gt;
+&lt;p&gt;It is very common in Astrophysics to work with sky pixels. The sky is tassellated in patches with specific properties and a sky map is then a collection of intensity values for each pixel. The most common pixelization used in Cosmology is &lt;a href="http://healpix.jpl.nasa.gov"&gt;HEALPix&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Measurements from telescopes are then represented as an array of pixels that encode the pointing of the instrument at each timestamp and the measurement output.&lt;/p&gt;
+&lt;h2&gt;Sample timeline&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numba&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For simplicity let's assume we have a sky with 50K pixels:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;NPIX = 50000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And we have 50 million measurement from our instrument:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;NTIME = int(50 * 1e6)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The pointing of our instrument is an array of pixels, random in our sample case:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pixels = np.random.randint(0, NPIX-1, NTIME)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Our data are also random:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;timeline = np.random.randn(NTIME)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Create a map of the sky with pandas&lt;/h2&gt;
+&lt;p&gt;One of the most common operations is to sum all of our measurements in a sky map, so the value of each pixel in our sky map will be the sum of each individual measurement.
+The easiest way is to use the &lt;code&gt;groupby&lt;/code&gt; operation in &lt;code&gt;pandas&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;timeline_pandas&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Series&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;timeline&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pixels&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;timeline_pandas&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="mi"&gt;46889&lt;/span&gt;    &lt;span class="mf"&gt;0.407097&lt;/span&gt;
+&lt;span class="mi"&gt;3638&lt;/span&gt;     &lt;span class="mf"&gt;1.300001&lt;/span&gt;
+&lt;span class="mi"&gt;6345&lt;/span&gt;     &lt;span class="mf"&gt;0.174931&lt;/span&gt;
+&lt;span class="mi"&gt;15742&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.255958&lt;/span&gt;
+&lt;span class="mi"&gt;34308&lt;/span&gt;    &lt;span class="mf"&gt;1.147338&lt;/span&gt;
+&lt;span class="nl"&gt;dtype&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;float64&lt;/span&gt;
+
+&lt;span class="nf"&gt;%time&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;timeline_pandas&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;CPU&lt;/span&gt; &lt;span class="nl"&gt;times&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="mf"&gt;4.09&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;sys&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;471&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;total&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;4.56&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;
+&lt;span class="n"&gt;Wall&lt;/span&gt; &lt;span class="nl"&gt;time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;4.55&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Create a map of the sky with numba&lt;/h2&gt;
+&lt;p&gt;We would like to improve the performance of this operation using &lt;code&gt;numba&lt;/code&gt;, which allows to produce automatically C-speed compiled code from pure python functions.&lt;/p&gt;
+&lt;p&gt;First we need to develop a pure python version of the code, test it, and then have &lt;code&gt;numba&lt;/code&gt; optimize it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;groupby_python&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="n"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="n"&gt;m_python&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="nf"&gt;%time&lt;/span&gt; &lt;span class="n"&gt;groupby_python&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pixels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timeline&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m_python&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;CPU&lt;/span&gt; &lt;span class="nl"&gt;times&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="mf"&gt;37.5&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;sys&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="n"&gt;ns&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;total&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;37.5&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;
+&lt;span class="n"&gt;Wall&lt;/span&gt; &lt;span class="nl"&gt;time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;37.6&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;
+
+&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;testing&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assert_allclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_python&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Pure Python is slower than the &lt;code&gt;pandas&lt;/code&gt; version implemented in &lt;code&gt;cython&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Optimize the function with numba.jit&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;numba.jit&lt;/code&gt; gets an input function and creates an compiled version with does not depend on slow Python calls, this is enforced by &lt;code&gt;nopython=True&lt;/code&gt;, &lt;code&gt;numba&lt;/code&gt; would throw an error if it would not be possible to run in &lt;code&gt;nopython&lt;/code&gt; mode.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;groupby_numba&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numba&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;groupby_python&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nopython&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;m_numba&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nf"&gt;%time&lt;/span&gt; &lt;span class="n"&gt;groupby_numba&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pixels&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timeline&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m_numba&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;CPU&lt;/span&gt; &lt;span class="nl"&gt;times&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="mi"&gt;274&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;sys&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;total&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;279&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt;
+&lt;span class="n"&gt;Wall&lt;/span&gt; &lt;span class="nl"&gt;time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;278&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt;
+
+&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;testing&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assert_allclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m_numba&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Performance improvement is about 100x compared to Python and 20x compared to Pandas, pretty good!&lt;/p&gt;
+&lt;h2&gt;Use numba.jit as a decorator&lt;/h2&gt;
+&lt;p&gt;The exact same result is obtained if we use &lt;code&gt;numba.jit&lt;/code&gt; as a decorator:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;@numba.jit(nopython=True)
+def groupby_numba(index, value, output):
+    for i in range(index.shape[0]):
+        output[index[i]] += value[i]
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="numba"></category><category term="astrophysics"></category></entry><entry><title>Software Carpentry setup for Chromebook</title><link href="http://zonca.github.io/2015/02/software-carpentry-setup-chromebook.html" rel="alternate"></link><updated>2015-02-10T20:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-02-10:2015/02/software-carpentry-setup-chromebook.html</id><summary type="html">&lt;p&gt;In this post I'll provide instructions on how to install the main requirements of a &lt;a href="http://software-carpentry.org"&gt;Software Carpentry workshop&lt;/a&gt; on
 a Chromebook.
 Bash, git, IPython notebook and R.&lt;/p&gt;
 &lt;h2&gt;Switch the Chromebook to Developer mode&lt;/h2&gt;

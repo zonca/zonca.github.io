@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Accelerate groupby operation on pixels with Numba | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Accelerate groupby operation on pixels with Numba</h1>
+        </header>
+        <div class='post-content'>
+            <p><a href="/notebooks/numba-groupby-pixels.ipynb">Download the original IPython notebook</a></p>
+<h2>Astrophysics background</h2>
+<p>It is very common in Astrophysics to work with sky pixels. The sky is tassellated in patches with specific properties and a sky map is then a collection of intensity values for each pixel. The most common pixelization used in Cosmology is <a href="http://healpix.jpl.nasa.gov">HEALPix</a>.</p>
+<p>Measurements from telescopes are then represented as an array of pixels that encode the pointing of the instrument at each timestamp and the measurement output.</p>
+<h2>Sample timeline</h2>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numba</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+
+
+<p>For simplicity let's assume we have a sky with 50K pixels:</p>
+<div class="highlight"><pre>NPIX = 50000
+</pre></div>
+
+
+<p>And we have 50 million measurement from our instrument:</p>
+<div class="highlight"><pre>NTIME = int(50 * 1e6)
+</pre></div>
+
+
+<p>The pointing of our instrument is an array of pixels, random in our sample case:</p>
+<div class="highlight"><pre>pixels = np.random.randint(0, NPIX-1, NTIME)
+</pre></div>
+
+
+<p>Our data are also random:</p>
+<div class="highlight"><pre>timeline = np.random.randn(NTIME)
+</pre></div>
+
+
+<h2>Create a map of the sky with pandas</h2>
+<p>One of the most common operations is to sum all of our measurements in a sky map, so the value of each pixel in our sky map will be the sum of each individual measurement.
+The easiest way is to use the <code>groupby</code> operation in <code>pandas</code>:</p>
+<div class="highlight"><pre><span class="n">timeline_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">timeline</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pixels</span><span class="p">)</span>
+
+<span class="n">timeline_pandas</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+<span class="mi">46889</span>    <span class="mf">0.407097</span>
+<span class="mi">3638</span>     <span class="mf">1.300001</span>
+<span class="mi">6345</span>     <span class="mf">0.174931</span>
+<span class="mi">15742</span>   <span class="o">-</span><span class="mf">0.255958</span>
+<span class="mi">34308</span>    <span class="mf">1.147338</span>
+<span class="nl">dtype</span><span class="p">:</span> <span class="n">float64</span>
+
+<span class="nf">%time</span> <span class="n">m</span> <span class="o">=</span> <span class="n">timeline_pandas</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">).</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">CPU</span> <span class="nl">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">4.09</span> <span class="n">s</span><span class="p">,</span> <span class="nl">sys</span><span class="p">:</span> <span class="mi">471</span> <span class="n">ms</span><span class="p">,</span> <span class="nl">total</span><span class="p">:</span> <span class="mf">4.56</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="nl">time</span><span class="p">:</span> <span class="mf">4.55</span> <span class="n">s</span>
+</pre></div>
+
+
+<h2>Create a map of the sky with numba</h2>
+<p>We would like to improve the performance of this operation using <code>numba</code>, which allows to produce automatically C-speed compiled code from pure python functions.</p>
+<p>First we need to develop a pure python version of the code, test it, and then have <code>numba</code> optimize it:</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">groupby_python</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">:</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<span class="n">m_python</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+
+<span class="nf">%time</span> <span class="n">groupby_python</span><span class="p">(</span><span class="n">pixels</span><span class="p">,</span> <span class="n">timeline</span><span class="p">,</span> <span class="n">m_python</span><span class="p">)</span>
+
+<span class="n">CPU</span> <span class="nl">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">37.5</span> <span class="n">s</span><span class="p">,</span> <span class="nl">sys</span><span class="p">:</span> <span class="mi">0</span> <span class="n">ns</span><span class="p">,</span> <span class="nl">total</span><span class="p">:</span> <span class="mf">37.5</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="nl">time</span><span class="p">:</span> <span class="mf">37.6</span> <span class="n">s</span>
+
+<span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">m_python</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Pure Python is slower than the <code>pandas</code> version implemented in <code>cython</code>.</p>
+<h3>Optimize the function with numba.jit</h3>
+<p><code>numba.jit</code> gets an input function and creates an compiled version with does not depend on slow Python calls, this is enforced by <code>nopython=True</code>, <code>numba</code> would throw an error if it would not be possible to run in <code>nopython</code> mode.</p>
+<div class="highlight"><pre><span class="n">groupby_numba</span> <span class="o">=</span> <span class="n">numba</span><span class="p">.</span><span class="n">jit</span><span class="p">(</span><span class="n">groupby_python</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+
+<span class="n">m_numba</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+<span class="nf">%time</span> <span class="n">groupby_numba</span><span class="p">(</span><span class="n">pixels</span><span class="p">,</span> <span class="n">timeline</span><span class="p">,</span> <span class="n">m_numba</span><span class="p">)</span>
+<span class="n">CPU</span> <span class="nl">times</span><span class="p">:</span> <span class="n">user</span> <span class="mi">274</span> <span class="n">ms</span><span class="p">,</span> <span class="nl">sys</span><span class="p">:</span> <span class="mi">5</span> <span class="n">ms</span><span class="p">,</span> <span class="nl">total</span><span class="p">:</span> <span class="mi">279</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="nl">time</span><span class="p">:</span> <span class="mi">278</span> <span class="n">ms</span>
+
+<span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">m_numba</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Performance improvement is about 100x compared to Python and 20x compared to Pandas, pretty good!</p>
+<h2>Use numba.jit as a decorator</h2>
+<p>The exact same result is obtained if we use <code>numba.jit</code> as a decorator:</p>
+<div class="highlight"><pre>@numba.jit(nopython=True)
+def groupby_numba(index, value, output):
+    for i in range(index.shape[0]):
+        output[index[i]] += value[i]
+</pre></div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2015-03-24T09:00:00-07:00">Tue 24 March 2015</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+<a href="http://zonca.github.io/tag/numba.html">numba</a> 
+<a href="http://zonca.github.io/tag/astrophysics.html">astrophysics</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
