@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><atom:link href="http://zonca.github.io/feeds/andrea-zonca.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 02 Apr 2015 09:00:00 -0700</lastBuildDate><item><title>Run Jupyterhub on a Supercomputer</title><link>http://zonca.github.io/2015/04/jupyterhub-hpc.html</link><description>&lt;p&gt;The IPython (recently renamed Jupyter) Notebook is a powerful tool for analyzing and visualizing data in Python and other programming languages.
 A key feature is that a single document contains code, figures, text and equations.
-Everything is saved in a single .ipynb file that can be shared, executed and modified.&lt;/p&gt;
-&lt;p&gt;The Jupyter Notebook is a Python application with a web frontend, i.e. the interface
-runs in the user browser.
-This setup makes it suitable for any kind of remote computing, in particular running the
-Jupyter Notebook on a computing node of a Supercomputer, and exporting the interface HTTP
-port to a local browser.
-Setting up tunneling via SSH is tedious, in particular if the user does not have a public IP
-address.&lt;/p&gt;
-&lt;p&gt;Jupyterhub, developed by the Jupyter team, comes to the rescue by providing a web application that manages and proxies multiple instances of the Jupyter Notebook for any number of users.
-Jupyterhub natively spawns only local processes, but supports plugins to extend its functionality.&lt;/p&gt;
-&lt;p&gt;I have been developing a proof-of-concept plugin designed to work on a web server and once a user
-is authenticated, connect to the login node of a Supercomputer and submit a Jupyter Notebook job.
+Everything is saved in a single .ipynb file that can be shared, executed and modified. See an &lt;a href="http://nbviewer.ipython.org/github/waltherg/notebooks/blob/master/2013-12-03-Crank_Nicolson.ipynb" title="example notebook"&gt;example Notebook on integration of partial differential equations&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The Jupyter Notebook is a Python application with a web frontend, i.e. the interface runs in the user browser.
+This setup makes it suitable for any kind of remote computing, in particular running the Jupyter Notebook on a computing node of a Supercomputer, and exporting the interface HTTP port to a local browser.
+Setting up tunneling via SSH is tedious, in particular if the user does not have a public IP address.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/jupyter/jupyterhub" title="jupyterhub"&gt;Jupyterhub&lt;/a&gt;, developed by the Jupyter team, comes to the rescue by providing a web application that manages and proxies multiple instances of the Jupyter Notebook for any number of users.
+Jupyterhub natively only spawns local processes, but supports plugins to extend its functionality.&lt;/p&gt;
+&lt;p&gt;I have been developing a proof-of-concept plugin (&lt;a href="https://github.com/zonca/remotespawner"&gt;RemoteSpawner&lt;/a&gt;) designed to work on a web server and once a user is authenticated, connect to the login node of a Supercomputer and submit a Jupyter Notebook job.
 As soon as the job starts execution, it sets up SSH tunneling with the Jupyterhub host so that
 Jupyterhub can provide the Notebook interface to the user.
-This setup allows users to simply access a Supercomputer via browser, accessing all their Python
-environment and data.&lt;/p&gt;
+This setup allows users to simply access a Supercomputer via browser, accessing all their Python environment and data.&lt;/p&gt;
 &lt;p&gt;I am looking for interested parties either as users or as collaborators to help further development.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 02 Apr 2015 09:00:00 -0700</pubDate><guid>tag:zonca.github.io,2015-04-02:2015/04/jupyterhub-hpc.html</guid><category>python</category><category>ipython</category><category>jupyterhub</category><category>hpc</category></item><item><title>Accelerate groupby operation on pixels with Numba</title><link>http://zonca.github.io/2015/03/numba-groupby-pixels.html</link><description>&lt;p&gt;&lt;a href="/notebooks/numba_groupby_pixels.ipynb"&gt;Download the original IPython notebook&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;Astrophysics background&lt;/h2&gt;
 &lt;p&gt;It is very common in Astrophysics to work with sky pixels. The sky is tassellated in patches with specific properties and a sky map is then a collection of intensity values for each pixel. The most common pixelization used in Cosmology is &lt;a href="http://healpix.jpl.nasa.gov"&gt;HEALPix&lt;/a&gt;.&lt;/p&gt;
