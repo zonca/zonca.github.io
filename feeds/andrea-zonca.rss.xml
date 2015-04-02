@@ -15,13 +15,6 @@ This setup allows users to simply access a Supercomputer via browser, accessing 
 &lt;p&gt;I'll show some screenshots to display how a test Jupyterhub installation on my machine is integrated with &lt;a href="http://www.sdsc.edu/us/resources/gordon/"&gt;Gordon&lt;/a&gt; thanks to the plugin.&lt;/p&gt;
 &lt;p&gt;Jupyterhub is accessed publicly via browser and the user can login. Jupyterhub supports authentication for &lt;code&gt;PAM&lt;/code&gt;/&lt;code&gt;LDAP&lt;/code&gt; so it could be integrated with XSEDE credential, at the moment I am testing with local authentication.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="jupyterhub-hpc-login.png" src="/content/jupyterhub-hpc-login.png" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img alt="jupyterhub-hpc-job.png" src="/content/jupyterhub-hpc-job.png" /&gt;
-&lt;img alt="jupyterhub-hpc-refresh.png" src="/content/jupyterhub-hpc-refresh.png" /&gt;
-&lt;img alt="jupyterhub-hpc-testnotebook.png" src="/content/jupyterhub-hpc-testnotebook.png" /&gt;
-&lt;img alt="jupyterhub-hpc-terminal.png" src="/content/jupyterhub-hpc-terminal.png" /&gt;
-&lt;img alt="jupyterhub-hpc-editor.png" src="/content/jupyterhub-hpc-editor.png" /&gt;
-&lt;img alt="jupyterhub-hpc-clusterlaunch.png" src="/content/jupyterhub-hpc-clusterlaunch.png" /&gt;
-http://nbviewer.ipython.org/gist/zonca/9bd94d8782af037704ff&lt;/p&gt;
 &lt;p&gt;I am looking for interested parties either as users or as collaborators to help further development.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 02 Apr 2015 09:00:00 -0700</pubDate><guid>tag:zonca.github.io,2015-04-02:2015/04/jupyterhub-hpc.html</guid><category>python</category><category>ipython</category><category>jupyterhub</category><category>hpc</category></item><item><title>Accelerate groupby operation on pixels with Numba</title><link>http://zonca.github.io/2015/03/numba-groupby-pixels.html</link><description>&lt;p&gt;&lt;a href="/notebooks/numba_groupby_pixels.ipynb"&gt;Download the original IPython notebook&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;Astrophysics background&lt;/h2&gt;
 &lt;p&gt;It is very common in Astrophysics to work with sky pixels. The sky is tassellated in patches with specific properties and a sky map is then a collection of intensity values for each pixel. The most common pixelization used in Cosmology is &lt;a href="http://healpix.jpl.nasa.gov"&gt;HEALPix&lt;/a&gt;.&lt;/p&gt;
