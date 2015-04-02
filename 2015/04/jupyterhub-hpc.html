@@ -57,6 +57,16 @@ As soon as the job starts execution, it sets up SSH tunneling with the Jupyterhu
 Jupyterhub can provide the Notebook interface to the user.
 This setup allows users to simply access a Supercomputer via browser, accessing all their Python environment and data.</p>
 <p>I am looking for interested parties either as users or as collaborators to help further development. See more information about the project below.</p>
+<h2>Test it yourself</h2>
+<p>In order to have a feeling on how Jupyterhub works, you can test in your browser at:</p>
+<ul>
+<li><a href="http://tmpnb.org">http://tmpnb.org</a></li>
+</ul>
+<p>This service by Rackspace creates temporary Jupyter Notebooks on the fly. If you click on <code>Welcome.ipynb</code>,
+you can see an example Notebook.</p>
+<p>The purpose of my project is to have a web interface to access Jupyter Notebooks that are
+running on computing nodes of a Supercomputer. So that users can access the environment and
+data on a Supercomputer from their browser and run data-intensive processing. </p>
 <h2>Tour of Jupyterhub on the Gordon Supercomputer</h2>
 <p>I'll show some screenshots to display how a test Jupyterhub installation on my machine is integrated with <a href="http://www.sdsc.edu/us/resources/gordon/">Gordon</a> thanks to the plugin.</p>
 <p>Jupyterhub is accessed publicly via browser and the user can login. Jupyterhub supports authentication for <code>PAM</code>/<code>LDAP</code> so it could be integrated with XSEDE credential, at the moment I am testing with local authentication.</p>
