@@ -56,6 +56,10 @@ Jupyterhub natively only spawns local processes, but supports plugins to extend 
 As soon as the job starts execution, it sets up SSH tunneling with the Jupyterhub host so that
 Jupyterhub can provide the Notebook interface to the user.
 This setup allows users to simply access a Supercomputer via browser, accessing all their Python environment and data.</p>
+<h2>Tour of Jupyterhub on the Gordon Supercomputer</h2>
+<p>I'll show some screenshots to display how a test Jupyterhub installation on my machine is integrated with <a href="http://www.sdsc.edu/us/resources/gordon/">Gordon</a> thanks to the plugin.</p>
+<p>Jupyterhub is accessed publicly via browser and the user can login. Jupyterhub supports authentication for <code>PAM</code>/<code>LDAP</code> so it could be integrated with XSEDE credential, at the moment I am testing with local authentication.</p>
+<p><img alt="jupyterhub-hpc-login.png" src="/content/jupyterhub-hpc-login.png" /></p>
 <p>I am looking for interested parties either as users or as collaborators to help further development.</p>
         </div>
     </article>
