@@ -17,9 +17,9 @@ This setup allows users to simply access a Supercomputer via browser, accessing 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://tmpnb.org"&gt;http://tmpnb.org&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;This service creates temporary Jupyter Notebooks on the fly. If you click on &lt;code&gt;Welcome.ipynb&lt;/code&gt;,
+&lt;p&gt;This service by Rackspace creates temporary Jupyter Notebooks on the fly. If you click on &lt;code&gt;Welcome.ipynb&lt;/code&gt;,
 you can see an example Notebook.&lt;/p&gt;
-&lt;p&gt;The purpose of this project is to have a web interface to access Jupyter Notebooks that are
+&lt;p&gt;The purpose of my project is to have a web interface to access Jupyter Notebooks that are
 running on computing nodes of a Supercomputer. So that users can access the environment and
 data on a Supercomputer from their browser and run data-intensive processing. &lt;/p&gt;
 &lt;h2&gt;Tour of Jupyterhub on the Gordon Supercomputer&lt;/h2&gt;
