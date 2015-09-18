@@ -44,7 +44,9 @@
             <h1>IPython/Jupyter notebook setup on SDSC Comet</h1>
         </header>
         <div class='post-content'>
-            <h2>Quick reference</h2>
+            <h2>Introduction</h2>
+<p>This tutorial explains the setup to run an IPython Notebook on a computing node on the supercomputer Comet at the San Diego Supercomputer Center and forward the port encrypted with SSH to the browser on a local laptop.</p>
+<h2>Quick reference</h2>
 <ul>
 <li>Add <code>module load python scipy</code> to <code>.bashrc</code></li>
 <li>Make sure you can ssh passwordless within comet, i.e. <code>ssh comet.sdsc.edu</code> from comet  login node works without password</li>
@@ -64,7 +66,7 @@ Now you can check it works by executing:</p>
 
 
 <p>from the login node and make sure you are NOT asked for your password.</p>
-<h3>Configure the script for SLURM</h3>
+<h3>Configure the script for SLURM and submit the job</h3>
 <p>Copy <code>submit_slurm_comet.sh</code> from https://gist.github.com/zonca/5f8b5ccb826a774d3f89 on your home on Comet.</p>
 <p>Change the port number in the script to a port of your choosing between 10000 and 23000.</p>
 <p>Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5 GB of RAM and change the top of the script accordingly.</p>
@@ -80,7 +82,28 @@ Now you can check it works by executing:</p>
 
 
 <p>The script launches an IPython notebook on a computing node and tunnels its port to the login node.</p>
-<p>Check that the </p>
+<p>You can check that everything worked by checking that no errors show up in the <code>notebook.log</code> file, and that you can access the notebook page with <code>wget</code>:</p>
+<div class="highlight"><pre>wget localhost:YOURPORT
+</pre></div>
+
+
+<p>should download a <code>index.html</code> file in the current folder, and NOT give an error like "Connection refused".</p>
+<p>Check what login node you were using on comet, i.e. the hostname on your terminal on comet, for example <code>comet-ln2</code>.</p>
+<h3>Tunnel the port to your laptop</h3>
+<h4>Linux / MAC</h4>
+<p>Download the <code>tunnel_notebook_comet.sh</code> script from https://gist.github.com/zonca/5f8b5ccb826a774d3f89.</p>
+<p>Customize the script with your port number.</p>
+<p>Lauch <code>bash tunnel_notebook_comet.sh N</code> where N is the comet login node number. So if you were on <code>comet-ln2</code>, use <code>bash tunnel_notebook_comet.sh 2</code>.</p>
+<p>The script forwards the port from the login node of comet to your laptop.</p>
+<h4>Windows</h4>
+<p>Install <code>putty</code>.</p>
+<p>Follow tutorial for local port forwarding on http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/</p>
+<ul>
+<li>set <code>comet-ln2.sdsc.edu</code> as remote host, 22 as SSH port</li>
+<li>set YOURPORT as tunnel port, replace both 8080 and 80 in the tutorial with your port number. </li>
+</ul>
+<h3>Connect to the Notebook</h3>
+<p>Open a browser and type <code>http://localhost:YOURPORT</code> in the address bar.</p>
         </div>
     </article>
 

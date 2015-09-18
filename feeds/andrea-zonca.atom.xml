@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2015-09-17T20:00:00-07:00</updated><entry><title>IPython/Jupyter notebook setup on SDSC Comet</title><link href="http://zonca.github.io/2015/09/ipython-jupyter-notebook-sdsc-comet.html" rel="alternate"></link><updated>2015-09-17T20:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-09-17:2015/09/ipython-jupyter-notebook-sdsc-comet.html</id><summary type="html">&lt;h2&gt;Quick reference&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2015-09-17T20:00:00-07:00</updated><entry><title>IPython/Jupyter notebook setup on SDSC Comet</title><link href="http://zonca.github.io/2015/09/ipython-jupyter-notebook-sdsc-comet.html" rel="alternate"></link><updated>2015-09-17T20:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-09-17:2015/09/ipython-jupyter-notebook-sdsc-comet.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This tutorial explains the setup to run an IPython Notebook on a computing node on the supercomputer Comet at the San Diego Supercomputer Center and forward the port encrypted with SSH to the browser on a local laptop.&lt;/p&gt;
+&lt;h2&gt;Quick reference&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Add &lt;code&gt;module load python scipy&lt;/code&gt; to &lt;code&gt;.bashrc&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Make sure you can ssh passwordless within comet, i.e. &lt;code&gt;ssh comet.sdsc.edu&lt;/code&gt; from comet  login node works without password&lt;/li&gt;
@@ -19,7 +21,7 @@ Now you can check it works by executing:&lt;/p&gt;
 
 
 &lt;p&gt;from the login node and make sure you are NOT asked for your password.&lt;/p&gt;
-&lt;h3&gt;Configure the script for SLURM&lt;/h3&gt;
+&lt;h3&gt;Configure the script for SLURM and submit the job&lt;/h3&gt;
 &lt;p&gt;Copy &lt;code&gt;submit_slurm_comet.sh&lt;/code&gt; from https://gist.github.com/zonca/5f8b5ccb826a774d3f89 on your home on Comet.&lt;/p&gt;
 &lt;p&gt;Change the port number in the script to a port of your choosing between 10000 and 23000.&lt;/p&gt;
 &lt;p&gt;Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5 GB of RAM and change the top of the script accordingly.&lt;/p&gt;
@@ -35,7 +37,28 @@ Now you can check it works by executing:&lt;/p&gt;
 
 
 &lt;p&gt;The script launches an IPython notebook on a computing node and tunnels its port to the login node.&lt;/p&gt;
-&lt;p&gt;Check that the &lt;/p&gt;</summary><category term="ipython"></category><category term="jupyter"></category><category term="ipython-notebook"></category></entry><entry><title>Run Jupyterhub on a Supercomputer</title><link href="http://zonca.github.io/2015/04/jupyterhub-hpc.html" rel="alternate"></link><updated>2015-04-02T09:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-04-02:2015/04/jupyterhub-hpc.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;You can check that everything worked by checking that no errors show up in the &lt;code&gt;notebook.log&lt;/code&gt; file, and that you can access the notebook page with &lt;code&gt;wget&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;wget localhost:YOURPORT
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;should download a &lt;code&gt;index.html&lt;/code&gt; file in the current folder, and NOT give an error like "Connection refused".&lt;/p&gt;
+&lt;p&gt;Check what login node you were using on comet, i.e. the hostname on your terminal on comet, for example &lt;code&gt;comet-ln2&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Tunnel the port to your laptop&lt;/h3&gt;
+&lt;h4&gt;Linux / MAC&lt;/h4&gt;
+&lt;p&gt;Download the &lt;code&gt;tunnel_notebook_comet.sh&lt;/code&gt; script from https://gist.github.com/zonca/5f8b5ccb826a774d3f89.&lt;/p&gt;
+&lt;p&gt;Customize the script with your port number.&lt;/p&gt;
+&lt;p&gt;Lauch &lt;code&gt;bash tunnel_notebook_comet.sh N&lt;/code&gt; where N is the comet login node number. So if you were on &lt;code&gt;comet-ln2&lt;/code&gt;, use &lt;code&gt;bash tunnel_notebook_comet.sh 2&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The script forwards the port from the login node of comet to your laptop.&lt;/p&gt;
+&lt;h4&gt;Windows&lt;/h4&gt;
+&lt;p&gt;Install &lt;code&gt;putty&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Follow tutorial for local port forwarding on http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;set &lt;code&gt;comet-ln2.sdsc.edu&lt;/code&gt; as remote host, 22 as SSH port&lt;/li&gt;
+&lt;li&gt;set YOURPORT as tunnel port, replace both 8080 and 80 in the tutorial with your port number. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Connect to the Notebook&lt;/h3&gt;
+&lt;p&gt;Open a browser and type &lt;code&gt;http://localhost:YOURPORT&lt;/code&gt; in the address bar.&lt;/p&gt;</summary><category term="ipython"></category><category term="jupyter"></category><category term="ipython-notebook"></category></entry><entry><title>Run Jupyterhub on a Supercomputer</title><link href="http://zonca.github.io/2015/04/jupyterhub-hpc.html" rel="alternate"></link><updated>2015-04-02T09:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2015-04-02:2015/04/jupyterhub-hpc.html</id><summary type="html">&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Summary&lt;/strong&gt;: I developed a plugin for &lt;a href="https://github.com/jupyter/jupyterhub" title="jupyterhub"&gt;Jupyterhub&lt;/a&gt;: &lt;a href="https://github.com/zonca/remotespawner"&gt;RemoteSpawner&lt;/a&gt;, it has a proof-of-concept interface with the Supercomputer Gordon at UC San Diego to spawn IPython Notebook instances as jobs throught the queue and tunnel the interface back to the Jupyterhub instance.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;The IPython (recently renamed Jupyter) Notebook is a powerful tool for analyzing and visualizing data in Python and other programming languages.
