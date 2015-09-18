@@ -9,7 +9,8 @@
 &lt;li&gt;Change the port number and customize options (duration)&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sbatch submit_slurm_comet.sh&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Remember the login node you are using&lt;/li&gt;
-&lt;li&gt;From laptop, use &lt;code&gt;tunnel_notebook_comet.sh&lt;/code&gt; from https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/li&gt;
+&lt;li&gt;From laptop, use &lt;code&gt;bash tunnel_notebook_comet.sh N&lt;/code&gt; where N is the Comet login number (e.g. 2) from https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/li&gt;
+&lt;li&gt;From laptop, open browser and connect to &lt;code&gt;http://localhost:YOURPORT&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Detailed walkthrough&lt;/h2&gt;
 &lt;h3&gt;One time setup on Comet&lt;/h3&gt;
