@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>IPython/Jupyter notebook setup on SDSC Comet | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>IPython/Jupyter notebook setup on SDSC Comet</h1>
+        </header>
+        <div class='post-content'>
+            <h2>Quick reference</h2>
+<ul>
+<li>Add <code>module load python scipy</code> to <code>.bashrc</code></li>
+<li>Make sure you can ssh passwordless within comet, i.e. <code>ssh comet.sdsc.edu</code> from comet  login node works without password</li>
+<li>Get <code>submit_slurm_comet.sh</code> from https://gist.github.com/zonca/5f8b5ccb826a774d3f89</li>
+<li>Change the port number and customize options (duration)</li>
+<li><code>sbatch submit_slurm_comet.sh</code></li>
+<li>Remember the login node you are using</li>
+<li>From laptop, use <code>tunnel_notebook_comet.sh</code> from https://gist.github.com/zonca/5f8b5ccb826a774d3f89</li>
+</ul>
+<h2>Detailed walkthrough</h2>
+<h3>One time setup on Comet</h3>
+<p>Login to a comet login node, edit the <code>.bashrc</code> file in your home folder (with <code>nano .bashrc</code> for example) and add <code>module load python scipy</code> at the bottom. This makes sure you always have the Python environment loaded in all your jobs.</p>
+<p>You need to be able to ssh from a node to another node on comet with no need of a password. Create a new SSH certificate with <code>ssh-keygen</code>, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use <code>ssh-copy-id comet.sdsc.edu</code>, enter your password to make sure the key is copied in the authorized hosts.
+Now you can check it works by executing:</p>
+<div class="highlight"><pre>ssh comet.sdsc.edu
+</pre></div>
+
+
+<p>from the login node and make sure you are NOT asked for your password.</p>
+<h3>Configure the script for SLURM</h3>
+<p>Copy <code>submit_slurm_comet.sh</code> from https://gist.github.com/zonca/5f8b5ccb826a774d3f89 on your home on Comet.</p>
+<p>Change the port number in the script to a port of your choosing between 10000 and 23000.</p>
+<p>Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5 GB of RAM and change the top of the script accordingly.</p>
+<p>Choose a duration of your job, for initial testing better keep 30 minutes so your job starts straight away.</p>
+<p>Submit the job to the scheduler:</p>
+<div class="highlight"><pre>sbatch submit_slurm_comet.sh
+</pre></div>
+
+
+<p>Wait for the job to start running, you should see <code>R</code> in:</p>
+<div class="highlight"><pre><span class="x"> squeue -u </span><span class="p">$</span><span class="nv">USER</span><span class="x"></span>
+</pre></div>
+
+
+<p>The script launches an IPython notebook on a computing node and tunnels its port to the login node.</p>
+<p>Check that the </p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2015-09-17T20:00:00-07:00">Thu 17 September 2015</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+<a href="http://zonca.github.io/tag/jupyter.html">jupyter</a> 
+<a href="http://zonca.github.io/tag/ipython-notebook.html">ipython-notebook</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

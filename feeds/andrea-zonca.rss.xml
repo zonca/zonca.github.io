@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><atom:link href="http://zonca.github.io/feeds/andrea-zonca.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 02 Apr 2015 09:00:00 -0700</lastBuildDate><item><title>Run Jupyterhub on a Supercomputer</title><link>http://zonca.github.io/2015/04/jupyterhub-hpc.html</link><description>&lt;blockquote&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><atom:link href="http://zonca.github.io/feeds/andrea-zonca.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 17 Sep 2015 20:00:00 -0700</lastBuildDate><item><title>IPython/Jupyter notebook setup on SDSC Comet</title><link>http://zonca.github.io/2015/09/ipython-jupyter-notebook-sdsc-comet.html</link><description>&lt;h2&gt;Quick reference&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Add &lt;code&gt;module load python scipy&lt;/code&gt; to &lt;code&gt;.bashrc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Make sure you can ssh passwordless within comet, i.e. &lt;code&gt;ssh comet.sdsc.edu&lt;/code&gt; from comet  login node works without password&lt;/li&gt;
+&lt;li&gt;Get &lt;code&gt;submit_slurm_comet.sh&lt;/code&gt; from https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/li&gt;
+&lt;li&gt;Change the port number and customize options (duration)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sbatch submit_slurm_comet.sh&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Remember the login node you are using&lt;/li&gt;
+&lt;li&gt;From laptop, use &lt;code&gt;tunnel_notebook_comet.sh&lt;/code&gt; from https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Detailed walkthrough&lt;/h2&gt;
+&lt;h3&gt;One time setup on Comet&lt;/h3&gt;
+&lt;p&gt;Login to a comet login node, edit the &lt;code&gt;.bashrc&lt;/code&gt; file in your home folder (with &lt;code&gt;nano .bashrc&lt;/code&gt; for example) and add &lt;code&gt;module load python scipy&lt;/code&gt; at the bottom. This makes sure you always have the Python environment loaded in all your jobs.&lt;/p&gt;
+&lt;p&gt;You need to be able to ssh from a node to another node on comet with no need of a password. Create a new SSH certificate with &lt;code&gt;ssh-keygen&lt;/code&gt;, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use &lt;code&gt;ssh-copy-id comet.sdsc.edu&lt;/code&gt;, enter your password to make sure the key is copied in the authorized hosts.
+Now you can check it works by executing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ssh comet.sdsc.edu
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;from the login node and make sure you are NOT asked for your password.&lt;/p&gt;
+&lt;h3&gt;Configure the script for SLURM&lt;/h3&gt;
+&lt;p&gt;Copy &lt;code&gt;submit_slurm_comet.sh&lt;/code&gt; from https://gist.github.com/zonca/5f8b5ccb826a774d3f89 on your home on Comet.&lt;/p&gt;
+&lt;p&gt;Change the port number in the script to a port of your choosing between 10000 and 23000.&lt;/p&gt;
+&lt;p&gt;Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5 GB of RAM and change the top of the script accordingly.&lt;/p&gt;
+&lt;p&gt;Choose a duration of your job, for initial testing better keep 30 minutes so your job starts straight away.&lt;/p&gt;
+&lt;p&gt;Submit the job to the scheduler:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sbatch submit_slurm_comet.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Wait for the job to start running, you should see &lt;code&gt;R&lt;/code&gt; in:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt; squeue -u &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;USER&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The script launches an IPython notebook on a computing node and tunnels its port to the login node.&lt;/p&gt;
+&lt;p&gt;Check that the &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 17 Sep 2015 20:00:00 -0700</pubDate><guid>tag:zonca.github.io,2015-09-17:2015/09/ipython-jupyter-notebook-sdsc-comet.html</guid><category>ipython</category><category>jupyter</category><category>ipython-notebook</category></item><item><title>Run Jupyterhub on a Supercomputer</title><link>http://zonca.github.io/2015/04/jupyterhub-hpc.html</link><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Summary&lt;/strong&gt;: I developed a plugin for &lt;a href="https://github.com/jupyter/jupyterhub" title="jupyterhub"&gt;Jupyterhub&lt;/a&gt;: &lt;a href="https://github.com/zonca/remotespawner"&gt;RemoteSpawner&lt;/a&gt;, it has a proof-of-concept interface with the Supercomputer Gordon at UC San Diego to spawn IPython Notebook instances as jobs throught the queue and tunnel the interface back to the Jupyterhub instance.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;The IPython (recently renamed Jupyter) Notebook is a powerful tool for analyzing and visualizing data in Python and other programming languages.
