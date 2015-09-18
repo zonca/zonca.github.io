@@ -13,8 +13,8 @@
 &lt;/ul&gt;
 &lt;h2&gt;Detailed walkthrough&lt;/h2&gt;
 &lt;h3&gt;One time setup on Comet&lt;/h3&gt;
-&lt;p&gt;Login to a comet login node, edit the &lt;code&gt;.bashrc&lt;/code&gt; file in your home folder (with &lt;code&gt;nano .bashrc&lt;/code&gt; for example) and add &lt;code&gt;module load python scipy&lt;/code&gt; at the bottom. This makes sure you always have the Python environment loaded in all your jobs.&lt;/p&gt;
-&lt;p&gt;You need to be able to ssh from a node to another node on comet with no need of a password. Create a new SSH certificate with &lt;code&gt;ssh-keygen&lt;/code&gt;, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use &lt;code&gt;ssh-copy-id comet.sdsc.edu&lt;/code&gt;, enter your password to make sure the key is copied in the authorized hosts.
+&lt;p&gt;Login into a Comet login node, edit the &lt;code&gt;.bashrc&lt;/code&gt; file in your home folder (with &lt;code&gt;nano .bashrc&lt;/code&gt; for example) and add &lt;code&gt;module load python scipy&lt;/code&gt; at the bottom. This makes sure you always have the Python environment loaded in all your jobs.&lt;/p&gt;
+&lt;p&gt;You need to be able to SSH from a node to another node on comet with no need of a password. Create a new SSH certificate with &lt;code&gt;ssh-keygen&lt;/code&gt;, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use &lt;code&gt;ssh-copy-id comet.sdsc.edu&lt;/code&gt;, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;ssh comet.sdsc.edu
 &lt;/pre&gt;&lt;/div&gt;
@@ -22,9 +22,9 @@ Now you can check it works by executing:&lt;/p&gt;
 
 &lt;p&gt;from the login node and make sure you are NOT asked for your password.&lt;/p&gt;
 &lt;h3&gt;Configure the script for SLURM and submit the job&lt;/h3&gt;
-&lt;p&gt;Copy &lt;code&gt;submit_slurm_comet.sh&lt;/code&gt; from https://gist.github.com/zonca/5f8b5ccb826a774d3f89 on your home on Comet.&lt;/p&gt;
+&lt;p&gt;Copy &lt;code&gt;submit_slurm_comet.sh&lt;/code&gt; from &lt;a href="https://gist.github.com/zonca/5f8b5ccb826a774d3f89"&gt;https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/a&gt; on your home on Comet.&lt;/p&gt;
 &lt;p&gt;Change the port number in the script to a port of your choosing between 10000 and 23000.&lt;/p&gt;
-&lt;p&gt;Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5 GB of RAM and change the top of the script accordingly.&lt;/p&gt;
+&lt;p&gt;Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5GB of RAM and change the top of the script accordingly.&lt;/p&gt;
 &lt;p&gt;Choose a duration of your job, for initial testing better keep 30 minutes so your job starts straight away.&lt;/p&gt;
 &lt;p&gt;Submit the job to the scheduler:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sbatch submit_slurm_comet.sh
@@ -32,7 +32,7 @@ Now you can check it works by executing:&lt;/p&gt;
 
 
 &lt;p&gt;Wait for the job to start running, you should see &lt;code&gt;R&lt;/code&gt; in:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt; squeue -u &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;USER&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;squeue -u &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;USER&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -46,13 +46,13 @@ Now you can check it works by executing:&lt;/p&gt;
 &lt;p&gt;Check what login node you were using on comet, i.e. the hostname on your terminal on comet, for example &lt;code&gt;comet-ln2&lt;/code&gt;.&lt;/p&gt;
 &lt;h3&gt;Tunnel the port to your laptop&lt;/h3&gt;
 &lt;h4&gt;Linux / MAC&lt;/h4&gt;
-&lt;p&gt;Download the &lt;code&gt;tunnel_notebook_comet.sh&lt;/code&gt; script from https://gist.github.com/zonca/5f8b5ccb826a774d3f89.&lt;/p&gt;
+&lt;p&gt;Download the &lt;code&gt;tunnel_notebook_comet.sh&lt;/code&gt; script from &lt;a href="https://gist.github.com/zonca/5f8b5ccb826a774d3f89"&gt;https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Customize the script with your port number.&lt;/p&gt;
 &lt;p&gt;Lauch &lt;code&gt;bash tunnel_notebook_comet.sh N&lt;/code&gt; where N is the comet login node number. So if you were on &lt;code&gt;comet-ln2&lt;/code&gt;, use &lt;code&gt;bash tunnel_notebook_comet.sh 2&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;The script forwards the port from the login node of comet to your laptop.&lt;/p&gt;
 &lt;h4&gt;Windows&lt;/h4&gt;
 &lt;p&gt;Install &lt;code&gt;putty&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Follow tutorial for local port forwarding on http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/&lt;/p&gt;
+&lt;p&gt;Follow tutorial for local port forwarding on &lt;a href="http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/"&gt;http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/&lt;/a&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;set &lt;code&gt;comet-ln2.sdsc.edu&lt;/code&gt; as remote host, 22 as SSH port&lt;/li&gt;
 &lt;li&gt;set YOURPORT as tunnel port, replace both 8080 and 80 in the tutorial with your port number. &lt;/li&gt;
