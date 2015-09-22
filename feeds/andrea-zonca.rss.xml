@@ -14,7 +14,7 @@
 &lt;/ul&gt;
 &lt;h2&gt;Detailed walkthrough&lt;/h2&gt;
 &lt;h3&gt;One time setup on Comet&lt;/h3&gt;
-&lt;p&gt;Login into a Comet login node, edit the &lt;code&gt;.bashrc&lt;/code&gt; file in your home folder (with &lt;code&gt;nano .bashrc&lt;/code&gt; for example) and add &lt;code&gt;module load python scipy&lt;/code&gt; at the bottom. This makes sure you always have the Python environment loaded in all your jobs.&lt;/p&gt;
+&lt;p&gt;Login into a Comet login node, edit the &lt;code&gt;.bashrc&lt;/code&gt; file in your home folder (with &lt;code&gt;nano .bashrc&lt;/code&gt; for example) and add &lt;code&gt;module load python scipy&lt;/code&gt; at the bottom. This makes sure you always have the Python environment loaded in all your jobs. Logout, log back in, make sure that &lt;code&gt;module list&lt;/code&gt; shows &lt;code&gt;python&lt;/code&gt; and &lt;code&gt;scipy&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You need to be able to SSH from a node to another node on comet with no need of a password. Create a new SSH certificate with &lt;code&gt;ssh-keygen&lt;/code&gt;, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use &lt;code&gt;ssh-copy-id comet.sdsc.edu&lt;/code&gt;, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;ssh comet.sdsc.edu
@@ -24,7 +24,7 @@ Now you can check it works by executing:&lt;/p&gt;
 &lt;p&gt;from the login node and make sure you are NOT asked for your password.&lt;/p&gt;
 &lt;h3&gt;Configure the script for SLURM and submit the job&lt;/h3&gt;
 &lt;p&gt;Copy &lt;code&gt;submit_slurm_comet.sh&lt;/code&gt; from &lt;a href="https://gist.github.com/zonca/5f8b5ccb826a774d3f89"&gt;https://gist.github.com/zonca/5f8b5ccb826a774d3f89&lt;/a&gt; on your home on Comet.&lt;/p&gt;
-&lt;p&gt;Change the port number in the script to a port of your choosing between 10000 and 23000, referenced as YOURPORT in the rest of the tutorial.&lt;/p&gt;
+&lt;p&gt;Change the port number in the script to a port of your choosing between 8000 and 9999, referenced as YOURPORT in the rest of the tutorial. Two users on the same login node on the same port would not be allowed to forward, so try to avoid common port numbers as 8000, 9000, 8080 or 8888.&lt;/p&gt;
 &lt;p&gt;Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5GB of RAM and change the top of the script accordingly.&lt;/p&gt;
 &lt;p&gt;Choose a duration of your job, for initial testing better keep 30 minutes so your job starts straight away.&lt;/p&gt;
 &lt;p&gt;Submit the job to the scheduler:&lt;/p&gt;
