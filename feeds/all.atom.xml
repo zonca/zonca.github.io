@@ -22,7 +22,7 @@ This setup is a bit more complicated than other supercomputers, i.e. see &lt;a h
 &lt;h3&gt;One time setup on Edison&lt;/h3&gt;
 &lt;p&gt;Make sure that &lt;code&gt;ipython notebook&lt;/code&gt; works on a login node, one option is to install 
 Anaconda 64bit from http://continuum.io/downloads#py34.&lt;/p&gt;
-&lt;p&gt;You need to be able to SSH from a node to another node on comet with no need of a password. Create a new SSH certificate with &lt;code&gt;ssh-keygen&lt;/code&gt;, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use &lt;code&gt;ssh-copy-id edison.nersc.gov&lt;/code&gt;, enter your password to make sure the key is copied in the authorized hosts.
+&lt;p&gt;You need to be able to SSH from a node to another node on Edison with no need of a password. Create a new SSH certificate with &lt;code&gt;ssh-keygen&lt;/code&gt;, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use &lt;code&gt;ssh-copy-id edison.nersc.gov&lt;/code&gt;, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;ssh edison.nersc.gov
 &lt;/pre&gt;&lt;/div&gt;
@@ -56,7 +56,7 @@ Now you can check it works by executing:&lt;/p&gt;
 &lt;p&gt;Download the &lt;code&gt;tunnel_notebook_edison.sh&lt;/code&gt; script from &lt;a href="https://gist.github.com/zonca/357d36347fd5addca8f0/edit"&gt;https://gist.github.com/zonca/357d36347fd5addca8f0/edit&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Customize the script with your port number.&lt;/p&gt;
 &lt;p&gt;Launch &lt;code&gt;bash tunnel_notebook_edison.sh&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The script forwards the port from the login node of comet to your laptop.&lt;/p&gt;
+&lt;p&gt;The script forwards the port from the login node of Edison to your laptop.&lt;/p&gt;
 &lt;h4&gt;Windows&lt;/h4&gt;
 &lt;p&gt;Install &lt;code&gt;putty&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Follow tutorial for local port forwarding on &lt;a href="http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/"&gt;http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/&lt;/a&gt;&lt;/p&gt;

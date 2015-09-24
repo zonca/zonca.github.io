@@ -67,7 +67,7 @@ This setup is a bit more complicated than other supercomputers, i.e. see <a href
 <h3>One time setup on Edison</h3>
 <p>Make sure that <code>ipython notebook</code> works on a login node, one option is to install 
 Anaconda 64bit from http://continuum.io/downloads#py34.</p>
-<p>You need to be able to SSH from a node to another node on comet with no need of a password. Create a new SSH certificate with <code>ssh-keygen</code>, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use <code>ssh-copy-id edison.nersc.gov</code>, enter your password to make sure the key is copied in the authorized hosts.
+<p>You need to be able to SSH from a node to another node on Edison with no need of a password. Create a new SSH certificate with <code>ssh-keygen</code>, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use <code>ssh-copy-id edison.nersc.gov</code>, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:</p>
 <div class="highlight"><pre>ssh edison.nersc.gov
 </pre></div>
@@ -101,7 +101,7 @@ Now you can check it works by executing:</p>
 <p>Download the <code>tunnel_notebook_edison.sh</code> script from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0/edit">https://gist.github.com/zonca/357d36347fd5addca8f0/edit</a>.</p>
 <p>Customize the script with your port number.</p>
 <p>Launch <code>bash tunnel_notebook_edison.sh</code>.</p>
-<p>The script forwards the port from the login node of comet to your laptop.</p>
+<p>The script forwards the port from the login node of Edison to your laptop.</p>
 <h4>Windows</h4>
 <p>Install <code>putty</code>.</p>
 <p>Follow tutorial for local port forwarding on <a href="http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/">http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/</a></p>
