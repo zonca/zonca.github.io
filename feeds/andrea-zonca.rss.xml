@@ -67,7 +67,7 @@ Now you can check it works by executing:&lt;/p&gt;
 &lt;h3&gt;Connect to the Notebook&lt;/h3&gt;
 &lt;p&gt;Open a browser and type &lt;code&gt;http://localhost:YOURPORT&lt;/code&gt; in the address bar.&lt;/p&gt;
 &lt;p&gt;See in the screenshot from my local browser, the &lt;code&gt;hostname&lt;/code&gt; is one of Edison's computing node:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="test_edison_screenshot.png" src="{{site.baseurl}}/images/test_edison_screenshot.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="test_edison_screenshot.png" src="/images/test_edison_screenshot.png" /&gt;&lt;/p&gt;
 &lt;h2&gt;Acknowledgements&lt;/h2&gt;
 &lt;p&gt;Thanks Lisa Gerhardt from NERSC user support to help me understand Edison's configuration.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 24 Sep 2015 20:00:00 -0700</pubDate><guid>tag:zonca.github.io,2015-09-24:2015/09/ipython-jupyter-notebook-nersc-edison.html</guid><category>ipython</category><category>jupyter</category><category>ipython-notebook</category></item><item><title>IPython/Jupyter notebook setup on SDSC Comet</title><link>http://zonca.github.io/2015/09/ipython-jupyter-notebook-sdsc-comet.html</link><description>&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;This tutorial explains the setup to run an IPython Notebook on a computing node on the supercomputer Comet at the San Diego Supercomputer Center and forward the port encrypted with SSH to the browser on a local laptop.&lt;/p&gt;
