@@ -49,24 +49,22 @@
 This setup is a bit more complicated than other supercomputers, i.e. see <a href="http://zonca.github.io/2015/09/ipython-jupyter-notebook-sdsc-comet.html">my tutorial for Comet</a> for 2 reasons:</p>
 <ul>
 <li>Edison's computing nodes run a stripped down OS, with no support for SSH, unless you activate <a href="https://www.nersc.gov/users/computational-systems/hopper/cluster-compatibility-mode/">Cluster Compatibility Mode</a> (CCM) </li>
-<li>On edison you generally don't have direct access to a computing node, even if you request an interactive node you actually have access to an intermediary node (MOM node), from there <code>aprun</code> actually sends a job for execution on the computing node.</li>
+<li>On edison you generally don't have direct access to a computing node, even if you request an interactive node you actually have access to an intermediary node (MOM node), from there <code>aprun</code> sends a job for execution on the computing node.</li>
 </ul>
 <h2>Quick reference</h2>
 <ul>
-<li>Install IPython notebook and make sure it is in the path, I recommend install Anaconda 64bit in your home folder or on scratch.</li>
+<li>Install IPython notebook and make sure it is in the path, I recommend to install Anaconda 64bit in your home folder or on scratch.</li>
 <li>Make sure you can ssh passwordless within Edison, i.e. <code>ssh edison</code> from Edison  login node works without password</li>
-<li>Create a folder <code>notebook</code> in your home, get <code>submit_notebook_pbs.sh</code> and <code>tunneled_notebook.sh</code> from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0">https://gist.github.com/zonca/357d36347fd5addca8f0</a></li>
+<li>Create a folder <code>notebook</code> in your home, get <code>notebook_job.pbs</code> and <code>launch_notebook_and_tunnel_to_login.sh</code> from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0">https://gist.github.com/zonca/357d36347fd5addca8f0</a></li>
 <li>Change the port number and customize options (duration)</li>
-<li><code>qsub submit_notebook_pbs.sh</code></li>
-<li>From laptop, get <code>bash tunnel_notebook_edison.sh</code> from <a href="https://gist.github.com/zonca/5f8b5ccb826a774d3f89">https://gist.github.com/zonca/5f8b5ccb826a774d3f89</a>, first modify the port number.</li>
+<li><code>qsub notebook_job.pbs</code></li>
+<li>From laptop, launch <code>bash tunnel_laptop_edisonlogin.sh ##</code> from <a href="https://gist.github.com/zonca/5f8b5ccb826a774d3f89">https://gist.github.com/zonca/5f8b5ccb826a774d3f89</a>, where <code>##</code> is the edison login number in 2 digits, like <code>03</code>. First you need to modify the port number.</li>
 <li>From laptop, open browser and connect to <code>http://localhost:YOURPORT</code></li>
 </ul>
-<h2>Possible issues</h2>
-<p>I assume in the setup that every time you connect to <code>edison.nersc.gov</code> you land on the same login node, generally it is always true. In case you have failures, make sure this is the case. </p>
 <h2>Detailed walkthrough</h2>
 <h3>One time setup on Edison</h3>
 <p>Make sure that <code>ipython notebook</code> works on a login node, one option is to install 
-Anaconda 64bit from http://continuum.io/downloads#py34.</p>
+Anaconda 64bit from http://continuum.io/downloads#py34. Choose Python 3.</p>
 <p>You need to be able to SSH from a node to another node on Edison with no need of a password. Create a new SSH certificate with <code>ssh-keygen</code>, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use <code>ssh-copy-id edison.nersc.gov</code>, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:</p>
 <div class="highlight"><pre>ssh edison.nersc.gov
@@ -76,11 +74,11 @@ Now you can check it works by executing:</p>
 <p>from the login node and make sure you are NOT asked for your password.</p>
 <h3>Configure the script for TORQUE and submit the job</h3>
 <p>Create a <code>notebook</code> folder on your home on Edison.</p>
-<p>Copy <code>submit_notebook_pbs.sh</code> and <code>tunneled_notebook.sh</code> from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0">https://gist.github.com/zonca/357d36347fd5addca8f0</a> to the <code>notebook</code> folder.</p>
-<p>Change the port number in the <code>tunneled_notebook.sh</code> script to a port of your choosing between 7000 and 9999, referenced as YOURPORT in the rest of the tutorial. Two users on the same login node on the same port would not be allowed to forward, so try to avoid common port numbers as 8000, 9000, 8080 or 8888.</p>
+<p>Copy <code>notebook_job.pbs</code> and <code>launch_notebook_and_tunnel_to_login.sh</code> from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0">https://gist.github.com/zonca/357d36347fd5addca8f0</a> to the <code>notebook</code> folder.</p>
+<p>Change the port number in the <code>launch_notebook_and_tunnel_to_login.sh</code> script to a port of your choosing between 7000 and 9999, referenced as YOURPORT in the rest of the tutorial. Two users on the same login node on the same port would not be allowed to forward, so try to avoid common port numbers as 8000, 9000, 8080 or 8888.</p>
 <p>Choose a duration of your job, for initial testing better keep 30 minutes so your job starts sooner.</p>
 <p>Submit the job to the scheduler:</p>
-<div class="highlight"><pre>qsub submit_notebook_pbs.sh
+<div class="highlight"><pre>qsub notebook_job.pbs
 </pre></div>
 
 
@@ -98,15 +96,15 @@ Now you can check it works by executing:</p>
 <p>should download a <code>index.html</code> file in the current folder, and NOT give an error like "Connection refused".</p>
 <h3>Tunnel the port to your laptop</h3>
 <h4>Linux / MAC</h4>
-<p>Download the <code>tunnel_notebook_edison.sh</code> script from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0/edit">https://gist.github.com/zonca/357d36347fd5addca8f0/edit</a>.</p>
-<p>Customize the script with your port number.</p>
-<p>Launch <code>bash tunnel_notebook_edison.sh</code>.</p>
+<p>Download the <code>tunnel_laptop_edisonlogin.sh</code> script from <a href="https://gist.github.com/zonca/357d36347fd5addca8f0">https://gist.github.com/zonca/357d36347fd5addca8f0</a>.</p>
+<p>Customize the script with your port number and your username.</p>
+<p>Launch <code>bash tunnel_laptop_edisonlogin.sh ##</code> where <code>##</code> is the Edison login node you launched the job from in 2 digits, e.g. <code>03</code>.</p>
 <p>The script forwards the port from the login node of Edison to your laptop.</p>
 <h4>Windows</h4>
 <p>Install <code>putty</code>.</p>
 <p>Follow tutorial for local port forwarding on <a href="http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/">http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/</a></p>
 <ul>
-<li>set <code>edison.nersc.gov</code> as remote host, 22 as SSH port</li>
+<li>set <code>edison##-eth5.nersc.gov</code> as remote host, where <code>##</code> is the Edison login node you launched the job from in 2 digits, e.g. <code>03</code> and set 22 as SSH port</li>
 <li>set YOURPORT as tunnel port, replace both 8080 and 80 in the tutorial with your port number. </li>
 </ul>
 <h3>Connect to the Notebook</h3>
