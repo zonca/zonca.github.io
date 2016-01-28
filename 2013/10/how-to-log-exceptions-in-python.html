@@ -56,10 +56,10 @@ First of all, we want to catch any exception, but also being able to access all 
 
 <p>Then we want to write those to a logging file, so we need to setup the logging module:</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span> <span class="n">filename</span><span class="o">=</span><span class="s">&quot;main.log&quot;</span><span class="p">,</span>
-                     <span class="n">filemode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;main.log&quot;</span><span class="p">,</span>
+                     <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
                      <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
-                     <span class="n">format</span><span class="o">=</span> <span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">,</span>
+                     <span class="n">format</span><span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
                    <span class="p">)</span>
 </pre></div>
 

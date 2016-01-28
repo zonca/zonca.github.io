@@ -45,7 +45,7 @@
         </header>
         <div class='post-content'>
             <p>Gordon has already a <code>python</code> environment setup which can be activated by loading the <code>python</code> module:</p>
-<div class="highlight"><pre><span class="k">module</span> <span class="n">load</span> <span class="n">python</span> <span class="c-Singleline"># add this to .bashrc to load it at every login</span>
+<div class="highlight"><pre><span class="k">module</span> <span class="n">load</span> <span class="n">python</span> <span class="c c-Singleline"># add this to .bashrc to load it at every login</span>
 </pre></div>
 
 
@@ -107,16 +107,16 @@ c.HubFactory.engine_ip = &#39;*&#39;
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c">#PBS -q normal</span>
-<span class="c">#PBS -N ipcluster</span>
-<span class="c">#PBS -l nodes={n/16}:ppn={n}:native</span>
-<span class="c">#PBS -l walltime=01:00:00</span>
-<span class="c">#PBS -o ipcluster.out</span>
-<span class="c">#PBS -e ipcluster.err</span>
-<span class="c">#PBS -m abe</span>
-<span class="c">#PBS -V</span>
-mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile <span class="nv">$PBS_NODEFILE</span> ipengine
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/bin/bash</span>
+<span class="c1">#PBS -q normal</span>
+<span class="c1">#PBS -N ipcluster</span>
+<span class="c1">#PBS -l nodes={n/16}:ppn={n}:native</span>
+<span class="c1">#PBS -l walltime=01:00:00</span>
+<span class="c1">#PBS -o ipcluster.out</span>
+<span class="c1">#PBS -e ipcluster.err</span>
+<span class="c1">#PBS -m abe</span>
+<span class="c1">#PBS -V</span>
+mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile $PBS_NODEFILE ipengine
 </pre></div>
 </td></tr></table>
 
@@ -150,7 +150,7 @@ mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile <span
 The easiest method to submit jobs with automatic load balancing is to create a load balanced view:</p>
 <div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">IPython.parallel</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">lview</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">load_balanced_view</span><span class="p">()</span> <span class="c"># default load-balanced view</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">lview</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">load_balanced_view</span><span class="p">()</span> <span class="c1"># default load-balanced view</span>
 </pre></div>
 
 

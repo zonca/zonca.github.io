@@ -311,7 +311,7 @@ everything and switch back to Normal mode.&lt;/p&gt;
 &lt;li&gt;First you need to install the &lt;a href="https://goo.gl/OVQOEt"&gt;Crouton Chrome extension&lt;/a&gt; on ChromeOS&lt;/li&gt;
 &lt;li&gt;Download the last release from &lt;a href="https://goo.gl/fd3zc"&gt;https://goo.gl/fd3zc&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Open the ChromeOS shell using &lt;code&gt;Ctrl-Alt-t&lt;/code&gt;, digit &lt;code&gt;shell&lt;/code&gt; at the prompt and hit enter&lt;/li&gt;
-&lt;li&gt;Run &lt;code&gt;sudo sh ~/Downloads/crouton -t xfce -r trusty,xiwi&lt;/code&gt;, this instlls Ubuntu Trutyty with xfce desktop and uses &lt;code&gt;kiwi&lt;/code&gt; to be able to run in a window.&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;sudo sh ~/Downloads/crouton -t xfce,xiwi -r trusty&lt;/code&gt;, this instlls Ubuntu Trutyty with xfce desktop and uses &lt;code&gt;kiwi&lt;/code&gt; to be able to run in a window.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Now you can have Ubuntu running in a window of the Chromebook browser by:&lt;/p&gt;
 &lt;ul&gt;
@@ -327,7 +327,7 @@ Linux at &lt;a href="http://software-carpentry.org/v5/setup.html"&gt;http://soft
 &lt;li&gt;&lt;code&gt;sudo apt install nano&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sudo apt install git&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;In order to install R &lt;code&gt;sudo apt install r-base&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Download Anaconda Python 2.7 64bit for Linux from &lt;a href="http://continuum.io/downloads"&gt;http://continuum.io/downloads&lt;/a&gt; and execute it&lt;/li&gt;
+&lt;li&gt;Download Anaconda Python 3 64bit for Linux from &lt;a href="http://continuum.io/downloads"&gt;http://continuum.io/downloads&lt;/a&gt; and execute it&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Anaconda will run under Ubuntu but when you open an IPython notebook, it will automatically open a new tab in the main browser of ChromeOS, not
 inside the Ubuntu window.&lt;/p&gt;
@@ -527,7 +527,7 @@ Another opportunity is to work as Research Scientist in a specific research grou
 &lt;p&gt;Finally the Github repository with additional material, under MIT license:
 &lt;a href="https://github.com/zonca/machine-learning-at-scale-with-python"&gt;https://github.com/zonca/machine-learning-at-scale-with-python&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Any feedback is appreciated, google+, twitter or email.&lt;/p&gt;</summary><category term="python"></category><category term="machine-learning"></category></entry><entry><title>Python on Gordon</title><link href="http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html" rel="alternate"></link><updated>2014-03-20T19:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:2014/03/setup-ipython-notebook-parallel-Gordon.html</id><summary type="html">&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c-Singleline"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c c-Singleline"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -589,16 +589,16 @@ c.HubFactory.engine_ip = &amp;#39;*&amp;#39;
  7
  8
  9
-10&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -q normal&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -N ipcluster&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -l nodes={n/16}:ppn={n}:native&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -l walltime=01:00:00&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -o ipcluster.out&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -e ipcluster.err&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -m abe&lt;/span&gt;
-&lt;span class="c"&gt;#PBS -V&lt;/span&gt;
-mpirun_rsh -np &lt;span class="o"&gt;{&lt;/span&gt;n&lt;span class="o"&gt;}&lt;/span&gt; -hostfile &lt;span class="nv"&gt;$PBS_NODEFILE&lt;/span&gt; ipengine
+10&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -q normal&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -N ipcluster&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -l nodes={n/16}:ppn={n}:native&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -l walltime=01:00:00&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -o ipcluster.out&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -e ipcluster.err&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -m abe&lt;/span&gt;
+&lt;span class="c1"&gt;#PBS -V&lt;/span&gt;
+mpirun_rsh -np &lt;span class="o"&gt;{&lt;/span&gt;n&lt;span class="o"&gt;}&lt;/span&gt; -hostfile $PBS_NODEFILE ipengine
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
@@ -632,7 +632,7 @@ mpirun_rsh -np &lt;span class="o"&gt;{&lt;/span&gt;n&lt;span class="o"&gt;}&lt;/
 The easiest method to submit jobs with automatic load balancing is to create a load balanced view:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.parallel&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;lview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load_balanced_view&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;# default load-balanced view&lt;/span&gt;
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;lview&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;rc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load_balanced_view&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# default load-balanced view&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -824,7 +824,7 @@ There are several user cases, for example:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;sudo su jiffylabweb
 &lt;span class="nb"&gt;cd&lt;/span&gt; /usr/local/etc/jiffylab/webapp/
-python app.py &lt;span class="c"&gt;#run in debug mode&lt;/span&gt;
+python app.py &lt;span class="c1"&gt;#run in debug mode&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -832,7 +832,7 @@ python app.py &lt;span class="c"&gt;#run in debug mode&lt;/span&gt;
 &lt;li&gt;Point your browser to the server to check debugging messages, if any.&lt;/li&gt;
 &lt;li&gt;Finally start the application in production mode:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;python server.py &lt;span class="c"&gt;#run in production mode&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python server.py &lt;span class="c1"&gt;#run in production mode&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -862,10 +862,10 @@ First of all, we want to catch any exception, but also being able to access all 
 
 &lt;p&gt;Then we want to write those to a logging file, so we need to setup the logging module:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
-&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;basicConfig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main.log&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                     &lt;span class="n"&gt;filemode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;basicConfig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;main.log&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;filemode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                      &lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                     &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(levelname)s&lt;/span&gt;&lt;span class="s"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%(asctime)s&lt;/span&gt;&lt;span class="s1"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(levelname)s&lt;/span&gt;&lt;span class="s1"&gt; - &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                    &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
