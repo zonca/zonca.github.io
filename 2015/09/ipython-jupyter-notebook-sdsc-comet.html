@@ -62,7 +62,7 @@
 <p>Login into a Comet login node, edit the <code>.bashrc</code> file in your home folder (with <code>nano .bashrc</code> for example) and add <code>module load python scipy</code> at the bottom. This makes sure you always have the Python environment loaded in all your jobs. Logout, log back in, make sure that <code>module list</code> shows <code>python</code> and <code>scipy</code>.</p>
 <p>You need to be able to SSH from a node to another node on comet with no need of a password. Create a new SSH certificate with <code>ssh-keygen</code>, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use <code>ssh-copy-id comet.sdsc.edu</code>, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:</p>
-<div class="highlight"><pre>ssh comet.sdsc.edu
+<div class="highlight"><pre><span></span>ssh comet.sdsc.edu
 </pre></div>
 
 
@@ -73,18 +73,18 @@ Now you can check it works by executing:</p>
 <p>Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5GB of RAM and change the top of the script accordingly.</p>
 <p>Choose a duration of your job, for initial testing better keep 30 minutes so your job starts straight away.</p>
 <p>Submit the job to the scheduler:</p>
-<div class="highlight"><pre>sbatch submit_slurm_comet.sh
+<div class="highlight"><pre><span></span>sbatch submit_slurm_comet.sh
 </pre></div>
 
 
 <p>Wait for the job to start running, you should see <code>R</code> in:</p>
-<div class="highlight"><pre><span class="x">squeue -u </span><span class="p">$</span><span class="nv">USER</span><span class="x"></span>
+<div class="highlight"><pre><span></span><span class="x">squeue -u </span><span class="p">$</span><span class="nv">USER</span><span class="x"></span>
 </pre></div>
 
 
 <p>The script launches an IPython notebook on a computing node and tunnels its port to the login node.</p>
 <p>You can check that everything worked by checking that no errors show up in the <code>notebook.log</code> file, and that you can access the notebook page with <code>wget</code>:</p>
-<div class="highlight"><pre>wget localhost:YOURPORT
+<div class="highlight"><pre><span></span>wget localhost:YOURPORT
 </pre></div>
 
 

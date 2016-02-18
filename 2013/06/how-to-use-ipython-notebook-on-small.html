@@ -51,14 +51,14 @@
 <li>Login to the cluster</li>
 <li>
 <p>Load the python environment, for example:</p>
-<div class="highlight"><pre><span class="k">module</span> <span class="n">load</span> <span class="n">pythonEPD</span>
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">load</span> <span class="n">pythonEPD</span>
 </pre></div>
 
 
 </li>
 <li>
 <p>Create the profile files:</p>
-<div class="highlight"><pre>ipython profile create # creates the configuration files
+<div class="highlight"><pre><span></span>ipython profile create # creates the configuration files
 vim .ipython/profile_default/ipython_notebook_config.py
 </pre></div>
 
@@ -67,14 +67,14 @@ vim .ipython/profile_default/ipython_notebook_config.py
 </li>
 <li>
 <p>Change the port to something specific to you, <strong>please change this to avoid conflict with other users</strong>:</p>
-<div class="highlight"><pre>c.NotebookApp.port = 8900
+<div class="highlight"><pre><span></span>c.NotebookApp.port = 8900
 </pre></div>
 
 
 </li>
 <li>
 <p>Set a certificate to serve the notebook over https:</p>
-<div class="highlight"><pre>c.NotebookApp.certfile = u&#39;/home/zonca/mycert.pem&#39;
+<div class="highlight"><pre><span></span>c.NotebookApp.certfile = u&#39;/home/zonca/mycert.pem&#39;
 </pre></div>
 
 
@@ -82,7 +82,7 @@ vim .ipython/profile_default/ipython_notebook_config.py
 </li>
 <li>
 <p>Set:</p>
-<div class="highlight"><pre>c.NotebookApp.open_browser = False
+<div class="highlight"><pre><span></span>c.NotebookApp.open_browser = False
 </pre></div>
 
 
@@ -91,12 +91,12 @@ vim .ipython/profile_default/ipython_notebook_config.py
 <h2>2) Run the notebook for testing on the login node.</h2>
 <p>You can use IPython notebook on the login node if you do not use much memory, e.g. &lt; 300MB.
 ssh into the login node, at the terminal run:</p>
-<div class="highlight"><pre>ipython notebook --pylab=inline
+<div class="highlight"><pre><span></span>ipython notebook --pylab=inline
 </pre></div>
 
 
 <p>open the browser on your local machine and connect to (always use https, replace 8900 with your port):</p>
-<div class="highlight"><pre>https://LOGINNODEURL:8900
+<div class="highlight"><pre><span></span>https://LOGINNODEURL:8900
 </pre></div>
 
 
@@ -110,12 +110,12 @@ ssh into the login node, at the terminal run:</p>
 <p>replace <code>LOGINNODEURL</code> with the url of the login node of your cluster.</p>
 <p>NOTICE: you need to ask the sysadmin to set <code>GatewayPorts yes</code> in <code>sshd_config</code> on the login node to allow access externally to the notebook.</p>
 <p>Submit the job to the queue running:</p>
-<div class="highlight"><pre>qsub runipynb.pbs
+<div class="highlight"><pre><span></span>qsub runipynb.pbs
 </pre></div>
 
 
 <p>Then from your local machine connect to (replace 8900 with your port):</p>
-<div class="highlight"><pre>https://LOGINNODEURL:8900
+<div class="highlight"><pre><span></span>https://LOGINNODEURL:8900
 </pre></div>
 
 

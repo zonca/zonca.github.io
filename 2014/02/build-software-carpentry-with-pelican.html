@@ -67,7 +67,7 @@ Basicly the requirement is to make it easy for bootcamp instructors to setup the
 <li>Clone the <code>bootcamp-pelican</code> repository of your organization locally</li>
 <li>
 <p>Create a <code>Python</code> virtual environment and install requirements with:</p>
-<div class="highlight"><pre>cd bootcamp-pelican
+<div class="highlight"><pre><span></span>cd bootcamp-pelican
 virtualenv swcpy
 . swcpy/bin/activate
 pip install -r requirements.txt
@@ -77,28 +77,28 @@ pip install -r requirements.txt
 </li>
 <li>
 <p>Clone the <code>swcarpentry-YYYY-MM-DD-INST.github.io</code> in the output folder as:</p>
-<div class="highlight"><pre>git clone git@github.com:swcarpentry-YYYY-MM-DD-INST.github.io.git output
+<div class="highlight"><pre><span></span>git clone git@github.com:swcarpentry-YYYY-MM-DD-INST.github.io.git output
 </pre></div>
 
 
 </li>
 <li>
 <p>Build or Update the website with Pelican running</p>
-<div class="highlight"><pre>fab build
+<div class="highlight"><pre><span></span>fab build
 </pre></div>
 
 
 </li>
 <li>
 <p>You can display the website in your browser locally with:</p>
-<div class="highlight"><pre>fab serve
+<div class="highlight"><pre><span></span>fab serve
 </pre></div>
 
 
 </li>
 <li>
 <p>Finally you can publish it to Github with:</p>
-<div class="highlight"><pre>cd output
+<div class="highlight"><pre><span></span>cd output
 git add .
 git push origin master
 </pre></div>
@@ -114,7 +114,7 @@ git push origin master
 <li>Go to https://github.com/settings/tokens/new, create a new token with default permissions</li>
 <li>
 <p>Install the <code>travis</code> tool (in debian/ubuntu <code>sudo gem install travis</code>) and run from any machine (not necessary to have a clone of the repository):</p>
-<div class="highlight"><pre>travis encrypt -r swcarpentry-YYYY-MM-DD-INST/bootcamp-pelican GH_TOKEN=TOKENGOTATTHEPREVIOUSSTEP
+<div class="highlight"><pre><span></span>travis encrypt -r swcarpentry-YYYY-MM-DD-INST/bootcamp-pelican GH_TOKEN=TOKENGOTATTHEPREVIOUSSTEP
 </pre></div>
 
 

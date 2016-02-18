@@ -49,36 +49,36 @@
 <p>It is very common in Astrophysics to work with sky pixels. The sky is tassellated in patches with specific properties and a sky map is then a collection of intensity values for each pixel. The most common pixelization used in Cosmology is <a href="http://healpix.jpl.nasa.gov">HEALPix</a>.</p>
 <p>Measurements from telescopes are then represented as an array of pixels that encode the pointing of the instrument at each timestamp and the measurement output.</p>
 <h2>Sample timeline</h2>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numba</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 </pre></div>
 
 
 <p>For simplicity let's assume we have a sky with 50K pixels:</p>
-<div class="highlight"><pre>NPIX = 50000
+<div class="highlight"><pre><span></span>NPIX = 50000
 </pre></div>
 
 
 <p>And we have 50 million measurement from our instrument:</p>
-<div class="highlight"><pre>NTIME = int(50 * 1e6)
+<div class="highlight"><pre><span></span>NTIME = int(50 * 1e6)
 </pre></div>
 
 
 <p>The pointing of our instrument is an array of pixels, random in our sample case:</p>
-<div class="highlight"><pre>pixels = np.random.randint(0, NPIX-1, NTIME)
+<div class="highlight"><pre><span></span>pixels = np.random.randint(0, NPIX-1, NTIME)
 </pre></div>
 
 
 <p>Our data are also random:</p>
-<div class="highlight"><pre>timeline = np.random.randn(NTIME)
+<div class="highlight"><pre><span></span>timeline = np.random.randn(NTIME)
 </pre></div>
 
 
 <h2>Create a map of the sky with pandas</h2>
 <p>One of the most common operations is to sum all of our measurements in a sky map, so the value of each pixel in our sky map will be the sum of each individual measurement.
 The easiest way is to use the <code>groupby</code> operation in <code>pandas</code>:</p>
-<div class="highlight"><pre><span class="n">timeline_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">timeline</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pixels</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">timeline_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">timeline</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">pixels</span><span class="p">)</span>
 
 <span class="n">timeline_pandas</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
 <span class="mi">46889</span>    <span class="mf">0.407097</span>
@@ -98,7 +98,7 @@ The easiest way is to use the <code>groupby</code> operation in <code>pandas</co
 <h2>Create a map of the sky with numba</h2>
 <p>We would like to improve the performance of this operation using <code>numba</code>, which allows to produce automatically C-speed compiled code from pure python functions.</p>
 <p>First we need to develop a pure python version of the code, test it, and then have <code>numba</code> optimize it:</p>
-<div class="highlight"><pre><span class="n">def</span> <span class="n">groupby_python</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span><span class="o">:</span>
+<div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">groupby_python</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span><span class="o">:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">:</span>
         <span class="n">output</span><span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
@@ -117,7 +117,7 @@ The easiest way is to use the <code>groupby</code> operation in <code>pandas</co
 <p>Pure Python is slower than the <code>pandas</code> version implemented in <code>cython</code>.</p>
 <h3>Optimize the function with numba.jit</h3>
 <p><code>numba.jit</code> gets an input function and creates an compiled version with does not depend on slow Python calls, this is enforced by <code>nopython=True</code>, <code>numba</code> would throw an error if it would not be possible to run in <code>nopython</code> mode.</p>
-<div class="highlight"><pre><span class="n">groupby_numba</span> <span class="o">=</span> <span class="n">numba</span><span class="p">.</span><span class="n">jit</span><span class="p">(</span><span class="n">groupby_python</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">groupby_numba</span> <span class="o">=</span> <span class="n">numba</span><span class="p">.</span><span class="n">jit</span><span class="p">(</span><span class="n">groupby_python</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
 
 <span class="n">m_numba</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
@@ -132,7 +132,7 @@ The easiest way is to use the <code>groupby</code> operation in <code>pandas</co
 <p>Performance improvement is about 100x compared to Python and 20x compared to Pandas, pretty good!</p>
 <h2>Use numba.jit as a decorator</h2>
 <p>The exact same result is obtained if we use <code>numba.jit</code> as a decorator:</p>
-<div class="highlight"><pre>@numba.jit(nopython=True)
+<div class="highlight"><pre><span></span>@numba.jit(nopython=True)
 def groupby_numba(index, value, output):
     for i in range(index.shape[0]):
         output[index[i]] += value[i]

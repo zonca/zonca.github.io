@@ -57,12 +57,20 @@ get a Jupyterhub Terminal, or run in the IPython notebook with <code>!</code>.</
 <h2>Create a kernel file for Jupyterhub</h2>
 <p>You probably already know you can have Python 2 and Python 3 kernels on the same Jupyter notebook installation. In the same way you can create your own <code>KernelSpec</code> that launches instead another Python installation.</p>
 <p>IPython can automatically create a <code>KernelSpec</code> for you, from the IPython notebook, run:</p>
-<div class="highlight"><pre>!~/anaconda3/bin/ipython kernelspec install-self --user
+<div class="highlight"><pre><span></span>!~/anaconda3/bin/ipython kernelspec install-self --user
 </pre></div>
 
 
 <p>In case your path is different, just insert the full path to <code>ipython</code> from the Python installation you would like to use.</p>
 <p>This will create a file <code>kernel.json</code> in <code>~/.ipython/kernels/python3</code>, you can open that file with an editor and change the <code>display_name</code> to something better than the default <code>Python 3</code>, like <code>My Anaconda</code>.</p>
+<p>I also recommend to rename the <code>~/.ipython/kernels/python3</code>, for example to  <code>~/.ipython/kernels/anaconda3</code>, otherwise if you install another Python 3 kernel, the previous one will be overwritten.</p>
+<p>You can also add KernelSpecs for other <code>conda</code> environments doing:</p>
+<div class="highlight"><pre><span></span><span class="sx">!source activate environmentname</span>
+<span class="sx">!ipython kernelspec install-self --user</span>
+</pre></div>
+
+
+<p>And then edit their <code>kernel.json</code>.</p>
 <h2>Launch a Notebook</h2>
 <p>Go back to the Jupyterhub dashboard, reload the page, now you should have another option in the <code>New</code> menu that says <code>My Anaconda</code>.</p>
 <p>In order to use your new kernel with an existing notebook, click on the notebook file in the dashboard, it will launch with the default kernel, then you can change kernel from the top menu <code>Kernel</code> &gt; <code>Change kernel</code>.</p>

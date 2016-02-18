@@ -47,12 +47,12 @@
             <p>Sometimes it is useful, even more if you have a chromebook, to upload a file to Google Drive and then use <code>wget</code> to retrieve it from a server remotely.</p>
 <p>In order to do this you need to make the file available to "Anyone with the link", then click on that link from your local machine and get to the download page that displays a Download button.
 Now right-click and select "Show page source" (in Chrome), and search for "downloadUrl", copy the url that starts with <code>https://docs.google.com</code>, for example:</p>
-<div class="highlight"><pre>https://docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ
+<div class="highlight"><pre><span></span>https://docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ
 </pre></div>
 
 
 <p>This is unicode, so open <code>Python</code> and do:</p>
-<div class="highlight"><pre>download_url = &quot;PASTE HERE&quot;
+<div class="highlight"><pre><span></span>download_url = &quot;PASTE HERE&quot;
 print download_url.decode(&quot;unicode_escape&quot;)
 u&#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;export=download&amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&#39;
 </pre></div>

@@ -47,7 +47,7 @@
             <p>Sometimes it is useful to just catch any exception, write details to a log file and continue execution.</p>
 <p>In the <code>Python</code> standard library, it is possible to use the <code>logging</code> and <code>exceptions</code> modules to achieve this.
 First of all, we want to catch any exception, but also being able to access all information about it:</p>
-<div class="highlight"><pre><span class="k">try</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">my_function_1</span><span class="p">()</span>
 <span class="k">except</span> <span class="n">exception</span><span class="o">.</span><span class="n">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span>
@@ -55,7 +55,7 @@ First of all, we want to catch any exception, but also being able to access all 
 
 
 <p>Then we want to write those to a logging file, so we need to setup the logging module:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;main.log&quot;</span><span class="p">,</span>
                      <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span>
                      <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
@@ -68,7 +68,7 @@ First of all, we want to catch any exception, but also being able to access all 
 <script src="https://gist.github.com/zonca/6782980.js"></script>
 
 <p>Here the output log:</p>
-<div class="highlight"><pre>2013-10-01 11:32:56,466 - ERROR - Function my_function_1() raised &lt;type &#39;exceptions.IndexError&#39;&gt; (Sequence index out of range.): Some indexing error
+<div class="highlight"><pre><span></span>2013-10-01 11:32:56,466 - ERROR - Function my_function_1() raised &lt;type &#39;exceptions.IndexError&#39;&gt; (Sequence index out of range.): Some indexing error
 2013-10-01 11:32:56,466 - ERROR - Function my_function_2() raised &lt;class &#39;my_module.MyException&#39;&gt; (This is my own Exception): Something went quite wrong
 2013-10-01 11:32:56,466 - ERROR - Function my_function_1_wrapper() raised &lt;type &#39;exceptions.IndexError&#39;&gt; (Sequence index out of range.): Some indexing error
 </pre></div>
