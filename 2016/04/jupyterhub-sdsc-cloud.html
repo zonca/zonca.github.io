@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Deploy Jupyterhub on a Virtual Machine for a Workshop | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Deploy Jupyterhub on a Virtual Machine for a Workshop</h1>
+        </header>
+        <div class='post-content'>
+            <p>This tutorial describes the steps to install a Jupyterhub instance on a single machine suitable for hosting a workshop, suitable for having people login with training accounts on Jupyter Notebooks running Python 2/3, R, Julia with also Terminal access on Docker containers.
+Details about the setup:</p>
+<ul>
+<li>Jupyterhub installed with Anaconda directly on the host, proxied by NGINX under HTTPS with self-signed certificate</li>
+<li>Login with Linux account credentials created previously by the administrator, data in /home are persistent across sessions</li>
+<li>Each user runs in a separated Docker container with access to Python 2, Python 3, R and Julia kernels, they can also open the Notebook editor and the terminal</li>
+<li>Using a single machine you have to consider that the biggest constraint is going to be memory usage, as a rule of thumb consider 100-200 MB/user plus 5x-10x the amount of data you are loading from disk, depending on the kind of analysis. For a multi-node setup you need to look into Docker Swarm.</li>
+</ul>
+<p>I am using the OpenStack deployment at the San Diego Supercomputer Center, <a href="http://www.sdsc.edu/services/it/cloud.html">SDSC Cloud</a>, AWS deployments should just replace the first section on Creating a VM and setting up Networking, see <a href="https://github.com/jupyterhub/jupyterhub/wiki/Deploying-JupyterHub-on-AWS">the Jupyterhub wiki</a>.</p>
+<h1>Create a Virtual Machine in OpenStack</h1>
+<p>First of all we need to launch a new Virtual Machine and configure the network.</p>
+<ul>
+<li>Login to the SDSC Cloud OpenStack dashboard</li>
+</ul>
+<h2>Network setup</h2>
+<p>Jupyterhub will be proxied to the standard HTTPS port by NGINX and we also want to redirect HTTP to HTTPS, so we open those ports, then SSH for the administrators to login and a custom TCP rule in order for the Docker containers to be able to connect to the Jupyterhub hub running on port 8081, so we are opening that port just to the subnet that is running the Docker containers.</p>
+<ul>
+<li>Compute -&gt; Access &amp; Security -&gt; Security Groups -&gt; Create Security Group and name it <code>jupyterhubsecgroup</code></li>
+<li>Click on Manage Rules </li>
+<li>Click on add rule, choose the HTTP rule and click add</li>
+<li>Repeat the last step with HTTPS and SSH</li>
+<li>Click on add rule again, choose Custom TCP Rule, set port 8081 and set CIDR 172.17.0.0/24 (this is needed so that the containers can connect to the hub)</li>
+</ul>
+<h2>Create a new Virtual Machine</h2>
+<p>We choose Ubuntu here, also other distributions should work fine.</p>
+<ul>
+<li>Compute -&gt; Access &amp; Security -&gt; Key Pairs -&gt; Create key pair, name it <code>jupyterhub</code> and download it to your local machine</li>
+<li>Instances -&gt; Launch Instance, Choose a name, Choose "Boot from image" in Boot Source and Ubuntu as Image name, Choose any size, depending on the number of users (TODO add link to Jupyterhub docs)</li>
+<li>Under "Access &amp; Security" choose Key Pair <code>jupyterhub</code> and Security Groups <code>jupyterhubsecgroup</code></li>
+<li>Click <code>Launch</code> to create the instance</li>
+</ul>
+<h2>Give public IP to the instance</h2>
+<p>By default in SDSC Cloud machines do not have a public IP.</p>
+<ul>
+<li>Compute -&gt; Access &amp; Sewcurity -&gt; Floating IPs -&gt; Allocate IP To Project, "Allocate IP" to request a public IP</li>
+<li>Click on the "Associate" button of the IP just requested and under "Port to be associated"  choose the instance just created</li>
+</ul>
+<h1>Setup Jupyterhub in the Virtual Machine</h1>
+<p>In this section we will install and configure Jupyterhub and NGINX to run on the Virtual Machine.</p>
+<ul>
+<li>login into the Virtual Machine with <code>ssh -i jupyterhub.pem ubuntu@xxx.xxx.xxx.xxx</code> using the key file and the public IP setup in the previous steps</li>
+<li>add the hostname of the machine (check by running <code>hostname</code>) to <code>/etc/hosts</code>, i.e. the first line should become something like <code>127.0.0.1 localhost jupyterhub</code> if <code>jupyterhub</code> is the hostname</li>
+</ul>
+<h2>Setup Jupyterhub</h2>
+<div class="highlight"><pre><span></span> wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+ bash Miniconda3-latest-Linux-x86_64.sh
+ ```
+
+ use all defaults, answer &quot;yes&quot; to modify PATH
+
+ ```
+sudo apt-get install npm nodejs-legacy
+sudo npm install -g configurable-http-proxy
+conda install traitlets tornado jinja2 sqlalchemy 
+pip install jupyterhub
+</pre></div>
+
+
+<h2>Setup the web server</h2>
+<p>We will use the NGINX web server to proxy Jupyterhub and handle HTTPS for us, this is recommended for deployments on the public internet.</p>
+<div class="highlight"><pre><span></span>sudo apt install nginx
+</pre></div>
+
+
+<p><strong>SSL Certificate</strong>: Optionally later, once we have assigned a domain to the Virtual Machine, we can install <code>letsencrypt</code> and get a real certificate, for simplicity here we are just using self-signed certificates that will give warnings on the first time users connect to the server, but still will keep the traffic encrypted.</p>
+<div class="highlight"><pre><span></span>sudo mkdir /etc/nginx/ssl
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
+</pre></div>
+
+
+<p>Get <code>/etc/nginx/nginx.conf</code> from https://gist.github.com/zonca/08c413a37401bdc9d2a7f65a7af44462</p>
+<p>For authentication to work, the <code>ubuntu</code> user needs to be able to read the <code>/etc/shadow</code> file:</p>
+<div class="highlight"><pre><span></span>sudo adduser ubuntu shadow
+</pre></div>
+
+
+<h1>Setup Docker Spawner</h1>
+<p>By default Jupyterhub runs notebooks as processes owned by each system user, for more security and isolation, we want Notebook to run in Docker containers, which are something like lightweight Virtual Machines running inside our server.</p>
+<h2>Install Docker</h2>
+<ul>
+<li>Source: https://docs.docker.com/engine/installation/linux/ubuntulinux/#prerequisites</li>
+</ul>
+<div class="highlight"><pre><span></span>sudo apt update
+sudo apt install apt-transport-https ca-certificates
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo &quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&quot; | sudo tee /etc/apt/sources.list.d/docker.list 
+sudo apt update
+sudo apt install docker-engine
+sudo usermod -aG docker ubuntu
+</pre></div>
+
+
+<p>Logout and login again for the group to take effect</p>
+<h2>Install and configure DockerSpawner</h2>
+<div class="highlight"><pre><span></span>pip install dockerspawner
+docker pull jupyter/systemuser
+conda install ipython jupyter
+</pre></div>
+
+
+<p>Create <code>jupyterhub_config.py</code> in the home folder of the ubuntu user with this content:</p>
+<div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">JupyterHub</span><span class="o">.</span><span class="n">confirm_no_ssl</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">c</span><span class="o">.</span><span class="n">JupyterHub</span><span class="o">.</span><span class="n">spawner_class</span> <span class="o">=</span> <span class="s1">&#39;dockerspawner.SystemUserSpawner&#39;</span>
+
+<span class="c1"># The docker instances need access to the Hub, so the default loopback port doesn&#39;t work:</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.localinterfaces</span> <span class="kn">import</span> <span class="n">public_ips</span>
+<span class="n">c</span><span class="o">.</span><span class="n">JupyterHub</span><span class="o">.</span><span class="n">hub_ip</span> <span class="o">=</span> <span class="n">public_ips</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<h1>Connect to Jupyterhub</h1>
+<p>Open a browser and connect to the floating IP you set for your instance, this should redirect to the https, click "Advance" in the warning about safety due to the self signed SSL certificate and login with the training credentials.</p>
+<p>Instead of using the IP, you can use any domain that points to that same IP with a DNS record of type A or get a dymanic DNS for free on a website like http://noip.com.
+Once you have a custom domain, you can configure letsencrypt to have a proper HTTPS certificate so that users do not get any warning when connecting to the instance. I will add this to the optional steps below.</p>
+<h1>Optional: Automatically start jupyterhub at boot</h1>
+<p>Save https://gist.github.com/zonca/aaeaf3c4e7339127b482d759866e5f39 as <code>/etc/init.d/jupyterhub</code></p>
+<div class="highlight"><pre><span></span>sudo chmod +x /etc/init.d/jupyterhub
+sudo service jupyterhub start
+sudo update-rc.d jupyterhub defaults
+</pre></div>
+
+
+<h1>Optional: Create training user accounts</h1>
+<p>Add user accounts on Jupyterhub creating standard Linux users with <code>adduser</code> interactively or with a batch script.</p>
+<p>For example the following batch script creates 10 users all with the same password:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nv">PASSWORD</span><span class="o">=</span>samepasswordforallusers
+<span class="nv">NUMBER_OF_USERS</span><span class="o">=</span>10
+<span class="k">for</span> n in <span class="sb">`</span>seq -f <span class="s2">&quot;%02g&quot;</span> <span class="m">1</span> <span class="nv">$NUMBER_OF_USERS</span><span class="sb">`</span>
+<span class="k">do</span>
+    <span class="nb">echo</span> creating user training<span class="nv">$n</span>
+    <span class="nb">echo</span> training<span class="nv">$n</span>:<span class="nv">$PASSWORD</span>::::/home/training<span class="nv">$n</span>:/bin/bash <span class="p">|</span> sudo newusers
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+
+<p>Also add <code>AllowUsers ubuntu</code> to <code>/etc/ssh/sshd_config</code> so that training users cannot SSH into the host machine.</p>
+<h1>Optional: Add the R and Julia kernels</h1>
+<ul>
+<li>SSH into the instance</li>
+<li><code>git clone https://github.com/jupyter/dockerspawner</code></li>
+<li><code>cd dockerspawner</code></li>
+</ul>
+<p>Modify the file <code>singleuser/Dockerfile</code>, replace <code>FROM jupyter/scipy-notebook</code> with <code>FROM jupyter/datascience-notebook</code></p>
+<div class="highlight"><pre><span></span>docker build -t datascience-singleuser singleuser
+</pre></div>
+
+
+<p>Modify the file <code>systemuser/Dockerfile</code>, replace <code>FROM jupyter/singleuser</code> with <code>FROM datascience-singleuser</code></p>
+<div class="highlight"><pre><span></span>docker build -t datascience-systemuser systemuser
+</pre></div>
+
+
+<p>Finally in <code>jupyterhub_config.py</code>, select the new docker image:</p>
+<div class="highlight"><pre><span></span>c.DockerSpawner.container_image = &quot;datascience-systemuser&quot;
+</pre></div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2016-04-16T12:00:00-07:00">Sat 16 April 2016</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/sdsc.html">sdsc</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

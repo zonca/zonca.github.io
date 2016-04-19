@@ -116,7 +116,7 @@ c.HubFactory.engine_ip = &#39;*&#39;
 <span class="c1">#PBS -e ipcluster.err</span>
 <span class="c1">#PBS -m abe</span>
 <span class="c1">#PBS -V</span>
-mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile $PBS_NODEFILE ipengine
+mpirun_rsh -np <span class="o">{</span>n<span class="o">}</span> -hostfile <span class="nv">$PBS_NODEFILE</span> ipengine
 </pre></div>
 </td></tr></table>
 
