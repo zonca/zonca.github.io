@@ -110,7 +110,8 @@ conda install ipython jupyter
 
 
 &lt;h1&gt;Connect to Jupyterhub&lt;/h1&gt;
-&lt;p&gt;Open a browser and connect to the floating IP you set for your instance, this should redirect to the https, click "Advance" in the warning about safety due to the self signed SSL certificate and login with the training credentials.&lt;/p&gt;
+&lt;p&gt;From the home folder of the &lt;code&gt;ubuntu&lt;/code&gt; user, type &lt;code&gt;jupyterhub&lt;/code&gt; to launch the Jupyterhub process, see below how to start it automatically at boot. Use CTRL-C to stop it.&lt;/p&gt;
+&lt;p&gt;Open a browser and connect to the floating IP you set for your instance, this should redirect to the https, click "Advanced" in the warning about safety due to the self signed SSL certificate and login with the training credentials.&lt;/p&gt;
 &lt;p&gt;Instead of using the IP, you can use any domain that points to that same IP with a DNS record of type A or get a dymanic DNS for free on a website like http://noip.com.
 Once you have a custom domain, you can configure letsencrypt to have a proper HTTPS certificate so that users do not get any warning when connecting to the instance. I will add this to the optional steps below.&lt;/p&gt;
 &lt;h1&gt;Optional: Automatically start jupyterhub at boot&lt;/h1&gt;
