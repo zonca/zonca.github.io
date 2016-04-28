@@ -64,6 +64,7 @@ Details about the setup:&lt;/p&gt;
 &lt;li&gt;Using a single machine you have to consider that the biggest constraint is going to be memory usage, as a rule of thumb consider 100-200 MB/user plus 5x-10x the amount of data you are loading from disk, depending on the kind of analysis. For a multi-node setup you need to look into Docker Swarm.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;I am using the OpenStack deployment at the San Diego Supercomputer Center, &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, AWS deployments should just replace the first section on Creating a VM and setting up Networking, see &lt;a href="https://github.com/jupyterhub/jupyterhub/wiki/Deploying-JupyterHub-on-AWS"&gt;the Jupyterhub wiki&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you intend to run on SDSC Cloud, I have a pre-built image of this deployment you can setup and run quickly, see &lt;a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;see my followup tutorial&lt;/a&gt;.&lt;/p&gt;
 &lt;h1&gt;Create a Virtual Machine in OpenStack&lt;/h1&gt;
 &lt;p&gt;First of all we need to launch a new Virtual Machine and configure the network.&lt;/p&gt;
 &lt;ul&gt;
@@ -113,24 +114,24 @@ pip install jupyterhub
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;For authentication to work, the &lt;code&gt;ubuntu&lt;/code&gt; user needs to be able to read the &lt;code&gt;/etc/shadow&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo adduser ubuntu shadow
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h2&gt;Setup the web server&lt;/h2&gt;
 &lt;p&gt;We will use the NGINX web server to proxy Jupyterhub and handle HTTPS for us, this is recommended for deployments on the public internet.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt install nginx
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;strong&gt;SSL Certificate&lt;/strong&gt;: Optionally later, once we have assigned a domain to the Virtual Machine, we can install &lt;code&gt;letsencrypt&lt;/code&gt; and get a real certificate, for simplicity here we are just using self-signed certificates that will give warnings on the first time users connect to the server, but still will keep the traffic encrypted.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SSL Certificate&lt;/strong&gt;: Optionally later, once we have assigned a domain to the Virtual Machine, we can install &lt;code&gt;letsencrypt&lt;/code&gt; and get a real certificate, &lt;a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;see my followup tutorial&lt;/a&gt;, for simplicity here we are just using self-signed certificates that will give warnings on the first time users connect to the server, but still will keep the traffic encrypted.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mkdir /etc/nginx/ssl
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Get &lt;code&gt;/etc/nginx/nginx.conf&lt;/code&gt; from https://gist.github.com/zonca/08c413a37401bdc9d2a7f65a7af44462&lt;/p&gt;
-&lt;p&gt;For authentication to work, the &lt;code&gt;ubuntu&lt;/code&gt; user needs to be able to read the &lt;code&gt;/etc/shadow&lt;/code&gt; file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo adduser ubuntu shadow
-&lt;/pre&gt;&lt;/div&gt;
-
-
 &lt;h1&gt;Setup Docker Spawner&lt;/h1&gt;
 &lt;p&gt;By default Jupyterhub runs notebooks as processes owned by each system user, for more security and isolation, we want Notebook to run in Docker containers, which are something like lightweight Virtual Machines running inside our server.&lt;/p&gt;
 &lt;h2&gt;Install Docker&lt;/h2&gt;

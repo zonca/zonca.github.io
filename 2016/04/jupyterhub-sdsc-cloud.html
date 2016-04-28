@@ -53,6 +53,7 @@ Details about the setup:</p>
 <li>Using a single machine you have to consider that the biggest constraint is going to be memory usage, as a rule of thumb consider 100-200 MB/user plus 5x-10x the amount of data you are loading from disk, depending on the kind of analysis. For a multi-node setup you need to look into Docker Swarm.</li>
 </ul>
 <p>I am using the OpenStack deployment at the San Diego Supercomputer Center, <a href="http://www.sdsc.edu/services/it/cloud.html">SDSC Cloud</a>, AWS deployments should just replace the first section on Creating a VM and setting up Networking, see <a href="https://github.com/jupyterhub/jupyterhub/wiki/Deploying-JupyterHub-on-AWS">the Jupyterhub wiki</a>.</p>
+<p>If you intend to run on SDSC Cloud, I have a pre-built image of this deployment you can setup and run quickly, see <a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html">see my followup tutorial</a>.</p>
 <h1>Create a Virtual Machine in OpenStack</h1>
 <p>First of all we need to launch a new Virtual Machine and configure the network.</p>
 <ul>
@@ -102,24 +103,24 @@ pip install jupyterhub
 </pre></div>
 
 
+<p>For authentication to work, the <code>ubuntu</code> user needs to be able to read the <code>/etc/shadow</code> file:</p>
+<div class="highlight"><pre><span></span>sudo adduser ubuntu shadow
+</pre></div>
+
+
 <h2>Setup the web server</h2>
 <p>We will use the NGINX web server to proxy Jupyterhub and handle HTTPS for us, this is recommended for deployments on the public internet.</p>
 <div class="highlight"><pre><span></span>sudo apt install nginx
 </pre></div>
 
 
-<p><strong>SSL Certificate</strong>: Optionally later, once we have assigned a domain to the Virtual Machine, we can install <code>letsencrypt</code> and get a real certificate, for simplicity here we are just using self-signed certificates that will give warnings on the first time users connect to the server, but still will keep the traffic encrypted.</p>
+<p><strong>SSL Certificate</strong>: Optionally later, once we have assigned a domain to the Virtual Machine, we can install <code>letsencrypt</code> and get a real certificate, <a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html">see my followup tutorial</a>, for simplicity here we are just using self-signed certificates that will give warnings on the first time users connect to the server, but still will keep the traffic encrypted.</p>
 <div class="highlight"><pre><span></span>sudo mkdir /etc/nginx/ssl
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
 </pre></div>
 
 
 <p>Get <code>/etc/nginx/nginx.conf</code> from https://gist.github.com/zonca/08c413a37401bdc9d2a7f65a7af44462</p>
-<p>For authentication to work, the <code>ubuntu</code> user needs to be able to read the <code>/etc/shadow</code> file:</p>
-<div class="highlight"><pre><span></span>sudo adduser ubuntu shadow
-</pre></div>
-
-
 <h1>Setup Docker Spawner</h1>
 <p>By default Jupyterhub runs notebooks as processes owned by each system user, for more security and isolation, we want Notebook to run in Docker containers, which are something like lightweight Virtual Machines running inside our server.</p>
 <h2>Install Docker</h2>
