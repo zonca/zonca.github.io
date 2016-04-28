@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Quick Jupyterhub deployment for workshops with pre-built image | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Quick Jupyterhub deployment for workshops with pre-built image</h1>
+        </header>
+        <div class='post-content'>
+            <p>This tutorial explains how to use a OpenStack image I already built to quickly deploy a Jupyterhub Virtual Machine that can provide a good initial setup for a workshop, providing students access to Python 2/3, Julia, R, file editor and terminal with bash.</p>
+<p>For details about building the instance yourself for more customization, see the full tutorial at <a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html">http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html</a>.</p>
+<h2>Create a Virtual Machine in OpenStack with the pre-built image</h2>
+<p>Follow the 3 steps at <a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&gt;">the step by step tutorial</a> under "Create a Virtual Machine in OpenStack":</p>
+<ul>
+<li>Network setup</li>
+<li>Create a new Virtual Machine: here instead of choosing the base <code>ubuntu</code> image, choose <code>jupyterhub_docker</code>, also you can choose any size, I recommend to start with a <code>c1.large</code> for experimentation, you can then resize it later to a more powerful instance depending on the needs of your workshop</li>
+<li>Give public IP to the instance</li>
+</ul>
+<h2>Connect to Jupyterhub</h2>
+<p>The Jupyterhub instance is ready! Just open your browser and connect to the floating IP of the instance you just created.</p>
+<p>The browser should show a security error related to the fact that the pre-installed SSL certificate is not trusted, click on "Advanced properties" and choose to connect anyway, we'll see later how to fix this.</p>
+<p>You already have 50 training users, named <code>training01</code> to <code>training50</code>, all with the same password <code>jupyterhubSDSC</code> (see below how to change it). Check that you can login and create a notebook.</p>
+<h2>Administer the Jupyterhub instance</h2>
+<p>Login into the Virtual Machine with <code>ssh -i jupyterhub.pem ubuntu@xxx.xxx.xxx.xxx</code> using the key file and the public IP setup in the previous steps.</p>
+<p>To get rid of the annoying "unable to resolve host" warning, add the hostname of the machine (check by running hostname) to <code>/etc/hosts</code>, i.e. the first line should become something like <code>127.0.0.1 localhost jupyterhub</code> if jupyterhub is the hostname</p>
+<h3>Change password/add more users</h3>
+<p>In the home folder of the <code>ubuntu</code> users, there is a file named <code>create_users.sh</code>, edit it to change the <code>PASSWORD</code> variable and the number of users from <code>50</code> to a larger number. Then run it with <code>bash create_users.sh</code>. Training users <strong>cannot SSH</strong> into the machine.</p>
+<p>Use <code>sudo passwd trainingXX</code> to change the password of a single user.</p>
+<h3>Setup a domain (needed for SSL certificate)</h3>
+<p>If you do not know how to get a domain name, here some options:</p>
+<div class="highlight"><pre><span></span>* you can generally request a subdomain name from your institution, see for example [UCSD](http://blink.ucsd.edu/technology/help-desk/sysadmin-resources/domain.html#Register-your-domain-name)
+* if you own a domain, go in the DNS settings, add a record of type A to a subdomain, like `jupyterhub.yourdomain.com` that points to the floating IP of the Jupyterhub instance
+* you can get a free dynamic dns at websites like [noip.com](https://noip.com)
+</pre></div>
+
+
+<p>In each case you need to have a DNS record of type A that points to the floating IP of the Jupyterhub instance.</p>
+<h3>Setup a SSL Certificate</h3>
+<p><a href="https://letsencrypt.org/">Letsencrypt</a> provides free SSL certificates by using a command line client.</p>
+<p>SSH into the server, run:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/letsencrypt/letsencrypt
+cd letsencrypt
+sudo service nginx stop
+./letsencrypt-auto certonly --standalone -d jupyterhubdeploy.ddns.net
+</pre></div>
+
+
+<p>Follow instructions at the terminal to obtain a certificate</p>
+<p>Now open the nginx configuration file: <code>sudo vim /etc/nginx/nginx.conf</code></p>
+<p>And modify the SSL certificate lines:</p>
+<div class="highlight"><pre><span></span>ssl_certificate /etc/letsencrypt/live/yoursub.domain.edu/cert.pem;
+ssl_certificate_key /etc/letsencrypt/live/yoursub.domain.edu/privkey.pem;
+</pre></div>
+
+
+<p>Start NGINX:</p>
+<div class="highlight"><pre><span></span>sudo service nginx start
+</pre></div>
+
+
+<p>Connect again to Jupyterhub and check that your browser correctly detects that the HTTPS connection is safe.</p>
+<h2>Comments? Suggestions?</h2>
+<ul>
+<li><a href="http://twitter.com/andreazonca">Twitter</a></li>
+<li>Email <code>zonca</code> on the domain <code>sdsc.edu</code></li>
+</ul>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2016-04-28T12:00:00-07:00">Thu 28 April 2016</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/sdsc.html">sdsc</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

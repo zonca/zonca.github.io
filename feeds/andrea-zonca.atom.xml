@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2016-04-16T12:00:00-07:00</updated><entry><title>Deploy Jupyterhub on a Virtual Machine for a Workshop</title><link href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html" rel="alternate"></link><published>2016-04-16T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-04-16:2016/04/jupyterhub-sdsc-cloud.html</id><summary type="html">&lt;p&gt;This tutorial describes the steps to install a Jupyterhub instance on a single machine suitable for hosting a workshop, suitable for having people login with training accounts on Jupyter Notebooks running Python 2/3, R, Julia with also Terminal access on Docker containers.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2016-04-28T12:00:00-07:00</updated><entry><title>Quick Jupyterhub deployment for workshops with pre-built image</title><link href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html" rel="alternate"></link><published>2016-04-28T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-04-28:2016/04/jupyterhub-image-sdsc-cloud.html</id><summary type="html">&lt;p&gt;This tutorial explains how to use a OpenStack image I already built to quickly deploy a Jupyterhub Virtual Machine that can provide a good initial setup for a workshop, providing students access to Python 2/3, Julia, R, file editor and terminal with bash.&lt;/p&gt;
+&lt;p&gt;For details about building the instance yourself for more customization, see the full tutorial at &lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Create a Virtual Machine in OpenStack with the pre-built image&lt;/h2&gt;
+&lt;p&gt;Follow the 3 steps at &lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&amp;gt;"&gt;the step by step tutorial&lt;/a&gt; under "Create a Virtual Machine in OpenStack":&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Network setup&lt;/li&gt;
+&lt;li&gt;Create a new Virtual Machine: here instead of choosing the base &lt;code&gt;ubuntu&lt;/code&gt; image, choose &lt;code&gt;jupyterhub_docker&lt;/code&gt;, also you can choose any size, I recommend to start with a &lt;code&gt;c1.large&lt;/code&gt; for experimentation, you can then resize it later to a more powerful instance depending on the needs of your workshop&lt;/li&gt;
+&lt;li&gt;Give public IP to the instance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Connect to Jupyterhub&lt;/h2&gt;
+&lt;p&gt;The Jupyterhub instance is ready! Just open your browser and connect to the floating IP of the instance you just created.&lt;/p&gt;
+&lt;p&gt;The browser should show a security error related to the fact that the pre-installed SSL certificate is not trusted, click on "Advanced properties" and choose to connect anyway, we'll see later how to fix this.&lt;/p&gt;
+&lt;p&gt;You already have 50 training users, named &lt;code&gt;training01&lt;/code&gt; to &lt;code&gt;training50&lt;/code&gt;, all with the same password &lt;code&gt;jupyterhubSDSC&lt;/code&gt; (see below how to change it). Check that you can login and create a notebook.&lt;/p&gt;
+&lt;h2&gt;Administer the Jupyterhub instance&lt;/h2&gt;
+&lt;p&gt;Login into the Virtual Machine with &lt;code&gt;ssh -i jupyterhub.pem ubuntu@xxx.xxx.xxx.xxx&lt;/code&gt; using the key file and the public IP setup in the previous steps.&lt;/p&gt;
+&lt;p&gt;To get rid of the annoying "unable to resolve host" warning, add the hostname of the machine (check by running hostname) to &lt;code&gt;/etc/hosts&lt;/code&gt;, i.e. the first line should become something like &lt;code&gt;127.0.0.1 localhost jupyterhub&lt;/code&gt; if jupyterhub is the hostname&lt;/p&gt;
+&lt;h3&gt;Change password/add more users&lt;/h3&gt;
+&lt;p&gt;In the home folder of the &lt;code&gt;ubuntu&lt;/code&gt; users, there is a file named &lt;code&gt;create_users.sh&lt;/code&gt;, edit it to change the &lt;code&gt;PASSWORD&lt;/code&gt; variable and the number of users from &lt;code&gt;50&lt;/code&gt; to a larger number. Then run it with &lt;code&gt;bash create_users.sh&lt;/code&gt;. Training users &lt;strong&gt;cannot SSH&lt;/strong&gt; into the machine.&lt;/p&gt;
+&lt;p&gt;Use &lt;code&gt;sudo passwd trainingXX&lt;/code&gt; to change the password of a single user.&lt;/p&gt;
+&lt;h3&gt;Setup a domain (needed for SSL certificate)&lt;/h3&gt;
+&lt;p&gt;If you do not know how to get a domain name, here some options:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;* you can generally request a subdomain name from your institution, see for example [UCSD](http://blink.ucsd.edu/technology/help-desk/sysadmin-resources/domain.html#Register-your-domain-name)
+* if you own a domain, go in the DNS settings, add a record of type A to a subdomain, like `jupyterhub.yourdomain.com` that points to the floating IP of the Jupyterhub instance
+* you can get a free dynamic dns at websites like [noip.com](https://noip.com)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In each case you need to have a DNS record of type A that points to the floating IP of the Jupyterhub instance.&lt;/p&gt;
+&lt;h3&gt;Setup a SSL Certificate&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://letsencrypt.org/"&gt;Letsencrypt&lt;/a&gt; provides free SSL certificates by using a command line client.&lt;/p&gt;
+&lt;p&gt;SSH into the server, run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/letsencrypt/letsencrypt
+cd letsencrypt
+sudo service nginx stop
+./letsencrypt-auto certonly --standalone -d jupyterhubdeploy.ddns.net
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Follow instructions at the terminal to obtain a certificate&lt;/p&gt;
+&lt;p&gt;Now open the nginx configuration file: &lt;code&gt;sudo vim /etc/nginx/nginx.conf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;And modify the SSL certificate lines:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssl_certificate /etc/letsencrypt/live/yoursub.domain.edu/cert.pem;
+ssl_certificate_key /etc/letsencrypt/live/yoursub.domain.edu/privkey.pem;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Start NGINX:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo service nginx start
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Connect again to Jupyterhub and check that your browser correctly detects that the HTTPS connection is safe.&lt;/p&gt;
+&lt;h2&gt;Comments? Suggestions?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://twitter.com/andreazonca"&gt;Twitter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Email &lt;code&gt;zonca&lt;/code&gt; on the domain &lt;code&gt;sdsc.edu&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="ipython"></category><category term="jupyterhub"></category><category term="sdsc"></category></entry><entry><title>Deploy Jupyterhub on a Virtual Machine for a Workshop</title><link href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html" rel="alternate"></link><published>2016-04-16T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-04-16:2016/04/jupyterhub-sdsc-cloud.html</id><summary type="html">&lt;p&gt;This tutorial describes the steps to install a Jupyterhub instance on a single machine suitable for hosting a workshop, suitable for having people login with training accounts on Jupyter Notebooks running Python 2/3, R, Julia with also Terminal access on Docker containers.
 Details about the setup:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Jupyterhub installed with Anaconda directly on the host, proxied by NGINX under HTTPS with self-signed certificate&lt;/li&gt;
