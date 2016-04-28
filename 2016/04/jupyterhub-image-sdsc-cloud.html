@@ -65,12 +65,11 @@
 <p>Use <code>sudo passwd trainingXX</code> to change the password of a single user.</p>
 <h3>Setup a domain (needed for SSL certificate)</h3>
 <p>If you do not know how to get a domain name, here some options:</p>
-<div class="highlight"><pre><span></span>* you can generally request a subdomain name from your institution, see for example [UCSD](http://blink.ucsd.edu/technology/help-desk/sysadmin-resources/domain.html#Register-your-domain-name)
-* if you own a domain, go in the DNS settings, add a record of type A to a subdomain, like `jupyterhub.yourdomain.com` that points to the floating IP of the Jupyterhub instance
-* you can get a free dynamic dns at websites like [noip.com](https://noip.com)
-</pre></div>
-
-
+<ul>
+<li>you can generally request a subdomain name from your institution, see for example <a href="http://blink.ucsd.edu/technology/help-desk/sysadmin-resources/domain.html#Register-your-domain-name">UCSD</a></li>
+<li>if you own a domain, go in the DNS settings, add a record of type A to a subdomain, like <code>jupyterhub.yourdomain.com</code> that points to the floating IP of the Jupyterhub instance</li>
+<li>you can get a free dynamic dns at websites like <a href="https://noip.com">noip.com</a></li>
+</ul>
 <p>In each case you need to have a DNS record of type A that points to the floating IP of the Jupyterhub instance.</p>
 <h3>Setup a SSL Certificate</h3>
 <p><a href="https://letsencrypt.org/">Letsencrypt</a> provides free SSL certificates by using a command line client.</p>
