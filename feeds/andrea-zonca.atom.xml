@@ -7,7 +7,7 @@
 &lt;p&gt;The limitation of a single server setup is that it cannot scale beyond the resources available on that server, especially memory. Therefore for a workshop that requires to load large amount of data or with lots of students it is recommended to use a multi-server setup.&lt;/p&gt;
 &lt;p&gt;Fortunately Docker already provides that flexibility thanks to &lt;a href="https://docs.docker.com/swarm/overview/"&gt;Docker Swarm&lt;/a&gt;. Docker Swarm allows to have a Docker interface that behaves like a normal single server instance but instead launches containers on a pool of servers. Therefore there are mininal changes on the Jupyterhub server.&lt;/p&gt;
 &lt;h2&gt;Setup the Jupyterhub server&lt;/h2&gt;
-&lt;p&gt;Let's start from the public image already available, see just the first section "Create a Virtual Machine in OpenStack with the pre-built image" in http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html for instructions on how to get the Jupyterhub single server running.&lt;/p&gt;
+&lt;p&gt;Let's start from the public image already available, see just the first section "Create a Virtual Machine in OpenStack with the pre-built image" in &lt;a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html&lt;/a&gt; for instructions on how to get the Jupyterhub single server running.&lt;/p&gt;
 &lt;h3&gt;Setup Docker Swarm&lt;/h3&gt;
 &lt;p&gt;First of all we need to have Docker accessible remotely so we need to configure it to listen on a TCP port, edit &lt;code&gt;/etc/init/docker.conf&lt;/code&gt; and replace &lt;code&gt;DOCKER_OPTS=&lt;/code&gt; in the &lt;code&gt;start&lt;/code&gt; section with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DOCKER_OPTS=&amp;quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&amp;quot;
@@ -38,7 +38,7 @@
 
 
 &lt;h3&gt;Setup Jupyterhub&lt;/h3&gt;
-&lt;p&gt;Following the work by Jess Hamrick for the &lt;a href="https://github.com/compmodels/jupyterhub"&gt;compmodels Jupyterhub deployment&lt;/a&gt;, we can get the &lt;code&gt;jupyterhub_config.py&lt;/code&gt; and the &lt;code&gt;swarmspawner.py&lt;/code&gt; files from https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753 and copy them into the home of the ubuntu user.&lt;/p&gt;
+&lt;p&gt;Following the work by Jess Hamrick for the &lt;a href="https://github.com/compmodels/jupyterhub"&gt;compmodels Jupyterhub deployment&lt;/a&gt;, we can get the &lt;code&gt;jupyterhub_config.py&lt;/code&gt; and the &lt;code&gt;swarmspawner.py&lt;/code&gt; files from &lt;a href="https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753"&gt;https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753&lt;/a&gt; and copy them into the home of the ubuntu user.&lt;/p&gt;
 &lt;h3&gt;Share users home via NFS&lt;/h3&gt;
 &lt;p&gt;We have now a distributed system and we need a central location to store the home folders of the users, so that even if they happen to get containers on different server, they can still access their files.&lt;/p&gt;
 &lt;p&gt;Install NFS with the package manager:&lt;/p&gt;
