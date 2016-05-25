@@ -132,22 +132,21 @@ sudo usermod -aG docker ubuntu
 
 
 &lt;p&gt;you should see the same files that were on the Jupyterhub server.&lt;/p&gt;
-&lt;p&gt;### Create the same users&lt;/p&gt;
-&lt;p&gt;As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run
- on the node the same script we ran on the Jupyterhub server:&lt;/p&gt;
+&lt;h3&gt;Create users&lt;/h3&gt;
+&lt;p&gt;As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run on the node the same script we ran on the Jupyterhub server:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; bash create_users.sh
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;### Test Jupyterhub&lt;/p&gt;
+&lt;h3&gt;Test Jupyterhub&lt;/h3&gt;
 &lt;p&gt;Login on the Jupyterhub instance with 2 or more different users, then check on the console of the Hub that the containers were launched on the &lt;code&gt;swarmnode&lt;/code&gt; instance:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; docker -H :4000 ps -a
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;## Create more nodes&lt;/p&gt;
+&lt;h2&gt;Create more nodes&lt;/h2&gt;
 &lt;p&gt;Now that we created a fully functioning node we can clone it to create more to accomodate more users.&lt;/p&gt;
-&lt;p&gt;### Create a snapshot of the node&lt;/p&gt;
+&lt;h3&gt;Create a snapshot of the node&lt;/h3&gt;
 &lt;p&gt;First we need to delete all Docker containers, ssh into the &lt;code&gt;swarmnode&lt;/code&gt; and execute:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; docker rm -f $(docker ps -a -q)
 &lt;/pre&gt;&lt;/div&gt;
@@ -160,7 +159,7 @@ sudo rm /etc/docker/key.json
 
 
 &lt;p&gt;Then from Compute-&amp;gt;Instances choose "Create Snapshot", call it &lt;code&gt;swarmnodeimage&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;### Launch other nodes&lt;/p&gt;
+&lt;h3&gt;Launch other nodes&lt;/h3&gt;
 &lt;p&gt;Click on Launch instance-&amp;gt;"Boot from Snapshot"-&amp;gt;&lt;code&gt;swarmnodeimage&lt;/code&gt;, choose the &lt;code&gt;swarmnodesecgroup&lt;/code&gt; Security Group. Choose any number of instances you need.&lt;/p&gt;
 &lt;p&gt;Each node will need to launch the Swarm container with its own local ip, not the same as our first node. Therefore we need to use the "Post Creation"-&amp;gt;"Direct Input" and add this script: &lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1

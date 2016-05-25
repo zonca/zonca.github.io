@@ -177,22 +177,21 @@ sudo usermod -aG docker ubuntu
 
 
 <p>you should see the same files that were on the Jupyterhub server.</p>
-<p>### Create the same users</p>
-<p>As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run
- on the node the same script we ran on the Jupyterhub server:</p>
+<h3>Create users</h3>
+<p>As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run on the node the same script we ran on the Jupyterhub server:</p>
 <div class="highlight"><pre><span></span> bash create_users.sh
 </pre></div>
 
 
-<p>### Test Jupyterhub</p>
+<h3>Test Jupyterhub</h3>
 <p>Login on the Jupyterhub instance with 2 or more different users, then check on the console of the Hub that the containers were launched on the <code>swarmnode</code> instance:</p>
 <div class="highlight"><pre><span></span> docker -H :4000 ps -a
 </pre></div>
 
 
-<p>## Create more nodes</p>
+<h2>Create more nodes</h2>
 <p>Now that we created a fully functioning node we can clone it to create more to accomodate more users.</p>
-<p>### Create a snapshot of the node</p>
+<h3>Create a snapshot of the node</h3>
 <p>First we need to delete all Docker containers, ssh into the <code>swarmnode</code> and execute:</p>
 <div class="highlight"><pre><span></span> docker rm -f $(docker ps -a -q)
 </pre></div>
@@ -205,7 +204,7 @@ sudo rm /etc/docker/key.json
 
 
 <p>Then from Compute-&gt;Instances choose "Create Snapshot", call it <code>swarmnodeimage</code>.</p>
-<p>### Launch other nodes</p>
+<h3>Launch other nodes</h3>
 <p>Click on Launch instance-&gt;"Boot from Snapshot"-&gt;<code>swarmnodeimage</code>, choose the <code>swarmnodesecgroup</code> Security Group. Choose any number of instances you need.</p>
 <p>Each node will need to launch the Swarm container with its own local ip, not the same as our first node. Therefore we need to use the "Post Creation"-&gt;"Direct Input" and add this script: </p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
