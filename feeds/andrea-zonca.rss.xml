@@ -6,6 +6,7 @@
 &lt;/ul&gt;
 &lt;p&gt;The limitation of a single server setup is that it cannot scale beyond the resources available on that server, especially memory. Therefore for a workshop that requires to load large amount of data or with lots of students it is recommended to use a multi-server setup.&lt;/p&gt;
 &lt;p&gt;Fortunately Docker already provides that flexibility thanks to &lt;a href="https://docs.docker.com/swarm/overview/"&gt;Docker Swarm&lt;/a&gt;. Docker Swarm allows to have a Docker interface that behaves like a normal single server instance but instead launches containers on a pool of servers. Therefore there are mininal changes on the Jupyterhub server.&lt;/p&gt;
+&lt;p&gt;Jupyterhub will interface with the Docker Swarm service running locally, Docker Swarm will take care of launching containers across the other nodes. Each container will launch a Jupyter Notebook server for a single user, then Jupyterhub will proxy the container port to the users. Users won't connect directly to the nodes in the Docker Swarm pool. &lt;/p&gt;
 &lt;h2&gt;Setup the Jupyterhub server&lt;/h2&gt;
 &lt;p&gt;Let's start from the public image already available, see just the first section "Create a Virtual Machine in OpenStack with the pre-built image" in &lt;a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html&lt;/a&gt; for instructions on how to get the Jupyterhub single server running.&lt;/p&gt;
 &lt;h3&gt;Setup Docker Swarm&lt;/h3&gt;
