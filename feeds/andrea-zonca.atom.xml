@@ -21,11 +21,12 @@
 
 
 &lt;p&gt;the manager which provides the interface to Docker Swarm:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise LOCAL_HUB_IP:4000 consul://LOCAL_HUB_IP:8500
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;HUB_LOCAL_IP=&lt;/span&gt;&lt;span class="p"&gt;$(&lt;/span&gt;&lt;span class="err"&gt;ip&lt;/span&gt; &lt;span class="err"&gt;route&lt;/span&gt; &lt;span class="err"&gt;get&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt; &lt;span class="err"&gt;|&lt;/span&gt; &lt;span class="err"&gt;awk&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;NR==1 {print $NF}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="x"&gt;docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HUB_LOCAL_IP&lt;/span&gt;&lt;span class="x"&gt;:4000 consul://&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HUB_LOCAL_IP&lt;/span&gt;&lt;span class="x"&gt;:8500&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Replace &lt;code&gt;LOCAL_HUB_IP&lt;/code&gt; with the internal ip of the instance, you can find it with &lt;code&gt;ifconfig&lt;/code&gt; or from the OpenStack Instances dashboard.&lt;/p&gt;
+&lt;p&gt;This sets &lt;code&gt;HUB_LOCAL_IP&lt;/code&gt; to the internal ip of the instance, then starts the Manager container.&lt;/p&gt;
 &lt;p&gt;We are running both with automatic restarting, so that they are launched again in case of failure or after reboot.&lt;/p&gt;
 &lt;p&gt;You can check if the containers are running with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker ps -a
@@ -37,6 +38,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;Check the Docker documentation for a more robust setup with multiple Consul services and a backup Manager.&lt;/p&gt;
 &lt;h3&gt;Setup Jupyterhub&lt;/h3&gt;
 &lt;p&gt;Following the work by Jess Hamrick for the &lt;a href="https://github.com/compmodels/jupyterhub"&gt;compmodels Jupyterhub deployment&lt;/a&gt;, we can get the &lt;code&gt;jupyterhub_config.py&lt;/code&gt; and the &lt;code&gt;swarmspawner.py&lt;/code&gt; files from &lt;a href="https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753"&gt;https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753&lt;/a&gt; and copy them into the home of the ubuntu user.&lt;/p&gt;
 &lt;h3&gt;Share users home via NFS&lt;/h3&gt;

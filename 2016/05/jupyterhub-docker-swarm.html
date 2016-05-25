@@ -66,11 +66,12 @@
 
 
 <p>the manager which provides the interface to Docker Swarm:</p>
-<div class="highlight"><pre><span></span>docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise LOCAL_HUB_IP:4000 consul://LOCAL_HUB_IP:8500
+<div class="highlight"><pre><span></span><span class="x">HUB_LOCAL_IP=</span><span class="p">$(</span><span class="err">ip</span> <span class="err">route</span> <span class="err">get</span> <span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span> <span class="err">|</span> <span class="err">awk</span> <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="p">)</span><span class="x"></span>
+<span class="x">docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise </span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:4000 consul://</span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:8500</span>
 </pre></div>
 
 
-<p>Replace <code>LOCAL_HUB_IP</code> with the internal ip of the instance, you can find it with <code>ifconfig</code> or from the OpenStack Instances dashboard.</p>
+<p>This sets <code>HUB_LOCAL_IP</code> to the internal ip of the instance, then starts the Manager container.</p>
 <p>We are running both with automatic restarting, so that they are launched again in case of failure or after reboot.</p>
 <p>You can check if the containers are running with:</p>
 <div class="highlight"><pre><span></span>docker ps -a
@@ -82,6 +83,7 @@
 </pre></div>
 
 
+<p>Check the Docker documentation for a more robust setup with multiple Consul services and a backup Manager.</p>
 <h3>Setup Jupyterhub</h3>
 <p>Following the work by Jess Hamrick for the <a href="https://github.com/compmodels/jupyterhub">compmodels Jupyterhub deployment</a>, we can get the <code>jupyterhub_config.py</code> and the <code>swarmspawner.py</code> files from <a href="https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753">https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753</a> and copy them into the home of the ubuntu user.</p>
 <h3>Share users home via NFS</h3>
