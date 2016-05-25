@@ -98,9 +98,9 @@ sudo usermod -aG docker ubuntu
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Copy the address of the HUB_LOCAL_IP&lt;/p&gt;
+&lt;p&gt;Copy the address of the Jupyterhub server in the &lt;code&gt;HUB_LOCAL_IP&lt;/code&gt; variable.&lt;/p&gt;
 &lt;h3&gt;Setup mounting the home filesystem&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install nfs-kernel-server
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install autofs
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -110,11 +110,15 @@ sudo usermod -aG docker ubuntu
 
 
 &lt;p&gt;create &lt;code&gt;/etc/auto.home&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  *             10.XX.XX.XX:/home/&amp;amp;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;echo &amp;quot;* &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HUB_LOCAL_IP&lt;/span&gt;&lt;span class="x"&gt;:/home/&amp;amp;&amp;quot; | sudo tee /etc/auto.home&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;using the internal IP of the hub.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo service autofs restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;verify by doing:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ls /home/ubuntu
 &lt;/pre&gt;&lt;/div&gt;
@@ -122,6 +126,53 @@ sudo usermod -aG docker ubuntu
 
 &lt;p&gt;or &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ls /home/training01
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;you should see the same files that were on the Jupyterhub server.&lt;/p&gt;
+&lt;p&gt;### Create the same users&lt;/p&gt;
+&lt;p&gt;As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run
+ on the node the same script we ran on the Jupyterhub server:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; bash create_users.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;### Test Jupyterhub&lt;/p&gt;
+&lt;p&gt;Login on the Jupyterhub instance with 2 or more different users, then check on the console of the Hub that the containers were launched on the &lt;code&gt;swarmnode&lt;/code&gt; instance:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; docker -H :4000 ps -a
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;## Create more nodes&lt;/p&gt;
+&lt;p&gt;Now that we created a fully functioning node we can clone it to create more to accomodate more users.&lt;/p&gt;
+&lt;p&gt;### Create a snapshot of the node&lt;/p&gt;
+&lt;p&gt;First we need to delete all Docker containers, ssh into the &lt;code&gt;swarmnode&lt;/code&gt; and execute:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; docker rm -f $(docker ps -a -q)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then from Compute-&amp;gt;Instances choose "Create Snapshot", call it &lt;code&gt;swarmnodeimage&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;### Launch other nodes&lt;/p&gt;
+&lt;p&gt;Click on Launch instance-&amp;gt;"Boot from Snapshot"-&amp;gt;&lt;code&gt;swarmnodeimage&lt;/code&gt;, choose the &lt;code&gt;swarmnodesecgroup&lt;/code&gt; Security Group.&lt;/p&gt;
+&lt;p&gt;The &lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="nv"&gt;HUB_LOCAL_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;10.XX.XX.XX
+&lt;span class="nv"&gt;NODE_LOCAL_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;ip route get 8.8.8.8 &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;NR==1 {print $NF}&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+docker run --restart&lt;span class="o"&gt;=&lt;/span&gt;always -d swarm join --advertise&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$NODE_LOCAL_IP&lt;/span&gt;:2375 consul://&lt;span class="nv"&gt;$HUB_LOCAL_IP&lt;/span&gt;:8500
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;See for example Jupyterhub with 2 remote Swarm nodes running containers for 3 training users:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ubuntu@jupswarm:~$ docker -H :4000 ps -a                                                                 
+CONTAINER ID        IMAGE                                     COMMAND                  CREATED              STATUS              PORTS                         NAMES  
+204d8e5fec72        zonca/jupyterhub-datascience-systemuser   &amp;quot;tini -- sh /srv/sing&amp;quot;   27 seconds ago       Up 22 seconds       10.128.1.15:32779-&amp;gt;8888/tcp   swarmnode/jupyter-training02  
+ae099b6dad55        zonca/jupyterhub-datascience-systemuser   &amp;quot;tini -- sh /srv/sing&amp;quot;   About a minute ago   Up 55 seconds       10.128.1.15:32778-&amp;gt;8888/tcp   swarmnode/jupyter-training01  
+bcfe82dd10af        zonca/jupyterhub-datascience-systemuser   &amp;quot;tini -- sh /srv/sing&amp;quot;   21 minutes ago       Up About a minute   10.128.1.18:32768-&amp;gt;8888/tcp   swarmnode3/jupyter-training05  
+2f6b9e2d46e6        swarm                                     &amp;quot;/swarm join --advert&amp;quot;   22 minutes ago       Up 22 minutes       2375/tcp                      swarmnode3/prickly_boyd  
+07cff46c6b6d        swarm                                     &amp;quot;/swarm join --advert&amp;quot;   6 hours ago          Up 4 hours          2375/tcp                      swarmnode/reverent_goldberg  
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="ipython"></category><category term="jupyterhub"></category><category term="sdsc"></category></entry><entry><title>Quick Jupyterhub deployment for workshops with pre-built image</title><link href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html" rel="alternate"></link><published>2016-04-28T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-04-28:2016/04/jupyterhub-image-sdsc-cloud.html</id><summary type="html">&lt;p&gt;This tutorial explains how to use a OpenStack image I already built to quickly deploy a Jupyterhub Virtual Machine that can provide a good initial setup for a workshop, providing students access to Python 2/3, Julia, R, file editor and terminal with bash.&lt;/p&gt;
 &lt;p&gt;For details about building the instance yourself for more customization, see the full tutorial at &lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Create a Virtual Machine in OpenStack with the pre-built image&lt;/h2&gt;

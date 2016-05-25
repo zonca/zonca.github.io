@@ -143,9 +143,9 @@ sudo usermod -aG docker ubuntu
 </pre></div>
 
 
-<p>Copy the address of the HUB_LOCAL_IP</p>
+<p>Copy the address of the Jupyterhub server in the <code>HUB_LOCAL_IP</code> variable.</p>
 <h3>Setup mounting the home filesystem</h3>
-<div class="highlight"><pre><span></span>sudo apt-get install nfs-kernel-server
+<div class="highlight"><pre><span></span>sudo apt-get install autofs
 </pre></div>
 
 
@@ -155,11 +155,15 @@ sudo usermod -aG docker ubuntu
 
 
 <p>create <code>/etc/auto.home</code>:</p>
-<div class="highlight"><pre><span></span>  *             10.XX.XX.XX:/home/&amp;
+<div class="highlight"><pre><span></span><span class="x">echo &quot;* </span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:/home/&amp;&quot; | sudo tee /etc/auto.home</span>
 </pre></div>
 
 
 <p>using the internal IP of the hub.</p>
+<div class="highlight"><pre><span></span>sudo service autofs restart
+</pre></div>
+
+
 <p>verify by doing:</p>
 <div class="highlight"><pre><span></span>ls /home/ubuntu
 </pre></div>
@@ -167,6 +171,53 @@ sudo usermod -aG docker ubuntu
 
 <p>or </p>
 <div class="highlight"><pre><span></span>ls /home/training01
+</pre></div>
+
+
+<p>you should see the same files that were on the Jupyterhub server.</p>
+<p>### Create the same users</p>
+<p>As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run
+ on the node the same script we ran on the Jupyterhub server:</p>
+<div class="highlight"><pre><span></span> bash create_users.sh
+</pre></div>
+
+
+<p>### Test Jupyterhub</p>
+<p>Login on the Jupyterhub instance with 2 or more different users, then check on the console of the Hub that the containers were launched on the <code>swarmnode</code> instance:</p>
+<div class="highlight"><pre><span></span> docker -H :4000 ps -a
+</pre></div>
+
+
+<p>## Create more nodes</p>
+<p>Now that we created a fully functioning node we can clone it to create more to accomodate more users.</p>
+<p>### Create a snapshot of the node</p>
+<p>First we need to delete all Docker containers, ssh into the <code>swarmnode</code> and execute:</p>
+<div class="highlight"><pre><span></span> docker rm -f $(docker ps -a -q)
+</pre></div>
+
+
+<p>Then from Compute-&gt;Instances choose "Create Snapshot", call it <code>swarmnodeimage</code>.</p>
+<p>### Launch other nodes</p>
+<p>Click on Launch instance-&gt;"Boot from Snapshot"-&gt;<code>swarmnodeimage</code>, choose the <code>swarmnodesecgroup</code> Security Group.</p>
+<p>The </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nv">HUB_LOCAL_IP</span><span class="o">=</span>10.XX.XX.XX
+<span class="nv">NODE_LOCAL_IP</span><span class="o">=</span><span class="k">$(</span>ip route get 8.8.8.8 <span class="p">|</span> awk <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="k">)</span>
+docker run --restart<span class="o">=</span>always -d swarm join --advertise<span class="o">=</span><span class="nv">$NODE_LOCAL_IP</span>:2375 consul://<span class="nv">$HUB_LOCAL_IP</span>:8500
+</pre></div>
+</td></tr></table>
+
+<p>See for example Jupyterhub with 2 remote Swarm nodes running containers for 3 training users:</p>
+<div class="highlight"><pre><span></span>ubuntu@jupswarm:~$ docker -H :4000 ps -a                                                                 
+CONTAINER ID        IMAGE                                     COMMAND                  CREATED              STATUS              PORTS                         NAMES  
+204d8e5fec72        zonca/jupyterhub-datascience-systemuser   &quot;tini -- sh /srv/sing&quot;   27 seconds ago       Up 22 seconds       10.128.1.15:32779-&gt;8888/tcp   swarmnode/jupyter-training02  
+ae099b6dad55        zonca/jupyterhub-datascience-systemuser   &quot;tini -- sh /srv/sing&quot;   About a minute ago   Up 55 seconds       10.128.1.15:32778-&gt;8888/tcp   swarmnode/jupyter-training01  
+bcfe82dd10af        zonca/jupyterhub-datascience-systemuser   &quot;tini -- sh /srv/sing&quot;   21 minutes ago       Up About a minute   10.128.1.18:32768-&gt;8888/tcp   swarmnode3/jupyter-training05  
+2f6b9e2d46e6        swarm                                     &quot;/swarm join --advert&quot;   22 minutes ago       Up 22 minutes       2375/tcp                      swarmnode3/prickly_boyd  
+07cff46c6b6d        swarm                                     &quot;/swarm join --advert&quot;   6 hours ago          Up 4 hours          2375/tcp                      swarmnode/reverent_goldberg  
 </pre></div>
         </div>
     </article>
