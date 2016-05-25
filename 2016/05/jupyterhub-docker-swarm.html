@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Jupyterhub deployment on multiple nodes with Docker Swarm | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Jupyterhub deployment on multiple nodes with Docker Swarm</h1>
+        </header>
+        <div class='post-content'>
+            <p>This post is part of a series on deploying Jupyterhub on OpenStack tailored at workshops, in the previous posts I showed:</p>
+<ul>
+<li><a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html">How to deploy a Jupyterhub on a single server with Docker and Python/R/Julia support</a></li>
+<li><a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html">How to deploy the previous server from a pre-built image and customize it</a></li>
+</ul>
+<p>The limitation of a single server setup is that it cannot scale beyond the resources available on that server, especially memory. Therefore for a workshop that requires to load large amount of memory or with lots of students it is recommended to use a multi-server setup.</p>
+<p>Fortunately Docker already provides that flexibility thanks to <a href="https://docs.docker.com/swarm/overview/">Docker Swarm</a>. Docker Swarm allows to have a Docker instance that behaves like a normal single server instance but instead launches containers on a pool of servers. Therefore there are mininal changes on the Jupyterhub server.</p>
+<h2>Setup the Jupyterhub server</h2>
+<p>Let's start from the public image already available, see just the first section "Create a Virtual Machine in OpenStack with the pre-built image" in http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html for instructions on how to get the Jupyterhub single server running.</p>
+<h3>Setup Docker Swarm</h3>
+<p>First of all we need to have Docker accessible remotely so we need to configure it to listen on a TCP port, edit <code>/etc/init/docker.conf</code> and replace <code>DOCKER_OPTS=</code> in the <code>start</code> section with:</p>
+<div class="highlight"><pre><span></span>DOCKER_OPTS=&quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&quot;
+</pre></div>
+
+
+<p>Port 2375 is not open on the OpenStack configuration, so this is not a security issue.</p>
+<p>Then we need to run 2 swarm services in Docker containers, first a distributed key-store listening on port 8500 that is needed for Swarm to store information about all the available nodes, Consul:</p>
+<div class="highlight"><pre><span></span>docker run --restart=always  -d -p 8500:8500 --name=consul progrium/consul -server -bootstrap
+</pre></div>
+
+
+<p>the manager which provides the interface to Docker Swarm:</p>
+<div class="highlight"><pre><span></span>docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise LOCAL_HUB_IP:4000 consul://LOCAL_HUB_IP:8500
+</pre></div>
+
+
+<p>Replace <code>LOCAL_HUB_IP</code> with the internal ip of the instance, you can find it with <code>ifconfig</code> or from the OpenStack Instances dashboard.</p>
+<p>We are running both with automatic restarting, so that they are launched again in case of failure or after reboot.</p>
+<p>You can check if the containers are running with:</p>
+<div class="highlight"><pre><span></span>docker ps -a
+</pre></div>
+
+
+<p>and then you can check if connection works with Docker Swarm on port 4000:</p>
+<div class="highlight"><pre><span></span>docker -H :4000 ps -a
+</pre></div>
+
+
+<h3>Setup Jupyterhub</h3>
+<p>Following the work by Jess Hamrick for the <a href="https://github.com/compmodels/jupyterhub">compmodels Jupyterhub deployment</a>, we can get the <code>jupyterhub_config.py</code> and the <code>swarmspawner.py</code> files from https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753 and copy them into the home of the ubuntu user.</p>
+<h3>Share users home via NFS</h3>
+<p>We have now a distributed system and we need a central location to store the home folders of the users, so that even if they happen to get containers on different server, they can still access their files.</p>
+<p>Install NFS with the package manager:</p>
+<div class="highlight"><pre><span></span>sudo apt-get install nfs-kernel-server
+</pre></div>
+
+
+<p>edit <code>/etc/exports</code>, add:</p>
+<div class="highlight"><pre><span></span>/home    *(rw,sync,no_root_squash)
+</pre></div>
+
+
+<p>Ports are not open in the NFS configuration.</p>
+<h2>Setup networking</h2>
+<p>Before preparing a node, create a new security group under Compute -&gt; Access &amp; Security and name it <code>swarm_group</code>.</p>
+<p>We need to be able to have open traffic between the <code>swarmsecgroup</code> and the group of the Jupyterhub instance, <code>jupyterhubsecgroup</code> in my previous tutorial. So in the new <code>swarmsecgroup</code>, add this rule: </p>
+<ul>
+<li>Add Rule</li>
+<li>Rule: ALL TCP</li>
+<li>Direction: Ingress</li>
+<li>Remote: Security Group</li>
+<li>Security Group: <code>jupyterhubsecgroup</code></li>
+</ul>
+<p>Add another rule replacing Ingress with Egress.
+Now open the <code>jupyterhubsecgroup</code> group and add the same 2 rules, just make sure to choose as target "Security Group" <code>swarmsecgroup</code>.</p>
+<p>On the <code>swarmsecgroup</code> also add a Rule for SSH traffic from any source choosing CIDR and 0.0.0.0/0, you can disable this after having executed the configuration.</p>
+<h2>Setup the Docker Swarm nodes</h2>
+<h3>Launch a plain Ubuntu instance</h3>
+<p>Launch a new instance, all it <code>swarmnode</code>, choose the size depending on your requirements, and then choose "Boot from image" and get Ubuntu 14.04 LTS. Remember to choose a Key Pair under Access &amp; Security and assigne the Security Group <code>swarmsecgroup</code>.</p>
+<p>Temporarily add a floating IP to this instance in order to SSH into it, see my first tutorial for more details.</p>
+<h3>Setup Docker Swarm</h3>
+<p>First install Docker engine:</p>
+<div class="highlight"><pre><span></span>sudo apt update
+sudo apt install apt-transport-https ca-certificates
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo &quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&quot; | sudo tee /etc/apt/sources.list.d/docker.list 
+sudo apt update
+sudo apt install -y docker-engine
+sudo usermod -aG docker ubuntu
+</pre></div>
+
+
+<p>Then make the same edit we did on the hub, edit <code>/etc/init/docker.conf</code> and replace <code>DOCKER_OPTS=</code> in the <code>start</code> section with:</p>
+<div class="highlight"><pre><span></span>DOCKER_OPTS=&quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&quot;
+</pre></div>
+
+
+<p>Restart Docker with:</p>
+<div class="highlight"><pre><span></span>sudo service docker restart
+</pre></div>
+
+
+<p>Then run the container that interfaces with Swarm:</p>
+<div class="highlight"><pre><span></span><span class="x">HUB_LOCAL_IP=10.XX.XX.XX</span>
+<span class="x">NODE_LOCAL_IP=</span><span class="p">$(</span><span class="err">ip</span> <span class="err">route</span> <span class="err">get</span> <span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span> <span class="err">|</span> <span class="err">awk</span> <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="p">)</span><span class="x"></span>
+<span class="x">docker run --restart=always -d swarm join --advertise=</span><span class="p">$</span><span class="nv">NODE_LOCAL_IP</span><span class="x">:2375 consul://</span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:8500</span>
+</pre></div>
+
+
+<p>Copy the address of the HUB_LOCAL_IP</p>
+<h3>Setup mounting the home filesystem</h3>
+<div class="highlight"><pre><span></span>sudo apt-get install nfs-kernel-server
+</pre></div>
+
+
+<p>add in <code>/etc/auto.master</code>:</p>
+<div class="highlight"><pre><span></span>/home         /etc/auto.home
+</pre></div>
+
+
+<p>create <code>/etc/auto.home</code>:</p>
+<div class="highlight"><pre><span></span>  *             10.XX.XX.XX:/home/&amp;
+</pre></div>
+
+
+<p>using the internal IP of the hub.</p>
+<p>verify by doing:</p>
+<div class="highlight"><pre><span></span>ls /home/ubuntu
+</pre></div>
+
+
+<p>or </p>
+<div class="highlight"><pre><span></span>ls /home/training01
+</pre></div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2016-05-24T12:00:00-07:00">Tue 24 May 2016</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/sdsc.html">sdsc</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

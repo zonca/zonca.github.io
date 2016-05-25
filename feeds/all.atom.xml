@@ -1,5 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2016-04-28T12:00:00-07:00</updated><entry><title>Quick Jupyterhub deployment for workshops with pre-built image</title><link href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html" rel="alternate"></link><published>2016-04-28T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-04-28:2016/04/jupyterhub-image-sdsc-cloud.html</id><summary type="html">&lt;p&gt;This tutorial explains how to use a OpenStack image I already built to quickly deploy a Jupyterhub Virtual Machine that can provide a good initial setup for a workshop, providing students access to Python 2/3, Julia, R, file editor and terminal with bash.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2016-05-24T12:00:00-07:00</updated><entry><title>Jupyterhub deployment on multiple nodes with Docker Swarm</title><link href="http://zonca.github.io/2016/05/jupyterhub-docker-swarm.html" rel="alternate"></link><published>2016-05-24T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-05-24:2016/05/jupyterhub-docker-swarm.html</id><summary type="html">&lt;p&gt;This post is part of a series on deploying Jupyterhub on OpenStack tailored at workshops, in the previous posts I showed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;How to deploy a Jupyterhub on a single server with Docker and Python/R/Julia support&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;How to deploy the previous server from a pre-built image and customize it&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The limitation of a single server setup is that it cannot scale beyond the resources available on that server, especially memory. Therefore for a workshop that requires to load large amount of memory or with lots of students it is recommended to use a multi-server setup.&lt;/p&gt;
+&lt;p&gt;Fortunately Docker already provides that flexibility thanks to &lt;a href="https://docs.docker.com/swarm/overview/"&gt;Docker Swarm&lt;/a&gt;. Docker Swarm allows to have a Docker instance that behaves like a normal single server instance but instead launches containers on a pool of servers. Therefore there are mininal changes on the Jupyterhub server.&lt;/p&gt;
+&lt;h2&gt;Setup the Jupyterhub server&lt;/h2&gt;
+&lt;p&gt;Let's start from the public image already available, see just the first section "Create a Virtual Machine in OpenStack with the pre-built image" in http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html for instructions on how to get the Jupyterhub single server running.&lt;/p&gt;
+&lt;h3&gt;Setup Docker Swarm&lt;/h3&gt;
+&lt;p&gt;First of all we need to have Docker accessible remotely so we need to configure it to listen on a TCP port, edit &lt;code&gt;/etc/init/docker.conf&lt;/code&gt; and replace &lt;code&gt;DOCKER_OPTS=&lt;/code&gt; in the &lt;code&gt;start&lt;/code&gt; section with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DOCKER_OPTS=&amp;quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Port 2375 is not open on the OpenStack configuration, so this is not a security issue.&lt;/p&gt;
+&lt;p&gt;Then we need to run 2 swarm services in Docker containers, first a distributed key-store listening on port 8500 that is needed for Swarm to store information about all the available nodes, Consul:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker run --restart=always  -d -p 8500:8500 --name=consul progrium/consul -server -bootstrap
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;the manager which provides the interface to Docker Swarm:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise LOCAL_HUB_IP:4000 consul://LOCAL_HUB_IP:8500
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Replace &lt;code&gt;LOCAL_HUB_IP&lt;/code&gt; with the internal ip of the instance, you can find it with &lt;code&gt;ifconfig&lt;/code&gt; or from the OpenStack Instances dashboard.&lt;/p&gt;
+&lt;p&gt;We are running both with automatic restarting, so that they are launched again in case of failure or after reboot.&lt;/p&gt;
+&lt;p&gt;You can check if the containers are running with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker ps -a
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and then you can check if connection works with Docker Swarm on port 4000:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker -H :4000 ps -a
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Setup Jupyterhub&lt;/h3&gt;
+&lt;p&gt;Following the work by Jess Hamrick for the &lt;a href="https://github.com/compmodels/jupyterhub"&gt;compmodels Jupyterhub deployment&lt;/a&gt;, we can get the &lt;code&gt;jupyterhub_config.py&lt;/code&gt; and the &lt;code&gt;swarmspawner.py&lt;/code&gt; files from https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753 and copy them into the home of the ubuntu user.&lt;/p&gt;
+&lt;h3&gt;Share users home via NFS&lt;/h3&gt;
+&lt;p&gt;We have now a distributed system and we need a central location to store the home folders of the users, so that even if they happen to get containers on different server, they can still access their files.&lt;/p&gt;
+&lt;p&gt;Install NFS with the package manager:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install nfs-kernel-server
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;edit &lt;code&gt;/etc/exports&lt;/code&gt;, add:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/home    *(rw,sync,no_root_squash)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Ports are not open in the NFS configuration.&lt;/p&gt;
+&lt;h2&gt;Setup networking&lt;/h2&gt;
+&lt;p&gt;Before preparing a node, create a new security group under Compute -&amp;gt; Access &amp;amp; Security and name it &lt;code&gt;swarm_group&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We need to be able to have open traffic between the &lt;code&gt;swarmsecgroup&lt;/code&gt; and the group of the Jupyterhub instance, &lt;code&gt;jupyterhubsecgroup&lt;/code&gt; in my previous tutorial. So in the new &lt;code&gt;swarmsecgroup&lt;/code&gt;, add this rule: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add Rule&lt;/li&gt;
+&lt;li&gt;Rule: ALL TCP&lt;/li&gt;
+&lt;li&gt;Direction: Ingress&lt;/li&gt;
+&lt;li&gt;Remote: Security Group&lt;/li&gt;
+&lt;li&gt;Security Group: &lt;code&gt;jupyterhubsecgroup&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Add another rule replacing Ingress with Egress.
+Now open the &lt;code&gt;jupyterhubsecgroup&lt;/code&gt; group and add the same 2 rules, just make sure to choose as target "Security Group" &lt;code&gt;swarmsecgroup&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;On the &lt;code&gt;swarmsecgroup&lt;/code&gt; also add a Rule for SSH traffic from any source choosing CIDR and 0.0.0.0/0, you can disable this after having executed the configuration.&lt;/p&gt;
+&lt;h2&gt;Setup the Docker Swarm nodes&lt;/h2&gt;
+&lt;h3&gt;Launch a plain Ubuntu instance&lt;/h3&gt;
+&lt;p&gt;Launch a new instance, all it &lt;code&gt;swarmnode&lt;/code&gt;, choose the size depending on your requirements, and then choose "Boot from image" and get Ubuntu 14.04 LTS. Remember to choose a Key Pair under Access &amp;amp; Security and assigne the Security Group &lt;code&gt;swarmsecgroup&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Temporarily add a floating IP to this instance in order to SSH into it, see my first tutorial for more details.&lt;/p&gt;
+&lt;h3&gt;Setup Docker Swarm&lt;/h3&gt;
+&lt;p&gt;First install Docker engine:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt update
+sudo apt install apt-transport-https ca-certificates
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo &amp;quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&amp;quot; | sudo tee /etc/apt/sources.list.d/docker.list 
+sudo apt update
+sudo apt install -y docker-engine
+sudo usermod -aG docker ubuntu
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then make the same edit we did on the hub, edit &lt;code&gt;/etc/init/docker.conf&lt;/code&gt; and replace &lt;code&gt;DOCKER_OPTS=&lt;/code&gt; in the &lt;code&gt;start&lt;/code&gt; section with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DOCKER_OPTS=&amp;quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Restart Docker with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo service docker restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then run the container that interfaces with Swarm:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;HUB_LOCAL_IP=10.XX.XX.XX&lt;/span&gt;
+&lt;span class="x"&gt;NODE_LOCAL_IP=&lt;/span&gt;&lt;span class="p"&gt;$(&lt;/span&gt;&lt;span class="err"&gt;ip&lt;/span&gt; &lt;span class="err"&gt;route&lt;/span&gt; &lt;span class="err"&gt;get&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt; &lt;span class="err"&gt;|&lt;/span&gt; &lt;span class="err"&gt;awk&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;NR==1 {print $NF}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="x"&gt;docker run --restart=always -d swarm join --advertise=&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;NODE_LOCAL_IP&lt;/span&gt;&lt;span class="x"&gt;:2375 consul://&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HUB_LOCAL_IP&lt;/span&gt;&lt;span class="x"&gt;:8500&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Copy the address of the HUB_LOCAL_IP&lt;/p&gt;
+&lt;h3&gt;Setup mounting the home filesystem&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install nfs-kernel-server
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;add in &lt;code&gt;/etc/auto.master&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/home         /etc/auto.home
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;create &lt;code&gt;/etc/auto.home&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  *             10.XX.XX.XX:/home/&amp;amp;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;using the internal IP of the hub.&lt;/p&gt;
+&lt;p&gt;verify by doing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ls /home/ubuntu
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ls /home/training01
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="ipython"></category><category term="jupyterhub"></category><category term="sdsc"></category></entry><entry><title>Quick Jupyterhub deployment for workshops with pre-built image</title><link href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html" rel="alternate"></link><published>2016-04-28T12:00:00-07:00</published><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2016-04-28:2016/04/jupyterhub-image-sdsc-cloud.html</id><summary type="html">&lt;p&gt;This tutorial explains how to use a OpenStack image I already built to quickly deploy a Jupyterhub Virtual Machine that can provide a good initial setup for a workshop, providing students access to Python 2/3, Julia, R, file editor and terminal with bash.&lt;/p&gt;
 &lt;p&gt;For details about building the instance yourself for more customization, see the full tutorial at &lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Create a Virtual Machine in OpenStack with the pre-built image&lt;/h2&gt;
 &lt;p&gt;Follow the 3 steps at &lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&amp;gt;"&gt;the step by step tutorial&lt;/a&gt; under "Create a Virtual Machine in OpenStack":&lt;/p&gt;
