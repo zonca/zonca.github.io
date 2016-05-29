@@ -86,7 +86,7 @@
 
 <p>Check the Docker documentation for a more robust setup with multiple Consul services and a backup Manager.</p>
 <h3>Setup Jupyterhub</h3>
-<p>Following the work by Jess Hamrick for the <a href="https://github.com/compmodels/jupyterhub">compmodels Jupyterhub deployment</a>, we can get the <code>jupyterhub_config.py</code> and the <code>swarmspawner.py</code> files from <a href="https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753">https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753</a> and copy them into the home of the ubuntu user.</p>
+<p>Following the work by Jess Hamrick for the <a href="https://github.com/compmodels/jupyterhub">compmodels Jupyterhub deployment</a>, we can get the <code>jupyterhub_config.py</code> from <a href="https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753">https://gist.github.com/zonca/83d222df8d0b9eaebd02b83faa676753</a> and copy them into the home of the ubuntu user.</p>
 <h3>Share users home via NFS</h3>
 <p>We have now a distributed system and we need a central location to store the home folders of the users, so that even if they happen to get containers on different server, they can still access their files.</p>
 <p>Install NFS with the package manager:</p>
