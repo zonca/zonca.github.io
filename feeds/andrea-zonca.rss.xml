@@ -416,7 +416,8 @@ sudo update-rc.d jupyterhub defaults
 
 &lt;p&gt;Finally in &lt;code&gt;jupyterhub_config.py&lt;/code&gt;, select the new docker image:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;c.DockerSpawner.container_image = &amp;quot;datascience-systemuser&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 16 Apr 2016 12:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2016-04-16:2016/04/jupyterhub-sdsc-cloud.html</guid><category>ipython</category><category>jupyterhub</category><category>sdsc</category></item><item><title>Use your own Python installation (kernel) in Jupyterhub</title><link>http://zonca.github.io/2015/10/use-own-python-in-jupyterhub.html</link><description>&lt;p&gt;You have access to a Jupyterhub server but the Python installation provided does not satisfy your needs,
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 16 Apr 2016 12:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2016-04-16:2016/04/jupyterhub-sdsc-cloud.html</guid><category>ipython</category><category>jupyterhub</category><category>sdsc</category></item><item><title>Use your own Python installation (kernel) in Jupyterhub</title><link>http://zonca.github.io/2015/10/use-own-python-in-jupyterhub.html</link><description>&lt;p&gt;&lt;strong&gt;Updated August 2016&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You have access to a Jupyterhub server but the Python installation provided does not satisfy your needs,
 how to use your own?&lt;/p&gt;
 &lt;h2&gt;Install Anaconda&lt;/h2&gt;
 &lt;p&gt;If you haven't already your own Python installation on the Jupyterhub server you have access to, you can install Anaconda in your home folder. I assume here you have a permanent home folder on the server.&lt;/p&gt;
@@ -429,20 +430,18 @@ get a Jupyterhub Terminal, or run in the IPython notebook with &lt;code&gt;!&lt;
 &lt;h2&gt;Create a kernel file for Jupyterhub&lt;/h2&gt;
 &lt;p&gt;You probably already know you can have Python 2 and Python 3 kernels on the same Jupyter notebook installation. In the same way you can create your own &lt;code&gt;KernelSpec&lt;/code&gt; that launches instead another Python installation.&lt;/p&gt;
 &lt;p&gt;IPython can automatically create a &lt;code&gt;KernelSpec&lt;/code&gt; for you, from the IPython notebook, run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;!~/anaconda3/bin/ipython kernelspec install-self --user
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;!~/anaconda3/bin/ipython kernel install --user --name Anaconda
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;In case your path is different, just insert the full path to &lt;code&gt;ipython&lt;/code&gt; from the Python installation you would like to use.&lt;/p&gt;
-&lt;p&gt;This will create a file &lt;code&gt;kernel.json&lt;/code&gt; in &lt;code&gt;~/.ipython/kernels/python3&lt;/code&gt;, you can open that file with an editor and change the &lt;code&gt;display_name&lt;/code&gt; to something better than the default &lt;code&gt;Python 3&lt;/code&gt;, like &lt;code&gt;My Anaconda&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;I also recommend to rename the &lt;code&gt;~/.ipython/kernels/python3&lt;/code&gt;, for example to  &lt;code&gt;~/.ipython/kernels/anaconda3&lt;/code&gt;, otherwise if you install another Python 3 kernel, the previous one will be overwritten.&lt;/p&gt;
+&lt;p&gt;This will create a file &lt;code&gt;kernel.json&lt;/code&gt; in &lt;code&gt;~/.local/share/jupyter/kernels/pycmb&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You can also add KernelSpecs for other &lt;code&gt;conda&lt;/code&gt; environments doing:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="sx"&gt;!source activate environmentname&lt;/span&gt;
-&lt;span class="sx"&gt;!ipython kernelspec install-self --user&lt;/span&gt;
+&lt;span class="sx"&gt;!ipython kernel install --user --name environmentname&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;And then edit their &lt;code&gt;kernel.json&lt;/code&gt;.&lt;/p&gt;
 &lt;h2&gt;Launch a Notebook&lt;/h2&gt;
 &lt;p&gt;Go back to the Jupyterhub dashboard, reload the page, now you should have another option in the &lt;code&gt;New&lt;/code&gt; menu that says &lt;code&gt;My Anaconda&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;In order to use your new kernel with an existing notebook, click on the notebook file in the dashboard, it will launch with the default kernel, then you can change kernel from the top menu &lt;code&gt;Kernel&lt;/code&gt; &amp;gt; &lt;code&gt;Change kernel&lt;/code&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 05 Oct 2015 12:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2015-10-05:2015/10/use-own-python-in-jupyterhub.html</guid><category>ipython</category><category>jupyterhub</category></item><item><title>IPython/Jupyter notebook setup on NERSC Edison</title><link>http://zonca.github.io/2015/09/ipython-jupyter-notebook-nersc-edison.html</link><description>&lt;h2&gt;Introduction&lt;/h2&gt;
