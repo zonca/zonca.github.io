@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2016-08-08T00:14:02-00:00</lastmod>
+<lastmod>2016-10-12T22:32:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2016-08-08T00:14:02-00:00</lastmod>
+<lastmod>2016-10-12T22:32:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2016-08-08T00:14:02-00:00</lastmod>
+<lastmod>2016-10-12T22:32:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2016-08-08T00:14:02-00:00</lastmod>
+<lastmod>2016-10-12T22:32:18-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2016/10/dockerspawner-cuda.html</loc>
+<lastmod>2016-10-12T12:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -677,7 +684,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2016-05-24T12:00:00-07:53</lastmod>
+<lastmod>2016-10-12T12:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -823,6 +830,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/cuda.html</loc>
+<lastmod>2016-10-12T12:00:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/map.html</loc>
 <lastmod>2013-04-08T01:32:00-07:53</lastmod>
 <changefreq>daily</changefreq>
@@ -866,7 +880,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyterhub.html</loc>
-<lastmod>2016-05-24T12:00:00-07:53</lastmod>
+<lastmod>2016-10-12T12:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -922,7 +936,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/ipython.html</loc>
-<lastmod>2016-05-24T12:00:00-07:53</lastmod>
+<lastmod>2016-10-12T12:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1034,7 +1048,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2016-05-24T12:00:00-07:53</lastmod>
+<lastmod>2016-10-12T12:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

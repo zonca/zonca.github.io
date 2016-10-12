@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Tue, 24 May 2016 12:00:00 -0700</lastBuildDate><item><title>Jupyterhub deployment on multiple nodes with Docker Swarm</title><link>http://zonca.github.io/2016/05/jupyterhub-docker-swarm.html</link><description>&lt;p&gt;This post is part of a series on deploying Jupyterhub on OpenStack tailored at workshops, in the previous posts I showed:&lt;/p&gt;
+<rss version="2.0"><channel><title>Andrea Zonca's blog</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Wed, 12 Oct 2016 12:00:00 -0700</lastBuildDate><item><title>Jupyterhub Docker Spawner with CUDA access</title><link>http://zonca.github.io/2016/10/dockerspawner-cuda.html</link><description>&lt;p&gt;&lt;a href="https://github.com/jupyterhub/dockerspawner"&gt;Docker Spawner&lt;/a&gt; allows users of Jupyterhub to run Jupyter Notebook inside isolated Docker Containers.
+Access to the host NVIDIA GPU was not allowed until NVIDIA release the &lt;a href="https://github.com/NVIDIA/nvidia-docker"&gt;NVIDIA-docker&lt;/a&gt; plugin.&lt;/p&gt;
+&lt;h2&gt;Build the Docker image&lt;/h2&gt;
+&lt;p&gt;In order to make Jupyerhub work with NVIDIA-docker we need to build a Jupyterhub docker image for &lt;code&gt;dockerspawner&lt;/code&gt; that includes both the &lt;code&gt;dockerspawner&lt;/code&gt; &lt;code&gt;singleuser&lt;/code&gt; or &lt;code&gt;systemuser&lt;/code&gt; images and the &lt;code&gt;nvidia-docker&lt;/code&gt; image.&lt;/p&gt;
+&lt;p&gt;The Jupyter &lt;code&gt;systemuser&lt;/code&gt; images are built in several steps so let's use them as a starting point, it is good that both image start from Ubuntu 14.04.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Download the &lt;code&gt;nvidia-docker&lt;/code&gt; repository&lt;/li&gt;
+&lt;li&gt;In &lt;code&gt;ubuntu-14.04/cuda/8.0/runtime/Dockerfile&lt;/code&gt;, replace &lt;code&gt;FROM ubuntu:14.04&lt;/code&gt; with &lt;code&gt;FROM jupyterhub/systemuser&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Build this image &lt;code&gt;sudo docker build -t systemuser-cuda-runtime runtime&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;In &lt;code&gt;ubuntu-14.04/cuda/8.0/devel/Dockerfile&lt;/code&gt;, replace &lt;code&gt;FROM cuda:8.0-runtime&lt;/code&gt; with &lt;code&gt;FROM systemuser-cuda-runtime&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Build this image &lt;code&gt;sudo docker build -t systemuser-cuda-devel devel&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now we have 2 images, either just CUDA 8.0 runtime or also the compiler &lt;code&gt;nvcc&lt;/code&gt; and other development tools.&lt;/p&gt;
+&lt;p&gt;Make sure the image itself runs from the command line on the host:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo nvidia-docker run --rm systemuser-cuda-devel nvidia-smi
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Configure Jupyterhub&lt;/h2&gt;
+&lt;p&gt;In &lt;code&gt;jupyterhub_config.py&lt;/code&gt;, first of all set the right image:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;c.DockerSpawner.container_image = &amp;quot;systemuser-cuda-devel&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;However this is not enough, &lt;code&gt;nvidia-docker&lt;/code&gt; images need special flags to work properly and mount the host GPU into the containers, this is usually performed calling &lt;code&gt;nvidia-docker&lt;/code&gt; instead of &lt;code&gt;docker&lt;/code&gt; from the command line.
+In &lt;code&gt;dockerspawner&lt;/code&gt; however, we are directly using the docker library, so we need to properly configure the environment there.&lt;/p&gt;
+&lt;p&gt;First of all, we can get the correct flags by calling from the host machine:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;curl -s localhost:3476/docker/cli
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The result for my machine is:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;--volume-driver=nvidia-docker --volume=nvidia_driver_361.93.02:/usr/local/nvidia:ro --device=/dev/nvidiactl --device=/dev/nvidia-uvm --device=/dev/nvidia-uvm-tools --device=/dev/nvidia0 --device=/dev/nvidia1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we can configure &lt;code&gt;dockerspawner&lt;/code&gt; using those values, in my case:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;c.DockerSpawner.read_only_volumes = {&amp;quot;nvidia_driver_361.93.02&amp;quot;:&amp;quot;/usr/local/nvidia&amp;quot;}
+c.DockerSpawner.extra_create_kwargs = {&amp;quot;volume_driver&amp;quot;:&amp;quot;nvidia-docker&amp;quot;}
+c.DockerSpawner.extra_host_config = { &amp;quot;devices&amp;quot;:[&amp;quot;/dev/nvidiactl&amp;quot;,&amp;quot;/dev/nvidia-uvm&amp;quot;,&amp;quot;/dev/nvidia-uvm-tools&amp;quot;,&amp;quot;/dev/nvidia0&amp;quot;,&amp;quot;/dev/nvidia1&amp;quot;] }
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Test it&lt;/h2&gt;
+&lt;p&gt;Login with Jupyterhub, try this notebook: &lt;a href="http://nbviewer.jupyter.org/gist/zonca/a14af3b92ab472580f7b97b721a2251e"&gt;http://nbviewer.jupyter.org/gist/zonca/a14af3b92ab472580f7b97b721a2251e&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Current issues&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Environment on the Jupyterhub kernel is missing &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;, running directly on the image instead is fine&lt;/li&gt;
+&lt;li&gt;I'd like to test using &lt;code&gt;numba&lt;/code&gt; in Jupyterhub, but that requires &lt;code&gt;cudatoolkit&lt;/code&gt; 8.0 which is not available yet in Anaconda&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Wed, 12 Oct 2016 12:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2016-10-12:2016/10/dockerspawner-cuda.html</guid><category>ipython</category><category>jupyterhub</category><category>cuda</category></item><item><title>Jupyterhub deployment on multiple nodes with Docker Swarm</title><link>http://zonca.github.io/2016/05/jupyterhub-docker-swarm.html</link><description>&lt;p&gt;This post is part of a series on deploying Jupyterhub on OpenStack tailored at workshops, in the previous posts I showed:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;How to deploy a Jupyterhub on a single server with Docker and Python/R/Julia support&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;How to deploy the previous server from a pre-built image and customize it&lt;/a&gt;&lt;/li&gt;
