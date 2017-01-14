@@ -73,22 +73,22 @@ data on a Supercomputer from their browser and run data-intensive processing. </
 <h2>Tour of Jupyterhub on the Gordon Supercomputer</h2>
 <p>I'll show some screenshots to display how a test Jupyterhub installation on my machine is integrated with <a href="http://www.sdsc.edu/us/resources/gordon/">Gordon</a> thanks to the plugin.</p>
 <p>Jupyterhub is accessed publicly via browser and the user can login. Jupyterhub supports authentication for <code>PAM</code>/<code>LDAP</code> so it could be integrated with XSEDE credential, at the moment I am testing with local authentication.</p>
-<p><img alt="jupyterhub-hpc-login.png" src="/images/jupyterhub-hpc-login.png" /></p>
+<p><img alt="jupyterhub-hpc-login.png" src="/images/jupyterhub-hpc-login.png"></p>
 <p>Once the user is authenticated, Jupyterhub connects via <code>SSH</code> to a login node on Gordon and submits a batch serial job using <code>qsub</code>. The web interface waits for the job to start running. A dedicated queue with a quick turnaround would be useful for this kind of jobs.</p>
-<p><img alt="jupyterhub-hpc-refresh.png" src="/images/jupyterhub-hpc-refresh.png" />
-<img alt="jupyterhub-hpc-job.png" src="/images/jupyterhub-hpc-job.png" /></p>
+<p><img alt="jupyterhub-hpc-refresh.png" src="/images/jupyterhub-hpc-refresh.png">
+<img alt="jupyterhub-hpc-job.png" src="/images/jupyterhub-hpc-job.png"></p>
 <p>When the job starts running, it first sets up <code>SSH</code> tunneling between the Jupyterhub host and the computing node, then starts the Jupyter Notebook.
 As soon as the web interface detects that the job is running, proxies the tunneled HTTP port for the user. From this point the Jupyter Notebook works exactly like it would on a local machine.</p>
 <p>See an example Notebook printing the hostname of the computing node:</p>
-<p><img alt="jupyterhub-hpc-testnotebook.png" src="/images/jupyterhub-hpc-testnotebook.png" /></p>
+<p><img alt="jupyterhub-hpc-testnotebook.png" src="/images/jupyterhub-hpc-testnotebook.png"></p>
 <p>Other two useful features of the Jupyter Notebook are a terminal:</p>
-<p><img alt="jupyterhub-hpc-terminal.png" src="/images/jupyterhub-hpc-terminal.png" /></p>
+<p><img alt="jupyterhub-hpc-terminal.png" src="/images/jupyterhub-hpc-terminal.png"></p>
 <p>and an editor that run in the browser:</p>
-<p><img alt="jupyterhub-hpc-editor.png" src="/images/jupyterhub-hpc-editor.png" /></p>
+<p><img alt="jupyterhub-hpc-editor.png" src="/images/jupyterhub-hpc-editor.png"></p>
 <h2>Launch Jupyterhub parallel to access hundreds of computing engines</h2>
 <p>The Notebook also supports using Torque to run Python computing engines and send them computationally intensive serial functions for load-balanced execution.</p>
 <p>In the Notebook interface, in the <code>Clusters</code> tab, is it possible to choose the number of engines and click start to submit a job to the queue system:</p>
-<p><img alt="jupyterhub-hpc-clusterlaunch.png" src="/images/jupyterhub-hpc-clusterlaunch.png" /></p>
+<p><img alt="jupyterhub-hpc-clusterlaunch.png" src="/images/jupyterhub-hpc-clusterlaunch.png"></p>
 <p>This will pack 16 jobs per node (Gordon has 16-cores CPUs) and make them available from the notebook, see an example usage where I process 1000 files with 128 engines running on a different job on Gordon:</p>
 <ul>
 <li><a href="http://nbviewer.ipython.org/gist/zonca/9bd94d8782af037704ff">Example of Jupyterhub Parallel</a></li>

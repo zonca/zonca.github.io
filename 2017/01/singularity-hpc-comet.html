@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Planck CMB map at high resolution | Andrea Zonca's blog</title>
+        <title>Docker in HPC with Singularity | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -41,26 +41,53 @@
 <div class="post">
     <article>
         <header>
-            <h1>Planck CMB map at high resolution</h1>
+            <h1>Docker in HPC with Singularity</h1>
         </header>
         <div class='post-content'>
-            <p>Prompted by a colleague, I created a high-resolution version of the Cosmic Microwave Background map in MollWeide projection released by the Planck collaboration, available on the <a href="http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/previews/COM_CompMap_CMB-smica_2048_R1.20/index.html">Planck Data Release Website</a> in FITS format.</p>
-<p>The map is a PNG at a resolution of 17469x8796 pixels, which is suitable for printing at 300dpi up to 60x40 inch, or 150x100 cm, file size is about 150MB.</p>
-<p><em>Update</em>: now with Planck color scale</p>
-<p><em>Update</em>: previous version had grayed out pixels in the galactic plane represents the fraction of the sky that is not possible to reconstruct due to bright galactic sources. The last version uses inpainting to create a constrained CMB realization with the same statistics as the observed CMB to fill the unobserved pixels, more details in the <a href="http://www.sciops.esa.int/wikiSI/planckpla/index.php?title=CMB_and_astrophysical_component_maps&amp;instance=Planck_Public_PLA">Planck Explanatory Supplement</a>. </p>
-<ul>
-<li>
-<p><a href="http://dx.doi.org/10.6084/m9.figshare.795296">High Resolution image on FigShare</a></p>
-</li>
-<li>
-<p>Small size preview:</p>
-</li>
+            <ul>
+<li>Ever wanted to <code>sudo apt install</code> packages on a Supercomputer?</li>
+<li>Ever wanted to freeze your software environment and reproduce a calculation after some time?</li>
+<li>Ever wanted to dump your software environment to a file and move it to another Supercomputer? or wanted the same software on your laptop and on a computing node?</li>
 </ul>
-<p><img alt="Preview of Planck CMB map" src="/images/Planck-CMB-map-at-high-resolution_planck_cmb_map.jpg"></p>
+<p>If your answer to any of those question is yes, read on! Otherwise, well, still read on, it's awesome!</p>
+<h2>Singularity</h2>
+<p><a href="http://singularity.lbl.gov">Singularity</a> is a software project by Lawrence Berkeley Labs to provide a safe container technology for High Performance Computing,
+and it has been available for some time on my favorite Supercomputer, i.e. Comet at the San Diego Supercomputer Center.</p>
+<p>You can read more details on their website, in summary you choose your own Operative System (any GNU/Linux distribution), describe its configuration in a standard format or even
+import an existing <code>Dockerfile</code> and Singularity is going to build an image contained in a single file.
+This file can then be executed on any Linux machine with Singularity installed (even in a Comet computing node), so you can run Ubuntu 16.10 or Red Hat 5 or any other flavor, your choice!
+It doesn't need any deamon running like Docker, you can just execute a command inside the container by running:</p>
+<div class="highlight"><pre><span></span>singularity exec /path/to/your/image.img your_executable
+</pre></div>
+
+
+<p>And your executable is run within the OS of the container.</p>
+<p>The container technology is just sandboxing the environment, not executing a complete OS inside the host OS, so the loss of performance is minimal.</p>
+<p>In summary, referring to the questions above:</p>
 <ul>
-<li>Python code:</li>
+<li>This allows you to <code>sudo apt install</code> any package inside this environment when it is on your laptop, and then copy it to any Supercomputer and run your software inside that OS.</li>
+<li>You can store this image to help reproduce your scientific results anytime in the future</li>
+<li>You can develop your software inside a Singularity container and never have to worry about environment issues when you are ready for production runs on HPC or moving across different Supercomputers</li>
 </ul>
-<script src="https://gist.github.com/zonca/6515744.js"></script>
+<h2>Build a Singularity image for SDSC Comet with MPI support</h2>
+<p>One of the trickiest things for such technology in HPC is support for MPI, the key stack for high speed network communication. I have prepared a tutorial on Github on how to build either a CentOS 7 or a Ubuntu 16.04 Singularity container for Comet that allows to use the <code>mpirun</code> command provided by the host OS on Comet but execute a code that supports MPI within the container.</p>
+<ul>
+<li><a href="https://github.com/zonca/singularity-comet">https://github.com/zonca/singularity-comet</a></li>
+</ul>
+<h2>More complicated setup for Julia with MPI support</h2>
+<p>For a project that needed a setup with Julia with MPI support I built a more complicated container, see:</p>
+<ul>
+<li><a href="https://github.com/zonca/singularity-comet/tree/master/debian_julia">https://github.com/zonca/singularity-comet/tree/master/debian_julia</a></li>
+</ul>
+<h2>Prebuilt containers</h2>
+<p>I made also available my containers on Comet, they are located in my scratch space:</p>
+<p><code>/oasis/scratch/comet/zonca/temp_project</code></p>
+<p>and are named <code>Centos7.img</code>, <code>Ubuntu.img</code> and <code>julia.img</code>.</p>
+<p>You can also copy those images to your local machine and customize them more.</p>
+<h2>Trial accounts on Comet</h2>
+<p>If you don't have an account on Comet yet, you can request a trial allocation:</p>
+<p><a href="https://www.xsede.org/web/xup/allocations-overview#types-trial">https://www.xsede.org/web/xup/allocations-overview#types-trial</a></p>
+<p>Enjoy!</p>
         </div>
     </article>
 
@@ -68,7 +95,7 @@
         <ul>
             <li>
                 <strong>Published:</strong>
-                <i><time datetime="2013-09-10T14:00:00-07:00">Tue 10 September 2013</time></i>
+                <i><time datetime="2017-01-13T12:00:00-08:00">Fri 13 January 2017</time></i>
             </li>
             <li>
                 <strong>In:</strong>
@@ -76,10 +103,8 @@
             </li>
             <li>
                 <strong>Tags:</strong>
-<a href="http://zonca.github.io/tag/cosmology.html">cosmology</a> 
-<a href="http://zonca.github.io/tag/python.html">python</a> 
-<a href="http://zonca.github.io/tag/astrophysics.html">astrophysics</a> 
-<a href="http://zonca.github.io/tag/planck.html">Planck</a> 
+<a href="http://zonca.github.io/tag/singularity.html">singularity</a> 
+<a href="http://zonca.github.io/tag/comet.html">comet</a> 
             </li>
             <li>
                 <strong>Written by:</strong>
