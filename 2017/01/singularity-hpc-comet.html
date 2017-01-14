@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Docker in HPC with Singularity | Andrea Zonca's blog</title>
+        <title>Run Ubuntu in HPC with Singularity | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -41,7 +41,7 @@
 <div class="post">
     <article>
         <header>
-            <h1>Docker in HPC with Singularity</h1>
+            <h1>Run Ubuntu in HPC with Singularity</h1>
         </header>
         <div class='post-content'>
             <ul>
@@ -54,7 +54,7 @@
 <p><a href="http://singularity.lbl.gov">Singularity</a> is a software project by Lawrence Berkeley Labs to provide a safe container technology for High Performance Computing,
 and it has been available for some time on my favorite Supercomputer, i.e. Comet at the San Diego Supercomputer Center.</p>
 <p>You can read more details on their website, in summary you choose your own Operative System (any GNU/Linux distribution), describe its configuration in a standard format or even
-import an existing <code>Dockerfile</code> and Singularity is going to build an image contained in a single file.
+import an existing <code>Dockerfile</code> (from the popular Docker container technology) and Singularity is going to build an image contained in a single file.
 This file can then be executed on any Linux machine with Singularity installed (even in a Comet computing node), so you can run Ubuntu 16.10 or Red Hat 5 or any other flavor, your choice!
 It doesn't need any deamon running like Docker, you can just execute a command inside the container by running:</p>
 <div class="highlight"><pre><span></span>singularity exec /path/to/your/image.img your_executable
