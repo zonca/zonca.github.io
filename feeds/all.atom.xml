@@ -12,8 +12,8 @@
 &lt;p&gt;&lt;a href="http://singularity.lbl.gov"&gt;Singularity&lt;/a&gt; is a software project by Lawrence Berkeley Labs to provide a safe container technology for High Performance Computing,
 and it has been available for some time on my favorite Supercomputer, i.e. Comet at the San Diego Supercomputer Center.&lt;/p&gt;
 &lt;p&gt;You can read more details on their website, in summary you choose your own Operative System (any GNU/Linux distribution), describe its configuration in a standard format or even
-import an existing &lt;code&gt;Dockerfile&lt;/code&gt; (from the popular Docker container technology) and Singularity is going to build an image contained in a single file.
-This file can then be executed on any Linux machine with Singularity installed (even in a Comet computing node), so you can run Ubuntu 16.10 or Red Hat 5 or any other flavor, your choice!
+import an existing &lt;code&gt;Dockerfile&lt;/code&gt; (from the popular Docker container technology) and Singularity is able to build an image contained in a single file.
+This file can then be executed on any Linux machine with Singularity installed (even on a Comet computing node), so you can run Ubuntu 16.10 or Red Hat 5 or any other flavor, your choice!
 It doesn't need any deamon running like Docker, you can just execute a command inside the container by running:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;singularity exec /path/to/your/image.img your_executable
 &lt;/pre&gt;&lt;/div&gt;
