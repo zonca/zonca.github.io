@@ -180,7 +180,7 @@ sudo update-rc.d jupyterhub defaults
 7
 8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="nv">PASSWORD</span><span class="o">=</span>samepasswordforallusers
-<span class="nv">NUMBER_OF_USERS</span><span class="o">=</span>10
+<span class="nv">NUMBER_OF_USERS</span><span class="o">=</span><span class="m">10</span>
 <span class="k">for</span> n in <span class="sb">`</span>seq -f <span class="s2">&quot;%02g&quot;</span> <span class="m">1</span> <span class="nv">$NUMBER_OF_USERS</span><span class="sb">`</span>
 <span class="k">do</span>
     <span class="nb">echo</span> creating user training<span class="nv">$n</span>

@@ -67,8 +67,8 @@
 
 
 <p>the manager which provides the interface to Docker Swarm:</p>
-<div class="highlight"><pre><span></span><span class="x">HUB_LOCAL_IP=</span><span class="p">$(</span><span class="err">ip</span> <span class="err">route</span> <span class="err">get</span> <span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span> <span class="err">|</span> <span class="err">awk</span> <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="p">)</span><span class="x"></span>
-<span class="x">docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise </span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:4000 consul://</span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:8500</span>
+<div class="highlight"><pre><span></span>HUB_LOCAL_IP=$(ip route get 8.8.8.8 | awk &#39;NR==1 {print $NF}&#39;)
+docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise $HUB_LOCAL_IP:4000 consul://$HUB_LOCAL_IP:8500
 </pre></div>
 
 
@@ -140,9 +140,9 @@ sudo usermod -aG docker ubuntu
 
 
 <p>Then run the container that interfaces with Swarm:</p>
-<div class="highlight"><pre><span></span><span class="x">HUB_LOCAL_IP=10.XX.XX.XX</span>
-<span class="x">NODE_LOCAL_IP=</span><span class="p">$(</span><span class="err">ip</span> <span class="err">route</span> <span class="err">get</span> <span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span><span class="err">.</span><span class="m">8</span> <span class="err">|</span> <span class="err">awk</span> <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="p">)</span><span class="x"></span>
-<span class="x">docker run --restart=always -d swarm join --advertise=</span><span class="p">$</span><span class="nv">NODE_LOCAL_IP</span><span class="x">:2375 consul://</span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:8500</span>
+<div class="highlight"><pre><span></span>HUB_LOCAL_IP=10.XX.XX.XX
+NODE_LOCAL_IP=$(ip route get 8.8.8.8 | awk &#39;NR==1 {print $NF}&#39;)
+docker run --restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul://$HUB_LOCAL_IP:8500
 </pre></div>
 
 
@@ -158,7 +158,7 @@ sudo usermod -aG docker ubuntu
 
 
 <p>create <code>/etc/auto.home</code>:</p>
-<div class="highlight"><pre><span></span><span class="x">echo &quot;* </span><span class="p">$</span><span class="nv">HUB_LOCAL_IP</span><span class="x">:/home/&amp;&quot; | sudo tee /etc/auto.home</span>
+<div class="highlight"><pre><span></span>echo &quot;* $HUB_LOCAL_IP:/home/&amp;&quot; | sudo tee /etc/auto.home
 </pre></div>
 
 
@@ -212,8 +212,8 @@ sudo rm /etc/docker/key.json
 2
 3
 4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-<span class="nv">HUB_LOCAL_IP</span><span class="o">=</span>10.XX.XX.XX
-<span class="nv">NODE_LOCAL_IP</span><span class="o">=</span><span class="k">$(</span>ip route get 8.8.8.8 <span class="p">|</span> awk <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="k">)</span>
+<span class="nv">HUB_LOCAL_IP</span><span class="o">=</span><span class="m">10</span>.XX.XX.XX
+<span class="nv">NODE_LOCAL_IP</span><span class="o">=</span><span class="k">$(</span>ip route get <span class="m">8</span>.8.8.8 <span class="p">|</span> awk <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="k">)</span>
 docker run --restart<span class="o">=</span>always -d swarm join --advertise<span class="o">=</span><span class="nv">$NODE_LOCAL_IP</span>:2375 consul://<span class="nv">$HUB_LOCAL_IP</span>:8500
 </pre></div>
 </td></tr></table>
@@ -222,13 +222,13 @@ docker run --restart<span class="o">=</span>always -d swarm join --advertise<spa
 <p>See for example Jupyterhub with 3 remote Swarm nodes running containers for 4 training users:</p>
 <div class="highlight"><pre><span></span>$ docker -H :4000 ps -a
 CONTAINER ID        IMAGE                                     COMMAND                  CREATED              STATUS              PORTS                         NAMES
-60189f208df2        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   <span class="m">11</span> seconds ago       Up <span class="m">7</span> seconds        10.128.1.28:32769-&gt;8888/tcp   swarmnodes-1/jupyter-training04
-1d7b05caedb1        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   <span class="m">36</span> seconds ago       Up <span class="m">32</span> seconds       10.128.1.27:32768-&gt;8888/tcp   swarmnodes-2/jupyter-training03
-733c5ff0a5ed        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   <span class="m">58</span> seconds ago       Up <span class="m">54</span> seconds       10.128.1.29:32768-&gt;8888/tcp   swarmnodes-3/jupyter-training02
-282abce201dd        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   About a minute ago   Up About a minute   10.128.1.28:32768-&gt;8888/tcp   swarmnodes-1/jupyter-training01
-29b2d394fab9        swarm                                     <span class="s2">&quot;/swarm join --advert&quot;</span>   <span class="m">13</span> minutes ago       Up <span class="m">13</span> minutes       2375/tcp                      swarmnodes-2/romantic_easley
-8fd3d32fe849        swarm                                     <span class="s2">&quot;/swarm join --advert&quot;</span>   <span class="m">13</span> minutes ago       Up <span class="m">13</span> minutes       2375/tcp                      swarmnodes-3/clever_mestorf
-1ae073f7b78b        swarm                                     <span class="s2">&quot;/swarm join --advert&quot;</span>   <span class="m">13</span> minutes ago       Up <span class="m">13</span> minutes       2375/tcp                      swarmnodes-1/jovial_goldwasser
+60189f208df2        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   <span class="m">11</span> seconds ago       Up <span class="m">7</span> seconds        <span class="m">10</span>.128.1.28:32769-&gt;8888/tcp   swarmnodes-1/jupyter-training04
+1d7b05caedb1        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   <span class="m">36</span> seconds ago       Up <span class="m">32</span> seconds       <span class="m">10</span>.128.1.27:32768-&gt;8888/tcp   swarmnodes-2/jupyter-training03
+733c5ff0a5ed        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   <span class="m">58</span> seconds ago       Up <span class="m">54</span> seconds       <span class="m">10</span>.128.1.29:32768-&gt;8888/tcp   swarmnodes-3/jupyter-training02
+282abce201dd        zonca/jupyterhub-datascience-systemuser   <span class="s2">&quot;tini -- sh /srv/sing&quot;</span>   About a minute ago   Up About a minute   <span class="m">10</span>.128.1.28:32768-&gt;8888/tcp   swarmnodes-1/jupyter-training01
+29b2d394fab9        swarm                                     <span class="s2">&quot;/swarm join --advert&quot;</span>   <span class="m">13</span> minutes ago       Up <span class="m">13</span> minutes       <span class="m">2375</span>/tcp                      swarmnodes-2/romantic_easley
+8fd3d32fe849        swarm                                     <span class="s2">&quot;/swarm join --advert&quot;</span>   <span class="m">13</span> minutes ago       Up <span class="m">13</span> minutes       <span class="m">2375</span>/tcp                      swarmnodes-3/clever_mestorf
+1ae073f7b78b        swarm                                     <span class="s2">&quot;/swarm join --advert&quot;</span>   <span class="m">13</span> minutes ago       Up <span class="m">13</span> minutes       <span class="m">2375</span>/tcp                      swarmnodes-1/jovial_goldwasser
 </pre></div>
 
 
