@@ -1,5 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-02-01T18:00:00-08:00</updated><entry><title>How to publish your research software to Github</title><link href="http://zonca.github.io/2017/02/publish-research-software-github.html" rel="alternate"></link><published>2017-02-01T18:00:00-08:00</published><updated>2017-02-01T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-01:/2017/02/publish-research-software-github.html</id><summary type="html">&lt;ul&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-02-03T18:00:00-08:00</updated><entry><title>Automated deployment of Jupyterhub with Ansible</title><link href="http://zonca.github.io/2017/02/automated-deployment-jupyterhub-ansible.html" rel="alternate"></link><published>2017-02-03T18:00:00-08:00</published><updated>2017-02-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-03:/2017/02/automated-deployment-jupyterhub-ansible.html</id><summary type="html">&lt;p&gt;Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, even if most of the steps would also be suitable on other resources like Amazon EC2.&lt;/p&gt;
+&lt;p&gt;In more detail:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;Manually installing Jupyterhub on a single Virtual Machine with users …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, even if most of the steps would also be suitable on other resources like Amazon EC2.&lt;/p&gt;
+&lt;p&gt;In more detail:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;Manually installing Jupyterhub on a single Virtual Machine with users running inside Docker containers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;Quick deployment of the above using a pre-built image&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html"&gt;Jupyterhub distributing user containers on other nodes using Docker Swarm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Jupyter team has released an automated script to deploy Jupyterhub on a single server, see &lt;a href="http://jupyterhub-deploy-teaching.readthedocs.io"&gt;Jupyterhub-deploy-teaching&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this tutorial we will use this script to deploy Jupyterhub to SDSC Cloud using:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NGINX handling HTTPS with Letsencrypt certificate&lt;/li&gt;
+&lt;li&gt;Github authentication&lt;/li&gt;
+&lt;li&gt;Local or Docker user notebooks&lt;/li&gt;
+&lt;li&gt;Grading with &lt;code&gt;nbgrader&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Memory limit for Docker containers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Setup a Virtual Machine to run Jupyterhub&lt;/h2&gt;
+&lt;p&gt;Create first a Ubuntu 16.04 Virtual Machine, a default server image works fine.&lt;/p&gt;
+&lt;p&gt;In case you are deploying on SDSC Cloud, follow the steps in "Create a Virtual Machine in OpenStack" on my first tutorial at &lt;a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You will also need a DNS entry pointing to the server to create a SSL certificate with Let's Encrypt. Either ask your institution to provide a DNS A entry, e.g. &lt;code&gt;test-jupyterhub.ucsd.edu&lt;/code&gt;, that points to the Public IP of the server.
+SDSC Cloud already provides a DNS entry in the form &lt;code&gt;xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you plan on using &lt;code&gt;nbgrader&lt;/code&gt;, you need to create the home folder for the instructor beforehand, so SSH into the server and create a user with your Github username, i.e. I had to execute &lt;code&gt;sudo adduser zonca&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;Setup your local machine to run the automation scripts&lt;/h2&gt;
+&lt;p&gt;Automation of the server setup is provided by the &lt;a href="http://ansible.com"&gt;Ansible&lt;/a&gt; software tool, it allows to describe a server configuration in great detail (a "playbook") and then connects via SSH to a Virtual Machine and runs Python to install and setup all the required software.&lt;/p&gt;
+&lt;p&gt;On your local machine, install &lt;code&gt;Ansible&lt;/code&gt;, at least version 2.1, see &lt;a href="http://docs.ansible.com/ansible/intro_installation.html#getting-ansible"&gt;Ansible docs&lt;/a&gt;, for Ubuntu just add the &lt;a href="https://launchpad.net/~ansible/+archive/ubuntu/ansible"&gt;Ansible PPA repository&lt;/a&gt;.
+I tested this with Ansible version 2.2.1.0&lt;/p&gt;
+&lt;p&gt;Then you need to configure passwordless SSH connection to your Virtual Machine. Download your SSH key from the OpenStack dashboard, copy it to your &lt;code&gt;~/.ssh&lt;/code&gt; folder and then add an entry to &lt;code&gt;.ssh/config&lt;/code&gt; for the server:&lt;/p&gt;
+&lt;p&gt;Host xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
+    HostName xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
+    User ubuntu
+    IdentityFile "~/.ssh/sdsccloud.key"&lt;/p&gt;
+&lt;p&gt;At this point you should be able to SSH into the machine without typing any password with &lt;code&gt;ssh xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Configure and run the Ansible script&lt;/h2&gt;
+&lt;p&gt;Follow the &lt;a href="http://jupyterhub-deploy-teaching.readthedocs.io/en/latest/installation.html"&gt;Jupyterhub-deploy-teaching documentation&lt;/a&gt; to checkout the script, configure and run it.&lt;/p&gt;
+&lt;p&gt;The only modification you need to do if you are on SDSC Cloud is that the remote user is &lt;code&gt;ubuntu&lt;/code&gt; and not &lt;code&gt;root&lt;/code&gt;, so modify &lt;code&gt;ansible.cfg&lt;/code&gt; in the root of the repository,
+replace &lt;code&gt;remote_user=root&lt;/code&gt; with &lt;code&gt;remote_user=ubuntu&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;As an example, see the &lt;a href="https://gist.github.com/zonca/fd2400a2069b5769f32b1c4b57eb97dc"&gt;configuration I used&lt;/a&gt;, just:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;copy it into &lt;code&gt;host_vars&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;rename it to your public DNS record&lt;/li&gt;
+&lt;li&gt;fill in &lt;code&gt;proxy_auth_token&lt;/code&gt;, Github OAuth credentials for authentication&lt;/li&gt;
+&lt;li&gt;replace &lt;code&gt;zonca&lt;/code&gt; with your Github username everywhere&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The exact version of the &lt;code&gt;jupyterhub-deploy-teaching&lt;/code&gt; code I used for testing is &lt;a href="https://github.com/zonca/jupyterhub-deploy-teaching/releases/tag/sdsc_cloud_jan_17"&gt;on the &lt;code&gt;sdsc_cloud_jan_17&lt;/code&gt; tag on Github&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Test the deployment&lt;/h2&gt;
+&lt;p&gt;Connect to &lt;a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu"&gt;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/a&gt; on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 3, R and bash kernels running locally on the machine.&lt;/p&gt;
+&lt;h2&gt;Optional: Docker&lt;/h2&gt;
+&lt;p&gt;In order to provide isolation and resource limits to the users, it is useful to run single user Jupyter Notebooks inside Docker containers.&lt;/p&gt;
+&lt;p&gt;You will need to SSH into the Virtual Machine and follow the next steps.&lt;/p&gt;
+&lt;h3&gt;Install Docker&lt;/h3&gt;
+&lt;p&gt;First of all we need to install and configure Docker on the machine, see:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/installation/linux/ubuntu/"&gt;https://docs.docker.com/engine/installation/linux/ubuntu/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.docker.com/engine/installation/linux/linux-postinstall/"&gt;https://docs.docker.com/engine/installation/linux/linux-postinstall/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Install dockerspawner&lt;/h3&gt;
+&lt;p&gt;Then install the Jupyterhub plugin &lt;code&gt;dockerspawner&lt;/code&gt; that handles launching single user Notebooks inside Docker containers, we want to install from master instead of pypi to avoid an error setting the memory limit.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install git+https://github.com/jupyterhub/dockerspawner
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Setup the Docker container to run user Notebooks&lt;/h3&gt;
+&lt;p&gt;We can first get the standard &lt;code&gt;systemuser&lt;/code&gt; container, this Docker container mounts the home folder of the users inside the container, this way we can have persistent data even if the container gets deleted.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker pull jupyterhub/systemuser
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you do not need &lt;a href="http://nbgrader.readthedocs.io"&gt;&lt;code&gt;nbgrader&lt;/code&gt;&lt;/a&gt; this image is enough, otherwise we have to build our own image, first checkout my Github repository in the home folder of the &lt;code&gt;ubuntu&lt;/code&gt; user on the server with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/systemuser-nbgrader
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;then edit the &lt;code&gt;nbgrader_config.py&lt;/code&gt; file to set the correct &lt;code&gt;course_id&lt;/code&gt;, and build the container image running inside the &lt;code&gt;systemuser-nbgrader&lt;/code&gt; folder:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker build -t systemuser-nbgrader .
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Configure Jupyterhub to use dockerspawner&lt;/h3&gt;
+&lt;p&gt;Then add some configuration for dockerspawner to &lt;code&gt;/etc/jupyterhub/jupyterhub_config.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JupyterHub&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;spawner_class&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;dockerspawner.SystemUserSpawner&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DockerSpawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;container_image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;systemuser-nbgrader&amp;quot;&lt;/span&gt; &lt;span class="c1"&gt;# delete this line if you just need `jupyterhub/systemuser`&lt;/span&gt;
+                                                                                                          &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Spawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mem_limit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;500M&amp;#39;&lt;/span&gt; &lt;span class="c1"&gt;# or 1G for GB, probably 300M is minimum required just to run simple calculations&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DockerSpawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;volumes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/srv/nbgrader/exchange&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/tmp/exchange&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;# this is necessary for nbgrader to transfer homework back and forth between students and instructor&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DockerSpawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove_containers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+
+&lt;span class="c1"&gt;# The docker instances need access to the Hub, so the default loopback port doesn&amp;#39;t work:&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.utils.localinterfaces&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;public_ips&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JupyterHub&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hub_ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;public_ips&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Test the deployment with Docker&lt;/h3&gt;
+&lt;p&gt;Connect to &lt;a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu"&gt;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/a&gt; on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 2 or Python 3, open a Notebook and run &lt;code&gt;!hostname&lt;/code&gt; in the first cell, you should find out that you get a Docker hash instead of the machine name, you are inside a container.&lt;/p&gt;
+&lt;p&gt;SSH into the machine run &lt;code&gt;docker ps&lt;/code&gt; to find the hash of a running container and then &lt;code&gt;docker stat HASH&lt;/code&gt; to check memory usage and the current limit.&lt;/p&gt;
+&lt;p&gt;Check that you can connect to the &lt;code&gt;nbgrader&lt;/code&gt; &lt;code&gt;formgrade&lt;/code&gt; service that allows to manually grade assignments at &lt;a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID"&gt;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID&lt;/a&gt;, replace &lt;code&gt;COURSEID&lt;/code&gt; with the course identifier you setup in the Ansible script.&lt;/p&gt;</content><category term="jupyterhub"></category><category term="ansible"></category><category term="sdsc"></category></entry><entry><title>How to publish your research software to Github</title><link href="http://zonca.github.io/2017/02/publish-research-software-github.html" rel="alternate"></link><published>2017-02-01T18:00:00-08:00</published><updated>2017-02-01T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-01:/2017/02/publish-research-software-github.html</id><summary type="html">&lt;ul&gt;
 &lt;li&gt;Do you want to make your research software available publicly on Github?&lt;/li&gt;
 &lt;li&gt;Has your reviewer asked to publish the code described in your paper?&lt;/li&gt;
 &lt;li&gt;Would you like to collaborate on your research software with other people, either local or remote?&lt;/li&gt;
@@ -77,7 +174,8 @@ make sure you are in the root folder of your repository and follow this steps:&l
 &lt;li&gt;&lt;code&gt;git add filename1 filename2&lt;/code&gt; to prepare them for commit&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;git commit -m "bugfix"&lt;/code&gt; create a version in the history with a explanatory commit message&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;git push&lt;/code&gt; to publish to Github&lt;/li&gt;
-&lt;/ul&gt;</content><category term="git"></category><category term="github"></category><category term="software-carpentry"></category></entry><entry><title>Run Ubuntu in HPC with Singularity</title><link href="http://zonca.github.io/2017/01/singularity-hpc-comet.html" rel="alternate"></link><published>2017-01-13T12:00:00-08:00</published><updated>2017-01-13T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-01-13:/2017/01/singularity-hpc-comet.html</id><summary type="html">&lt;ul&gt;
+&lt;/ul&gt;
+&lt;p&gt;For more details on &lt;code&gt;git&lt;/code&gt;, check the &lt;a href="https://swcarpentry.github.io/git-novice/"&gt;Software Carpentry lessons&lt;/a&gt;.&lt;/p&gt;</content><category term="git"></category><category term="github"></category><category term="software-carpentry"></category></entry><entry><title>Run Ubuntu in HPC with Singularity</title><link href="http://zonca.github.io/2017/01/singularity-hpc-comet.html" rel="alternate"></link><published>2017-01-13T12:00:00-08:00</published><updated>2017-01-13T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-01-13:/2017/01/singularity-hpc-comet.html</id><summary type="html">&lt;ul&gt;
 &lt;li&gt;Ever wanted to &lt;code&gt;sudo apt install&lt;/code&gt; packages on a Supercomputer?&lt;/li&gt;
 &lt;li&gt;Ever wanted to freeze your software environment and reproduce a calculation after some time?&lt;/li&gt;
 &lt;li&gt;Ever wanted to dump your software environment to a file and move it to another Supercomputer? or wanted the same software on your laptop and on …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;ul&gt;

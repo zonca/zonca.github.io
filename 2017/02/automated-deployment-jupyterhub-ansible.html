@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Automated deployment of Jupyterhub with Ansible | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Automated deployment of Jupyterhub with Ansible</h1>
+        </header>
+        <div class='post-content'>
+            <p>Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment <a href="http://www.sdsc.edu/services/it/cloud.html">SDSC Cloud</a>, even if most of the steps would also be suitable on other resources like Amazon EC2.</p>
+<p>In more detail:</p>
+<ul>
+<li><a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html">Manually installing Jupyterhub on a single Virtual Machine with users running inside Docker containers</a></li>
+<li><a href="https://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html">Quick deployment of the above using a pre-built image</a></li>
+<li><a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html">Jupyterhub distributing user containers on other nodes using Docker Swarm</a></li>
+</ul>
+<p>The Jupyter team has released an automated script to deploy Jupyterhub on a single server, see <a href="http://jupyterhub-deploy-teaching.readthedocs.io">Jupyterhub-deploy-teaching</a>.</p>
+<p>In this tutorial we will use this script to deploy Jupyterhub to SDSC Cloud using:</p>
+<ul>
+<li>NGINX handling HTTPS with Letsencrypt certificate</li>
+<li>Github authentication</li>
+<li>Local or Docker user notebooks</li>
+<li>Grading with <code>nbgrader</code></li>
+<li>Memory limit for Docker containers</li>
+</ul>
+<h2>Setup a Virtual Machine to run Jupyterhub</h2>
+<p>Create first a Ubuntu 16.04 Virtual Machine, a default server image works fine.</p>
+<p>In case you are deploying on SDSC Cloud, follow the steps in "Create a Virtual Machine in OpenStack" on my first tutorial at <a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html">https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html</a>.</p>
+<p>You will also need a DNS entry pointing to the server to create a SSL certificate with Let's Encrypt. Either ask your institution to provide a DNS A entry, e.g. <code>test-jupyterhub.ucsd.edu</code>, that points to the Public IP of the server.
+SDSC Cloud already provides a DNS entry in the form <code>xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</code>.</p>
+<p>If you plan on using <code>nbgrader</code>, you need to create the home folder for the instructor beforehand, so SSH into the server and create a user with your Github username, i.e. I had to execute <code>sudo adduser zonca</code></p>
+<h2>Setup your local machine to run the automation scripts</h2>
+<p>Automation of the server setup is provided by the <a href="http://ansible.com">Ansible</a> software tool, it allows to describe a server configuration in great detail (a "playbook") and then connects via SSH to a Virtual Machine and runs Python to install and setup all the required software.</p>
+<p>On your local machine, install <code>Ansible</code>, at least version 2.1, see <a href="http://docs.ansible.com/ansible/intro_installation.html#getting-ansible">Ansible docs</a>, for Ubuntu just add the <a href="https://launchpad.net/~ansible/+archive/ubuntu/ansible">Ansible PPA repository</a>.
+I tested this with Ansible version 2.2.1.0</p>
+<p>Then you need to configure passwordless SSH connection to your Virtual Machine. Download your SSH key from the OpenStack dashboard, copy it to your <code>~/.ssh</code> folder and then add an entry to <code>.ssh/config</code> for the server:</p>
+<p>Host xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
+    HostName xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
+    User ubuntu
+    IdentityFile "~/.ssh/sdsccloud.key"</p>
+<p>At this point you should be able to SSH into the machine without typing any password with <code>ssh xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</code>.</p>
+<h2>Configure and run the Ansible script</h2>
+<p>Follow the <a href="http://jupyterhub-deploy-teaching.readthedocs.io/en/latest/installation.html">Jupyterhub-deploy-teaching documentation</a> to checkout the script, configure and run it.</p>
+<p>The only modification you need to do if you are on SDSC Cloud is that the remote user is <code>ubuntu</code> and not <code>root</code>, so modify <code>ansible.cfg</code> in the root of the repository,
+replace <code>remote_user=root</code> with <code>remote_user=ubuntu</code>.</p>
+<p>As an example, see the <a href="https://gist.github.com/zonca/fd2400a2069b5769f32b1c4b57eb97dc">configuration I used</a>, just:</p>
+<ul>
+<li>copy it into <code>host_vars</code></li>
+<li>rename it to your public DNS record</li>
+<li>fill in <code>proxy_auth_token</code>, Github OAuth credentials for authentication</li>
+<li>replace <code>zonca</code> with your Github username everywhere</li>
+</ul>
+<p>The exact version of the <code>jupyterhub-deploy-teaching</code> code I used for testing is <a href="https://github.com/zonca/jupyterhub-deploy-teaching/releases/tag/sdsc_cloud_jan_17">on the <code>sdsc_cloud_jan_17</code> tag on Github</a></p>
+<h2>Test the deployment</h2>
+<p>Connect to <a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu">https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</a> on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 3, R and bash kernels running locally on the machine.</p>
+<h2>Optional: Docker</h2>
+<p>In order to provide isolation and resource limits to the users, it is useful to run single user Jupyter Notebooks inside Docker containers.</p>
+<p>You will need to SSH into the Virtual Machine and follow the next steps.</p>
+<h3>Install Docker</h3>
+<p>First of all we need to install and configure Docker on the machine, see:</p>
+<ul>
+<li><a href="https://docs.docker.com/engine/installation/linux/ubuntu/">https://docs.docker.com/engine/installation/linux/ubuntu/</a></li>
+<li><a href="https://docs.docker.com/engine/installation/linux/linux-postinstall/">https://docs.docker.com/engine/installation/linux/linux-postinstall/</a></li>
+</ul>
+<h3>Install dockerspawner</h3>
+<p>Then install the Jupyterhub plugin <code>dockerspawner</code> that handles launching single user Notebooks inside Docker containers, we want to install from master instead of pypi to avoid an error setting the memory limit.</p>
+<div class="highlight"><pre><span></span>pip install git+https://github.com/jupyterhub/dockerspawner
+</pre></div>
+
+
+<h3>Setup the Docker container to run user Notebooks</h3>
+<p>We can first get the standard <code>systemuser</code> container, this Docker container mounts the home folder of the users inside the container, this way we can have persistent data even if the container gets deleted.</p>
+<div class="highlight"><pre><span></span>docker pull jupyterhub/systemuser
+</pre></div>
+
+
+<p>If you do not need <a href="http://nbgrader.readthedocs.io"><code>nbgrader</code></a> this image is enough, otherwise we have to build our own image, first checkout my Github repository in the home folder of the <code>ubuntu</code> user on the server with:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/zonca/systemuser-nbgrader
+</pre></div>
+
+
+<p>then edit the <code>nbgrader_config.py</code> file to set the correct <code>course_id</code>, and build the container image running inside the <code>systemuser-nbgrader</code> folder:</p>
+<div class="highlight"><pre><span></span>docker build -t systemuser-nbgrader .
+</pre></div>
+
+
+<h3>Configure Jupyterhub to use dockerspawner</h3>
+<p>Then add some configuration for dockerspawner to <code>/etc/jupyterhub/jupyterhub_config.py</code>:</p>
+<div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">JupyterHub</span><span class="o">.</span><span class="n">spawner_class</span> <span class="o">=</span> <span class="s1">&#39;dockerspawner.SystemUserSpawner&#39;</span>
+<span class="n">c</span><span class="o">.</span><span class="n">DockerSpawner</span><span class="o">.</span><span class="n">container_image</span> <span class="o">=</span> <span class="s2">&quot;systemuser-nbgrader&quot;</span> <span class="c1"># delete this line if you just need `jupyterhub/systemuser`</span>
+                                                                                                          <span class="n">c</span><span class="o">.</span><span class="n">Spawner</span><span class="o">.</span><span class="n">mem_limit</span> <span class="o">=</span> <span class="s1">&#39;500M&#39;</span> <span class="c1"># or 1G for GB, probably 300M is minimum required just to run simple calculations</span>
+<span class="n">c</span><span class="o">.</span><span class="n">DockerSpawner</span><span class="o">.</span><span class="n">volumes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/srv/nbgrader/exchange&quot;</span><span class="p">:</span><span class="s2">&quot;/tmp/exchange&quot;</span><span class="p">}</span> <span class="c1"># this is necessary for nbgrader to transfer homework back and forth between students and instructor</span>
+<span class="n">c</span><span class="o">.</span><span class="n">DockerSpawner</span><span class="o">.</span><span class="n">remove_containers</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c1"># The docker instances need access to the Hub, so the default loopback port doesn&#39;t work:</span>
+<span class="kn">from</span> <span class="nn">IPython.utils.localinterfaces</span> <span class="kn">import</span> <span class="n">public_ips</span>
+<span class="n">c</span><span class="o">.</span><span class="n">JupyterHub</span><span class="o">.</span><span class="n">hub_ip</span> <span class="o">=</span> <span class="n">public_ips</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<h3>Test the deployment with Docker</h3>
+<p>Connect to <a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu">https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</a> on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 2 or Python 3, open a Notebook and run <code>!hostname</code> in the first cell, you should find out that you get a Docker hash instead of the machine name, you are inside a container.</p>
+<p>SSH into the machine run <code>docker ps</code> to find the hash of a running container and then <code>docker stat HASH</code> to check memory usage and the current limit.</p>
+<p>Check that you can connect to the <code>nbgrader</code> <code>formgrade</code> service that allows to manually grade assignments at <a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID">https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID</a>, replace <code>COURSEID</code> with the course identifier you setup in the Ansible script.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2017-02-03T18:00:00-08:00">Fri 03 February 2017</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/ansible.html">ansible</a> 
+<a href="http://zonca.github.io/tag/sdsc.html">sdsc</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+    <div id="commentswrap">
+    <div id="comments"></div>
+    </div>
+
+    
+    <script src="https://apis.google.com/js/plusone.js"></script>
+    <script>
+        $(document).ready(function () {
+            gapi.comments.render('comments', {
+                href: window.location,
+                width: '600',
+                first_party_property: 'BLOGGER',
+                view_type: 'FILTERED_POSTMOD'
+            });
+    });
+    </script>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
