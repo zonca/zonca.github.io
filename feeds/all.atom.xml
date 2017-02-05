@@ -29,10 +29,13 @@ SDSC Cloud already provides a DNS entry in the form &lt;code&gt;xxx-xxx-xxx-xxx.
 &lt;p&gt;On your local machine, install &lt;code&gt;Ansible&lt;/code&gt;, at least version 2.1, see &lt;a href="http://docs.ansible.com/ansible/intro_installation.html#getting-ansible"&gt;Ansible docs&lt;/a&gt;, for Ubuntu just add the &lt;a href="https://launchpad.net/~ansible/+archive/ubuntu/ansible"&gt;Ansible PPA repository&lt;/a&gt;.
 I tested this with Ansible version 2.2.1.0&lt;/p&gt;
 &lt;p&gt;Then you need to configure passwordless SSH connection to your Virtual Machine. Download your SSH key from the OpenStack dashboard, copy it to your &lt;code&gt;~/.ssh&lt;/code&gt; folder and then add an entry to &lt;code&gt;.ssh/config&lt;/code&gt; for the server:&lt;/p&gt;
-&lt;p&gt;Host xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Host xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
     HostName xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
     User ubuntu
-    IdentityFile "~/.ssh/sdsccloud.key"&lt;/p&gt;
+    IdentityFile &amp;quot;~/.ssh/sdsccloud.key&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;At this point you should be able to SSH into the machine without typing any password with &lt;code&gt;ssh xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/code&gt;.&lt;/p&gt;
 &lt;h2&gt;Configure and run the Ansible script&lt;/h2&gt;
 &lt;p&gt;Follow the &lt;a href="http://jupyterhub-deploy-teaching.readthedocs.io/en/latest/installation.html"&gt;Jupyterhub-deploy-teaching documentation&lt;/a&gt; to checkout the script, configure and run it.&lt;/p&gt;
