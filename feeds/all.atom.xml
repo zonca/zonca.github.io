@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-02-03T18:00:00-08:00</updated><entry><title>Automated deployment of Jupyterhub with Ansible</title><link href="http://zonca.github.io/2017/02/automated-deployment-jupyterhub-ansible.html" rel="alternate"></link><published>2017-02-03T18:00:00-08:00</published><updated>2017-02-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-03:/2017/02/automated-deployment-jupyterhub-ansible.html</id><summary type="html">&lt;p&gt;Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, even if most of the steps would also be suitable on other resources like Amazon EC2.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-02-24T12:00:00-08:00</updated><entry><title>Customize your Python environment in Jupyterhub</title><link href="http://zonca.github.io/2017/02/customize-python-environment-jupyterhub.html" rel="alternate"></link><published>2017-02-24T12:00:00-08:00</published><updated>2017-02-24T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-24:/2017/02/customize-python-environment-jupyterhub.html</id><summary type="html">&lt;p&gt;Usecase: You have access to a Jupyterhub server and you would like to install some packages but cannot use &lt;code&gt;pip install&lt;/code&gt; and modify the systemwide Python installation.&lt;/p&gt;
+&lt;h2&gt;Check if conda is available&lt;/h2&gt;
+&lt;p&gt;First check if the Python installation you have access to is based on Anaconda, open a Notebook and …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Usecase: You have access to a Jupyterhub server and you would like to install some packages but cannot use &lt;code&gt;pip install&lt;/code&gt; and modify the systemwide Python installation.&lt;/p&gt;
+&lt;h2&gt;Check if conda is available&lt;/h2&gt;
+&lt;p&gt;First check if the Python installation you have access to is based on Anaconda, open a Notebook and type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="sx"&gt;!which conda&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;!&lt;/code&gt; executes bash commands instead of Python commands, we want to check if the &lt;code&gt;conda&lt;/code&gt; package manager is installed.&lt;/p&gt;
+&lt;p&gt;If not, the setup is a bit tedious, so see my tutorial on &lt;a href="https://zonca.github.io/2015/10/use-own-python-in-jupyterhub.html"&gt;installing Anaconda in your home folder&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Create a conda environment&lt;/h2&gt;
+&lt;p&gt;Conda allows to create independent environments in our home folder, this has the advantage that the environment will be writable so we can install any other package with &lt;code&gt;pip&lt;/code&gt; or &lt;code&gt;conda install&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="sx"&gt;!conda create -n myownenv --clone root&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can declare all the packages you want to install bu good starting point is just to clone the &lt;code&gt;root&lt;/code&gt; environment, this will link all the global packages in your home folder, then you can customize it further.&lt;/p&gt;
+&lt;h2&gt;Create a Jupyter Notebook kernel to launch this new environment&lt;/h2&gt;
+&lt;p&gt;We need to notify Jupyter of this new Python environment by creating a Kernel, from a Notebook launch:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="sx"&gt;!source activate myownenv; ipython kernel install --user --name myownenv&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Launch a Notebook&lt;/h2&gt;
+&lt;p&gt;Go back to the Jupyterhub dashboard, reload the page, now you should have another option in the &lt;code&gt;New&lt;/code&gt; menu that says &lt;code&gt;myownenv&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In order to use your new kernel with an existing notebook, click on the notebook file in the dashboard, it will launch with the default kernel, then you can change kernel from the top menu &lt;code&gt;Kernel&lt;/code&gt; &amp;gt; &lt;code&gt;Change kernel&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Install new packages&lt;/h2&gt;
+&lt;p&gt;Inside a Notebook using the &lt;code&gt;myownenv&lt;/code&gt; environment you can install other packages running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="sx"&gt;!conda install newpackagename&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="sx"&gt;!pip install newpackagename&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="ipython"></category><category term="jupyterhub"></category></entry><entry><title>Automated deployment of Jupyterhub with Ansible</title><link href="http://zonca.github.io/2017/02/automated-deployment-jupyterhub-ansible.html" rel="alternate"></link><published>2017-02-03T18:00:00-08:00</published><updated>2017-02-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-03:/2017/02/automated-deployment-jupyterhub-ansible.html</id><summary type="html">&lt;p&gt;Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, even if most of the steps would also be suitable on other resources like Amazon EC2.&lt;/p&gt;
 &lt;p&gt;In more detail:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;Manually installing Jupyterhub on a single Virtual Machine with users …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, even if most of the steps would also be suitable on other resources like Amazon EC2.&lt;/p&gt;
