@@ -44,7 +44,7 @@
             <h1>Use your own Python installation (kernel) in Jupyterhub</h1>
         </header>
         <div class='post-content'>
-            <p><strong>Updated August 2016</strong></p>
+            <p><strong>Updated February 2017</strong></p>
 <p>You have access to a Jupyterhub server but the Python installation provided does not satisfy your needs,
 how to use your own?</p>
 <h2>Install Anaconda</h2>
@@ -58,12 +58,12 @@ get a Jupyterhub Terminal, or run in the IPython notebook with <code>!</code>.</
 <h2>Create a kernel file for Jupyterhub</h2>
 <p>You probably already know you can have Python 2 and Python 3 kernels on the same Jupyter notebook installation. In the same way you can create your own <code>KernelSpec</code> that launches instead another Python installation.</p>
 <p>IPython can automatically create a <code>KernelSpec</code> for you, from the IPython notebook, run:</p>
-<div class="highlight"><pre><span></span>!~/anaconda3/bin/ipython kernel install --user --name Anaconda
+<div class="highlight"><pre><span></span>!~/anaconda3/bin/ipython kernel install --user --name anaconda
 </pre></div>
 
 
 <p>In case your path is different, just insert the full path to <code>ipython</code> from the Python installation you would like to use.</p>
-<p>This will create a file <code>kernel.json</code> in <code>~/.local/share/jupyter/kernels/pycmb</code>.</p>
+<p>This will create a file <code>kernel.json</code> in <code>~/.local/share/jupyter/kernels/anaconda</code>.</p>
 <p>You can also add KernelSpecs for other <code>conda</code> environments doing:</p>
 <div class="highlight"><pre><span></span><span class="sx">!source activate environmentname</span>
 <span class="sx">!ipython kernel install --user --name environmentname</span>
