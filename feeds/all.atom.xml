@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-02-26T12:00:00-08:00</updated><entry><title>Sample deployment of Jupyterhub in HPC on SDSC Comet</title><link href="http://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html" rel="alternate"></link><published>2017-02-26T12:00:00-08:00</published><updated>2017-02-26T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-26:/2017/02/sample-deployment-jupyterhub-hpc.html</id><summary type="html">&lt;p&gt;I have deployed an experimental Jupyterhub service (ask me privately if you would like access) installed on a &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt; virtual machine that spawns single user Jupyter notebooks on Comet computing nodes using &lt;a href="https://github.com/jupyterhub/batchspawner"&gt;&lt;code&gt;batchspawner&lt;/code&gt;&lt;/a&gt; and then proxies the Notebook back to the user using SSH-tunneling.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-04-19T12:00:00-07:00</updated><entry><title>Configure Globus on your local machine for GridFTP with XSEDE authentication</title><link href="http://zonca.github.io/2017/04/globus-gridftp-local.html" rel="alternate"></link><published>2017-04-19T12:00:00-07:00</published><updated>2017-04-19T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-04-19:/2017/04/globus-gridftp-local.html</id><summary type="html">&lt;p&gt;All the commands are executed on your local machine, the purpose of this tutorial is to be able to use &lt;code&gt;globus-url-copy&lt;/code&gt; to copy efficiently data back and forth between your local machine and a XSEDE Supercomputer on the command line.&lt;/p&gt;
+&lt;p&gt;For a simpler point and click web interface, install Globus …&lt;/p&gt;</summary><content type="html">&lt;p&gt;All the commands are executed on your local machine, the purpose of this tutorial is to be able to use &lt;code&gt;globus-url-copy&lt;/code&gt; to copy efficiently data back and forth between your local machine and a XSEDE Supercomputer on the command line.&lt;/p&gt;
+&lt;p&gt;For a simpler point and click web interface, install Globus Conect Personal instead: &lt;a href="https://www.globus.org/globus-connect-personal"&gt;https://www.globus.org/globus-connect-personal&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Install Globus toolkit&lt;/h2&gt;
+&lt;p&gt;See http://toolkit.globus.org/toolkit/docs/latest-stable/admin/install/#install-toolkit&lt;/p&gt;
+&lt;p&gt;On Ubuntu, download the deb of the Globus repo from:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget http://www.globus.org/ftppub/gt6/installers/repo/globus-toolkit-repo_latest_all.deb
+sudo dpkg -i globus-toolkit-repo_latest_all.deb
+sudo apt-get install globus-data-management-client
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Install XSEDE certificates on your machine&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget https://software.xsede.org/security/xsede-certs.tar.gz
+tar xvf xsede-certs.tar.gz
+sudo mv certificates /etc/grid-security
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Full instructions here:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://software.xsede.org/production/CA/CA-install.html"&gt;https://software.xsede.org/production/CA/CA-install.html&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Authenticate with the myproxy provided by XSEDE&lt;/h2&gt;
+&lt;p&gt;Authenticate with your XSEDE user and password:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;myproxy-logon -s myproxy.xsede.org -l $USER -t 36
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can specify the lifetime of the certificate in hours with &lt;code&gt;-t&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;you should get a certificate:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;A credential has been received for user zonca in /tmp/x509up_u1000.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can check how much time is left on a certificate by running &lt;code&gt;grid-proxy-info&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Run globus-url-copy&lt;/h2&gt;
+&lt;p&gt;For example copy to my home on Comet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;globus-url-copy -vb -p 4 local_file.tar.gz gsiftp://oasis-dm.sdsc.edu///home/zonca/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;See the quickstart guide on the most used &lt;code&gt;globus-url-copy&lt;/code&gt; options:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/user/#gridftp-user-basic
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Synchronize 2 folders&lt;/h2&gt;
+&lt;p&gt;Only copy new files using the &lt;code&gt;-sync&lt;/code&gt; and &lt;code&gt;-sync-level&lt;/code&gt; options:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;-sync
+  Only transfer files where the destination does not exist or differs from the source. -sync-level controls how to determine if files differ.
+-sync-level number
+  Criteria for determining if files differ when performing a sync transfer. The default sync level is 2.\
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The available levels are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Level 0 will only transfer if the destination does not exist.&lt;/li&gt;
+&lt;li&gt;Level 1 will transfer if the size of the destination does not match the size of the source.&lt;/li&gt;
+&lt;li&gt;Level 2 will transfer if the time stamp of the destination is older than the time stamp of the source.&lt;/li&gt;
+&lt;li&gt;Level 3 will perform a checksum of the source and destination and transfer if the checksums do not match.&lt;/li&gt;
+&lt;/ul&gt;</content><category term="ipython"></category><category term="jupyterhub"></category></entry><entry><title>Sample deployment of Jupyterhub in HPC on SDSC Comet</title><link href="http://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html" rel="alternate"></link><published>2017-02-26T12:00:00-08:00</published><updated>2017-02-26T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-02-26:/2017/02/sample-deployment-jupyterhub-hpc.html</id><summary type="html">&lt;p&gt;I have deployed an experimental Jupyterhub service (ask me privately if you would like access) installed on a &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt; virtual machine that spawns single user Jupyter notebooks on Comet computing nodes using &lt;a href="https://github.com/jupyterhub/batchspawner"&gt;&lt;code&gt;batchspawner&lt;/code&gt;&lt;/a&gt; and then proxies the Notebook back to the user using SSH-tunneling.&lt;/p&gt;
 &lt;h2&gt;Functionality&lt;/h2&gt;
 &lt;p&gt;This kind of setup …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I have deployed an experimental Jupyterhub service (ask me privately if you would like access) installed on a &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt; virtual machine that spawns single user Jupyter notebooks on Comet computing nodes using &lt;a href="https://github.com/jupyterhub/batchspawner"&gt;&lt;code&gt;batchspawner&lt;/code&gt;&lt;/a&gt; and then proxies the Notebook back to the user using SSH-tunneling.&lt;/p&gt;
 &lt;h2&gt;Functionality&lt;/h2&gt;
