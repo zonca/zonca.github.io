@@ -142,6 +142,8 @@ replace <code>remote_user=root</code> with <code>remote_user=ubuntu</code>.</p>
 <p>Connect to <a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu">https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</a> on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 2 or Python 3, open a Notebook and run <code>!hostname</code> in the first cell, you should find out that you get a Docker hash instead of the machine name, you are inside a container.</p>
 <p>SSH into the machine run <code>docker ps</code> to find the hash of a running container and then <code>docker stat HASH</code> to check memory usage and the current limit.</p>
 <p>Check that you can connect to the <code>nbgrader</code> <code>formgrade</code> service that allows to manually grade assignments at <a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID">https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID</a>, replace <code>COURSEID</code> with the course identifier you setup in the Ansible script.</p>
+<h3>Pre-built image</h3>
+<p>I also have a saved Virtual Machine snapshot on SDSC Cloud named <code>jupyterhub_ansible_nbgrader_coleman</code></p>
         </div>
     </article>
 
