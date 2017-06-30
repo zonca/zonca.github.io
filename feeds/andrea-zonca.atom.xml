@@ -1,109 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-06-30T11:00:00-07:00</updated><entry><title>How to create pull requests on Github</title><link href="http://zonca.github.io/2017/06/quick-github-pull-requests.html" rel="alternate"></link><published>2017-06-30T11:00:00-07:00</published><updated>2017-06-30T11:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-06-30:/2017/06/quick-github-pull-requests.html</id><summary type="html">&lt;p&gt;Pull Requests are the web-based version of sending software patches via email to code maintainers.
-They allow athat has no access to a code repository to submit a code change to the repository administrator that can review and mr
-I cannot find a guide to making pull requests on Github …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Pull Requests are the web-based version of sending software patches via email to code maintainers.
-They allow athat has no access to a code repository to submit a code change to the repository administrator that can review and mr
-I cannot find a guide to making pull requests on Github with the 
-Last year I wrote some tutorials on simple deployments of Jupyterhub on Ubuntu 16.04 on the OpenStack deployment &lt;a href="http://www.sdsc.edu/services/it/cloud.html"&gt;SDSC Cloud&lt;/a&gt;, even if most of the steps would also be suitable on other resources like Amazon EC2.&lt;/p&gt;
-&lt;p&gt;In more detail:&lt;/p&gt;
+They allow a person that has no access to a code repository to submit a code change to the repository administrator for review and 1-click merging.&lt;/p&gt;
+&lt;h2&gt;Preparation&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;Manually installing Jupyterhub on a single Virtual Machine with users running inside Docker containers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html"&gt;Quick deployment of the above using a pre-built image&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html"&gt;Jupyterhub distributing user containers on other nodes using Docker Swarm&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The Jupyter team has released an automated script to deploy Jupyterhub on a single server, see &lt;a href="http://jupyterhub-deploy-teaching.readthedocs.io"&gt;Jupyterhub-deploy-teaching&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In this tutorial we will use this script to deploy Jupyterhub to SDSC Cloud using:&lt;/p&gt;
+&lt;li&gt;Create a free Github account at &lt;a href="https://github.com"&gt;https://github …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Pull Requests are the web-based version of sending software patches via email to code maintainers.
+They allow a person that has no access to a code repository to submit a code change to the repository administrator for review and 1-click merging.&lt;/p&gt;
+&lt;h2&gt;Preparation&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;NGINX handling HTTPS with Letsencrypt certificate&lt;/li&gt;
-&lt;li&gt;Github authentication&lt;/li&gt;
-&lt;li&gt;Local or Docker user notebooks&lt;/li&gt;
-&lt;li&gt;Grading with &lt;code&gt;nbgrader&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Memory limit for Docker containers&lt;/li&gt;
+&lt;li&gt;Create a free Github account at &lt;a href="https://github.com"&gt;https://github.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Login on Github with your credentials&lt;/li&gt;
+&lt;li&gt;Go to the homepage of the repository, for example &lt;a href="https://github.com/sdsc/sdsc-summer-institute-2017"&gt;https://github.com/sdsc/sdsc-summer-institute-2017&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;Setup a Virtual Machine to run Jupyterhub&lt;/h2&gt;
-&lt;p&gt;Create first a Ubuntu 16.04 Virtual Machine, a default server image works fine.&lt;/p&gt;
-&lt;p&gt;In case you are deploying on SDSC Cloud, follow the steps in "Create a Virtual Machine in OpenStack" on my first tutorial at &lt;a href="https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html"&gt;https://zonca.github.io/2016/04/jupyterhub-sdsc-cloud.html&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You will also need a DNS entry pointing to the server to create a SSL certificate with Let's Encrypt. Either ask your institution to provide a DNS A entry, e.g. &lt;code&gt;test-jupyterhub.ucsd.edu&lt;/code&gt;, that points to the Public IP of the server.
-SDSC Cloud already provides a DNS entry in the form &lt;code&gt;xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;If you plan on using &lt;code&gt;nbgrader&lt;/code&gt;, you need to create the home folder for the instructor beforehand, so SSH into the server and create a user with your Github username, i.e. I had to execute &lt;code&gt;sudo adduser zonca&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;Setup your local machine to run the automation scripts&lt;/h2&gt;
-&lt;p&gt;Automation of the server setup is provided by the &lt;a href="http://ansible.com"&gt;Ansible&lt;/a&gt; software tool, it allows to describe a server configuration in great detail (a "playbook") and then connects via SSH to a Virtual Machine and runs Python to install and setup all the required software.&lt;/p&gt;
-&lt;p&gt;On your local machine, install &lt;code&gt;Ansible&lt;/code&gt;, at least version 2.1, see &lt;a href="http://docs.ansible.com/ansible/intro_installation.html#getting-ansible"&gt;Ansible docs&lt;/a&gt;, for Ubuntu just add the &lt;a href="https://launchpad.net/~ansible/+archive/ubuntu/ansible"&gt;Ansible PPA repository&lt;/a&gt;.
-I tested this with Ansible version 2.2.1.0&lt;/p&gt;
-&lt;p&gt;Then you need to configure passwordless SSH connection to your Virtual Machine. Download your SSH key from the OpenStack dashboard, copy it to your &lt;code&gt;~/.ssh&lt;/code&gt; folder and then add an entry to &lt;code&gt;.ssh/config&lt;/code&gt; for the server:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Host xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
-    HostName xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu
-    User ubuntu
-    IdentityFile &amp;quot;~/.ssh/sdsccloud.key&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;At this point you should be able to SSH into the machine without typing any password with &lt;code&gt;ssh xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;Configure and run the Ansible script&lt;/h2&gt;
-&lt;p&gt;Follow the &lt;a href="http://jupyterhub-deploy-teaching.readthedocs.io/en/latest/installation.html"&gt;Jupyterhub-deploy-teaching documentation&lt;/a&gt; to checkout the script, configure and run it.&lt;/p&gt;
-&lt;p&gt;The only modification you need to do if you are on SDSC Cloud is that the remote user is &lt;code&gt;ubuntu&lt;/code&gt; and not &lt;code&gt;root&lt;/code&gt;, so modify &lt;code&gt;ansible.cfg&lt;/code&gt; in the root of the repository,
-replace &lt;code&gt;remote_user=root&lt;/code&gt; with &lt;code&gt;remote_user=ubuntu&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;As an example, see the &lt;a href="https://gist.github.com/zonca/fd2400a2069b5769f32b1c4b57eb97dc"&gt;configuration I used&lt;/a&gt;, just:&lt;/p&gt;
+&lt;h2&gt;Small changes via Github.com&lt;/h2&gt;
+&lt;p&gt;For small changes, like create a folder and upload a few files, or a quick fix on a previous file, you don't even need to use the &lt;code&gt;git&lt;/code&gt; command line client.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;copy it into &lt;code&gt;host_vars&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;rename it to your public DNS record&lt;/li&gt;
-&lt;li&gt;fill in &lt;code&gt;proxy_auth_token&lt;/code&gt;, Github OAuth credentials for authentication&lt;/li&gt;
-&lt;li&gt;replace &lt;code&gt;zonca&lt;/code&gt; with your Github username everywhere&lt;/li&gt;
+&lt;li&gt;If you need to &lt;strong&gt;create a folder&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;click on "Create new file"&lt;/li&gt;
+&lt;li&gt;in the "Name your file..." box, insert: "yourfolder/README.md"&lt;/li&gt;
+&lt;li&gt;in the README.md write a description of the content of the folder, you can use markdown syntax, (see &lt;a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"&gt;the Markdown Cheatsheet&lt;/a&gt; )&lt;/li&gt;
+&lt;li&gt;create a bullet list with description of the files you will be uploading next&lt;/li&gt;
+&lt;li&gt;Click on "Propose new file"&lt;/li&gt;
+&lt;li&gt;this will ask you to create a Pull Request, follow the prompts and make sure to confirm at the end that you want to create a Pull Request, you have to click twice on "Create Pull Request" buttons&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The exact version of the &lt;code&gt;jupyterhub-deploy-teaching&lt;/code&gt; code I used for testing is &lt;a href="https://github.com/zonca/jupyterhub-deploy-teaching/releases/tag/sdsc_cloud_jan_17"&gt;on the &lt;code&gt;sdsc_cloud_jan_17&lt;/code&gt; tag on Github&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Test the deployment&lt;/h2&gt;
-&lt;p&gt;Connect to &lt;a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu"&gt;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/a&gt; on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 3, R and bash kernels running locally on the machine.&lt;/p&gt;
-&lt;h2&gt;Optional: Docker&lt;/h2&gt;
-&lt;p&gt;In order to provide isolation and resource limits to the users, it is useful to run single user Jupyter Notebooks inside Docker containers.&lt;/p&gt;
-&lt;p&gt;You will need to SSH into the Virtual Machine and follow the next steps.&lt;/p&gt;
-&lt;h3&gt;Install Docker&lt;/h3&gt;
-&lt;p&gt;First of all we need to install and configure Docker on the machine, see:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;If you want to upload files in the folder you just created, you need an additional step, if you want to upload to a folder already existing in the original repo, skip this:&lt;ul&gt;
+&lt;li&gt;Go to the fork of the original repository that was created automatically under your account, for example: &lt;a href="https://github.com/YOURUSERNAME/sdsc-summer-institute-2017"&gt;https://github.com/YOURUSERNAME/sdsc-summer-institute-2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Click on the dropdown "Branch" menu and look for the branch named &lt;code&gt;patch-1&lt;/code&gt;, or &lt;code&gt;patch-n&lt;/code&gt; if you have more.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Click on the "Upload files" button, select and upload all files, a few notes:&lt;ul&gt;
+&lt;li&gt;do not upload zip archives&lt;/li&gt;
+&lt;li&gt;do not upload large data files, Github is for code&lt;/li&gt;
+&lt;li&gt;if you are uploading binary files like images, downgrade them to a small size&lt;/li&gt;
+&lt;li&gt;this will ask you to create a Pull Request, follow the prompts and make sure to confirm at the end that you want to create a Pull Request, you have to click twice on "Create Pull Request" buttons&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Check that your pull request appeared in the Pull Requests area of the repository, for example &lt;a href="https://github.com/sdsc/sdsc-summer-institute-2017/pulls"&gt;https://github.com/sdsc/sdsc-summer-institute-2017/pulls&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Update a previously create Pull Request via Github.com&lt;/h2&gt;
+&lt;p&gt;If the repository maintainer has some feedback on your Pull Request, you can update it to accomodate any requested change.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://docs.docker.com/engine/installation/linux/ubuntu/"&gt;https://docs.docker.com/engine/installation/linux/ubuntu/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://docs.docker.com/engine/installation/linux/linux-postinstall/"&gt;https://docs.docker.com/engine/installation/linux/linux-postinstall/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Go to the fork of the original repository that was created automatically under your account, for example: &lt;a href="https://github.com/YOURUSERNAME/sdsc-summer-institute-2017"&gt;https://github.com/YOURUSERNAME/sdsc-summer-institute-2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Click on the dropdown "Branch" menu and look for the branch named &lt;code&gt;patch-1&lt;/code&gt;, or &lt;code&gt;patch-n&lt;/code&gt; if you have more.&lt;/li&gt;
+&lt;li&gt;Now make changes to files or upload new files, then confirm and write a commit message from the web interface&lt;/li&gt;
+&lt;li&gt;Check that your changes appear as updates inside the Pull Request you created before, for example  &lt;a href="https://github.com/sdsc/sdsc-summer-institute-2017/pull/N"&gt;https://github.com/sdsc/sdsc-summer-institute-2017/pull/N&lt;/a&gt; where N is the number assigned to your Pull Request&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;Install dockerspawner&lt;/h3&gt;
-&lt;p&gt;Then install the Jupyterhub plugin &lt;code&gt;dockerspawner&lt;/code&gt; that handles launching single user Notebooks inside Docker containers, we want to install from master instead of pypi to avoid an error setting the memory limit.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install git+https://github.com/jupyterhub/dockerspawner
+&lt;h2&gt;Use the command line client&lt;/h2&gt;
+&lt;p&gt;For more control and especially if you expect the repository maintainer to make changes to your Pull Request before merging it, better use &lt;code&gt;git&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Click on the "Fork" button on the top right of the repository&lt;/li&gt;
+&lt;li&gt;Now you should be on the copy of the repository under your own account, for example &lt;a href="https://github.com/YOURUSERNAME/sdsc-summer-institute-2017"&gt;https://github.com/YOURUSERNAME/sdsc-summer-institute-2017&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now open your terminal, if you never used &lt;code&gt;git&lt;/code&gt; before, set it up with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git config --global user.name &lt;span class="s2"&gt;&amp;quot;Your Name&amp;quot;&lt;/span&gt;
+$ git config --global user.email &lt;span class="s2"&gt;&amp;quot;your@email.edu&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;Setup the Docker container to run user Notebooks&lt;/h3&gt;
-&lt;p&gt;We can first get the standard &lt;code&gt;systemuser&lt;/code&gt; container, this Docker container mounts the home folder of the users inside the container, this way we can have persistent data even if the container gets deleted.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker pull jupyterhub/systemuser
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now open your terminal and clone the repository with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/YOURUSERNAME/sdsc-summer-institute-2017
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;If you do not need &lt;a href="http://nbgrader.readthedocs.io"&gt;&lt;code&gt;nbgrader&lt;/code&gt;&lt;/a&gt; this image is enough, otherwise we have to build our own image, first checkout my Github repository in the home folder of the &lt;code&gt;ubuntu&lt;/code&gt; user on the server with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/systemuser-nbgrader
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enter in the repository folder&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a branch to isolate your changes with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git checkout -b &amp;quot;add_XXXX_material&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;then edit the &lt;code&gt;nbgrader_config.py&lt;/code&gt; file to set the correct &lt;code&gt;course_id&lt;/code&gt;, and build the container image running inside the &lt;code&gt;systemuser-nbgrader&lt;/code&gt; folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker build -t systemuser-nbgrader .
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now create folders, modify files, you can use any text editor&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Once you are done doing modifications, you can prepare them to be committed with, this adds everything inside the folder:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git add my_folder
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;Configure Jupyterhub to use dockerspawner&lt;/h3&gt;
-&lt;p&gt;Then add some configuration for dockerspawner to &lt;code&gt;/etc/jupyterhub/jupyterhub_config.py&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JupyterHub&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;spawner_class&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;dockerspawner.SystemUserSpawner&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DockerSpawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;container_image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;systemuser-nbgrader&amp;quot;&lt;/span&gt; &lt;span class="c1"&gt;# delete this line if you just need `jupyterhub/systemuser`&lt;/span&gt;
-                                                                                                          &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Spawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mem_limit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;500M&amp;#39;&lt;/span&gt; &lt;span class="c1"&gt;# or 1G for GB, probably 300M is minimum required just to run simple calculations&lt;/span&gt;
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DockerSpawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;volumes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/srv/nbgrader/exchange&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/tmp/exchange&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;# this is necessary for nbgrader to transfer homework back and forth between students and instructor&lt;/span&gt;
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DockerSpawner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove_containers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
-
-&lt;span class="c1"&gt;# The docker instances need access to the Hub, so the default loopback port doesn&amp;#39;t work:&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.utils.localinterfaces&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;public_ips&lt;/span&gt;
-&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JupyterHub&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hub_ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;public_ips&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Generally better instead to add each file to make sure you don't accidentally commit wrong files&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git add my_folder/aaa.txt my_folder/README.md
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;Test the deployment with Docker&lt;/h3&gt;
-&lt;p&gt;Connect to &lt;a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu"&gt;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu&lt;/a&gt; on your browser, you should be redirected to Github for authentication and then access a Jupyter Notebook instance with the Python 2 or Python 3, open a Notebook and run &lt;code&gt;!hostname&lt;/code&gt; in the first cell, you should find out that you get a Docker hash instead of the machine name, you are inside a container.&lt;/p&gt;
-&lt;p&gt;SSH into the machine run &lt;code&gt;docker ps&lt;/code&gt; to find the hash of a running container and then &lt;code&gt;docker stat HASH&lt;/code&gt; to check memory usage and the current limit.&lt;/p&gt;
-&lt;p&gt;Check that you can connect to the &lt;code&gt;nbgrader&lt;/code&gt; &lt;code&gt;formgrade&lt;/code&gt; service that allows to manually grade assignments at &lt;a href="https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID"&gt;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/services/formgrade-COURSEID&lt;/a&gt;, replace &lt;code&gt;COURSEID&lt;/code&gt; with the course identifier you setup in the Ansible script.&lt;/p&gt;
-&lt;h3&gt;Pre-built image&lt;/h3&gt;
-&lt;p&gt;I also have a saved Virtual Machine snapshot on SDSC Cloud named &lt;code&gt;jupyterhub_ansible_nbgrader_coleman&lt;/code&gt;&lt;/p&gt;</content><category term="git"></category><category term="github"></category></entry><entry><title>Deploy Jupyterhub on a Supercomputer with SSH Authentication</title><link href="http://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html" rel="alternate"></link><published>2017-05-16T22:00:00-07:00</published><updated>2017-05-16T22:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-05-16:/2017/05/jupyterhub-hpc-batchspawner-ssh.html</id><summary type="html">&lt;p&gt;The best way to deploy Jupyterhub with an interface to a Supercomputer is through the use of &lt;code&gt;batchspawner&lt;/code&gt;. I have a sample deployment explained in an older blog post: &lt;a href="https://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html"&gt;https://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Then write this changes to history with a commit&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git commit -m &amp;quot;Added material about XXXX&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Push changes to Github&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git push -u origin add_XXXX_material
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now go to the homepage of the original repository, for example &lt;a href="https://github.com/sdsc/sdsc-summer-institute-2017"&gt;https://github.com/sdsc/sdsc-summer-institute-2017&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;There should be a yellow notice saying that it detected a recently pushed branch, click on "Compare and Pull Request"&lt;/li&gt;
+&lt;li&gt;Add a description&lt;/li&gt;
+&lt;li&gt;Confirm with the green "Create Pull Request" button&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In case you want to update your Pull Request, repeat the steps of &lt;code&gt;git add&lt;/code&gt;, &lt;code&gt;git commit&lt;/code&gt; and &lt;code&gt;git push&lt;/code&gt;, any changes will be reflected inside the pull request.&lt;/p&gt;</content><category term="git"></category><category term="github"></category></entry><entry><title>Deploy Jupyterhub on a Supercomputer with SSH Authentication</title><link href="http://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html" rel="alternate"></link><published>2017-05-16T22:00:00-07:00</published><updated>2017-05-16T22:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-05-16:/2017/05/jupyterhub-hpc-batchspawner-ssh.html</id><summary type="html">&lt;p&gt;The best way to deploy Jupyterhub with an interface to a Supercomputer is through the use of &lt;code&gt;batchspawner&lt;/code&gt;. I have a sample deployment explained in an older blog post: &lt;a href="https://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html"&gt;https://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;This setup however requires a OAUTH service, in this case provided by XSEDE …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The best way to deploy Jupyterhub with an interface to a Supercomputer is through the use of &lt;code&gt;batchspawner&lt;/code&gt;. I have a sample deployment explained in an older blog post: &lt;a href="https://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html"&gt;https://zonca.github.io/2017/02/sample-deployment-jupyterhub-hpc.html&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;This setup however requires a OAUTH service, in this case provided by XSEDE, to authenticate the users via web and then provide a X509 certificate that is then used by &lt;code&gt;batchspawner&lt;/code&gt; to
 connect to the Supercomputer on behalf of the user and submit the job to spawn a notebook.&lt;/p&gt;
