@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Deployment of Jupyterhub with Globus Auth to spawn Notebook on Comet in Singularity containers | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Deployment of Jupyterhub with Globus Auth to spawn Notebook on Comet in Singularity containers</h1>
+        </header>
+        <div class='post-content'>
+            <h2>Build Singularity containers to run single user notebook applications</h2>
+<p>Follow the instructions at <a href="https://github.com/zonca/singularity-comet">https://github.com/zonca/singularity-comet</a> to build images from the <code>ubuntu_anaconda_jupyterhub.def</code> and <code>centos_anaconda_jupyterhub.def</code> definition files, or use the containers I have already built on Comet:</p>
+<div class="highlight"><pre><span></span>/oasis/scratch/comet/zonca/temp_project/centos_anaconda_jupyterhub.img
+/oasis/scratch/comet/zonca/temp_project/ubuntu_anaconda_cmb_jupyterhub.img
+</pre></div>
+
+
+<p>These containers have Centos 7 and Ubuntu 16.04 base images, MPI support (not needed for this), Anaconda 4.4.0, the Jupyterhub (for the <code>jupyterhub-singleuser</code> script) and Jupyterlab (for the awesomeness) packages.</p>
+<h2>Initial setup of Jupyterhub with Ansible</h2>
+<p>First we want to use the Ansible playbook provided by the Jupyter team to setup a Ubuntu Virtual Machine, for example on SDSC Cloud or XSEDE Jetstream.
+This sets up already a Jupyterhub instance on a single machine with Github authentication, NGINX with letsencrypt SSL and spawning of Notebooks as local processes.</p>
+<p>Start from: <a href="https://zonca.github.io/2017/02/automated-deployment-jupyterhub-ansible.html">Automated deployment of Jupyterhub with Ansible</a></p>
+<p>It looks like there is a compatibility error with <code>conda</code> 4.3 and above, I had to fix this (and provided PR upstream), I used the version at <a href="https://github.com/zonca/jupyterhub-deploy-teaching/tree/globus_singularity">https://github.com/zonca/jupyterhub-deploy-teaching/tree/globus_singularity</a>.
+In particular check the example configuration file in the <code>host_vars/</code> folder.</p>
+<p>Once we have executed the scripts, connect to the Virtual Machine, login with Github and check that Notebooks are working.</p>
+<h2>Setup Authentication with Globus</h2>
+<p>Next we can SSH into the Jupyterhub Virtual Machine and customize Jupyterhub configuration in <code>/etc/jupyterhub</code></p>
+<p><code>oauthenticator</code> should alrady be installed,, but it needs the Globus SDK to support authentication with Globus:</p>
+<div class="highlight"><pre><span></span>sudo /opt/conda/bin/pip install globus_sdk[jwt]
+</pre></div>
+
+
+<p>Then follow the instructions to setup Globus Auth: <a href="https://github.com/jupyterhub/oauthenticator#globus-setup">https://github.com/jupyterhub/oauthenticator#globus-setup</a></p>
+<p>you should now have add these lines in <code>/etc/jupyterhub/jupyterhub_config.py</code></p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauthenticator.globus</span> <span class="kn">import</span> <span class="n">GlobusOAuthenticator</span>
+<span class="n">c</span><span class="o">.</span><span class="n">JupyterHub</span><span class="o">.</span><span class="n">authenticator_class</span> <span class="o">=</span> <span class="n">GlobusOAuthenticator</span>
+<span class="n">c</span><span class="o">.</span><span class="n">GlobusOAuthenticator</span><span class="o">.</span><span class="n">oauth_callback_url</span> <span class="o">=</span> <span class="s1">&#39;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/hub/oauth_callback&#39;</span>
+<span class="n">c</span><span class="o">.</span><span class="n">GlobusOAuthenticator</span><span class="o">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">c</span><span class="o">.</span><span class="n">GlobusOAuthenticator</span><span class="o">.</span><span class="n">client_secret</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+
+
+<p>You should now be able to login with your Globus ID credentials, see the documentation to support credentials from institutions supported by Globus Auth.
+After login, don't worry if you get an error in starting your notebook.</p>
+<h2>Setup Spawning with Batchspawner</h2>
+<p>In my last post about spawning Notebooks on Comet I was using XSEDE authentication so that each user would have to use their own Comet account.
+In this scenario instead we imagine a Gateway system where the administrator shares their own allocation with the Gateway users. 
+Therefore you should create a SSH keypair for the <code>root</code> user on the Jupyterhub Virtual Machine and make sure you can login with no need for a password to Comet as the Gateway user.</p>
+<p>Then you need to install <code>batchspawner</code>:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/jupyterhub/batchspawner.git
+cd batchspawner/
+sudo /opt/conda/bin/pip install .
+</pre></div>
+
+
+<p>Then configure the Spawner, see <a href="https://gist.github.com/zonca/aaed55502c4b16535fe947791d02ac32">my configuration of Jupyterhub: <code>jupyterhub_config.py</code></a>.</p>
+<p>You should modify <code>comet_spawner.py</code> to point to your Gateway user home folder and then fill all the details in <code>jupyterhub_config.py</code> marked by the <code>CONF</code> string.</p>
+<p>In <code>CometSpawner</code> I also create a form for the user to choose the parameters of the job and also the Singularity image they want to use.</p>
+<p>Here the spawner uses <code>SSH</code> to connect to the Comet login node and submit jobs as the Gateway user.</p>
+<p>At this point you should be able to login and launch a job on Comet, execute <code>squeue</code> on Comet to check if that works or look in the home folder of the Gateway user for the logfile of the job and in <code>/var/log/jupyterhub</code> on the Virtual machine for errors.</p>
+<h2>Setup tunneling</h2>
+<p>Finally we need a way for the gateway Virtual Machine to access the port on the Comet computing node in order to proxy the Notebook application back to the user.</p>
+<p>The simpler solution is to create a user <code>tunnelbot</code> on the VM with no shell access, then create a SSH keypair and paste the <strong>private</strong> key into the <code>jupyterhub_config.py</code> file (contact me if you have a btter solution!).
+The job on Comet sets up then a SSH tunnel between the Comet computing node and the Jupyterhub VM.</p>
+<h2>Improvements</h2>
+<p>To keep the setup simple, all users are running on the home folder of the Gateway user, for a real deployment, it is possible to create a subfolder for each user beforehand and then use singularity to mount that as the home folder.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2017-08-11T18:00:00-07:00">Fri 11 August 2017</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/ansible.html">ansible</a> 
+<a href="http://zonca.github.io/tag/sdsc.html">sdsc</a> 
+<a href="http://zonca.github.io/tag/singularity.html">singularity</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

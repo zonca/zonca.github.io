@@ -1,5 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-06-30T11:00:00-07:00</updated><entry><title>How to create pull requests on Github</title><link href="http://zonca.github.io/2017/06/quick-github-pull-requests.html" rel="alternate"></link><published>2017-06-30T11:00:00-07:00</published><updated>2017-06-30T11:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-06-30:/2017/06/quick-github-pull-requests.html</id><summary type="html">&lt;p&gt;Pull Requests are the web-based version of sending software patches via email to code maintainers.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-08-11T18:00:00-07:00</updated><entry><title>Deployment of Jupyterhub with Globus Auth to spawn Notebook on Comet in Singularity containers</title><link href="http://zonca.github.io/2017/08/jupyterhub-globus-comet-singularity.html" rel="alternate"></link><published>2017-08-11T18:00:00-07:00</published><updated>2017-08-11T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-08-11:/2017/08/jupyterhub-globus-comet-singularity.html</id><summary type="html">&lt;h2&gt;Build Singularity containers to run single user notebook applications&lt;/h2&gt;
+&lt;p&gt;Follow the instructions at &lt;a href="https://github.com/zonca/singularity-comet"&gt;https://github.com/zonca/singularity-comet&lt;/a&gt; to build images from the &lt;code&gt;ubuntu_anaconda_jupyterhub.def&lt;/code&gt; and &lt;code&gt;centos_anaconda_jupyterhub.def&lt;/code&gt; definition files, or use the containers I have already built on Comet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/oasis/scratch/comet/zonca/temp_project/centos_anaconda_jupyterhub.img
+/oasis/scratch/comet …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;Build Singularity containers to run single user notebook applications&lt;/h2&gt;
+&lt;p&gt;Follow the instructions at &lt;a href="https://github.com/zonca/singularity-comet"&gt;https://github.com/zonca/singularity-comet&lt;/a&gt; to build images from the &lt;code&gt;ubuntu_anaconda_jupyterhub.def&lt;/code&gt; and &lt;code&gt;centos_anaconda_jupyterhub.def&lt;/code&gt; definition files, or use the containers I have already built on Comet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/oasis/scratch/comet/zonca/temp_project/centos_anaconda_jupyterhub.img
+/oasis/scratch/comet/zonca/temp_project/ubuntu_anaconda_cmb_jupyterhub.img
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;These containers have Centos 7 and Ubuntu 16.04 base images, MPI support (not needed for this), Anaconda 4.4.0, the Jupyterhub (for the &lt;code&gt;jupyterhub-singleuser&lt;/code&gt; script) and Jupyterlab (for the awesomeness) packages.&lt;/p&gt;
+&lt;h2&gt;Initial setup of Jupyterhub with Ansible&lt;/h2&gt;
+&lt;p&gt;First we want to use the Ansible playbook provided by the Jupyter team to setup a Ubuntu Virtual Machine, for example on SDSC Cloud or XSEDE Jetstream.
+This sets up already a Jupyterhub instance on a single machine with Github authentication, NGINX with letsencrypt SSL and spawning of Notebooks as local processes.&lt;/p&gt;
+&lt;p&gt;Start from: &lt;a href="https://zonca.github.io/2017/02/automated-deployment-jupyterhub-ansible.html"&gt;Automated deployment of Jupyterhub with Ansible&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It looks like there is a compatibility error with &lt;code&gt;conda&lt;/code&gt; 4.3 and above, I had to fix this (and provided PR upstream), I used the version at &lt;a href="https://github.com/zonca/jupyterhub-deploy-teaching/tree/globus_singularity"&gt;https://github.com/zonca/jupyterhub-deploy-teaching/tree/globus_singularity&lt;/a&gt;.
+In particular check the example configuration file in the &lt;code&gt;host_vars/&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;Once we have executed the scripts, connect to the Virtual Machine, login with Github and check that Notebooks are working.&lt;/p&gt;
+&lt;h2&gt;Setup Authentication with Globus&lt;/h2&gt;
+&lt;p&gt;Next we can SSH into the Jupyterhub Virtual Machine and customize Jupyterhub configuration in &lt;code&gt;/etc/jupyterhub&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;oauthenticator&lt;/code&gt; should alrady be installed,, but it needs the Globus SDK to support authentication with Globus:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo /opt/conda/bin/pip install globus_sdk[jwt]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then follow the instructions to setup Globus Auth: &lt;a href="https://github.com/jupyterhub/oauthenticator#globus-setup"&gt;https://github.com/jupyterhub/oauthenticator#globus-setup&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;you should now have add these lines in &lt;code&gt;/etc/jupyterhub/jupyterhub_config.py&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;oauthenticator.globus&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;GlobusOAuthenticator&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JupyterHub&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;authenticator_class&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GlobusOAuthenticator&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GlobusOAuthenticator&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;oauth_callback_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu/hub/oauth_callback&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GlobusOAuthenticator&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GlobusOAuthenticator&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client_secret&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should now be able to login with your Globus ID credentials, see the documentation to support credentials from institutions supported by Globus Auth.
+After login, don't worry if you get an error in starting your notebook.&lt;/p&gt;
+&lt;h2&gt;Setup Spawning with Batchspawner&lt;/h2&gt;
+&lt;p&gt;In my last post about spawning Notebooks on Comet I was using XSEDE authentication so that each user would have to use their own Comet account.
+In this scenario instead we imagine a Gateway system where the administrator shares their own allocation with the Gateway users. 
+Therefore you should create a SSH keypair for the &lt;code&gt;root&lt;/code&gt; user on the Jupyterhub Virtual Machine and make sure you can login with no need for a password to Comet as the Gateway user.&lt;/p&gt;
+&lt;p&gt;Then you need to install &lt;code&gt;batchspawner&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/jupyterhub/batchspawner.git
+cd batchspawner/
+sudo /opt/conda/bin/pip install .
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then configure the Spawner, see &lt;a href="https://gist.github.com/zonca/aaed55502c4b16535fe947791d02ac32"&gt;my configuration of Jupyterhub: &lt;code&gt;jupyterhub_config.py&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You should modify &lt;code&gt;comet_spawner.py&lt;/code&gt; to point to your Gateway user home folder and then fill all the details in &lt;code&gt;jupyterhub_config.py&lt;/code&gt; marked by the &lt;code&gt;CONF&lt;/code&gt; string.&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;CometSpawner&lt;/code&gt; I also create a form for the user to choose the parameters of the job and also the Singularity image they want to use.&lt;/p&gt;
+&lt;p&gt;Here the spawner uses &lt;code&gt;SSH&lt;/code&gt; to connect to the Comet login node and submit jobs as the Gateway user.&lt;/p&gt;
+&lt;p&gt;At this point you should be able to login and launch a job on Comet, execute &lt;code&gt;squeue&lt;/code&gt; on Comet to check if that works or look in the home folder of the Gateway user for the logfile of the job and in &lt;code&gt;/var/log/jupyterhub&lt;/code&gt; on the Virtual machine for errors.&lt;/p&gt;
+&lt;h2&gt;Setup tunneling&lt;/h2&gt;
+&lt;p&gt;Finally we need a way for the gateway Virtual Machine to access the port on the Comet computing node in order to proxy the Notebook application back to the user.&lt;/p&gt;
+&lt;p&gt;The simpler solution is to create a user &lt;code&gt;tunnelbot&lt;/code&gt; on the VM with no shell access, then create a SSH keypair and paste the &lt;strong&gt;private&lt;/strong&gt; key into the &lt;code&gt;jupyterhub_config.py&lt;/code&gt; file (contact me if you have a btter solution!).
+The job on Comet sets up then a SSH tunnel between the Comet computing node and the Jupyterhub VM.&lt;/p&gt;
+&lt;h2&gt;Improvements&lt;/h2&gt;
+&lt;p&gt;To keep the setup simple, all users are running on the home folder of the Gateway user, for a real deployment, it is possible to create a subfolder for each user beforehand and then use singularity to mount that as the home folder.&lt;/p&gt;</content><category term="jupyterhub"></category><category term="ansible"></category><category term="sdsc"></category><category term="singularity"></category></entry><entry><title>How to create pull requests on Github</title><link href="http://zonca.github.io/2017/06/quick-github-pull-requests.html" rel="alternate"></link><published>2017-06-30T11:00:00-07:00</published><updated>2017-06-30T11:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-06-30:/2017/06/quick-github-pull-requests.html</id><summary type="html">&lt;p&gt;Pull Requests are the web-based version of sending software patches via email to code maintainers.
 They allow a person that has no access to a code repository to submit a code change to the repository administrator for review and 1-click merging.&lt;/p&gt;
 &lt;h2&gt;Preparation&lt;/h2&gt;
 &lt;ul&gt;
