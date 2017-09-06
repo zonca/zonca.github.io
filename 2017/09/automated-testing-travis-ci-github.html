@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Setup automated testing on Github repository with Travis-ci | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Setup automated testing on Github repository with Travis-ci</h1>
+        </header>
+        <div class='post-content'>
+            <h2>Introduction</h2>
+<p>It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.</p>
+<p>The suite of tests should be easy to execute (possibly one single command, for example with the <code>py.test</code> runner) and quick to run (more than 1 minute would make it tedious to run).</p>
+<p>The developers should run the unit test suite every time they implement a change to the codebase to make sure anything else has not been broken.</p>
+<p>However, once a commit has been pushed to Github, it is also great to have automated testing executed automatically, at least for 2 reasons:</p>
+<ul>
+<li>Run tests in all the environments that need to be supported by the software, for example run with different versions of Python or different versions of a key required external dependancy</li>
+<li>Run tests in a clean environment that has less risks of being contaminated by some mis-configuration on one of the developers' environments</li>
+</ul>
+<h2>Travis-CI</h2>
+<p>Travis is a free web based service that allows to register a trigger on Github so that every time a commit is pushed to Github or a Pull Request is opened, it launches an isolated Ubuntu (even if it also supports Mac OS) container for each of the configurations that we want to test, builds the software (if needed) and then runs the test.</p>
+<p>The only requirement is that the Github project needs to be Public for the free service. Otherwise there are paid plans for private repositories.</p>
+<h2>Setup on Travis-CI</h2>
+<ul>
+<li>Go to <a href="http://travis-ci.org">http://travis-ci.org</a> and login with a Github account</li>
+<li>In order to automatatically configure the hook on Github Travis requests writing privileges to your Github account, annoying but convenient</li>
+<li>Leave all default options, just make sure that Pull Requests are automatically tested</li>
+<li>If you have the repository both under an organization and a fork under your account, you can choose either to test both or just the organization repository, anyway your pull requests will be tested before merging.</li>
+</ul>
+<h2>Configuration of the repository</h2>
+<ul>
+<li>
+<p>Create a new branch on your repository:</p>
+<div class="highlight"><pre><span></span>git checkout -b test_travis
+</pre></div>
+
+
+</li>
+<li>
+<p>Add a <code>.travis.yml</code> (mind that it starts with a dot) configuration file</p>
+</li>
+<li>
+<p>Inside this file you can configure how your project is built and tested, for the simple case of <code>bash</code> or <code>perl</code> scripts you can just write:</p>
+<div class="highlight"><pre><span></span><span class="n">dist</span><span class="o">:</span> <span class="n">trusty</span>
+<span class="n">language</span><span class="o">:</span> <span class="n">bash</span>
+
+<span class="n">script</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">cd</span> <span class="n">$TRAVIS_BUILD_DIR</span><span class="o">/</span><span class="n">tests</span><span class="o">;</span> <span class="n">bash</span> <span class="n">run_test</span><span class="o">.</span><span class="na">sh</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Check the Travis-CI documentation for advanced configuration options</p>
+</li>
+<li>Now push these changes to your fork of the main repository  and then create a Pull Request to the main repository</li>
+<li>Go to <a href="https://travis-ci.org/YOUR_ORGANIZATION/YOUR_REPO">https://travis-ci.org/YOUR_ORGANIZATION/YOUR_REPO</a> to check the build status and the log</li>
+</ul>
+<h2>Python example</h2>
+<p>In the following example, Travis-CI will create 8 builds, each of the 4 versions of Python will be tested with the 2 versions of <code>numpy</code>:</p>
+<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+<span class="n">python</span><span class="o">:</span>
+  <span class="o">-</span> <span class="s2">&quot;2.7&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;3.4&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;3.5&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;3.6&quot;</span>
+<span class="n">env</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">NUMPY_VERSION</span><span class="o">=</span><span class="mf">1.12</span><span class="o">.</span><span class="mi">1</span>
+  <span class="o">-</span> <span class="n">NUMPY_VERSION</span><span class="o">=</span><span class="mf">1.13</span><span class="o">.</span><span class="mi">1</span>
+<span class="err">#</span> <span class="n">command</span> <span class="n">to</span> <span class="n">install</span> <span class="n">dependencies</span><span class="o">,</span> <span class="n">requirements</span><span class="o">.</span><span class="na">txt</span> <span class="n">should</span> <span class="n">NOT</span> <span class="k">include</span> <span class="n">numpy</span>
+<span class="n">install</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="na">txt</span> <span class="n">numpy</span><span class="o">==</span><span class="n">$NUMPY_VERSION</span>
+<span class="err">#</span> <span class="n">command</span> <span class="n">to</span> <span class="n">run</span> <span class="n">tests</span>
+<span class="n">script</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">pytest</span> <span class="err">#</span> <span class="n">or</span> <span class="n">py</span><span class="o">.</span><span class="na">test</span> <span class="k">for</span> <span class="n">Python</span> <span class="n">versions</span> <span class="mf">3.5</span> <span class="n">and</span> <span class="n">below</span>
+</pre></div>
+
+
+<h2>Badge in README</h2>
+<p>Aestetic touch, left click on the "Build Passing" image on the Travis-CI page for your repository, choose "Markdown" and paste the code to the <code>README.md</code> of your repository on Github. This will show in real time if the last version of the code is passing the tests or not.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2017-09-06T18:00:00-07:00">Wed 06 September 2017</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/github.html">github</a> 
+<a href="http://zonca.github.io/tag/travis.html">travis</a> 
+<a href="http://zonca.github.io/tag/git.html">git</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

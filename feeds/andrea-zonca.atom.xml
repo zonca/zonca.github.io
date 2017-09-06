@@ -1,5 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-08-11T18:00:00-07:00</updated><entry><title>Deployment of Jupyterhub with Globus Auth to spawn Notebook on Comet in Singularity containers</title><link href="http://zonca.github.io/2017/08/jupyterhub-globus-comet-singularity.html" rel="alternate"></link><published>2017-08-11T18:00:00-07:00</published><updated>2017-08-11T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-08-11:/2017/08/jupyterhub-globus-comet-singularity.html</id><summary type="html">&lt;h2&gt;Build Singularity containers to run single user notebook applications&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-09-06T18:00:00-07:00</updated><entry><title>Setup automated testing on Github repository with Travis-ci</title><link href="http://zonca.github.io/2017/09/automated-testing-travis-ci-github.html" rel="alternate"></link><published>2017-09-06T18:00:00-07:00</published><updated>2017-09-06T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-09-06:/2017/09/automated-testing-travis-ci-github.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.&lt;/p&gt;
+&lt;p&gt;The suite of tests should be easy to execute (possibly one single command, for example with the &lt;code&gt;py.test&lt;/code&gt; runner …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.&lt;/p&gt;
+&lt;p&gt;The suite of tests should be easy to execute (possibly one single command, for example with the &lt;code&gt;py.test&lt;/code&gt; runner) and quick to run (more than 1 minute would make it tedious to run).&lt;/p&gt;
+&lt;p&gt;The developers should run the unit test suite every time they implement a change to the codebase to make sure anything else has not been broken.&lt;/p&gt;
+&lt;p&gt;However, once a commit has been pushed to Github, it is also great to have automated testing executed automatically, at least for 2 reasons:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Run tests in all the environments that need to be supported by the software, for example run with different versions of Python or different versions of a key required external dependancy&lt;/li&gt;
+&lt;li&gt;Run tests in a clean environment that has less risks of being contaminated by some mis-configuration on one of the developers' environments&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Travis-CI&lt;/h2&gt;
+&lt;p&gt;Travis is a free web based service that allows to register a trigger on Github so that every time a commit is pushed to Github or a Pull Request is opened, it launches an isolated Ubuntu (even if it also supports Mac OS) container for each of the configurations that we want to test, builds the software (if needed) and then runs the test.&lt;/p&gt;
+&lt;p&gt;The only requirement is that the Github project needs to be Public for the free service. Otherwise there are paid plans for private repositories.&lt;/p&gt;
+&lt;h2&gt;Setup on Travis-CI&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Go to &lt;a href="http://travis-ci.org"&gt;http://travis-ci.org&lt;/a&gt; and login with a Github account&lt;/li&gt;
+&lt;li&gt;In order to automatatically configure the hook on Github Travis requests writing privileges to your Github account, annoying but convenient&lt;/li&gt;
+&lt;li&gt;Leave all default options, just make sure that Pull Requests are automatically tested&lt;/li&gt;
+&lt;li&gt;If you have the repository both under an organization and a fork under your account, you can choose either to test both or just the organization repository, anyway your pull requests will be tested before merging.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Configuration of the repository&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Create a new branch on your repository:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git checkout -b test_travis
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add a &lt;code&gt;.travis.yml&lt;/code&gt; (mind that it starts with a dot) configuration file&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Inside this file you can configure how your project is built and tested, for the simple case of &lt;code&gt;bash&lt;/code&gt; or &lt;code&gt;perl&lt;/code&gt; scripts you can just write:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;dist&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;trusty&lt;/span&gt;
+&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt;
+
+&lt;span class="n"&gt;script&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;$TRAVIS_BUILD_DIR&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tests&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;run_test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Check the Travis-CI documentation for advanced configuration options&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Now push these changes to your fork of the main repository  and then create a Pull Request to the main repository&lt;/li&gt;
+&lt;li&gt;Go to &lt;a href="https://travis-ci.org/YOUR_ORGANIZATION/YOUR_REPO"&gt;https://travis-ci.org/YOUR_ORGANIZATION/YOUR_REPO&lt;/a&gt; to check the build status and the log&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Python example&lt;/h2&gt;
+&lt;p&gt;In the following example, Travis-CI will create 8 builds, each of the 4 versions of Python will be tested with the 2 versions of &lt;code&gt;numpy&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;3.4&amp;quot;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;3.5&amp;quot;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;3.6&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;NUMPY_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.12&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;NUMPY_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.13&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;command&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;dependencies&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;requirements&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;txt&lt;/span&gt; &lt;span class="n"&gt;should&lt;/span&gt; &lt;span class="n"&gt;NOT&lt;/span&gt; &lt;span class="k"&gt;include&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;
+&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="n"&gt;requirements&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;txt&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="n"&gt;$NUMPY_VERSION&lt;/span&gt;
+&lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;command&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="n"&gt;tests&lt;/span&gt;
+&lt;span class="n"&gt;script&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;pytest&lt;/span&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;or&lt;/span&gt; &lt;span class="n"&gt;py&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;test&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;Python&lt;/span&gt; &lt;span class="n"&gt;versions&lt;/span&gt; &lt;span class="mf"&gt;3.5&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;below&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Badge in README&lt;/h2&gt;
+&lt;p&gt;Aestetic touch, left click on the "Build Passing" image on the Travis-CI page for your repository, choose "Markdown" and paste the code to the &lt;code&gt;README.md&lt;/code&gt; of your repository on Github. This will show in real time if the last version of the code is passing the tests or not.&lt;/p&gt;</content><category term="github"></category><category term="travis"></category><category term="git"></category></entry><entry><title>Deployment of Jupyterhub with Globus Auth to spawn Notebook on Comet in Singularity containers</title><link href="http://zonca.github.io/2017/08/jupyterhub-globus-comet-singularity.html" rel="alternate"></link><published>2017-08-11T18:00:00-07:00</published><updated>2017-08-11T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-08-11:/2017/08/jupyterhub-globus-comet-singularity.html</id><summary type="html">&lt;h2&gt;Build Singularity containers to run single user notebook applications&lt;/h2&gt;
 &lt;p&gt;Follow the instructions at &lt;a href="https://github.com/zonca/singularity-comet"&gt;https://github.com/zonca/singularity-comet&lt;/a&gt; to build images from the &lt;code&gt;ubuntu_anaconda_jupyterhub.def&lt;/code&gt; and &lt;code&gt;centos_anaconda_jupyterhub.def&lt;/code&gt; definition files, or use the containers I have already built on Comet:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/oasis/scratch/comet/zonca/temp_project/centos_anaconda_jupyterhub.img
 /oasis/scratch/comet …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;Build Singularity containers to run single user notebook applications&lt;/h2&gt;
