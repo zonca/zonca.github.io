@@ -64,6 +64,11 @@
 <li>Leave all default options, just make sure that Pull Requests are automatically tested</li>
 <li>If you have the repository both under an organization and a fork under your account, you can choose either to test both or just the organization repository, anyway your pull requests will be tested before merging.</li>
 </ul>
+<h2>Preparation of the test scripts</h2>
+<p>In order to automate running the test scripts on Travis-CI, it is important that the test scripts return a exit code different from zero to signal that the tests failed.</p>
+<p>If you are using a test running tool like <code>pytest</code>, this is automatically done for you. If you are using bash scripts instead, make sure that if the script detects an error it calls <code>exit 1</code>.
+In order to automate running the test scripts on Travis-CI, it is important that the test scripts return a exit code different from zero to signal that the tests failed.</p>
+<p>If you are using a test running tool like <code>pytest</code>, this is automatically done for you. If you are using bash scripts instead, make sure that if the script detects an error it calls <code>exit 1</code>.</p>
 <h2>Configuration of the repository</h2>
 <ul>
 <li>
