@@ -49,18 +49,18 @@
 <p>It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.</p>
 <p>The suite of tests should be easy to execute (possibly one single command, for example with the <code>py.test</code> runner) and quick to run (more than 1 minute would make it tedious to run).</p>
 <p>The developers should run the unit test suite every time they implement a change to the codebase to make sure anything else has not been broken.</p>
-<p>However, once a commit has been pushed to Github, it is also great to have automated testing executed automatically, at least for 2 reasons:</p>
+<p>However, once a commit has been pushed to Github, it is also useful to have automated testing executed automatically, at least for 2 reasons:</p>
 <ul>
 <li>Run tests in all the environments that need to be supported by the software, for example run with different versions of Python or different versions of a key required external dependancy</li>
 <li>Run tests in a clean environment that has less risks of being contaminated by some mis-configuration on one of the developers' environments</li>
 </ul>
 <h2>Travis-CI</h2>
 <p>Travis is a free web based service that allows to register a trigger on Github so that every time a commit is pushed to Github or a Pull Request is opened, it launches an isolated Ubuntu (even if it also supports Mac OS) container for each of the configurations that we want to test, builds the software (if needed) and then runs the test.</p>
-<p>The only requirement is that the Github project needs to be Public for the free service. Otherwise there are paid plans for private repositories.</p>
+<p>The only requirement is that the Github project needs to be public for the free service. Otherwise there are paid plans for private repositories.</p>
 <h2>Setup on Travis-CI</h2>
 <ul>
 <li>Go to <a href="http://travis-ci.org">http://travis-ci.org</a> and login with a Github account</li>
-<li>In order to automatatically configure the hook on Github Travis requests writing privileges to your Github account, annoying but convenient</li>
+<li>In order to automatatically configure the hook on Github, Travis requests writing privileges to your Github account, annoying but convenient</li>
 <li>Leave all default options, just make sure that Pull Requests are automatically tested</li>
 <li>If you have the repository both under an organization and a fork under your account, you can choose either to test both or just the organization repository, anyway your pull requests will be tested before merging.</li>
 </ul>
@@ -92,6 +92,7 @@
 </li>
 <li>Now push these changes to your fork of the main repository  and then create a Pull Request to the main repository</li>
 <li>Go to <a href="https://travis-ci.org/YOUR_ORGANIZATION/YOUR_REPO">https://travis-ci.org/YOUR_ORGANIZATION/YOUR_REPO</a> to check the build status and the log</li>
+<li>Once your Pull Request passes the tests, merge it to the main repository so that also the master branch will be tested for all future commits.</li>
 </ul>
 <h2>Python example</h2>
 <p>In the following example, Travis-CI will create 8 builds, each of the 4 versions of Python will be tested with the 2 versions of <code>numpy</code>:</p>
