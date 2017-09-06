@@ -70,7 +70,7 @@ Now you can check it works by executing:</p>
 <p>from the login node and make sure you are NOT asked for your password.</p>
 <h3>Configure the script for SLURM and submit the job</h3>
 <p>Copy <code>submit_slurm_comet.sh</code> from <a href="https://gist.github.com/zonca/5f8b5ccb826a774d3f89">https://gist.github.com/zonca/5f8b5ccb826a774d3f89</a> on your home on Comet.</p>
-<p>Change the port number in the script to a port of your choosing between 8000 and 9999, referenced as YOURPORT in the rest of the tutorial. Two users on the same login node on the same port would not be allowed to forward, so try to avoid common port numbers as 8000, 9000, 8080 or 8888.</p>
+<p>Change the port number in the script to a port of your choosing between 8000 and 9999, referenced as YOURPORT in the rest of the tutorial. Two users on the same login node on the same port would not be allowed to forward, so try to avoid common port numbers as 8000, 9000, 8080 or 8888. Tho</p>
 <p>Choose whether you prefer to use a full node to have access to all 24 cores and 128GB of RAM or if you only need 1 core and 5GB of RAM and change the top of the script accordingly.</p>
 <p>Choose a duration of your job, for initial testing better keep 30 minutes so your job starts straight away.</p>
 <p>Submit the job to the scheduler:</p>
@@ -99,7 +99,7 @@ Now you can check it works by executing:</p>
 <p>The script forwards the port from the login node of comet to your laptop.</p>
 <h4>Windows</h4>
 <p>Install <code>putty</code>.</p>
-<p>Follow tutorial for local port forwarding on <a href="http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/">http://howto.ccs.neu.edu/howto/windows/ssh-port-tunneling-with-putty/</a></p>
+<p>Follow tutorial for local port forwarding on <a href="https://www.akadia.com/services/ssh_putty.html/">https://www.akadia.com/services/ssh_putty.html/</a></p>
 <ul>
 <li>set <code>comet-ln2.sdsc.edu</code> as remote host, 22 as SSH port</li>
 <li>set YOURPORT as tunnel port, replace both 8080 and 80 in the tutorial with your port number. </li>
