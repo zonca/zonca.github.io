@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Deploy scalable Jupyterhub on Docker Swarm mode | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Deploy scalable Jupyterhub on Docker Swarm mode</h1>
+        </header>
+        <div class='post-content'>
+            <h2>Introduction</h2>
+<p>Jupyterhub genrally requires roughly 500MB per user for light data processing and many GB for heavy data processing, therefore it is often necessary to deploy it across multiple machines to support many users.</p>
+<p>The recommended scalable deployment for Jupyterhub is on Kubernetes, see <a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html">Zero to Jupyterhub</a> (and I'll cover it next). However the learning curve for Kubernetes is quite steep, I believe that for smaller deployments (30/50 users, 10 users per machine) and were high availability is not critical, deploying on Docker with Swarm Mode is a simpler option.</p>
+<p>In the past I have covered a <a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html">Jupyterhub deployment on the old version of Docker Swarm</a> using <code>DockerSpawner</code>. The most important difference is that the last version of Docker has a more sophisticated "Swarm mode" that allows you to launch and manage services instead of individual containers, support for this is provided by <a href="https://github.com/cassinyio/SwarmSpawner"><code>SwarmSpawner</code></a>. Thanks to the new architecture, we do not need to have actual Unix accounts on the Host but all users can run with the <code>jovyan</code> user account defined only inside the Docker containers. Then we can also deploy Jupyterhub itself as a Docker container instead of installing it on the Host.</p>
+<h2>Setup a Virtual Machine for the Hub</h2>
+<p>First of all we need to create a Virtual Machine, I tested this on XSEDE Jetstream CentOS 7 image (with Docker pre-installed), but I would recommend Ubuntu 16.04 which is more universally used so it is easier to find support for it.
+The same setup would work on a bare-metal server.</p>
+<p>Make sure that a recent version of Docker is installed, I used <code>17.07.0-ce</code>.</p>
+<p>Setup networking so that port 80 and 443 are accessible for HTTP and HTTPS. Associate a Public IP to this instance so that it is accessible from the Internet.</p>
+<p>Add your user to the <code>docker</code> group so you do not need <code>sudo</code> to run <code>docker</code> commands. Check that <code>docker</code> works running <code>docker info</code>.</p>
+<h3>Clone the config files repository</h3>
+<p>I recommend to create the folder <code>/etc/jupyterhub</code>, set ownership to your user and clone my configuration repository there:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/zonca/deploy-jupyterhub-dockerswarm /etc/jupyterhub
+</pre></div>
+
+
+<h3>Setup Swarm</h3>
+<p>The first node is going to be the <em>Master</em> node of the Swarm, launch:</p>
+<div class="highlight"><pre><span></span>docker swarm init --advertise-addr INTERNAL_IP_ADDRESS
+</pre></div>
+
+
+<p>It is better to use a internal IP address, for example on Jetstream the <code>192.xxx.xxx.xxx</code> IP. This is the address that the other instances will use to connect to this node.</p>
+<p>This command will print out the string that the other nodes will need to run to join this swarm, save it for later (you can recover it with <code>docker swarm join-token</code>)</p>
+<h3>Install the NGINX web server</h3>
+<p>NGINX is going to sit in front of Jupyterhub as a proxy and handle SSL, we are going to have also NGINX as a Docker service:</p>
+<div class="highlight"><pre><span></span>docker pull nginx:latest
+</pre></div>
+
+
+<p>Now let's test that Docker and the networking is working correctly, launch <code>nginx</code> with the default configuration:</p>
+<div class="highlight"><pre><span></span>docker service create \
+  --name nginx \
+  --publish 80:80 \
+  nginx
+</pre></div>
+
+
+<p>This is going to create a service, then the service creates the containers, check with <code>docker service ls</code> and <code>docker ps</code>, if a container dies, the service will automatically relaunch it.
+Now if you connect to your instance from an external machine you should see the NGINX welcome page.
+If this is not the case check <code>docker ps -a</code> and <code>docker logs INSTANCE_ID</code> to debug the issue.</p>
+<p>Finally remove the service with:</p>
+<div class="highlight"><pre><span></span>docker service rm nginx
+</pre></div>
+
+
+<p>Now run the service with the configuration for Jupyterhub, edit <code>nginx.conf</code> and replace <code>SERVER_URL</code> then launch:</p>
+<div class="highlight"><pre><span></span>bash ngnx_service.sh
+</pre></div>
+
+
+<p>At this point you should gate a Gateway error if you connect with a browser to your instance.</p>
+<h3>Install Jupyterhub</h3>
+<p>You can launch the official Jupyterhub 0.8.0 container as a service with:</p>
+<div class="highlight"><pre><span></span>docker service create \
+  --name jupyterhubserver \
+  --network jupyterhub \
+  --detach=true \
+  jupyterhub/jupyterhub:0.8.0
+</pre></div>
+
+
+<p>This would run Jupyterhub with the default <code>jupyterhub_config.py</code> with local auth and local spawner.
+If you connect to the instance now you should see the Jupyterhub login page, you cannot login because you don't have
+a user account inside the container. We'll setup authentication next.</p>
+<h4>Configure Jupyterhub</h4>
+<p>Next we want to customize the hub, first login on <a href="http://hub.docker.com">http://hub.docker.com</a> and create a new repository,
+then follow the instructions there to setup <code>docker push</code> on your server so you can push your image 
+to the registy.</p>
+<p>This is necessary because Swarm might spawn the service on a different machine, so itneeds an external
+registry to make sure to pull the right image.</p>
+<p>You can now customize the hub image in <code>/etc/jupyterhub/hub</code> with <code>docker build . -t yourusername/jupyterhub-docker</code>
+and push it remotely with <code>docker push yourusername/jupyterhub-docker</code>.</p>
+<p>This image includes <code>oauthenticator</code> for Github, Google, CILogon and Globus authentication and <code>swarmspawner</code> for
+spawning containers for the users.</p>
+<p>We can now create <code>jupyterhub_config.py</code>, for now we just want temporary home folders, so replace the <code>mounts</code> variable with <code>[]</code> in <code>c.SwarmSpawner.container_spec</code>. Then customize the server URL <code>server_url.com</code> and IP <code>SERVER_IP</code> (it will be necessary later).
+At the bottom of <code>jupyterhub_config.py</code> we can also customize CPU and memory contraints. Unfortunately there is no easy way to setup a custom disk space limit.</p>
+<p>Follow the documentation of <code>oauthenticator</code> to setup authentication.</p>
+<p>Create the folder <code>/var/nfs</code> that we will configure later but it is harcoded in the script to launch the service.</p>
+<p>Temporarily remove from <code>launch_service_jupyterhub.sh</code> the line:</p>
+<div class="highlight"><pre><span></span>--mount src=nfsvolume,dst=/var/nfs \
+</pre></div>
+
+
+<p>Launch the service from <code>/etc/jupyterhub</code> with <code>bash launch_service_jupyterhub.sh</code>.</p>
+<p>Check in the script that we are mounting the Docker socket into the container so that Jupyterhub can launch Docker containers for the users. We also mount the <code>/etc/jupyterhub</code> folder so that it has access to <code>jupyterhub_config.py</code>. We also contraint it to run in the manager node of this Swarm, this assures that it always runs on this first node. We could later add another manager node for resiliency and the Hub could potentially spawn there with no issues.</p>
+<p>At this point we have a first working configuration of Jupyterhub, try to login and check if the notebooks are working.
+This configuration has no permanent storage, so the users will have a home folder inside their container and will be able to
+write Notebooks and data there up to the image reaching 10GB, so about 5GB.
+If they logout and log back in they will find their files still there, but if they do "Close my Server" from the control panel
+or if for any other reason their container is removed, they will loose their data.
+So this setup could be used for short workshops or demos.</p>
+<h2>Setup other nodes</h2>
+<p>We can create another Virtual Machine with the same version of Docker and make sure that the two machines internally have all the port open to simplify networking. Any additional machine <strong>needs no open ports</strong> to the outside world, all connections will go through nginx.</p>
+<p>We can have it join the Swarm by pasting the token got at Swarm initialization on the first node.</p>
+<p>Now when Jupyterhub launches a single user container, it could spawn either on this server or on the first server, Swarm will automatically take care of load balancing. It will also automatically download the Docker image specified in <code>jupyterhub_config.py</code>.</p>
+<p>We can add as many nodes as necessary.</p>
+<h2>Setup Permanent storage</h2>
+<p>Surprisingly enough, Swarm has no easy way to setup permament storage that would automatically move data from one node to another in case a user container is re-spawned on another server. There are some volume plugins but I believe that their configuration is so complex that at this point would be better to directly switch to Kubernetes.
+In order to achieve a simpler setup that I believe could easily handle few tens of users we can use NFS. Moreover Docker volumes can handle NFS natively, so we don't even need to have home folders owned by each user but we can just point Docker volumes to our NFS folder and Docker will manage that for us and we can just use one single user. Users cannot access other people's files because only their own folder is mounted into their container.</p>
+<h3>Setup a NFS server</h3>
+<p>First we need to decide which server acts as NFS server, for small deployments we can have just the first server which runs the hub also handle this, for more performance we might want to have a dedicated server that only runs NFS and which is part of the internal network but does not participate in the Swarm so that it won't have user containers running on it.</p>
+<p>In a Cloud environment like Jetstream or Amazon, it is useful to create a Volume and attach it to that instance so that we can enlarge it later or back it up independently from the Instance and that would survive the Hub instance. Make sure to choose the XFS filesystem if you need to setup disk space contraints. Mount it in <code>/var/nfs/</code> and make sure it is writable by any user.</p>
+<p>On that server we can install NFS following the OS instructions and setup <code>/etc/exports</code> with:</p>
+<div class="highlight"><pre><span></span>/var/nfs        *(rw,sync,no_subtree_check)
+</pre></div>
+
+
+<p>The NFS port is accessible only on the internal network anyway so we can just accept any connection.</p>
+<p>SSH into any of the Swarm nodes and check this works fine with:</p>
+<div class="highlight"><pre><span></span>sudo mount 192.NFS.SRV.IP:/var/nfs /mnt
+touch /mnt/writing_works
+</pre></div>
+
+
+<h3>Setup Jupyterhub to use Docker Volumes over NFS</h3>
+<p>In <code>/etc/jupyterhub/jupyterhub_config.py</code> we should configure the mounts to <code>swarmspawner</code>:</p>
+<div class="highlight"><pre><span></span>mounts = [{&#39;type&#39;: &#39;volume&#39;,
+           &#39;source&#39;: &#39;jupyterhub-user-{username}&#39;,
+           &#39;target&#39;: notebook_dir,
+        &#39;no_copy&#39; : True,
+        &#39;driver_config&#39; : {
+          &#39;name&#39; : &#39;local&#39;,
+          &#39;options&#39; : {
+             &#39;type&#39; : &#39;nfs4&#39;,
+             &#39;o&#39; : &#39;addr=SERVER_IP,rw&#39;,
+             &#39;device&#39; : &#39;:/var/nfs/{username}/&#39;
+           }
+        },
+}]
+</pre></div>
+
+
+<p>Replace <code>SERVER_IP</code> with your server, this tells the Docker <code>local</code> Volume driver to mount folders <code>/var/nfs/{username}</code> as home folders of the single user notebook container.</p>
+<p>The only problem is that these folders need to be pre-existing, so I modified the <code>swarmspawner</code> plugin to create those folders the first time a user authenticates, please let me know if there is a better way and I'll improve this tutorial.
+See the branch <code>createfolder</code> on <a href="https://github.com/zonca/SwarmSpawner/tree/createfolder">my fork of <code>swarmspawner</code></a>.
+In order to install this you need to modify your custom <code>jupyterhub-docker</code> to install from there (see the commented out section in <code>hub/Dockerfile</code>).
+Often the <code>Authenticator</code> transform the username into a hash, so I added a feature on this spawner to also create a text file <code>HASH_email.txt</code> and save the email of the user there so that it is easier to check directly from the filesystem who owns a specific folder.</p>
+<p>For this to work the Hub needs access to <code>/var/nfs/</code>, the best way to achieve this is to create another Volume, add the <code>NFS_SERVER_IP</code> and launch on the first server:</p>
+<div class="highlight"><pre><span></span>bash create_volume_nfs.sh
+</pre></div>
+
+
+<p>Then uncomment the <code>--mount src=nfsvolume,dst=/var/nfs \</code> line from <code>launch_service_jupyterhub.sh</code> and relaunch the service so that it is available locally.</p>
+<p>At this point you should test that if you login, then stop/kill the container, your data should still be there when you launch it again.</p>
+<h3>Setup user quota</h3>
+<p>The Docker local Volume driver does not support setting a user quota so we have to resort to our filesystem. You can modify <code>/etc/fstab</code> to mount the XFS volume with the <code>pquota</code> option that supports setting a limit to a folders and all of its subfolders. We cannot use user quotas because all of the users are running under the same UNIX account.</p>
+<p>Create a folder <code>/var/nfs/testquota</code> and then test that setting quota is working with:</p>
+<div class="highlight"><pre><span></span>sudo set_quota.sh /var/nfs testquota
+</pre></div>
+
+
+<p>There should be a space between <code>/var/nfs</code> and <code>testquota</code>, then check with:</p>
+<div class="highlight"><pre><span></span>bash get_quota.sh
+</pre></div>
+
+
+<p>You should see a quota of <code>1GB</code> for that folder. Modify <code>set_quota.sh</code> to choose another size.</p>
+<h4>Automatically set quotas</h4>
+<p>We want quota to be automatically set each time the spawner creates another folder, <code>incrond</code> can monitor a folder for any new created file and launch the <code>set_quota.sh</code> script for us.</p>
+<p>Install the <code>incrond</code> package and make sure it is active and restarted on boot. Then customize it with <code>sudo incrontab -e</code> and paste the content of <code>incrontab</code> in <code>/etc/jupyterhub</code>.</p>
+<p>Now delete your user folder in <code>/var/nfs</code> and launch Jupyterhub again to check that the folder is created with the correct quota. The spawner also creates a <code>/var/nfs/{username}_QUOTA_NOT_SET</code> that is deleted then by the <code>set_quota.sh</code> script.</p>
+<h2>Setup HTTPS</h2>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2017-10-26T18:00:00-07:00">Thu 26 October 2017</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/github.html">github</a> 
+<a href="http://zonca.github.io/tag/travis.html">travis</a> 
+<a href="http://zonca.github.io/tag/git.html">git</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

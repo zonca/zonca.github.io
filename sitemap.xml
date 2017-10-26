@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2017-09-06T19:51:26-00:00</lastmod>
+<lastmod>2017-10-26T13:59:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2017-09-06T19:51:26-00:00</lastmod>
+<lastmod>2017-10-26T13:59:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2017-09-06T19:51:26-00:00</lastmod>
+<lastmod>2017-10-26T13:59:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2017-09-06T19:51:26-00:00</lastmod>
+<lastmod>2017-10-26T13:59:56-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html</loc>
+<lastmod>2017-10-26T18:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -754,7 +761,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2017-09-06T18:00:00-07:53</lastmod>
+<lastmod>2017-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -775,7 +782,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/travis.html</loc>
-<lastmod>2017-09-06T18:00:00-07:53</lastmod>
+<lastmod>2017-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -845,7 +852,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/git.html</loc>
-<lastmod>2017-09-06T18:00:00-07:53</lastmod>
+<lastmod>2017-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1055,7 +1062,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/github.html</loc>
-<lastmod>2017-09-06T18:00:00-07:53</lastmod>
+<lastmod>2017-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1146,7 +1153,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2017-09-06T18:00:00-07:53</lastmod>
+<lastmod>2017-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

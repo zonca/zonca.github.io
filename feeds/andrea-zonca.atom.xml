@@ -1,5 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-09-06T18:00:00-07:00</updated><entry><title>Setup automated testing on a Github repository with Travis-ci</title><link href="http://zonca.github.io/2017/09/automated-testing-travis-ci-github.html" rel="alternate"></link><published>2017-09-06T18:00:00-07:00</published><updated>2017-09-06T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-09-06:/2017/09/automated-testing-travis-ci-github.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-10-26T18:00:00-07:00</updated><entry><title>Deploy scalable Jupyterhub on Docker Swarm mode</title><link href="http://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html" rel="alternate"></link><published>2017-10-26T18:00:00-07:00</published><updated>2017-10-26T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-10-26:/2017/10/scalable-jupyterhub-docker-swarm-mode.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Jupyterhub genrally requires roughly 500MB per user for light data processing and many GB for heavy data processing, therefore it is often necessary to deploy it across multiple machines to support many users.&lt;/p&gt;
+&lt;p&gt;The recommended scalable deployment for Jupyterhub is on Kubernetes, see &lt;a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html"&gt;Zero to Jupyterhub&lt;/a&gt; (and I'll cover …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Jupyterhub genrally requires roughly 500MB per user for light data processing and many GB for heavy data processing, therefore it is often necessary to deploy it across multiple machines to support many users.&lt;/p&gt;
+&lt;p&gt;The recommended scalable deployment for Jupyterhub is on Kubernetes, see &lt;a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html"&gt;Zero to Jupyterhub&lt;/a&gt; (and I'll cover it next). However the learning curve for Kubernetes is quite steep, I believe that for smaller deployments (30/50 users, 10 users per machine) and were high availability is not critical, deploying on Docker with Swarm Mode is a simpler option.&lt;/p&gt;
+&lt;p&gt;In the past I have covered a &lt;a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html"&gt;Jupyterhub deployment on the old version of Docker Swarm&lt;/a&gt; using &lt;code&gt;DockerSpawner&lt;/code&gt;. The most important difference is that the last version of Docker has a more sophisticated "Swarm mode" that allows you to launch and manage services instead of individual containers, support for this is provided by &lt;a href="https://github.com/cassinyio/SwarmSpawner"&gt;&lt;code&gt;SwarmSpawner&lt;/code&gt;&lt;/a&gt;. Thanks to the new architecture, we do not need to have actual Unix accounts on the Host but all users can run with the &lt;code&gt;jovyan&lt;/code&gt; user account defined only inside the Docker containers. Then we can also deploy Jupyterhub itself as a Docker container instead of installing it on the Host.&lt;/p&gt;
+&lt;h2&gt;Setup a Virtual Machine for the Hub&lt;/h2&gt;
+&lt;p&gt;First of all we need to create a Virtual Machine, I tested this on XSEDE Jetstream CentOS 7 image (with Docker pre-installed), but I would recommend Ubuntu 16.04 which is more universally used so it is easier to find support for it.
+The same setup would work on a bare-metal server.&lt;/p&gt;
+&lt;p&gt;Make sure that a recent version of Docker is installed, I used &lt;code&gt;17.07.0-ce&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Setup networking so that port 80 and 443 are accessible for HTTP and HTTPS. Associate a Public IP to this instance so that it is accessible from the Internet.&lt;/p&gt;
+&lt;p&gt;Add your user to the &lt;code&gt;docker&lt;/code&gt; group so you do not need &lt;code&gt;sudo&lt;/code&gt; to run &lt;code&gt;docker&lt;/code&gt; commands. Check that &lt;code&gt;docker&lt;/code&gt; works running &lt;code&gt;docker info&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Clone the config files repository&lt;/h3&gt;
+&lt;p&gt;I recommend to create the folder &lt;code&gt;/etc/jupyterhub&lt;/code&gt;, set ownership to your user and clone my configuration repository there:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/deploy-jupyterhub-dockerswarm /etc/jupyterhub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Setup Swarm&lt;/h3&gt;
+&lt;p&gt;The first node is going to be the &lt;em&gt;Master&lt;/em&gt; node of the Swarm, launch:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker swarm init --advertise-addr INTERNAL_IP_ADDRESS
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is better to use a internal IP address, for example on Jetstream the &lt;code&gt;192.xxx.xxx.xxx&lt;/code&gt; IP. This is the address that the other instances will use to connect to this node.&lt;/p&gt;
+&lt;p&gt;This command will print out the string that the other nodes will need to run to join this swarm, save it for later (you can recover it with &lt;code&gt;docker swarm join-token&lt;/code&gt;)&lt;/p&gt;
+&lt;h3&gt;Install the NGINX web server&lt;/h3&gt;
+&lt;p&gt;NGINX is going to sit in front of Jupyterhub as a proxy and handle SSL, we are going to have also NGINX as a Docker service:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker pull nginx:latest
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now let's test that Docker and the networking is working correctly, launch &lt;code&gt;nginx&lt;/code&gt; with the default configuration:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker service create \
+  --name nginx \
+  --publish 80:80 \
+  nginx
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is going to create a service, then the service creates the containers, check with &lt;code&gt;docker service ls&lt;/code&gt; and &lt;code&gt;docker ps&lt;/code&gt;, if a container dies, the service will automatically relaunch it.
+Now if you connect to your instance from an external machine you should see the NGINX welcome page.
+If this is not the case check &lt;code&gt;docker ps -a&lt;/code&gt; and &lt;code&gt;docker logs INSTANCE_ID&lt;/code&gt; to debug the issue.&lt;/p&gt;
+&lt;p&gt;Finally remove the service with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker service rm nginx
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now run the service with the configuration for Jupyterhub, edit &lt;code&gt;nginx.conf&lt;/code&gt; and replace &lt;code&gt;SERVER_URL&lt;/code&gt; then launch:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash ngnx_service.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;At this point you should gate a Gateway error if you connect with a browser to your instance.&lt;/p&gt;
+&lt;h3&gt;Install Jupyterhub&lt;/h3&gt;
+&lt;p&gt;You can launch the official Jupyterhub 0.8.0 container as a service with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker service create \
+  --name jupyterhubserver \
+  --network jupyterhub \
+  --detach=true \
+  jupyterhub/jupyterhub:0.8.0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This would run Jupyterhub with the default &lt;code&gt;jupyterhub_config.py&lt;/code&gt; with local auth and local spawner.
+If you connect to the instance now you should see the Jupyterhub login page, you cannot login because you don't have
+a user account inside the container. We'll setup authentication next.&lt;/p&gt;
+&lt;h4&gt;Configure Jupyterhub&lt;/h4&gt;
+&lt;p&gt;Next we want to customize the hub, first login on &lt;a href="http://hub.docker.com"&gt;http://hub.docker.com&lt;/a&gt; and create a new repository,
+then follow the instructions there to setup &lt;code&gt;docker push&lt;/code&gt; on your server so you can push your image 
+to the registy.&lt;/p&gt;
+&lt;p&gt;This is necessary because Swarm might spawn the service on a different machine, so itneeds an external
+registry to make sure to pull the right image.&lt;/p&gt;
+&lt;p&gt;You can now customize the hub image in &lt;code&gt;/etc/jupyterhub/hub&lt;/code&gt; with &lt;code&gt;docker build . -t yourusername/jupyterhub-docker&lt;/code&gt;
+and push it remotely with &lt;code&gt;docker push yourusername/jupyterhub-docker&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This image includes &lt;code&gt;oauthenticator&lt;/code&gt; for Github, Google, CILogon and Globus authentication and &lt;code&gt;swarmspawner&lt;/code&gt; for
+spawning containers for the users.&lt;/p&gt;
+&lt;p&gt;We can now create &lt;code&gt;jupyterhub_config.py&lt;/code&gt;, for now we just want temporary home folders, so replace the &lt;code&gt;mounts&lt;/code&gt; variable with &lt;code&gt;[]&lt;/code&gt; in &lt;code&gt;c.SwarmSpawner.container_spec&lt;/code&gt;. Then customize the server URL &lt;code&gt;server_url.com&lt;/code&gt; and IP &lt;code&gt;SERVER_IP&lt;/code&gt; (it will be necessary later).
+At the bottom of &lt;code&gt;jupyterhub_config.py&lt;/code&gt; we can also customize CPU and memory contraints. Unfortunately there is no easy way to setup a custom disk space limit.&lt;/p&gt;
+&lt;p&gt;Follow the documentation of &lt;code&gt;oauthenticator&lt;/code&gt; to setup authentication.&lt;/p&gt;
+&lt;p&gt;Create the folder &lt;code&gt;/var/nfs&lt;/code&gt; that we will configure later but it is harcoded in the script to launch the service.&lt;/p&gt;
+&lt;p&gt;Temporarily remove from &lt;code&gt;launch_service_jupyterhub.sh&lt;/code&gt; the line:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;--mount src=nfsvolume,dst=/var/nfs \
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Launch the service from &lt;code&gt;/etc/jupyterhub&lt;/code&gt; with &lt;code&gt;bash launch_service_jupyterhub.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Check in the script that we are mounting the Docker socket into the container so that Jupyterhub can launch Docker containers for the users. We also mount the &lt;code&gt;/etc/jupyterhub&lt;/code&gt; folder so that it has access to &lt;code&gt;jupyterhub_config.py&lt;/code&gt;. We also contraint it to run in the manager node of this Swarm, this assures that it always runs on this first node. We could later add another manager node for resiliency and the Hub could potentially spawn there with no issues.&lt;/p&gt;
+&lt;p&gt;At this point we have a first working configuration of Jupyterhub, try to login and check if the notebooks are working.
+This configuration has no permanent storage, so the users will have a home folder inside their container and will be able to
+write Notebooks and data there up to the image reaching 10GB, so about 5GB.
+If they logout and log back in they will find their files still there, but if they do "Close my Server" from the control panel
+or if for any other reason their container is removed, they will loose their data.
+So this setup could be used for short workshops or demos.&lt;/p&gt;
+&lt;h2&gt;Setup other nodes&lt;/h2&gt;
+&lt;p&gt;We can create another Virtual Machine with the same version of Docker and make sure that the two machines internally have all the port open to simplify networking. Any additional machine &lt;strong&gt;needs no open ports&lt;/strong&gt; to the outside world, all connections will go through nginx.&lt;/p&gt;
+&lt;p&gt;We can have it join the Swarm by pasting the token got at Swarm initialization on the first node.&lt;/p&gt;
+&lt;p&gt;Now when Jupyterhub launches a single user container, it could spawn either on this server or on the first server, Swarm will automatically take care of load balancing. It will also automatically download the Docker image specified in &lt;code&gt;jupyterhub_config.py&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can add as many nodes as necessary.&lt;/p&gt;
+&lt;h2&gt;Setup Permanent storage&lt;/h2&gt;
+&lt;p&gt;Surprisingly enough, Swarm has no easy way to setup permament storage that would automatically move data from one node to another in case a user container is re-spawned on another server. There are some volume plugins but I believe that their configuration is so complex that at this point would be better to directly switch to Kubernetes.
+In order to achieve a simpler setup that I believe could easily handle few tens of users we can use NFS. Moreover Docker volumes can handle NFS natively, so we don't even need to have home folders owned by each user but we can just point Docker volumes to our NFS folder and Docker will manage that for us and we can just use one single user. Users cannot access other people's files because only their own folder is mounted into their container.&lt;/p&gt;
+&lt;h3&gt;Setup a NFS server&lt;/h3&gt;
+&lt;p&gt;First we need to decide which server acts as NFS server, for small deployments we can have just the first server which runs the hub also handle this, for more performance we might want to have a dedicated server that only runs NFS and which is part of the internal network but does not participate in the Swarm so that it won't have user containers running on it.&lt;/p&gt;
+&lt;p&gt;In a Cloud environment like Jetstream or Amazon, it is useful to create a Volume and attach it to that instance so that we can enlarge it later or back it up independently from the Instance and that would survive the Hub instance. Make sure to choose the XFS filesystem if you need to setup disk space contraints. Mount it in &lt;code&gt;/var/nfs/&lt;/code&gt; and make sure it is writable by any user.&lt;/p&gt;
+&lt;p&gt;On that server we can install NFS following the OS instructions and setup &lt;code&gt;/etc/exports&lt;/code&gt; with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/var/nfs        *(rw,sync,no_subtree_check)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The NFS port is accessible only on the internal network anyway so we can just accept any connection.&lt;/p&gt;
+&lt;p&gt;SSH into any of the Swarm nodes and check this works fine with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mount 192.NFS.SRV.IP:/var/nfs /mnt
+touch /mnt/writing_works
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Setup Jupyterhub to use Docker Volumes over NFS&lt;/h3&gt;
+&lt;p&gt;In &lt;code&gt;/etc/jupyterhub/jupyterhub_config.py&lt;/code&gt; we should configure the mounts to &lt;code&gt;swarmspawner&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mounts = [{&amp;#39;type&amp;#39;: &amp;#39;volume&amp;#39;,
+           &amp;#39;source&amp;#39;: &amp;#39;jupyterhub-user-{username}&amp;#39;,
+           &amp;#39;target&amp;#39;: notebook_dir,
+        &amp;#39;no_copy&amp;#39; : True,
+        &amp;#39;driver_config&amp;#39; : {
+          &amp;#39;name&amp;#39; : &amp;#39;local&amp;#39;,
+          &amp;#39;options&amp;#39; : {
+             &amp;#39;type&amp;#39; : &amp;#39;nfs4&amp;#39;,
+             &amp;#39;o&amp;#39; : &amp;#39;addr=SERVER_IP,rw&amp;#39;,
+             &amp;#39;device&amp;#39; : &amp;#39;:/var/nfs/{username}/&amp;#39;
+           }
+        },
+}]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Replace &lt;code&gt;SERVER_IP&lt;/code&gt; with your server, this tells the Docker &lt;code&gt;local&lt;/code&gt; Volume driver to mount folders &lt;code&gt;/var/nfs/{username}&lt;/code&gt; as home folders of the single user notebook container.&lt;/p&gt;
+&lt;p&gt;The only problem is that these folders need to be pre-existing, so I modified the &lt;code&gt;swarmspawner&lt;/code&gt; plugin to create those folders the first time a user authenticates, please let me know if there is a better way and I'll improve this tutorial.
+See the branch &lt;code&gt;createfolder&lt;/code&gt; on &lt;a href="https://github.com/zonca/SwarmSpawner/tree/createfolder"&gt;my fork of &lt;code&gt;swarmspawner&lt;/code&gt;&lt;/a&gt;.
+In order to install this you need to modify your custom &lt;code&gt;jupyterhub-docker&lt;/code&gt; to install from there (see the commented out section in &lt;code&gt;hub/Dockerfile&lt;/code&gt;).
+Often the &lt;code&gt;Authenticator&lt;/code&gt; transform the username into a hash, so I added a feature on this spawner to also create a text file &lt;code&gt;HASH_email.txt&lt;/code&gt; and save the email of the user there so that it is easier to check directly from the filesystem who owns a specific folder.&lt;/p&gt;
+&lt;p&gt;For this to work the Hub needs access to &lt;code&gt;/var/nfs/&lt;/code&gt;, the best way to achieve this is to create another Volume, add the &lt;code&gt;NFS_SERVER_IP&lt;/code&gt; and launch on the first server:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash create_volume_nfs.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then uncomment the &lt;code&gt;--mount src=nfsvolume,dst=/var/nfs \&lt;/code&gt; line from &lt;code&gt;launch_service_jupyterhub.sh&lt;/code&gt; and relaunch the service so that it is available locally.&lt;/p&gt;
+&lt;p&gt;At this point you should test that if you login, then stop/kill the container, your data should still be there when you launch it again.&lt;/p&gt;
+&lt;h3&gt;Setup user quota&lt;/h3&gt;
+&lt;p&gt;The Docker local Volume driver does not support setting a user quota so we have to resort to our filesystem. You can modify &lt;code&gt;/etc/fstab&lt;/code&gt; to mount the XFS volume with the &lt;code&gt;pquota&lt;/code&gt; option that supports setting a limit to a folders and all of its subfolders. We cannot use user quotas because all of the users are running under the same UNIX account.&lt;/p&gt;
+&lt;p&gt;Create a folder &lt;code&gt;/var/nfs/testquota&lt;/code&gt; and then test that setting quota is working with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo set_quota.sh /var/nfs testquota
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There should be a space between &lt;code&gt;/var/nfs&lt;/code&gt; and &lt;code&gt;testquota&lt;/code&gt;, then check with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash get_quota.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should see a quota of &lt;code&gt;1GB&lt;/code&gt; for that folder. Modify &lt;code&gt;set_quota.sh&lt;/code&gt; to choose another size.&lt;/p&gt;
+&lt;h4&gt;Automatically set quotas&lt;/h4&gt;
+&lt;p&gt;We want quota to be automatically set each time the spawner creates another folder, &lt;code&gt;incrond&lt;/code&gt; can monitor a folder for any new created file and launch the &lt;code&gt;set_quota.sh&lt;/code&gt; script for us.&lt;/p&gt;
+&lt;p&gt;Install the &lt;code&gt;incrond&lt;/code&gt; package and make sure it is active and restarted on boot. Then customize it with &lt;code&gt;sudo incrontab -e&lt;/code&gt; and paste the content of &lt;code&gt;incrontab&lt;/code&gt; in &lt;code&gt;/etc/jupyterhub&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now delete your user folder in &lt;code&gt;/var/nfs&lt;/code&gt; and launch Jupyterhub again to check that the folder is created with the correct quota. The spawner also creates a &lt;code&gt;/var/nfs/{username}_QUOTA_NOT_SET&lt;/code&gt; that is deleted then by the &lt;code&gt;set_quota.sh&lt;/code&gt; script.&lt;/p&gt;
+&lt;h2&gt;Setup HTTPS&lt;/h2&gt;</content><category term="github"></category><category term="travis"></category><category term="git"></category></entry><entry><title>Setup automated testing on a Github repository with Travis-ci</title><link href="http://zonca.github.io/2017/09/automated-testing-travis-ci-github.html" rel="alternate"></link><published>2017-09-06T18:00:00-07:00</published><updated>2017-09-06T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-09-06:/2017/09/automated-testing-travis-ci-github.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.&lt;/p&gt;
 &lt;p&gt;The suite of tests should be easy to execute (possibly one single command, for example with the &lt;code&gt;py.test&lt;/code&gt; runner …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.&lt;/p&gt;
