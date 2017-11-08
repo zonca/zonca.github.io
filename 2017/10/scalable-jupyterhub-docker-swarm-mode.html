@@ -98,6 +98,11 @@ If this is not the case check <code>docker ps -a</code> and <code>docker logs IN
 
 <p>At this point you should gate a Gateway error if you connect with a browser to your instance.</p>
 <h3>Install Jupyterhub</h3>
+<p>Before launching Jupyterhub you need to create a Docker network so that the containers in the swarm can communicate easily:</p>
+<div class="highlight"><pre><span></span>docker network create --driver overlay jupyterhub
+</pre></div>
+
+
 <p>You can launch the official Jupyterhub 0.8.0 container as a service with:</p>
 <div class="highlight"><pre><span></span>docker service create \
   --name jupyterhubserver \
