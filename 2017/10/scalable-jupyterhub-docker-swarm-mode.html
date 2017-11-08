@@ -47,7 +47,7 @@
         <div class='post-content'>
             <h2>Introduction</h2>
 <p>Jupyterhub genrally requires roughly 500MB per user for light data processing and many GB for heavy data processing, therefore it is often necessary to deploy it across multiple machines to support many users.</p>
-<p>The recommended scalable deployment for Jupyterhub is on Kubernetes, see <a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html">Zero to Jupyterhub</a> (and I'll cover it next). However the learning curve for Kubernetes is quite steep, I believe that for smaller deployments (30/50 users, 10 users per machine) and were high availability is not critical, deploying on Docker with Swarm Mode is a simpler option.</p>
+<p>The recommended scalable deployment for Jupyterhub is on Kubernetes, see <a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html">Zero to Jupyterhub</a> (and I'll cover it next). However the learning curve for Kubernetes is quite steep, I believe that for smaller deployments (30/50 users, 10 users per machine) and where high availability is not critical, deploying on Docker with Swarm Mode is a simpler option.</p>
 <p>In the past I have covered a <a href="https://zonca.github.io/2016/05/jupyterhub-docker-swarm.html">Jupyterhub deployment on the old version of Docker Swarm</a> using <code>DockerSpawner</code>. The most important difference is that the last version of Docker has a more sophisticated "Swarm mode" that allows you to launch and manage services instead of individual containers, support for this is provided by <a href="https://github.com/cassinyio/SwarmSpawner"><code>SwarmSpawner</code></a>. Thanks to the new architecture, we do not need to have actual Unix accounts on the Host but all users can run with the <code>jovyan</code> user account defined only inside the Docker containers. Then we can also deploy Jupyterhub itself as a Docker container instead of installing it on the Host.</p>
 <h2>Setup a Virtual Machine for the Hub</h2>
 <p>First of all we need to create a Virtual Machine, I tested this on XSEDE Jetstream CentOS 7 image (with Docker pre-installed), but I would recommend Ubuntu 16.04 which is more universally used so it is easier to find support for it.
@@ -70,7 +70,7 @@ The same setup would work on a bare-metal server.</p>
 <p>It is better to use a internal IP address, for example on Jetstream the <code>192.xxx.xxx.xxx</code> IP. This is the address that the other instances will use to connect to this node.</p>
 <p>This command will print out the string that the other nodes will need to run to join this swarm, save it for later (you can recover it with <code>docker swarm join-token</code>)</p>
 <h3>Install the NGINX web server</h3>
-<p>NGINX is going to sit in front of Jupyterhub as a proxy and handle SSL, we are going to have also NGINX as a Docker service:</p>
+<p>NGINX is going to sit in front of Jupyterhub as a proxy and handle SSL (at the end of this tutorial), we are going to have also NGINX as a Docker service:</p>
 <div class="highlight"><pre><span></span>docker pull nginx:latest
 </pre></div>
 
@@ -252,7 +252,7 @@ docker network create --driver overlay --attachable jupyterhub
 <p>Now you should be able to connect to your server over HTTPS and access Jupyterhub.</p>
 <h2>Feedback</h2>
 <p>Feedback appreciated, <a href="https://twitter.com/andreazonca">@andreazonca</a></p>
-<p>I am also available to support US scientists to deploy scientific gateways through the <a href="https://www.xsede.org/for-users/ecss">XSEDE ECSS consulation program</a>.</p>
+<p>I am also available to support US scientists to deploy scientific gateways through the <a href="https://www.xsede.org/for-users/ecss">XSEDE ECSS consultation program</a>.</p>
         </div>
     </article>
 
