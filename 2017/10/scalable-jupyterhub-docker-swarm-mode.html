@@ -213,6 +213,46 @@ Often the <code>Authenticator</code> transform the username into a hash, so I ad
 <p>Install the <code>incrond</code> package and make sure it is active and restarted on boot. Then customize it with <code>sudo incrontab -e</code> and paste the content of <code>incrontab</code> in <code>/etc/jupyterhub</code>.</p>
 <p>Now delete your user folder in <code>/var/nfs</code> and launch Jupyterhub again to check that the folder is created with the correct quota. The spawner also creates a <code>/var/nfs/{username}_QUOTA_NOT_SET</code> that is deleted then by the <code>set_quota.sh</code> script.</p>
 <h2>Setup HTTPS</h2>
+<p>We would like to setup NGINX to provide SSL encryption for Jupyterhub using the free Letsencrypt service. The main issue is that those certificates need to be renewed every few months, so we need a service running regularly to take care of that.</p>
+<p>The simplest option would be to add <code>--publish 8000</code> to the Jupyterhub so that Jupyterhub exposes its port to the host and then remove the NGINX Docker container and install NGINX and certbot directly on the first host following <a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04">a standard setup</a>.</p>
+<p>However, to keep the setup more modular, we'll proceed and use another NGINX container that comes equipped with automatic Let's Encrypt certificates request and renewal available at: <a href="https://github.com/linuxserver/docker-letsencrypt">https://github.com/linuxserver/docker-letsencrypt</a>.</p>
+<h3>Modify networking setup</h3>
+<p>One complication is that this container requires additional privileges to handle networking that are not availble in Swarm mode, so we will run this container outside of the Swarm on the first node.</p>
+<p>We need to make the <code>jupyterhub</code> network that we created before attachable by containers outside the Swarm.</p>
+<div class="highlight"><pre><span></span>docker service rm nginx
+bash remove_service_jupyterhub.sh
+docker network rm jupyterhub
+docker network create --driver overlay --attachable jupyterhub
+</pre></div>
+
+
+<p>Then add <code>--publish 8000</code> to <code>launch_service_juputerhub.sh</code> and start Jupyterhub again. Make sure that if you SSH to the first node you can <code>wget localhost:8000</code> successfully but if you try to access <code>yourdomain:8000</code> from the internet you <strong>should not</strong> be able to connect (the port should be closed by the networking configuration on OpenStack for example).</p>
+<h3>Test the NGINX/Letsencrypt container</h3>
+<p>Create a volume to save the configuration and the logs (optionally on the NFS volume):</p>
+<div class="highlight"><pre><span></span>docker volume create --driver local nginx_volume
+</pre></div>
+
+
+<p>Test the container running:</p>
+<div class="highlight"><pre><span></span>docker run \
+  --cap-add=NET_ADMIN \
+  --name nginx \
+  -p 443:443 \
+  -e EMAIL=your_email@domain.edu \
+  -e URL=your.domain.org \
+  -v nginx_volume:/config \
+  linuxserver/letsencrypt
+</pre></div>
+
+
+<p>If this works correctly, connect to <a href="https://your.domain.org">https://your.domain.org</a>, you should have a valid SSL certificate and a welcome message. If not check <code>docker logs nginx</code>.</p>
+<h3>Configure NGINX to proxy Jupyterhub</h3>
+<p>We can use <code>letsencrypt_container_nginx.conf</code> to handle NGINX configuration with HTTPS support, this loads the certificates from a path automatically created by the <code>letsencrypt</code> container.</p>
+<p>Customize <code>launch_letsencrypt_container.sh</code> and then run it, it will create the NGINX container again and it will also bind-mount the NGINX configuration into the container.</p>
+<p>Now you should be able to connect to your server over HTTPS and access Jupyterhub.</p>
+<h2>Feedback</h2>
+<p>Feedback appreciated, <a href="https://twitter.com/andreazonca">@andreazonca</a></p>
+<p>I am also available to support US scientists to deploy scientific gateways through the <a href="https://www.xsede.org/for-users/ecss">XSEDE ECSS consulation program</a>.</p>
         </div>
     </article>
 

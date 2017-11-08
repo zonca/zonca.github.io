@@ -194,7 +194,47 @@ Often the &lt;code&gt;Authenticator&lt;/code&gt; transform the username into a h
 &lt;p&gt;We want quota to be automatically set each time the spawner creates another folder, &lt;code&gt;incrond&lt;/code&gt; can monitor a folder for any new created file and launch the &lt;code&gt;set_quota.sh&lt;/code&gt; script for us.&lt;/p&gt;
 &lt;p&gt;Install the &lt;code&gt;incrond&lt;/code&gt; package and make sure it is active and restarted on boot. Then customize it with &lt;code&gt;sudo incrontab -e&lt;/code&gt; and paste the content of &lt;code&gt;incrontab&lt;/code&gt; in &lt;code&gt;/etc/jupyterhub&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Now delete your user folder in &lt;code&gt;/var/nfs&lt;/code&gt; and launch Jupyterhub again to check that the folder is created with the correct quota. The spawner also creates a &lt;code&gt;/var/nfs/{username}_QUOTA_NOT_SET&lt;/code&gt; that is deleted then by the &lt;code&gt;set_quota.sh&lt;/code&gt; script.&lt;/p&gt;
-&lt;h2&gt;Setup HTTPS&lt;/h2&gt;</content><category term="github"></category><category term="travis"></category><category term="git"></category></entry><entry><title>Setup automated testing on a Github repository with Travis-ci</title><link href="http://zonca.github.io/2017/09/automated-testing-travis-ci-github.html" rel="alternate"></link><published>2017-09-06T18:00:00-07:00</published><updated>2017-09-06T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-09-06:/2017/09/automated-testing-travis-ci-github.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;h2&gt;Setup HTTPS&lt;/h2&gt;
+&lt;p&gt;We would like to setup NGINX to provide SSL encryption for Jupyterhub using the free Letsencrypt service. The main issue is that those certificates need to be renewed every few months, so we need a service running regularly to take care of that.&lt;/p&gt;
+&lt;p&gt;The simplest option would be to add &lt;code&gt;--publish 8000&lt;/code&gt; to the Jupyterhub so that Jupyterhub exposes its port to the host and then remove the NGINX Docker container and install NGINX and certbot directly on the first host following &lt;a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04"&gt;a standard setup&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;However, to keep the setup more modular, we'll proceed and use another NGINX container that comes equipped with automatic Let's Encrypt certificates request and renewal available at: &lt;a href="https://github.com/linuxserver/docker-letsencrypt"&gt;https://github.com/linuxserver/docker-letsencrypt&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Modify networking setup&lt;/h3&gt;
+&lt;p&gt;One complication is that this container requires additional privileges to handle networking that are not availble in Swarm mode, so we will run this container outside of the Swarm on the first node.&lt;/p&gt;
+&lt;p&gt;We need to make the &lt;code&gt;jupyterhub&lt;/code&gt; network that we created before attachable by containers outside the Swarm.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker service rm nginx
+bash remove_service_jupyterhub.sh
+docker network rm jupyterhub
+docker network create --driver overlay --attachable jupyterhub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then add &lt;code&gt;--publish 8000&lt;/code&gt; to &lt;code&gt;launch_service_juputerhub.sh&lt;/code&gt; and start Jupyterhub again. Make sure that if you SSH to the first node you can &lt;code&gt;wget localhost:8000&lt;/code&gt; successfully but if you try to access &lt;code&gt;yourdomain:8000&lt;/code&gt; from the internet you &lt;strong&gt;should not&lt;/strong&gt; be able to connect (the port should be closed by the networking configuration on OpenStack for example).&lt;/p&gt;
+&lt;h3&gt;Test the NGINX/Letsencrypt container&lt;/h3&gt;
+&lt;p&gt;Create a volume to save the configuration and the logs (optionally on the NFS volume):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker volume create --driver local nginx_volume
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Test the container running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker run \
+  --cap-add=NET_ADMIN \
+  --name nginx \
+  -p 443:443 \
+  -e EMAIL=your_email@domain.edu \
+  -e URL=your.domain.org \
+  -v nginx_volume:/config \
+  linuxserver/letsencrypt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If this works correctly, connect to &lt;a href="https://your.domain.org"&gt;https://your.domain.org&lt;/a&gt;, you should have a valid SSL certificate and a welcome message. If not check &lt;code&gt;docker logs nginx&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Configure NGINX to proxy Jupyterhub&lt;/h3&gt;
+&lt;p&gt;We can use &lt;code&gt;letsencrypt_container_nginx.conf&lt;/code&gt; to handle NGINX configuration with HTTPS support, this loads the certificates from a path automatically created by the &lt;code&gt;letsencrypt&lt;/code&gt; container.&lt;/p&gt;
+&lt;p&gt;Customize &lt;code&gt;launch_letsencrypt_container.sh&lt;/code&gt; and then run it, it will create the NGINX container again and it will also bind-mount the NGINX configuration into the container.&lt;/p&gt;
+&lt;p&gt;Now you should be able to connect to your server over HTTPS and access Jupyterhub.&lt;/p&gt;
+&lt;h2&gt;Feedback&lt;/h2&gt;
+&lt;p&gt;Feedback appreciated, &lt;a href="https://twitter.com/andreazonca"&gt;@andreazonca&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I am also available to support US scientists to deploy scientific gateways through the &lt;a href="https://www.xsede.org/for-users/ecss"&gt;XSEDE ECSS consulation program&lt;/a&gt;.&lt;/p&gt;</content><category term="github"></category><category term="travis"></category><category term="git"></category></entry><entry><title>Setup automated testing on a Github repository with Travis-ci</title><link href="http://zonca.github.io/2017/09/automated-testing-travis-ci-github.html" rel="alternate"></link><published>2017-09-06T18:00:00-07:00</published><updated>2017-09-06T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-09-06:/2017/09/automated-testing-travis-ci-github.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.&lt;/p&gt;
 &lt;p&gt;The suite of tests should be easy to execute (possibly one single command, for example with the &lt;code&gt;py.test&lt;/code&gt; runner …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;It is good practice in software development to implement extensive testing of the codebase in order to catch quickly any bug introduced into the code when implementing new features.&lt;/p&gt;
