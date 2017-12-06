@@ -9,7 +9,7 @@
 &lt;p&gt;First of all we need to create two Virtual Machines from the &lt;a href="https://use.jetstream-cloud.org"&gt;Jetstream Atmosphere admin panel&lt;/a&gt;I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them &lt;code&gt;master_node&lt;/code&gt; and &lt;code&gt;node_1&lt;/code&gt; for example.&lt;/p&gt;
 &lt;p&gt;Then you can SSH into the first machine with your XSEDE username with &lt;code&gt;sudo&lt;/code&gt; privileges.&lt;/p&gt;
 &lt;h2&gt;Install Kubernetes&lt;/h2&gt;
-&lt;p&gt;The "Zero to Jupyterhub" recipe targets an already existing Kubernetes cluster, for example on Google Cloud. However they also released a set of scripts based on the &lt;code&gt;kubeadm&lt;/code&gt; tool to setup Kubernetes on other servers.&lt;/p&gt;
+&lt;p&gt;The "Zero to Jupyterhub" recipe targets an already existing Kubernetes cluster, for example on Google Cloud. However they also released a set of scripts based on the &lt;code&gt;kubeadm&lt;/code&gt; tool to setup Kubernetes from scratch.&lt;/p&gt;
 &lt;p&gt;This will install all the Kubernetes services and configure the &lt;code&gt;kubectl&lt;/code&gt; command line tool for administering and monitoring the cluster and the &lt;code&gt;helm&lt;/code&gt; package manager to install pre-packaged services.&lt;/p&gt;
 &lt;p&gt;SSH into the first server and follow the instructions at &lt;a href="https://github.com/data-8/kubeadm-bootstrap"&gt;https://github.com/data-8/kubeadm-bootstrap&lt;/a&gt; to "Setup a Master Node"
 this will install a more recent version of Docker. In &lt;code&gt;config.bash&lt;/code&gt;, as Master IP set the ip of the &lt;code&gt;ens3&lt;/code&gt; device, for example from:&lt;/p&gt;
@@ -34,9 +34,9 @@ js-169-jjj.jetstream-cloud.org   Ready     &amp;lt;none&amp;gt;    23s       v1.
 
 &lt;h2&gt;Setup permanent storage for Kubernetes&lt;/h2&gt;
 &lt;p&gt;The cluster we just setup has no permament storage, so user data would disappear every time a container is killed.
-We woud like to provide users with a permament home that would be available across all of the Kubernetes cluster, so that even if a user container spawns again on a different servers, the data are available.&lt;/p&gt;
-&lt;p&gt;First we want to login again to Jetstream web interface and create 2 Volumes (for example 10 GB) and attach them one each to the master and to the first node, this will be automatically mounted on &lt;code&gt;/vol_b&lt;/code&gt;, with no need of rebooting the servers.&lt;/p&gt;
-&lt;p&gt;Kubernetes has capability to provide Permanent Volumes but it needs a backend distributed file system. In this tutorial we will be using &lt;a href="https://rook.io/"&gt;Rook&lt;/a&gt;.&lt;/p&gt;
+We woud like to provide users with a permament home that would be available across all of the Kubernetes cluster, so that even if a user container spawns again on a different server, the data are available.&lt;/p&gt;
+&lt;p&gt;First we want to login again to Jetstream web interface and create 2 Volumes (for example 10 GB) and attach them one each to the master and to the first node, these will be automatically mounted on &lt;code&gt;/vol_b&lt;/code&gt;, with no need of rebooting the servers.&lt;/p&gt;
+&lt;p&gt;Kubernetes has capability to provide Permanent Volumes but it needs a backend distributed file system. In this tutorial we will be using &lt;a href="https://rook.io/"&gt;Rook&lt;/a&gt; which sets up the Ceph distributed filesystem across the nodes.&lt;/p&gt;
 &lt;p&gt;We can first use Helm to install the Rook services (I ran my tests with &lt;code&gt;v0.6.1&lt;/code&gt;):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm repo add rook-alpha https://charts.rook.io/alpha
 sudo helm install rook-alpha/rook
