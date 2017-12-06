@@ -96,7 +96,7 @@ rook-operator-88fb8f6f5-tss5t   1/1       Running   0          1h
 </pre></div>
 
 
-<p>Once the pods have started we can actually configure the storage, copy this <a href="https://gist.github.com/zonca/3c5b4b44c8a60a62754774f4462549c1"><code>rook-cluster.yaml</code> file</a> to the master node.</p>
+<p>Once the pods have started we can actually configure the storage, copy this <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/storage_rook/rook-cluster.yaml"><code>rook-cluster.yaml</code> file</a> to the master node. Better clone all of the repository as we will be using other files later.</p>
 <p>The most important bits are:</p>
 <ul>
 <li><code>dataDirHostPath</code>: this is a folder to save the Rook configuration, we can set it to <code>/var/lib/rook</code></li>
@@ -122,7 +122,7 @@ rook-ceph-osd-cpln8               1/1       Running   0          6m
 
 
 <p>This step launches the distributed file system Ceph on all nodes.</p>
-<p>Finally we can create a new StorageClass which provides block storage for the pods to store data persistently, get <a href="https://gist.github.com/zonca/3c5b4b44c8a60a62754774f4462549c1#file-rook-storageclass-yaml"><code>rook-storageclass.yaml</code> from the same gist we used before</a> and execute with:</p>
+<p>Finally we can create a new StorageClass which provides block storage for the pods to store data persistently, get <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/storage_rook/rook-storageclass.yaml"><code>rook-storageclass.yaml</code> from the same repository we used before</a> and execute with:</p>
 <div class="highlight"><pre><span></span>sudo kubectl create -f rook-storageclass.yaml
 </pre></div>
 
@@ -136,7 +136,7 @@ rook-block   rook.io/block
 
 <h3>(Optional) Test Rook Persistent Storage</h3>
 <p>Optionally, we can deploy a simple pod to verify that the storage system is working properly.</p>
-<p>You can copy <a href="https://gist.github.com/zonca/3c5b4b44c8a60a62754774f4462549c1#file-alpine-rook-yaml"><code>alpine-rook.yaml</code> from Github</a>
+<p>You can copy <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/storage_rook/alpine-rook.yaml"><code>alpine-rook.yaml</code> from Github</a>
 and launch it with:</p>
 <div class="highlight"><pre><span></span>sudo kubectl create -f alpine-rook.yaml
 </pre></div>
@@ -157,7 +157,7 @@ sudo kubectl get logs alpine
 
 <p>access <code>/data/</code> and make sure we can write some files.</p>
 <h2>Install Jupyterhub</h2>
-<p>Read all of the documentation of "Zero to Jupyterhub", then download <code>config_jupyterhub_helm_v0.5.0.yaml</code> from the repository and customize it with the URL of the master node (for Jetstream <code>js-xxx-xxx.jetstream-cloud.org</code>) and generate the random strings for security, finally run the Helm chart:</p>
+<p>Read all of the documentation of "Zero to Jupyterhub", then download <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/config_jupyterhub_helm_v0.5.0.yaml"><code>config_jupyterhub_helm_v0.5.0.yaml</code> from the repository</a> and customize it with the URL of the master node (for Jetstream <code>js-xxx-xxx.jetstream-cloud.org</code>) and generate the random strings for security, finally run the Helm chart:</p>
 <div class="highlight"><pre><span></span>sudo helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 sudo helm repo update
 sudo helm install jupyterhub/jupyterhub \
