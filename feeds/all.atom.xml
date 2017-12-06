@@ -1,5 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-04T18:00:00-08:00</updated><entry><title>Store a conda environment inside a Notebook</title><link href="http://zonca.github.io/2017/12/store-conda-environment-inside-notebook.html" rel="alternate"></link><published>2017-12-04T18:00:00-08:00</published><updated>2017-12-04T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-04:/2017/12/store-conda-environment-inside-notebook.html</id><summary type="html">&lt;p&gt;Last August, during the Container Analysis Environments Workshop held at Urbana-Champaign,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-05T18:00:00-08:00</updated><entry><title>Deploy scalable Jupyterhub with Kubernetes on Jetstream</title><link href="http://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html" rel="alternate"></link><published>2017-12-05T18:00:00-08:00</published><updated>2017-12-05T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-05:/2017/12/scalable-jupyterhub-kubernetes-jetstream.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. It provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero to Jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Kubernetes is a highly sophisticated system, for smaller deployments (30/50 …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. It provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero to Jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Kubernetes is a highly sophisticated system, for smaller deployments (30/50 users, less then 10 servers), another option is to use the Docker Swarm mode, I covered this in a &lt;a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html"&gt;tutorial on how to deploy it on Jetstream&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are not already familiar with Kubernetes, better first read the &lt;a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/tools.html"&gt;section about tools in Zero to Jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Setup two virtual machines&lt;/h2&gt;
+&lt;p&gt;First of all we need to create two Virtual Machines from the &lt;a href="https://use.jetstream-cloud.org"&gt;Jetstream Atmosphere admin panel&lt;/a&gt;I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them &lt;code&gt;master_node&lt;/code&gt; and &lt;code&gt;node_1&lt;/code&gt; for example.&lt;/p&gt;
+&lt;p&gt;Then you can SSH into the first machine with your XSEDE username with &lt;code&gt;sudo&lt;/code&gt; privileges.&lt;/p&gt;
+&lt;h2&gt;Install Kubernetes&lt;/h2&gt;
+&lt;p&gt;The "Zero to Jupyterhub" recipe targets an already existing Kubernetes cluster, for example on Google Cloud. However they also released a set of scripts based on the &lt;code&gt;kubeadm&lt;/code&gt; tool to setup Kubernetes on other servers.&lt;/p&gt;
+&lt;p&gt;This will install all the Kubernetes services and configure the &lt;code&gt;kubectl&lt;/code&gt; command line tool for administering and monitoring the cluster and the &lt;code&gt;helm&lt;/code&gt; package manager to install pre-packaged services.&lt;/p&gt;
+&lt;p&gt;SSH into the first server and follow the instructions at &lt;a href="https://github.com/data-8/kubeadm-bootstrap"&gt;https://github.com/data-8/kubeadm-bootstrap&lt;/a&gt; to "Setup a Master Node"
+this will install a more recent version of Docker. In &lt;code&gt;config.bash&lt;/code&gt;, as Master IP set the ip of the &lt;code&gt;ens3&lt;/code&gt; device, for example from:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip address show dev ens3
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;this is the internal IP of the server, which is good for internal networking between the master and the other nodes, no need to use the public IP.&lt;/p&gt;
+&lt;p&gt;In case the script gives the error &lt;code&gt;Error: could not find a ready tiller pod&lt;/code&gt;, it is due to the fact that 1 minute sleep in the script is not enough to start the tiller pod required by Helm. Just execute it again:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm install --name=support --namespace=support support/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then SSH to the other server and set it up as a worker following the instructions in "Setup a Worker Node" at &lt;a href="https://github.com/data-8/kubeadm-bootstrap"&gt;https://github.com/data-8/kubeadm-bootstrap&lt;/a&gt;,&lt;/p&gt;
+&lt;p&gt;Once the setup is complete on the worker, log back in to the master and check that the worker joined Kubernetes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zonca@js-xxx-xxx:~/kubeadm-bootstrap$ sudo kubectl get nodes
+NAME                             STATUS    ROLES     AGE       VERSION
+js-169-xxx.jetstream-cloud.org   Ready     master    17m       v1.8.4
+js-169-jjj.jetstream-cloud.org   Ready     &amp;lt;none&amp;gt;    23s       v1.8.4
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Setup permanent storage for Kubernetes&lt;/h2&gt;
+&lt;p&gt;The cluster we just setup has no permament storage, so user data would disappear every time a container is killed.
+We woud like to provide users with a permament home that would be available across all of the Kubernetes cluster, so that even if a user container spawns again on a different servers, the data are available.&lt;/p&gt;
+&lt;p&gt;First we want to login again to Jetstream web interface and create 2 Volumes (for example 10 GB) and attach them one each to the master and to the first node, this will be automatically mounted on &lt;code&gt;/vol_b&lt;/code&gt;, with no need of rebooting the servers.&lt;/p&gt;
+&lt;p&gt;Kubernetes has capability to provide Permanent Volumes but it needs a backend distributed file system. In this tutorial we will be using &lt;a href="https://rook.io/"&gt;Rook&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We can first use Helm to install the Rook services (I ran my tests with &lt;code&gt;v0.6.1&lt;/code&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm repo add rook-alpha https://charts.rook.io/alpha
+sudo helm install rook-alpha/rook
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then check that the pods have started:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zonca@js-xxx-xxx:~/kubeadm-bootstrap$ sudo kubectl get pods
+NAME                            READY     STATUS    RESTARTS   AGE
+rook-agent-2v86r                1/1       Running   0          1h
+rook-agent-7dfl9                1/1       Running   0          1h
+rook-operator-88fb8f6f5-tss5t   1/1       Running   0          1h
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once the pods have started we can actually configure the storage, copy this &lt;a href="https://gist.github.com/zonca/3c5b4b44c8a60a62754774f4462549c1"&gt;&lt;code&gt;rook-cluster.yaml&lt;/code&gt; file&lt;/a&gt; to the master node.&lt;/p&gt;
+&lt;p&gt;The most important bits are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dataDirHostPath&lt;/code&gt;: this is a folder to save the Rook configuration, we can set it to &lt;code&gt;/var/lib/rook&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;storage: directories&lt;/code&gt;: this is were data is stored, we can set this to &lt;code&gt;/vol_b&lt;/code&gt; which is the default mount point of Volumes on Jetstream. This way we can more easily back those up or increase their size.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then run it with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl create -f rook-cluster.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And wait for the services to launch:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zonca@js-xxx-xxx:~/kubeadm-bootstrap$ sudo kubectl -n rook get pods
+NAME                              READY     STATUS    RESTARTS   AGE
+rook-api-68b87d48d5-xmkpv         1/1       Running   0          6m
+rook-ceph-mgr0-5ddd685b65-kw9bz   1/1       Running   0          6m
+rook-ceph-mgr1-5fcf599447-j7bpn   1/1       Running   0          6m
+rook-ceph-mon0-g7xsk              1/1       Running   0          7m
+rook-ceph-mon1-zbfqt              1/1       Running   0          7m
+rook-ceph-mon2-c6rzf              1/1       Running   0          6m
+rook-ceph-osd-82lj5               1/1       Running   0          6m
+rook-ceph-osd-cpln8               1/1       Running   0          6m
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This step launches the distributed file system Ceph on all nodes.&lt;/p&gt;
+&lt;p&gt;Finally we can create a new StorageClass which provides block storage for the pods to store data persistently, get &lt;a href="https://gist.github.com/zonca/3c5b4b44c8a60a62754774f4462549c1#file-rook-storageclass-yaml"&gt;&lt;code&gt;rook-storageclass.yaml&lt;/code&gt; from the same gist we used before&lt;/a&gt; and execute with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl create -f rook-storageclass.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should now have the rook storageclass available:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get storageclass
+NAME         PROVISIONER
+rook-block   rook.io/block
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;(Optional) Test Rook Persistent Storage&lt;/h3&gt;
+&lt;p&gt;Optionally, we can deploy a simple pod to verify that the storage system is working properly.&lt;/p&gt;
+&lt;p&gt;You can copy &lt;a href="https://gist.github.com/zonca/3c5b4b44c8a60a62754774f4462549c1#file-alpine-rook-yaml"&gt;&lt;code&gt;alpine-rook.yaml&lt;/code&gt; from Github&lt;/a&gt;
+and launch it with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl create -f alpine-rook.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is a very small pod with Alpine Linux that creates a 2 GB volume from Rook and mounts it on &lt;code&gt;/data&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can verify the Persistent Volumes are created and associated with the pod, check:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get pv
+sudo kubectl get pvc
+sudo kubectl get logs alpine
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can get a shell in the pod with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl exec -it alpine  -- /bin/sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;access &lt;code&gt;/data/&lt;/code&gt; and make sure we can write some files.&lt;/p&gt;
+&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
+&lt;p&gt;Read all of the documentation of "Zero to Jupyterhub", then download &lt;code&gt;config_jupyterhub_helm_v0.5.0.yaml&lt;/code&gt; from the repository and customize it with the URL of the master node (for Jetstream &lt;code&gt;js-xxx-xxx.jetstream-cloud.org&lt;/code&gt;) and generate the random strings for security, finally run the Helm chart:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+sudo helm repo update
+sudo helm install jupyterhub/jupyterhub \
+    --version=v0.5 \
+    --name=jup \
+    --namespace=jup \
+    -f config_jupyterhub_helm_v0.5.0.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Test Jupyterhub&lt;/h3&gt;
+&lt;p&gt;Connect to the public URL of your master node instance at: &lt;a href="https://js-xxx-xxx.jetstream-cloud.org"&gt;https://js-xxx-xxx.jetstream-cloud.org&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Try to login with your XSEDE username and password and check if Jupyterhub works properly.&lt;/p&gt;
+&lt;p&gt;If something is wrong, check:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl --namespace=jup get pods
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Get the name of the &lt;code&gt;hub&lt;/code&gt; pod and check the logs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl --namespace=jup logs hub-xxxx-xxxxxxx
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Check that Rook is working properly:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl --namespace=jup get pv
+sudo kubectl --namespace=jup get pvc
+sudo kubectl --namespace=jup describe pvc claim-YOURXSEDEUSERNAME
+&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyterhub"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Store a conda environment inside a Notebook</title><link href="http://zonca.github.io/2017/12/store-conda-environment-inside-notebook.html" rel="alternate"></link><published>2017-12-04T18:00:00-08:00</published><updated>2017-12-04T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-04:/2017/12/store-conda-environment-inside-notebook.html</id><summary type="html">&lt;p&gt;Last August, during the Container Analysis Environments Workshop held at Urbana-Champaign,
 we had discussion about reproducibility in the Jupyter Notebooks.
 There came out the idea of storing all the details about the Python environment inside the Notebook,
 in the metadata.&lt;/p&gt;
