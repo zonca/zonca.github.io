@@ -54,7 +54,7 @@
 <p>First of all we need to create two Virtual Machines from the <a href="https://use.jetstream-cloud.org">Jetstream Atmosphere admin panel</a>I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them <code>master_node</code> and <code>node_1</code> for example.</p>
 <p>Then you can SSH into the first machine with your XSEDE username with <code>sudo</code> privileges.</p>
 <h2>Install Kubernetes</h2>
-<p>The "Zero to Jupyterhub" recipe targets an already existing Kubernetes cluster, for example on Google Cloud. However they also released a set of scripts based on the <code>kubeadm</code> tool to setup Kubernetes from scratch.</p>
+<p>The "Zero to Jupyterhub" recipe targets an already existing Kubernetes cluster, for example on Google Cloud. However the Berkeley Data Science Education Program team, which administers one of the largest Jupyterhub deployments to date, released a set of scripts based on the <code>kubeadm</code> tool to setup Kubernetes from scratch.</p>
 <p>This will install all the Kubernetes services and configure the <code>kubectl</code> command line tool for administering and monitoring the cluster and the <code>helm</code> package manager to install pre-packaged services.</p>
 <p>SSH into the first server and follow the instructions at <a href="https://github.com/data-8/kubeadm-bootstrap">https://github.com/data-8/kubeadm-bootstrap</a> to "Setup a Master Node"
 this will install a more recent version of Docker. In <code>config.bash</code>, as Master IP set the ip of the <code>ens3</code> device, for example from:</p>
