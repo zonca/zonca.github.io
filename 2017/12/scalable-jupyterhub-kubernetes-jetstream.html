@@ -46,9 +46,10 @@
         </header>
         <div class='post-content'>
             <h2>Introduction</h2>
-<p>The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. It provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, <a href="https://zero-to-jupyterhub.readthedocs.io">Zero to Jupyterhub</a>.</p>
+<p>The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. Kubernetes provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, <a href="https://zero-to-jupyterhub.readthedocs.io">Zero to Jupyterhub</a>. In this deployment both the hub, the proxy and all Jupyter Notebooks servers for the users are running inside Docker containers managed by Kubernetes.</p>
 <p>Kubernetes is a highly sophisticated system, for smaller deployments (30/50 users, less then 10 servers), another option is to use the Docker Swarm mode, I covered this in a <a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html">tutorial on how to deploy it on Jetstream</a>.</p>
 <p>If you are not already familiar with Kubernetes, better first read the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/tools.html">section about tools in Zero to Jupyterhub</a>.</p>
+<p>In this tutorial we will be installing Kubernetes on 2 Ubuntu instances on the XSEDE Jetstream OpenStack-based cloud, configure permanent storage with the Ceph distributed filesystem and run the "Zero to Jupyterhub" recipe to install Jupyterhub on it.</p>
 <h2>Setup two virtual machines</h2>
 <p>First of all we need to create two Virtual Machines from the <a href="https://use.jetstream-cloud.org">Jetstream Atmosphere admin panel</a>I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them <code>master_node</code> and <code>node_1</code> for example.</p>
 <p>Then you can SSH into the first machine with your XSEDE username with <code>sudo</code> privileges.</p>
@@ -168,6 +169,11 @@ sudo helm install jupyterhub/jupyterhub \
 </pre></div>
 
 
+<p>Once you modify the configuration you can update the deployment with:</p>
+<div class="highlight"><pre><span></span>sudo helm upgrade jup jupyterhub/jupyterhub -f config_jupyterhub_helm_v0.5.0.yaml
+</pre></div>
+
+
 <h3>Test Jupyterhub</h3>
 <p>Connect to the public URL of your master node instance at: <a href="https://js-xxx-xxx.jetstream-cloud.org">https://js-xxx-xxx.jetstream-cloud.org</a></p>
 <p>Try to login with your XSEDE username and password and check if Jupyterhub works properly.</p>
@@ -186,6 +192,36 @@ sudo helm install jupyterhub/jupyterhub \
 sudo kubectl --namespace=jup get pvc
 sudo kubectl --namespace=jup describe pvc claim-YOURXSEDEUSERNAME
 </pre></div>
+
+
+<h2>Administration tips</h2>
+<h3>Add more servers to Kubernetes</h3>
+<p>We can create more Ubuntu instances (with a volume attached) and add them to Kubernetes by repeating the same setup we performed on the first worker node.
+Once the node joins Kubernetes, it will be automatically used as a node for the distributed filesystem by Rook and be available to host user containers.</p>
+<h3>Remove a server from Kubernetes</h3>
+<p>Launch first the <code>kubectl drain</code> command to move the currently active pods to other nodes:</p>
+<div class="highlight"><pre><span></span>sudo kubectl get nodes
+sudo kubectl drain &lt;node name&gt;
+</pre></div>
+
+
+<p>Then suspend or delete the instance on the Jetstream admin panel.</p>
+<h3>Configure a different authentication system</h3>
+<p>"Zero to Jupyterhub" supports out of the box authentication with:</p>
+<ul>
+<li>XSEDE credentials with CILogon</li>
+<li>Many Campuses credentials with CILogon</li>
+<li>Globus</li>
+<li>Google</li>
+</ul>
+<p>See <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/extending-jupyterhub.html#authenticating-with-oauth2">the documentation</a> and modify <code>config_jupyterhub_helm_v0.5.0.yaml</code> accordingly.</p>
+<h2>Acknowledgements</h2>
+<ul>
+<li>The Jupyter team, in particular Yuvi Panda, for providing a great software platform and a easy-to-user resrouce for deploying it and for direct support in debugging my issues</li>
+<li>XSEDE Extended Collaborative Support Services for supporting part of my time to work on deploying Jupyterhub on Jetstream and providing computational time on Jetstream</li>
+<li>Pacific Research Platform, in particular John Graham, Thomas DeFanti and Dmitry Mishin (SDSC) for access to their Kubernetes platform for testing</li>
+<li>XSEDE Jetstream's Jeremy Fischer for prompt answers to my questions on Jetstream</li>
+</ul>
         </div>
     </article>
 

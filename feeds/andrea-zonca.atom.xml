@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-05T18:00:00-08:00</updated><entry><title>Deploy scalable Jupyterhub with Kubernetes on Jetstream</title><link href="http://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html" rel="alternate"></link><published>2017-12-05T18:00:00-08:00</published><updated>2017-12-05T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-05:/2017/12/scalable-jupyterhub-kubernetes-jetstream.html</id><summary type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. It provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero to Jupyterhub&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Kubernetes is a highly sophisticated system, for smaller deployments (30/50 …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. It provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero to Jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. Kubernetes provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero to Jupyterhub&lt;/a&gt;. In this deployment both the hub, the proxy and all Jupyter …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. Kubernetes provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero to Jupyterhub&lt;/a&gt;. In this deployment both the hub, the proxy and all Jupyter Notebooks servers for the users are running inside Docker containers managed by Kubernetes.&lt;/p&gt;
 &lt;p&gt;Kubernetes is a highly sophisticated system, for smaller deployments (30/50 users, less then 10 servers), another option is to use the Docker Swarm mode, I covered this in a &lt;a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html"&gt;tutorial on how to deploy it on Jetstream&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you are not already familiar with Kubernetes, better first read the &lt;a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/tools.html"&gt;section about tools in Zero to Jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this tutorial we will be installing Kubernetes on 2 Ubuntu instances on the XSEDE Jetstream OpenStack-based cloud, configure permanent storage with the Ceph distributed filesystem and run the "Zero to Jupyterhub" recipe to install Jupyterhub on it.&lt;/p&gt;
 &lt;h2&gt;Setup two virtual machines&lt;/h2&gt;
 &lt;p&gt;First of all we need to create two Virtual Machines from the &lt;a href="https://use.jetstream-cloud.org"&gt;Jetstream Atmosphere admin panel&lt;/a&gt;I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them &lt;code&gt;master_node&lt;/code&gt; and &lt;code&gt;node_1&lt;/code&gt; for example.&lt;/p&gt;
 &lt;p&gt;Then you can SSH into the first machine with your XSEDE username with &lt;code&gt;sudo&lt;/code&gt; privileges.&lt;/p&gt;
@@ -124,6 +124,11 @@ sudo helm install jupyterhub/jupyterhub \
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;Once you modify the configuration you can update the deployment with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm upgrade jup jupyterhub/jupyterhub -f config_jupyterhub_helm_v0.5.0.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h3&gt;Test Jupyterhub&lt;/h3&gt;
 &lt;p&gt;Connect to the public URL of your master node instance at: &lt;a href="https://js-xxx-xxx.jetstream-cloud.org"&gt;https://js-xxx-xxx.jetstream-cloud.org&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Try to login with your XSEDE username and password and check if Jupyterhub works properly.&lt;/p&gt;
@@ -141,7 +146,37 @@ sudo helm install jupyterhub/jupyterhub \
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl --namespace=jup get pv
 sudo kubectl --namespace=jup get pvc
 sudo kubectl --namespace=jup describe pvc claim-YOURXSEDEUSERNAME
-&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyterhub"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Store a conda environment inside a Notebook</title><link href="http://zonca.github.io/2017/12/store-conda-environment-inside-notebook.html" rel="alternate"></link><published>2017-12-04T18:00:00-08:00</published><updated>2017-12-04T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-04:/2017/12/store-conda-environment-inside-notebook.html</id><summary type="html">&lt;p&gt;Last August, during the Container Analysis Environments Workshop held at Urbana-Champaign,
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Administration tips&lt;/h2&gt;
+&lt;h3&gt;Add more servers to Kubernetes&lt;/h3&gt;
+&lt;p&gt;We can create more Ubuntu instances (with a volume attached) and add them to Kubernetes by repeating the same setup we performed on the first worker node.
+Once the node joins Kubernetes, it will be automatically used as a node for the distributed filesystem by Rook and be available to host user containers.&lt;/p&gt;
+&lt;h3&gt;Remove a server from Kubernetes&lt;/h3&gt;
+&lt;p&gt;Launch first the &lt;code&gt;kubectl drain&lt;/code&gt; command to move the currently active pods to other nodes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get nodes
+sudo kubectl drain &amp;lt;node name&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then suspend or delete the instance on the Jetstream admin panel.&lt;/p&gt;
+&lt;h3&gt;Configure a different authentication system&lt;/h3&gt;
+&lt;p&gt;"Zero to Jupyterhub" supports out of the box authentication with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;XSEDE credentials with CILogon&lt;/li&gt;
+&lt;li&gt;Many Campuses credentials with CILogon&lt;/li&gt;
+&lt;li&gt;Globus&lt;/li&gt;
+&lt;li&gt;Google&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;See &lt;a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/extending-jupyterhub.html#authenticating-with-oauth2"&gt;the documentation&lt;/a&gt; and modify &lt;code&gt;config_jupyterhub_helm_v0.5.0.yaml&lt;/code&gt; accordingly.&lt;/p&gt;
+&lt;h2&gt;Acknowledgements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The Jupyter team, in particular Yuvi Panda, for providing a great software platform and a easy-to-user resrouce for deploying it and for direct support in debugging my issues&lt;/li&gt;
+&lt;li&gt;XSEDE Extended Collaborative Support Services for supporting part of my time to work on deploying Jupyterhub on Jetstream and providing computational time on Jetstream&lt;/li&gt;
+&lt;li&gt;Pacific Research Platform, in particular John Graham, Thomas DeFanti and Dmitry Mishin (SDSC) for access to their Kubernetes platform for testing&lt;/li&gt;
+&lt;li&gt;XSEDE Jetstream's Jeremy Fischer for prompt answers to my questions on Jetstream&lt;/li&gt;
+&lt;/ul&gt;</content><category term="jupyterhub"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Store a conda environment inside a Notebook</title><link href="http://zonca.github.io/2017/12/store-conda-environment-inside-notebook.html" rel="alternate"></link><published>2017-12-04T18:00:00-08:00</published><updated>2017-12-04T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-04:/2017/12/store-conda-environment-inside-notebook.html</id><summary type="html">&lt;p&gt;Last August, during the Container Analysis Environments Workshop held at Urbana-Champaign,
 we had discussion about reproducibility in the Jupyter Notebooks.
 There came out the idea of storing all the details about the Python environment inside the Notebook,
 in the metadata.&lt;/p&gt;
