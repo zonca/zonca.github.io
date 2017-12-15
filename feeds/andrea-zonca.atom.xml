@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-15T18:00:00-08:00</updated><entry><title>ECSS Symposium about Jupyterhub deployments on XSEDE</title><link href="http://zonca.github.io/2017/12/ecss-symposium.html" rel="alternate"></link><published>2017-12-15T18:00:00-08:00</published><updated>2017-12-15T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-15:/2017/12/ecss-symposium.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
-&lt;p&gt;ECSS Symposium, 19 December 2017&lt;/p&gt;
+&lt;p&gt;ECSS Symposium, 19 December 2017, Web presentation to the XSEDE &lt;a href="https://www.xsede.org/for-users/ecss"&gt;Extended Collaborative Support Services&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Overview on deployment options for Jupyter Notebooks at scale on XSEDE resources.&lt;/p&gt;
 &lt;h2&gt;Presentation&lt;/h2&gt;
 &lt;ul&gt;
@@ -9,9 +9,8 @@
 &lt;h2&gt;Tutorials&lt;/h2&gt;
 &lt;p&gt;They are all based on deploying Jupyterhub on Jetstream, then:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html"&gt;spawn Notebooks on a traditional HPC system&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html"&gt;setup a distributed …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
-&lt;p&gt;ECSS Symposium, 19 December 2017&lt;/p&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html"&gt;spawn …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
+&lt;p&gt;ECSS Symposium, 19 December 2017, Web presentation to the XSEDE &lt;a href="https://www.xsede.org/for-users/ecss"&gt;Extended Collaborative Support Services&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Overview on deployment options for Jupyter Notebooks at scale on XSEDE resources.&lt;/p&gt;
 &lt;h2&gt;Presentation&lt;/h2&gt;
 &lt;ul&gt;
