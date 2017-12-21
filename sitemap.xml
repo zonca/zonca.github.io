@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2017-12-15T10:28:30-00:00</lastmod>
+<lastmod>2017-12-21T23:50:03-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2017-12-15T10:28:30-00:00</lastmod>
+<lastmod>2017-12-21T23:50:03-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2017-12-15T10:28:30-00:00</lastmod>
+<lastmod>2017-12-21T23:50:03-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2017-12-15T10:28:30-00:00</lastmod>
+<lastmod>2017-12-21T23:50:03-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2017/12/custom-conda-python-jupyter-nersc.html</loc>
+<lastmod>2017-12-21T18:00:00-08:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -789,7 +796,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2017-12-15T18:00:00-07:53</lastmod>
+<lastmod>2017-12-21T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -872,8 +879,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/chromebook.html</loc>
-<lastmod>2015-02-10T20:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/jupyter-notebook.html</loc>
+<lastmod>2017-12-04T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -935,6 +942,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/quote.html</loc>
+<lastmod>2012-08-16T14:07:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/astrophysics.html</loc>
 <lastmod>2015-03-24T09:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
@@ -942,8 +956,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/jupyter-notebook.html</loc>
-<lastmod>2017-12-04T18:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/chromebook.html</loc>
+<lastmod>2015-02-10T20:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1006,21 +1020,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/python.html</loc>
-<lastmod>2015-04-02T09:00:00-07:53</lastmod>
+<lastmod>2017-12-21T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/quote.html</loc>
-<lastmod>2012-08-16T14:07:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/aws.html</loc>
+<lastmod>2013-09-02T02:36:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tag/jupyterhub.html</loc>
-<lastmod>2017-12-15T18:00:00-07:53</lastmod>
+<lastmod>2017-12-21T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1033,8 +1047,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/aws.html</loc>
-<lastmod>2013-09-02T02:36:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/nersc.html</loc>
+<lastmod>2017-12-21T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1209,7 +1223,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2017-12-15T18:00:00-07:53</lastmod>
+<lastmod>2017-12-21T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

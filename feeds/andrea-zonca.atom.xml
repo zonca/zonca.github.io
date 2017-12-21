@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-15T18:00:00-08:00</updated><entry><title>ECSS Symposium about Jupyterhub deployments on XSEDE</title><link href="http://zonca.github.io/2017/12/ecss-symposium.html" rel="alternate"></link><published>2017-12-15T18:00:00-08:00</published><updated>2017-12-15T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-15:/2017/12/ecss-symposium.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-21T18:00:00-08:00</updated><entry><title>Install custom Python environment on Jupyter Notebooks at NERSC</title><link href="http://zonca.github.io/2017/12/custom-conda-python-jupyter-nersc.html" rel="alternate"></link><published>2017-12-21T18:00:00-08:00</published><updated>2017-12-21T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-21:/2017/12/custom-conda-python-jupyter-nersc.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at NERSC&lt;/h2&gt;
+&lt;p&gt;NERSC has provided a JupyterHub instance for quite some time to all NERSC users.
+It is currently running on a dedicated large-memory node on Cori, so now it can access also data on
+Cori &lt;code&gt;$SCRATCH&lt;/code&gt;, not only &lt;code&gt;/project&lt;/code&gt; and &lt;code&gt;$HOME&lt;/code&gt;. See &lt;a href="http://www.nersc.gov/users/data-analytics/data-analytics-2/jupyter-and-rstudio/"&gt;their documentation&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Customize your Python …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;Jupyter Notebooks at NERSC&lt;/h2&gt;
+&lt;p&gt;NERSC has provided a JupyterHub instance for quite some time to all NERSC users.
+It is currently running on a dedicated large-memory node on Cori, so now it can access also data on
+Cori &lt;code&gt;$SCRATCH&lt;/code&gt;, not only &lt;code&gt;/project&lt;/code&gt; and &lt;code&gt;$HOME&lt;/code&gt;. See &lt;a href="http://www.nersc.gov/users/data-analytics/data-analytics-2/jupyter-and-rstudio/"&gt;their documentation&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Customize your Python environment&lt;/h2&gt;
+&lt;p&gt;NERSC provides Anaconda in a Ubuntu container, of course the user doesn't have permission to write to the Anaconda folder to install new packages.&lt;/p&gt;
+&lt;p&gt;The easiest way is to install a custom Python environment is to create another conda environment and then register the Kernel with Jupyter.&lt;/p&gt;
+&lt;p&gt;Create a new conda environment, best choice is &lt;code&gt;/project&lt;/code&gt; if you have one, otherwise &lt;code&gt;$HOME&lt;/code&gt; would work.
+Access &lt;a href="http://jupyter.nersc.gov"&gt;http://jupyter.nersc.gov&lt;/a&gt;, open a terminal with "New"-&amp;gt;"Terminal".&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;conda create --prefix $HOME/myconda python=3.6 ipykernel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is the minimal requirement, you could just add &lt;code&gt;anaconda&lt;/code&gt; to get all the latest packages, you can also specify &lt;code&gt;conda-forge&lt;/code&gt; to install other packages, e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;source activate myconda
+conda install -c conda-forge healpy
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Register the kernel with the Jupyter Notebook:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ipython kernel install --name myconda --user
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The name of the kernel specified here doesn't need to be the same as the conda environment name, but it is simpler.&lt;/p&gt;
+&lt;p&gt;Once the conda environment is active, you can also install packages with &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;conda install pip
+pip install somepackage
+&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyterhub"></category><category term="python"></category><category term="nersc"></category></entry><entry><title>ECSS Symposium about Jupyterhub deployments on XSEDE</title><link href="http://zonca.github.io/2017/12/ecss-symposium.html" rel="alternate"></link><published>2017-12-15T18:00:00-08:00</published><updated>2017-12-15T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-15:/2017/12/ecss-symposium.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
 &lt;p&gt;ECSS Symposium, 19 December 2017, Web presentation to the XSEDE &lt;a href="https://www.xsede.org/for-users/ecss"&gt;Extended Collaborative Support Services&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Overview on deployment options for Jupyter Notebooks at scale on XSEDE resources.&lt;/p&gt;
 &lt;h2&gt;Presentation&lt;/h2&gt;
