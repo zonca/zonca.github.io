@@ -184,6 +184,24 @@ sudo kubectl get logs alpine
 
 
 &lt;p&gt;The Persistent Volume will be automatically deleted by Kubernetes after a few minutes.&lt;/p&gt;
+&lt;h2&gt;Setup HTTPS with letsencrypt&lt;/h2&gt;
+&lt;p&gt;We need &lt;code&gt;kube-lego&lt;/code&gt; to automatically get a HTTPS certificate from Letsencrypt,
+For more information see the Ingress section on the &lt;a href="http://zero-to-jupyterhub.readthedocs.io/en/latest/advanced.html"&gt;Zero to Jupyterhub Advanced topics&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;First we need to customize the Kube Lego configuration, edit the &lt;code&gt;config_kube-lego_helm.yaml&lt;/code&gt; file from the repository and set your email address, then:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm install stable/kube-lego --namespace=support --name=lego -f config_kube-lego_helm.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then after you deploy Jupyterhub if you have some HTTPS trouble, you should check the logs of the kube-lego pod. First find the name of the pod with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get pods -n support
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then check its logs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl logs -n support lego-kube-lego-xxxxx-xxx
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
 &lt;p&gt;Read all of the documentation of "Zero to Jupyterhub", then download &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/config_jupyterhub_helm.yaml"&gt;&lt;code&gt;config_jupyterhub_helm.yaml&lt;/code&gt; from the repository&lt;/a&gt; and customize it with the URL of the master node (for Jetstream &lt;code&gt;js-xxx-xxx.jetstream-cloud.org&lt;/code&gt;) and generate the random strings for security, finally run the Helm chart:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/

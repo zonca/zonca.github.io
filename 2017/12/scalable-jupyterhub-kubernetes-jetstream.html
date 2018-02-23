@@ -173,6 +173,24 @@ sudo kubectl get logs alpine
 
 
 <p>The Persistent Volume will be automatically deleted by Kubernetes after a few minutes.</p>
+<h2>Setup HTTPS with letsencrypt</h2>
+<p>We need <code>kube-lego</code> to automatically get a HTTPS certificate from Letsencrypt,
+For more information see the Ingress section on the <a href="http://zero-to-jupyterhub.readthedocs.io/en/latest/advanced.html">Zero to Jupyterhub Advanced topics</a>.</p>
+<p>First we need to customize the Kube Lego configuration, edit the <code>config_kube-lego_helm.yaml</code> file from the repository and set your email address, then:</p>
+<div class="highlight"><pre><span></span>sudo helm install stable/kube-lego --namespace=support --name=lego -f config_kube-lego_helm.yaml
+</pre></div>
+
+
+<p>Then after you deploy Jupyterhub if you have some HTTPS trouble, you should check the logs of the kube-lego pod. First find the name of the pod with:</p>
+<div class="highlight"><pre><span></span>sudo kubectl get pods -n support
+</pre></div>
+
+
+<p>Then check its logs:</p>
+<div class="highlight"><pre><span></span>sudo kubectl logs -n support lego-kube-lego-xxxxx-xxx
+</pre></div>
+
+
 <h2>Install Jupyterhub</h2>
 <p>Read all of the documentation of "Zero to Jupyterhub", then download <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/config_jupyterhub_helm.yaml"><code>config_jupyterhub_helm.yaml</code> from the repository</a> and customize it with the URL of the master node (for Jetstream <code>js-xxx-xxx.jetstream-cloud.org</code>) and generate the random strings for security, finally run the Helm chart:</p>
 <div class="highlight"><pre><span></span>sudo helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
