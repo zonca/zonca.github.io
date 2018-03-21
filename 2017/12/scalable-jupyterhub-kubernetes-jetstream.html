@@ -52,7 +52,8 @@
 <p>If you are not already familiar with Kubernetes, better first read the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/tools.html">section about tools in Zero to Jupyterhub</a>.</p>
 <p>In this tutorial we will be installing Kubernetes on 2 Ubuntu instances on the XSEDE Jetstream OpenStack-based cloud, configure permanent storage with the Ceph distributed filesystem and run the "Zero to Jupyterhub" recipe to install Jupyterhub on it.</p>
 <h2>Setup two virtual machines</h2>
-<p>First of all we need to create two Virtual Machines from the <a href="https://use.jetstream-cloud.org">Jetstream Atmosphere admin panel</a>I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them <code>master_node</code> and <code>node_1</code> for example.</p>
+<p>First of all we need to create two Virtual Machines from the <a href="https://use.jetstream-cloud.org">Jetstream Atmosphere admin panel</a>I tested this on XSEDE Jetstream Ubuntu 16.04 image (with Docker pre-installed), for testing purposes "small" instances work, then they can be scaled up for production. You can name them <code>master_node</code> and <code>node_1</code> for example.
+Make sure that port 80 and 443 are open to outside connections.</p>
 <p>Then you can SSH into the first machine with your XSEDE username with <code>sudo</code> privileges.</p>
 <h2>Install Kubernetes</h2>
 <p>The "Zero to Jupyterhub" recipe targets an already existing Kubernetes cluster, for example on Google Cloud. However the Berkeley Data Science Education Program team, which administers one of the largest Jupyterhub deployments to date, released a set of scripts based on the <code>kubeadm</code> tool to setup Kubernetes from scratch.</p>
