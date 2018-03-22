@@ -40,7 +40,7 @@ pip install somepackage
 &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=BE6tRuJtq8c"&gt;Recording of the talk on Youtube&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Tutorials&lt;/h2&gt;
-&lt;p&gt;They are all based on …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
+&lt;p&gt;Step-by-step tutorials and configuration files …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Jupyter Notebooks at scale for Gateways and Workshops&lt;/h2&gt;
 &lt;p&gt;ECSS Symposium, 19 December 2017, Web presentation to the XSEDE &lt;a href="https://www.xsede.org/for-users/ecss"&gt;Extended Collaborative Support Services&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Overview on deployment options for Jupyter Notebooks at scale on XSEDE resources.&lt;/p&gt;
 &lt;h2&gt;Presentation&lt;/h2&gt;
@@ -49,12 +49,14 @@ pip install somepackage
 &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=BE6tRuJtq8c"&gt;Recording of the talk on Youtube&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Tutorials&lt;/h2&gt;
-&lt;p&gt;They are all based on deploying Jupyterhub on Jetstream, then:&lt;/p&gt;
+&lt;p&gt;Step-by-step tutorials and configuration files to deploy JupyterHub on XSEDE resources:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html"&gt;spawn Notebooks on a traditional HPC system&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html"&gt;setup a distributed scalable system on Jetstream instances via &lt;strong&gt;Docker Swarm&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;setup a distributed scalable system on Jetstream instances via &lt;strong&gt;Kubernetes&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><category term="jupyterhub"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Deploy scalable Jupyterhub with Kubernetes on Jetstream</title><link href="http://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html" rel="alternate"></link><published>2017-12-05T18:00:00-08:00</published><updated>2017-12-05T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-05:/2017/12/scalable-jupyterhub-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Updated in February 2018 with newer version of &lt;code&gt;kubeadm-bootstrap&lt;/code&gt;, Kubernetes 1.9.2&lt;/strong&gt;&lt;/p&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Publication&lt;/h2&gt;
+&lt;p&gt;Paper in preparation: "Deploying Jupyter Notebooks at scale on XSEDE for Science Gateways and workshops", Andrea Zonca and Robert Sinkovits, PEARC18&lt;/p&gt;</content><category term="jupyterhub"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Deploy scalable Jupyterhub with Kubernetes on Jetstream</title><link href="http://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html" rel="alternate"></link><published>2017-12-05T18:00:00-08:00</published><updated>2017-12-05T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-05:/2017/12/scalable-jupyterhub-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Updated in February 2018 with newer version of &lt;code&gt;kubeadm-bootstrap&lt;/code&gt;, Kubernetes 1.9.2&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. Kubernetes provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, &lt;a href="https://zero-to-jupyterhub.readthedocs.io"&gt;Zero …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Updated in February 2018 with newer version of &lt;code&gt;kubeadm-bootstrap&lt;/code&gt;, Kubernetes 1.9.2&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
