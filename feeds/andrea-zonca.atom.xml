@@ -1,5 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2017-12-21T18:00:00-08:00</updated><entry><title>Install custom Python environment on Jupyter Notebooks at NERSC</title><link href="http://zonca.github.io/2017/12/custom-conda-python-jupyter-nersc.html" rel="alternate"></link><published>2017-12-21T18:00:00-08:00</published><updated>2017-12-21T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-21:/2017/12/custom-conda-python-jupyter-nersc.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at NERSC&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-03-03T18:00:00-08:00</updated><entry><title>Use the distributed file format Zarr on Jetstream Swift object storage</title><link href="http://zonca.github.io/2018/03/zarr-on-jetstream.html" rel="alternate"></link><published>2018-03-03T18:00:00-08:00</published><updated>2018-03-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-03:/2018/03/zarr-on-jetstream.html</id><summary type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
+&lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
+&lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Dask,
+and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
+&lt;a href="https://github.com/dask/s3fs"&gt;Amazon S3&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Use OpenStack swift on …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
+&lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
+&lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Dask,
+and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
+&lt;a href="https://github.com/dask/s3fs"&gt;Amazon S3&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Use OpenStack swift on Jetstream for object storage&lt;/h2&gt;
+&lt;p&gt;Jetstream also offers (currently in beta) access to object storage via OpenStack Swift.
+This is a separate service from the Jetstream Virtual Machines, so you do not need to spin
+any Virtual Machine dedicated to storing the data but just use the object storage already
+provided by Jetstream.&lt;/p&gt;
+&lt;h2&gt;Read Zarr files from object store&lt;/h2&gt;
+&lt;p&gt;If somebody else has already made available some files on object store and set their visibility
+to "public", anybody can read them.&lt;/p&gt;
+&lt;p&gt;See the &lt;a href="https://gist.github.com/zonca/bda69ab917bde831845d530e52eae6e5"&gt;example Notebook to read Zarr files&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;OpenStack Swift already provides an endpoint which has an interface compatible with Amazon S3, therefore
+we can directly use the &lt;code&gt;S3FileSystem&lt;/code&gt; provided by &lt;code&gt;s3fs&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then we can build a &lt;code&gt;S3Map&lt;/code&gt; object which &lt;code&gt;zarr&lt;/code&gt; and &lt;code&gt;xarray&lt;/code&gt; can access.
+I removed the endpoint url from the Notebook to avoid test traffic. You can request it to
+the XSEDE helpdesk.&lt;/p&gt;
+&lt;p&gt;In this example I am using the &lt;code&gt;distributed&lt;/code&gt; scheduler on a single node, you can scale up your computation
+having workers distributed on multiple nodes, just make sure that all the workers have access to the
+&lt;code&gt;zarr&lt;/code&gt;, &lt;code&gt;xarray&lt;/code&gt;, &lt;code&gt;s3fs&lt;/code&gt; packages.&lt;/p&gt;
+&lt;h2&gt;Write Zarr files or read private files&lt;/h2&gt;
+&lt;p&gt;In this case we need authentication.&lt;/p&gt;
+&lt;p&gt;First you need to ask to the XSEDE helpdesk API access to Jetstream, this also gives access
+to the Horizon interface, which has many advanced features that are not available in Atmosphere.&lt;/p&gt;
+&lt;h3&gt;Create a bucket&lt;/h3&gt;
+&lt;p&gt;Object store systems are organized on buckets, which are like root folders of our filesystem.
+From the Horizon interface, we can choose Object Store -&amp;gt; Containers (quite confusing way of referring to buckets in OpenStack).
+Here we can check content of existing buckets or create a new one.&lt;/p&gt;
+&lt;h3&gt;Get credentials&lt;/h3&gt;
+&lt;p&gt;From Horizon, choose the project you want to charge usage from the dropdown menu at the top.&lt;/p&gt;
+&lt;p&gt;Then download the openstack RC file version 3 from: &lt;a href="https://iu.jetstream-cloud.org/project/api_access/"&gt;https://iu.jetstream-cloud.org/project/api_access/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;At this point we need to transform it into Amazon-style credentials, you can do this on
+any host, not necessarily on Jetstream, install OpenStack client:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install python-openstackclient
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;source the openstackRC file, put the password, this is the TACC password (the same used to access Horizon), NOT the XSEDE Password.&lt;/p&gt;
+&lt;p&gt;Now we can check the content of the bucket we created above:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack object list my_bucket
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now create ec2 credentials with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack ec2 credentials create
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is going to display AWS access key and AWS secret, we can save credentials in &lt;code&gt;~/.aws/config&lt;/code&gt;
+in the machine we want then use to write to object store.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[default]&lt;/span&gt;
+&lt;span class="na"&gt;region&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;RegionOne&lt;/span&gt;
+&lt;span class="na"&gt;aws_access_key_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;/span&gt;
+&lt;span class="na"&gt;aws_secret_access_key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Test access&lt;/h3&gt;
+&lt;p&gt;We can check if we can successfully login using &lt;code&gt;s3fs&lt;/code&gt;, notice we &lt;strong&gt;do not use&lt;/strong&gt; &lt;code&gt;anon=True&lt;/code&gt; as
+we did before:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;s3fs&lt;/span&gt;
+&lt;span class="n"&gt;fs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s3fs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;S3FileSystem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client_kwargs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;endpoint_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;JETSTREAM_SWIFT_ENDPOINT&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;fs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ls&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;my_bucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Read a file from local filesystem and write to Object store&lt;/h3&gt;
+&lt;p&gt;See &lt;a href="https://gist.github.com/zonca/f7cb1c7845f6b821dc8d178f84253ba3"&gt;this notebook as an example of writing to object store&lt;/a&gt;,
+first we make sure to have the necessary Python packages,
+then we use &lt;code&gt;xarray&lt;/code&gt; to read data from NetCDF and then write back to Zarr first locally and then
+via &lt;code&gt;s3fs&lt;/code&gt; to Openstack Swift.&lt;/p&gt;
+&lt;p&gt;See the Zarr documentation about how to tweak, compression, data transformations and chunking.&lt;/p&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="zarr"></category></entry><entry><title>Install custom Python environment on Jupyter Notebooks at NERSC</title><link href="http://zonca.github.io/2017/12/custom-conda-python-jupyter-nersc.html" rel="alternate"></link><published>2017-12-21T18:00:00-08:00</published><updated>2017-12-21T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-21:/2017/12/custom-conda-python-jupyter-nersc.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at NERSC&lt;/h2&gt;
 &lt;p&gt;NERSC has provided a JupyterHub instance for quite some time to all NERSC users.
 It is currently running on a dedicated large-memory node on Cori, so now it can access also data on
 Cori &lt;code&gt;$SCRATCH&lt;/code&gt;, not only &lt;code&gt;/project&lt;/code&gt; and &lt;code&gt;$HOME&lt;/code&gt;. See &lt;a href="http://www.nersc.gov/users/data-analytics/data-analytics-2/jupyter-and-rstudio/"&gt;their documentation&lt;/a&gt;&lt;/p&gt;

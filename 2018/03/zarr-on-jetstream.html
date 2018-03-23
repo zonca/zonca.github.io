@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Use the distributed file format Zarr on Jetstream Swift object storage | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Use the distributed file format Zarr on Jetstream Swift object storage</h1>
+        </header>
+        <div class='post-content'>
+            <h2>Zarr</h2>
+<p>Zarr is a pretty new file format designed for cloud computing, see <a href="http://zarr.readthedocs.io">documentation</a> and <a href="https://www.youtube.com/watch?v=np_p4JBAIYI">a webinar</a> for more details.</p>
+<p>Zarr is also supported by <a href="http://dask.pydata.org">dask</a>, the parallel computing framework for Dask,
+and the Dask team implemented storage backends for <a href="https://github.com/dask/gcsfs">Google Cloud Storage</a> and
+<a href="https://github.com/dask/s3fs">Amazon S3</a>.</p>
+<h2>Use OpenStack swift on Jetstream for object storage</h2>
+<p>Jetstream also offers (currently in beta) access to object storage via OpenStack Swift.
+This is a separate service from the Jetstream Virtual Machines, so you do not need to spin
+any Virtual Machine dedicated to storing the data but just use the object storage already
+provided by Jetstream.</p>
+<h2>Read Zarr files from object store</h2>
+<p>If somebody else has already made available some files on object store and set their visibility
+to "public", anybody can read them.</p>
+<p>See the <a href="https://gist.github.com/zonca/bda69ab917bde831845d530e52eae6e5">example Notebook to read Zarr files</a>.</p>
+<p>OpenStack Swift already provides an endpoint which has an interface compatible with Amazon S3, therefore
+we can directly use the <code>S3FileSystem</code> provided by <code>s3fs</code>.</p>
+<p>Then we can build a <code>S3Map</code> object which <code>zarr</code> and <code>xarray</code> can access.
+I removed the endpoint url from the Notebook to avoid test traffic. You can request it to
+the XSEDE helpdesk.</p>
+<p>In this example I am using the <code>distributed</code> scheduler on a single node, you can scale up your computation
+having workers distributed on multiple nodes, just make sure that all the workers have access to the
+<code>zarr</code>, <code>xarray</code>, <code>s3fs</code> packages.</p>
+<h2>Write Zarr files or read private files</h2>
+<p>In this case we need authentication.</p>
+<p>First you need to ask to the XSEDE helpdesk API access to Jetstream, this also gives access
+to the Horizon interface, which has many advanced features that are not available in Atmosphere.</p>
+<h3>Create a bucket</h3>
+<p>Object store systems are organized on buckets, which are like root folders of our filesystem.
+From the Horizon interface, we can choose Object Store -&gt; Containers (quite confusing way of referring to buckets in OpenStack).
+Here we can check content of existing buckets or create a new one.</p>
+<h3>Get credentials</h3>
+<p>From Horizon, choose the project you want to charge usage from the dropdown menu at the top.</p>
+<p>Then download the openstack RC file version 3 from: <a href="https://iu.jetstream-cloud.org/project/api_access/">https://iu.jetstream-cloud.org/project/api_access/</a></p>
+<p>At this point we need to transform it into Amazon-style credentials, you can do this on
+any host, not necessarily on Jetstream, install OpenStack client:</p>
+<div class="highlight"><pre><span></span>pip install python-openstackclient
+</pre></div>
+
+
+<p>source the openstackRC file, put the password, this is the TACC password (the same used to access Horizon), NOT the XSEDE Password.</p>
+<p>Now we can check the content of the bucket we created above:</p>
+<div class="highlight"><pre><span></span>openstack object list my_bucket
+</pre></div>
+
+
+<p>Now create ec2 credentials with:</p>
+<div class="highlight"><pre><span></span>openstack ec2 credentials create
+</pre></div>
+
+
+<p>This is going to display AWS access key and AWS secret, we can save credentials in <code>~/.aws/config</code>
+in the machine we want then use to write to object store.</p>
+<div class="highlight"><pre><span></span><span class="k">[default]</span>
+<span class="na">region</span><span class="o">=</span><span class="s">RegionOne</span>
+<span class="na">aws_access_key_id</span><span class="o">=</span><span class="s">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+<span class="na">aws_secret_access_key</span><span class="o">=</span><span class="s">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+</pre></div>
+
+
+<h3>Test access</h3>
+<p>We can check if we can successfully login using <code>s3fs</code>, notice we <strong>do not use</strong> <code>anon=True</code> as
+we did before:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">s3fs</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">client_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;JETSTREAM_SWIFT_ENDPOINT&quot;</span><span class="p">))</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="s2">&quot;my_bucket&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Read a file from local filesystem and write to Object store</h3>
+<p>See <a href="https://gist.github.com/zonca/f7cb1c7845f6b821dc8d178f84253ba3">this notebook as an example of writing to object store</a>,
+first we make sure to have the necessary Python packages,
+then we use <code>xarray</code> to read data from NetCDF and then write back to Zarr first locally and then
+via <code>s3fs</code> to Openstack Swift.</p>
+<p>See the Zarr documentation about how to tweak, compression, data transformations and chunking.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-03-03T18:00:00-08:00">Sat 03 March 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/jupyter.html">jupyter</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/zarr.html">zarr</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
