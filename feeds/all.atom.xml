@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-03-03T18:00:00-08:00</updated><entry><title>Use the distributed file format Zarr on Jetstream Swift object storage</title><link href="http://zonca.github.io/2018/03/zarr-on-jetstream.html" rel="alternate"></link><published>2018-03-03T18:00:00-08:00</published><updated>2018-03-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-03:/2018/03/zarr-on-jetstream.html</id><summary type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
 &lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
-&lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Dask,
+&lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Python,
 and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
 &lt;a href="https://github.com/dask/s3fs"&gt;Amazon S3&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Use OpenStack swift on …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
 &lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
-&lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Dask,
+&lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Python,
 and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
 &lt;a href="https://github.com/dask/s3fs"&gt;Amazon S3&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Use OpenStack swift on Jetstream for object storage&lt;/h2&gt;
