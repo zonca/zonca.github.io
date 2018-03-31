@@ -142,7 +142,7 @@ bin/boinc2docker_create_work.py \
 &lt;p&gt;We need Virtualbox:
 sudo apt install virtualbox-dkms&lt;/p&gt;
 &lt;p&gt;and reboot to make sure VirtualBox is active.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL=http://js-156-235.jetstream-cloud.org/boincserver/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL=http://js-xxx-xxx.jetstream-cloud.org/boincserver/
 docker exec boinc boinccmd --create_account $URL email password name
 
 status: Success
@@ -154,8 +154,8 @@ account key: de9c4cc66b8c923d04f834a0609ae742
 
 
 &lt;p&gt;We can save the account key in a environment variable:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL=http://js-156-235.jetstream-cloud.org/boincserver/
-URL=http://js-156-235.jetstream-cloud.org/boincserver/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL=http://js-xxx-xxx.jetstream-cloud.org/boincserver/
+URL=http://js-xxx-xxx.jetstream-cloud.org/boincserver/
 account_key=de9c4cc66b8c923d04f834a0609ae742
 docker exec boinc boinccmd --project_attach $URL $account_key
 &lt;/pre&gt;&lt;/div&gt;
