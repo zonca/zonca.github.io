@@ -1,5 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-03-03T18:00:00-08:00</updated><entry><title>Use the distributed file format Zarr on Jetstream Swift object storage</title><link href="http://zonca.github.io/2018/03/zarr-on-jetstream.html" rel="alternate"></link><published>2018-03-03T18:00:00-08:00</published><updated>2018-03-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-03:/2018/03/zarr-on-jetstream.html</id><summary type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-03-29T18:00:00-07:00</updated><entry><title>Install a BOINC server on Jetstream</title><link href="http://zonca.github.io/2018/03/boinc-server-jetstream.html" rel="alternate"></link><published>2018-03-29T18:00:00-07:00</published><updated>2018-03-29T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-29:/2018/03/boinc-server-jetstream.html</id><summary type="html">&lt;p&gt;&lt;a href="https://boinc.berkeley.edu/"&gt;BOINC&lt;/a&gt; is the leading platform for volunteer computing.&lt;/p&gt;
+&lt;p&gt;Scientists can create a project on the platform and submit computational jobs that will
+be executed on computers of volunteers all over the world.&lt;/p&gt;
+&lt;p&gt;In this post we'll deploy a BOINC server on Jetstream. All US scientists can get a free
+&lt;a href="https://jetstream-cloud.org/allocations.php"&gt;allocation …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://boinc.berkeley.edu/"&gt;BOINC&lt;/a&gt; is the leading platform for volunteer computing.&lt;/p&gt;
+&lt;p&gt;Scientists can create a project on the platform and submit computational jobs that will
+be executed on computers of volunteers all over the world.&lt;/p&gt;
+&lt;p&gt;In this post we'll deploy a BOINC server on Jetstream. All US scientists can get a free
+&lt;a href="https://jetstream-cloud.org/allocations.php"&gt;allocation on Jetstream via XSEDE&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The deployment will be based on the &lt;a href="https://github.com/marius311/boinc-server-docker"&gt;Docker setup developed by the Cosmology@Home project&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Prepare a Jetstream Virtual Machine&lt;/h2&gt;
+&lt;p&gt;First we login on the Atmosphere Jetstream control panel and create a new instance
+of Ubuntu 16.04 with Docker preinstalled, a "small" size is enough for testing.&lt;/p&gt;
+&lt;h3&gt;(Optional) Mount a Jetstream Volume for docker images&lt;/h3&gt;
+&lt;p&gt;It is ideal to have a dedicated Jetstream Volume and mount it in the location where
+Docker stores its data. So we have more space, less usage of the root filesystem
+and no issues on the OS if we get out of disk space.&lt;/p&gt;
+&lt;p&gt;We can create a volume of 10/20 GB in the Jetstream control panel and attach it to
+the running Virtual Machine. This will be automatically mounted to &lt;code&gt;/vol_b&lt;/code&gt;, we
+want to mount instead to &lt;code&gt;/var/lib/docker&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo systemctl stop docker
+sudo mv /var/lib/docker/* /vol_b/
+sudo umount /vol_b
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Replace &lt;code&gt;/vol_b&lt;/code&gt; with &lt;code&gt;/var/lib/docker&lt;/code&gt; in &lt;code&gt;/etc/fstab&lt;/code&gt;, e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zonca@js-xxx-xxx:~$ cat /etc/fstab
+LABEL=cloudimg-rootfs   /        ext4   defaults        0 0
+/dev/sdb /var/lib/docker ext4 defaults,nofail 0 2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mount /var/lib/docker
+sudo systemctl start docker
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Update Docker&lt;/h3&gt;
+&lt;p&gt;Docker in 16.04 is a bit old, we want to update it to a more recent version.&lt;/p&gt;
+&lt;p&gt;We also want to make sure to remove the old &lt;code&gt;docker&lt;/code&gt; and &lt;code&gt;docker-compose&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt remove docker-compose docker
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then install a recent version,
+we can follow the instructions from the docker website or use this script:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://gist.github.com/zonca/f5faba190f5285c68dad48e897622e90"&gt;https://gist.github.com/zonca/f5faba190f5285c68dad48e897622e90&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I adapted it from &lt;a href="https://github.com/data-8/kubeadm-bootstrap/blob/master/install-kubeadm.bash"&gt;kubeadm-bootstrap&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Finally install the latest &lt;code&gt;docker-compose&lt;/code&gt;, see the &lt;a href="https://docs.docker.com/compose/install/#install-compose"&gt;documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Last step, add your user to the &lt;code&gt;docker&lt;/code&gt; group:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo adduser $USER docker
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;logout and back in and make sure you can run &lt;code&gt;docker&lt;/code&gt; commands without sudo:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker ps
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Install BOINC server via Docker&lt;/h3&gt;
+&lt;p&gt;Follow the &lt;a href="https://github.com/marius311/boinc-server-docker"&gt;instructions from &lt;code&gt;boinc-server-docker&lt;/code&gt;&lt;/a&gt;
+to launch a test deployment, in the last step, specify a &lt;code&gt;URL_BASE&lt;/code&gt; so that
+the deployment will be accessible from outside connections:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL_BASE=http://$(hostname) docker-compose up -d
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can check that the 3 containers are running with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker ps
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and inspect their logs with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker logs &amp;lt;container_id&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After a few minutes you should be able to check that the server is running at the
+public address of your instance:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://js-xxx-xxx.jetstream-cloud.org/boincserver/"&gt;http://js-xxx-xxx.jetstream-cloud.org/boincserver/&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;(Optional) Mount Jetstream volumes on the containers&lt;/h2&gt;
+&lt;p&gt;The Docker compose recipe defines 3 Docker volumes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mysql&lt;/code&gt;: Data of the MySQL database&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;project&lt;/code&gt;: Files about the project&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;results&lt;/code&gt;: Result of the BOINC jobs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;those volumes are managed internally
+by Docker and stored somewhere inside &lt;code&gt;/var/lib/docker&lt;/code&gt; on the host node.&lt;/p&gt;
+&lt;p&gt;Docker also allows to mount specific folders from the host into a container,
+if we back these folders by a Jetstream volume, we can have dedicated detachable Jetstream volumes
+that live independently from any virtual machine.&lt;/p&gt;
+&lt;p&gt;Let's start by &lt;code&gt;mysql&lt;/code&gt;, the same process can then be replicated for the other resources.&lt;/p&gt;
+&lt;p&gt;We create another Jetstream volume from the Atmosphere, name it &lt;code&gt;mysql&lt;/code&gt; and attach it to the virtual machine,
+this will be automatically mounted to &lt;code&gt;/vol_c&lt;/code&gt;, we can rename it by:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo umount /vol_c
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Replace &lt;code&gt;vol_c&lt;/code&gt; with &lt;code&gt;mysql&lt;/code&gt; in &lt;code&gt;/etc/fstab&lt;/code&gt;, finally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mount /mysql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally you can modify the &lt;code&gt;docker-compose.yml&lt;/code&gt; to use this folder instead of a Docker Volume:&lt;/p&gt;
+&lt;p&gt;In the &lt;code&gt;volumes:&lt;/code&gt; section, remove &lt;code&gt;mysql:&lt;/code&gt;, in the definition of the MySQL service,
+replace:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;volumes:
+ - &amp;quot;mysql:/var/lib/mysql&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;volumes:
+ - &amp;quot;/mysql:/var/lib/mysql&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So that instead of using a Docker Volume named &lt;code&gt;mysql&lt;/code&gt; is creating a bind-mount to &lt;code&gt;/mysql&lt;/code&gt; on the host.&lt;/p&gt;
+&lt;h2&gt;Test jobs&lt;/h2&gt;
+&lt;p&gt;Open a terminal in the BOINC server container:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker exec -it &amp;lt;boincserver&amp;gt; /bin/bash
+
+
+bin/boinc2docker_create_work.py \
+    python:alpine python -c &amp;quot;open(&amp;#39;/root/shared/results/hello.txt&amp;#39;,&amp;#39;w&amp;#39;).write(&amp;#39;Hello BOINC&amp;#39;)&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then we can test a client connection and execution either with a standard BOINC desktop client or on another Jetstream instance.&lt;/p&gt;
+&lt;h3&gt;Test with a BOINC Desktop client&lt;/h3&gt;
+&lt;p&gt;Follow the instructions on the &lt;a href="https://boinc.berkeley.edu/"&gt;BOINC website&lt;/a&gt; to install a client for your OS, install also VirtualBox, then set as the URL of the BOINC server the URL of the server we just created.&lt;/p&gt;
+&lt;h3&gt;Test with a BOINC client in another Jetstream instance&lt;/h3&gt;
+&lt;p&gt;Create another Ubuntu with Docker tiny instane on Jetstream, login,&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo adduser $USER docker
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We need Virtualbox:
+sudo apt install virtualbox-dkms&lt;/p&gt;
+&lt;p&gt;and reboot to make sure VirtualBox is active.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL=http://js-156-235.jetstream-cloud.org/boincserver/
+docker exec boinc boinccmd --create_account $URL email password name
+
+status: Success
+poll status: operation in progress
+poll status: operation in progress
+poll status: operation in progress
+account key: de9c4cc66b8c923d04f834a0609ae742
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can save the account key in a environment variable:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;URL=http://js-156-235.jetstream-cloud.org/boincserver/
+URL=http://js-156-235.jetstream-cloud.org/boincserver/
+account_key=de9c4cc66b8c923d04f834a0609ae742
+docker exec boinc boinccmd --project_attach $URL $account_key
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then we can check the logs for the job being received and executed:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker logs boinc
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;30-Mar-2018 13:02:04 [boincserver] Started download of layer_e9e858f6a2ba5a3e5a04b5799ef2de1c21a58602ffd400838ed10599f1b4a42c.tar.manual.gz
+30-Mar-2018 13:02:06 [boincserver] Finished download of layer_10ffed26db733866a346caf7c79558e4addb23ae085a991b5e7237edaa69f8e2.tar.manual.gz
+30-Mar-2018 13:02:06 [boincserver] Finished download of layer_e9e858f6a2ba5a3e5a04b5799ef2de1c21a58602ffd400838ed10599f1b4a42c.tar.manual.gz
+30-Mar-2018 13:02:06 [boincserver] Started download of layer_0e650ab7661f993eff514b84c6e7b775f5be8c6dde8b63eb584f0f22ea24005f.tar.manual.gz
+30-Mar-2018 13:02:06 [boincserver] Started download of image_4fcaf5fb5f2b8230c53b5fd4c4325df00021d45272dc4bfbb2148e5ca91ac166.tar.manual.gz
+30-Mar-2018 13:02:07 [boincserver] Finished download of layer_0e650ab7661f993eff514b84c6e7b775f5be8c6dde8b63eb584f0f22ea24005f.tar.manual.gz
+30-Mar-2018 13:02:07 [boincserver] Finished download of image_4fcaf5fb5f2b8230c53b5fd4c4325df00021d45272dc4bfbb2148e5ca91ac166.tar.manual.gz
+30-Mar-2018 13:02:07 [boincserver] Starting task boinc2docker_3766_1522410497.503524_0
+30-Mar-2018 13:02:07 [boincserver] Sending scheduler request: To fetch work.
+30-Mar-2018 13:02:07 [boincserver] Requesting new tasks for CPU
+30-Mar-2018 13:02:08 [boincserver] Scheduler request completed: got 1 new tasks
+30-Mar-2018 13:02:12 [---] Vbox app stderr indicates CPU VM extensions disabled
+30-Mar-2018 13:02:13 [boincserver] Computation for task boinc2docker_3766_1522410497.503524_0 finished
+30-Mar-2018 13:02:13 [boincserver] Output file boinc2docker_3766_1522410497.503524_0_r207563194_0.tgz for task boinc2docker_3766_1522410497.503524_0 absent
+30-Mar-2018 13:02:13 [boincserver] Starting task boinc2docker_3766_1522410497.503524_1
+30-Mar-2018 13:02:18 [---] Vbox app stderr indicates CPU VM extensions disabled
+30-Mar-2018 13:02:18 [boincserver] Computation for task boinc2docker_3766_1522410497.503524_1 finished
+30-Mar-2018 13:02:18 [boincserver] Output file boinc2docker_3766_1522410497.503524_1_r1095010587_0.tgz for task boinc2docker_3766_1522410497.503524_1 absent
+&lt;/pre&gt;&lt;/div&gt;</content><category term="boinc"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Use the distributed file format Zarr on Jetstream Swift object storage</title><link href="http://zonca.github.io/2018/03/zarr-on-jetstream.html" rel="alternate"></link><published>2018-03-03T18:00:00-08:00</published><updated>2018-03-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-03:/2018/03/zarr-on-jetstream.html</id><summary type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
 &lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
 &lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Python,
 and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
