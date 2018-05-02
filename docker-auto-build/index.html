@@ -1,0 +1,22 @@
+<html>
+<head>
+<script>
+function handleFormSubmit() {
+    var destinationUrl = 'https://hub.docker.com/add/automated-build/github/form/' + document.getElementById('github_id').value + '/'  + document.getElementById('github_repo').value + '/?namespace=' + document.getElementById('namespace').value  ;
+    window.location = destinationUrl;
+}
+</script>
+</head>
+
+<body>
+<form onsubmit="handleFormSubmit();">
+<input type="text" id="github_id" />
+<label for="github_id">Github ID where the repository is hosted, this could be an organization username</label>
+<input type="text" id="github_repo" />
+<label for="github_repo">Repository name on Github</label>
+<input type="text" id="namespace" />
+<label for="namespace">Name of the organization on Docker Hub (create it first)</label>
+<input type="submit" />
+</form>
+</body>
+</html>
