@@ -4,12 +4,13 @@
 function handleFormSubmit() {
     var destinationUrl = 'https://hub.docker.com/add/automated-build/github/form/' + document.getElementById('github_id').value + '/'  + document.getElementById('github_repo').value + '/?namespace=' + document.getElementById('namespace').value  ;
     window.location = destinationUrl;
+    return false;
 }
         </script>
     </head>
 
     <body>
-        <form onsubmit="handleFormSubmit();">
+        <form onsubmit="return handleFormSubmit();">
             <p>
             <input type="text" id="github_id" />
             <label for="github_id">Github ID where the repository is hosted, this could be an organization username</label>
