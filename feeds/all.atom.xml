@@ -1,5 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-03-29T18:00:00-07:00</updated><entry><title>Install a BOINC server on Jetstream</title><link href="http://zonca.github.io/2018/03/boinc-server-jetstream.html" rel="alternate"></link><published>2018-03-29T18:00:00-07:00</published><updated>2018-03-29T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-29:/2018/03/boinc-server-jetstream.html</id><summary type="html">&lt;p&gt;&lt;a href="https://boinc.berkeley.edu/"&gt;BOINC&lt;/a&gt; is the leading platform for volunteer computing.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-05-04T18:00:00-07:00</updated><entry><title>Launch a shared dask cluster in Kubernetes alongside JupyterHub on Jetstream</title><link href="http://zonca.github.io/2018/05/shared-dask-kubernetes-jetstream.html" rel="alternate"></link><published>2018-05-04T18:00:00-07:00</published><updated>2018-05-04T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-05-04:/2018/05/shared-dask-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;Let's assume we have already a Kubernetes deployment and have installed JupyterHub, see for example my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;previous tutorial on Jetstream&lt;/a&gt;.
+Now that users can login and access a Jupyter Notebook, we would also like to provide them more computing power for their interactive data exploration. The easiest way is through …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Let's assume we have already a Kubernetes deployment and have installed JupyterHub, see for example my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;previous tutorial on Jetstream&lt;/a&gt;.
+Now that users can login and access a Jupyter Notebook, we would also like to provide them more computing power for their interactive data exploration. The easiest way is through &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt;, we can launch a scheduler and any number of workers as containers inside Kubernetes so that users can leverage the computing power of many Jetstream instances at once.&lt;/p&gt;
+&lt;p&gt;There are 2 main strategies, we can give each user their own dask cluster with exclusive access and this would be more performant but cause quick spike of usage of the Kubernetes cluster, or just launch a shared cluster and give all users access to that.&lt;/p&gt;
+&lt;p&gt;In this tutorial we cover the second scenario, we'll cover the first scenario in a following tutorial.&lt;/p&gt;
+&lt;p&gt;We will deploy first Jupyterhub through the Zero-to-JupyterHub guide, then launch via Helm a fixed size dask clusters and show how users can connect, submit distributed Python jobs and monitor their execution on the dashboard.&lt;/p&gt;
+&lt;p&gt;The configuration files mentioned in the tutorial are available in the Github repository &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream"&gt;zonca/jupyterhub-deploy-kubernetes-jetstream&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Deploy JupyterHub&lt;/h2&gt;
+&lt;p&gt;First we start from Jupyterhub on Jetstream with Kubernetes at &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Optionally, for testing purposes, we can simplify the deployment by skipping permanent storage, if this is an option, see the relevant section below.&lt;/p&gt;
+&lt;p&gt;We want to install Jupyterhub in the &lt;code&gt;pangeo&lt;/code&gt; namespace with the name &lt;code&gt;jupyter&lt;/code&gt;, replace the &lt;code&gt;helm install&lt;/code&gt; line in the tutorial with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm install --name jupyter jupyterhub/jupyterhub -f config_jupyterhub_pangeo_helm.yaml --namespace pangeo
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The &lt;code&gt;pangeo&lt;/code&gt; configuration file is using a different single user image which has the right version of &lt;code&gt;dask&lt;/code&gt; for this tutorial.&lt;/p&gt;
+&lt;h2&gt;(Optional) Simplify deployment using ephemeral storage&lt;/h2&gt;
+&lt;p&gt;Instead of installing and configuring rook, we can temporarily disable permanent storage to make the setup quicker and easier to maintain.&lt;/p&gt;
+&lt;p&gt;In the JupyterHub configuration &lt;code&gt;yaml&lt;/code&gt; set:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;hub&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+   &lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+     &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;sqlite&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;memory&lt;/span&gt;
+
+&lt;span class="n"&gt;singleuser&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+   &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+      &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;none&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now every time a user container is killed and restarted, all data are gone, this is good enough for testing purposes.&lt;/p&gt;
+&lt;h2&gt;Configure Github authentication&lt;/h2&gt;
+&lt;p&gt;Follow the instructions on the Zero-to-Jupyterhub documentation, at the end you should have in the YAML:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;auth&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;
+  &lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;access&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;
+    &lt;span class="n"&gt;users&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;otherusername&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;clientId&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;xxxxxxxxxxxxxxxxxxxx&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;clientSecret&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;callbackUrl&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://js-xxx-xxx.jetstream-cloud.org/hub/oauth_callback&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Test Jupyterhub&lt;/h2&gt;
+&lt;p&gt;Connect to the master node with your browser at: &lt;code&gt;https://js-xxx-xxx.jetstream-cloud.org&lt;/code&gt;
+Login with your Github credentials, you should get a Jupyter Notebook.&lt;/p&gt;
+&lt;p&gt;You can also check that your pod is running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get pods -n pangeo
+NAME                                  READY     STATUS    RESTARTS   AGE
+jupyter-zonca                         1/1       Running   0          2m
+......other pods
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Install Dask&lt;/h2&gt;
+&lt;p&gt;We want to deploy a single dask cluster that all the users can submit jobs to:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm repo add dask https://dask.github.io/helm-chart/
+sudo helm repo update
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Customize the &lt;code&gt;dask_shared/dask_config.yaml&lt;/code&gt; file available in the repository,
+for testing purposes I set just 1 GB RAM and 1 CPU limits on each of 3 workers.
+We can change &lt;code&gt;replicas&lt;/code&gt; of the workers to add more.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm install dask/dask --name=dask --namespace=pangeo -f dask_config.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then check that the &lt;code&gt;dask&lt;/code&gt; instances are running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo kubectl get pods --namespace pangeo
+NAME                              READY     STATUS    RESTARTS   AGE
+dask-jupyter-647bdc8c6d-mqhr4     &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          22m
+dask-scheduler-5d98cbf54c-4rtdr   &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          22m
+dask-worker-6457975f74-dqhsh      &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          22m
+dask-worker-6457975f74-lpvk4      &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          22m
+dask-worker-6457975f74-xzcmc      &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          22m
+hub-7f75b59fc5-8c2pg              &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          6d
+jupyter-zonca                     &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          10m
+proxy-6bbf67f6bd-swt7f            &lt;span class="m"&gt;2&lt;/span&gt;/2       Running   &lt;span class="m"&gt;0&lt;/span&gt;          6d
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Access the scheduler and launch a distributed job&lt;/h3&gt;
+&lt;p&gt;kubectl get service --namespace pangeo dask-scheduler&lt;/p&gt;
+&lt;p&gt;This gets the internal IP of the dask scheduler&lt;/p&gt;
+&lt;p&gt;We need to switch the single user image to pangeo, see &lt;code&gt;f3b05f08d300c60a8edbcfa934b75fc9c0ca54f3&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;We can then login to JupyterHub and connect to the scheduler using the IP above:
+actually &lt;code&gt;kube-dns&lt;/code&gt; give a name to each service, so we can connect by name&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dask.distributed&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dask-scheduler:8786&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;client&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we can access the 3 workers that we launched before:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Client
+Scheduler: tcp://dask-scheduler:8786
+Dashboard: http://dask-scheduler:8787/status
+Cluster
+Workers: 3
+Cores: 6
+Memory: 12.43 GB
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can run an example computation with dask array:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dask.array&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;da&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;da&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;20000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20000&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;chunks&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;persist&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Access the Dask dashboard for monitoring job execution&lt;/h3&gt;
+&lt;p&gt;We need to setup ingress so that a path points to the Dask dashboard instead of Jupyterhub,&lt;/p&gt;
+&lt;p&gt;Checkout the file &lt;code&gt;dask_shared/dask_webui_ingress.yaml&lt;/code&gt; in the repository, it routes the path &lt;code&gt;/dask&lt;/code&gt;
+to the &lt;code&gt;dask-scheduler&lt;/code&gt; service.&lt;/p&gt;
+&lt;p&gt;Create the ingress resource with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl create ingress -n pangeo -f dask_webui_ingress.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;All users can now access the dashboard at:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://js-xxx-xxx.jetstream-cloud.org/dask/status"&gt;https://js-xxx-xxx.jetstream-cloud.org/dask/status&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Make sure to use &lt;code&gt;/dask/status/&lt;/code&gt; and not only &lt;code&gt;/dask&lt;/code&gt;.
+Currently this is not authenticated, so this address is publicly available.
+A simple way to hide it is to choose a custom name instead of &lt;code&gt;/dask&lt;/code&gt; and edit
+the ingress accordingly with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl edit ingress dask -n pangeo
+&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="dask"></category></entry><entry><title>Install a BOINC server on Jetstream</title><link href="http://zonca.github.io/2018/03/boinc-server-jetstream.html" rel="alternate"></link><published>2018-03-29T18:00:00-07:00</published><updated>2018-03-29T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-29:/2018/03/boinc-server-jetstream.html</id><summary type="html">&lt;p&gt;&lt;a href="https://boinc.berkeley.edu/"&gt;BOINC&lt;/a&gt; is the leading platform for volunteer computing.&lt;/p&gt;
 &lt;p&gt;Scientists can create a project on the platform and submit computational jobs that will
 be executed on computers of volunteers all over the world.&lt;/p&gt;
 &lt;p&gt;In this post we'll deploy a BOINC server on Jetstream. All US scientists can get a free

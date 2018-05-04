@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Launch a shared dask cluster in Kubernetes alongside JupyterHub on Jetstream | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Launch a shared dask cluster in Kubernetes alongside JupyterHub on Jetstream</h1>
+        </header>
+        <div class='post-content'>
+            <p>Let's assume we have already a Kubernetes deployment and have installed JupyterHub, see for example my <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">previous tutorial on Jetstream</a>.
+Now that users can login and access a Jupyter Notebook, we would also like to provide them more computing power for their interactive data exploration. The easiest way is through <a href="https://dask.pydata.org"><code>dask</code></a>, we can launch a scheduler and any number of workers as containers inside Kubernetes so that users can leverage the computing power of many Jetstream instances at once.</p>
+<p>There are 2 main strategies, we can give each user their own dask cluster with exclusive access and this would be more performant but cause quick spike of usage of the Kubernetes cluster, or just launch a shared cluster and give all users access to that.</p>
+<p>In this tutorial we cover the second scenario, we'll cover the first scenario in a following tutorial.</p>
+<p>We will deploy first Jupyterhub through the Zero-to-JupyterHub guide, then launch via Helm a fixed size dask clusters and show how users can connect, submit distributed Python jobs and monitor their execution on the dashboard.</p>
+<p>The configuration files mentioned in the tutorial are available in the Github repository <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream">zonca/jupyterhub-deploy-kubernetes-jetstream</a>.</p>
+<h2>Deploy JupyterHub</h2>
+<p>First we start from Jupyterhub on Jetstream with Kubernetes at <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html</a></p>
+<p>Optionally, for testing purposes, we can simplify the deployment by skipping permanent storage, if this is an option, see the relevant section below.</p>
+<p>We want to install Jupyterhub in the <code>pangeo</code> namespace with the name <code>jupyter</code>, replace the <code>helm install</code> line in the tutorial with:</p>
+<div class="highlight"><pre><span></span>sudo helm install --name jupyter jupyterhub/jupyterhub -f config_jupyterhub_pangeo_helm.yaml --namespace pangeo
+</pre></div>
+
+
+<p>The <code>pangeo</code> configuration file is using a different single user image which has the right version of <code>dask</code> for this tutorial.</p>
+<h2>(Optional) Simplify deployment using ephemeral storage</h2>
+<p>Instead of installing and configuring rook, we can temporarily disable permanent storage to make the setup quicker and easier to maintain.</p>
+<p>In the JupyterHub configuration <code>yaml</code> set:</p>
+<div class="highlight"><pre><span></span><span class="n">hub</span><span class="o">:</span>
+   <span class="n">db</span><span class="o">:</span>
+     <span class="n">type</span><span class="o">:</span> <span class="n">sqlite</span><span class="o">-</span><span class="n">memory</span>
+
+<span class="n">singleuser</span><span class="o">:</span>
+   <span class="n">storage</span><span class="o">:</span>
+      <span class="n">type</span><span class="o">:</span> <span class="n">none</span>
+</pre></div>
+
+
+<p>Now every time a user container is killed and restarted, all data are gone, this is good enough for testing purposes.</p>
+<h2>Configure Github authentication</h2>
+<p>Follow the instructions on the Zero-to-Jupyterhub documentation, at the end you should have in the YAML:</p>
+<div class="highlight"><pre><span></span><span class="n">auth</span><span class="o">:</span>
+  <span class="n">type</span><span class="o">:</span> <span class="n">github</span>
+  <span class="n">admin</span><span class="o">:</span>
+    <span class="n">access</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">users</span><span class="o">:</span> <span class="o">[</span><span class="n">zonca</span><span class="o">,</span> <span class="n">otherusername</span><span class="o">]</span>
+  <span class="n">github</span><span class="o">:</span>
+    <span class="n">clientId</span><span class="o">:</span> <span class="s2">&quot;xxxxxxxxxxxxxxxxxxxx&quot;</span>
+    <span class="n">clientSecret</span><span class="o">:</span> <span class="s2">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+    <span class="n">callbackUrl</span><span class="o">:</span> <span class="s2">&quot;https://js-xxx-xxx.jetstream-cloud.org/hub/oauth_callback&quot;</span>
+</pre></div>
+
+
+<h2>Test Jupyterhub</h2>
+<p>Connect to the master node with your browser at: <code>https://js-xxx-xxx.jetstream-cloud.org</code>
+Login with your Github credentials, you should get a Jupyter Notebook.</p>
+<p>You can also check that your pod is running:</p>
+<div class="highlight"><pre><span></span>sudo kubectl get pods -n pangeo
+NAME                                  READY     STATUS    RESTARTS   AGE
+jupyter-zonca                         1/1       Running   0          2m
+......other pods
+</pre></div>
+
+
+<h2>Install Dask</h2>
+<p>We want to deploy a single dask cluster that all the users can submit jobs to:</p>
+<div class="highlight"><pre><span></span>sudo helm repo add dask https://dask.github.io/helm-chart/
+sudo helm repo update
+</pre></div>
+
+
+<p>Customize the <code>dask_shared/dask_config.yaml</code> file available in the repository,
+for testing purposes I set just 1 GB RAM and 1 CPU limits on each of 3 workers.
+We can change <code>replicas</code> of the workers to add more.</p>
+<div class="highlight"><pre><span></span>sudo helm install dask/dask --name=dask --namespace=pangeo -f dask_config.yaml
+</pre></div>
+
+
+<p>Then check that the <code>dask</code> instances are running:</p>
+<div class="highlight"><pre><span></span>$ sudo kubectl get pods --namespace pangeo
+NAME                              READY     STATUS    RESTARTS   AGE
+dask-jupyter-647bdc8c6d-mqhr4     <span class="m">1</span>/1       Running   <span class="m">0</span>          22m
+dask-scheduler-5d98cbf54c-4rtdr   <span class="m">1</span>/1       Running   <span class="m">0</span>          22m
+dask-worker-6457975f74-dqhsh      <span class="m">1</span>/1       Running   <span class="m">0</span>          22m
+dask-worker-6457975f74-lpvk4      <span class="m">1</span>/1       Running   <span class="m">0</span>          22m
+dask-worker-6457975f74-xzcmc      <span class="m">1</span>/1       Running   <span class="m">0</span>          22m
+hub-7f75b59fc5-8c2pg              <span class="m">1</span>/1       Running   <span class="m">0</span>          6d
+jupyter-zonca                     <span class="m">1</span>/1       Running   <span class="m">0</span>          10m
+proxy-6bbf67f6bd-swt7f            <span class="m">2</span>/2       Running   <span class="m">0</span>          6d
+</pre></div>
+
+
+<h3>Access the scheduler and launch a distributed job</h3>
+<p>kubectl get service --namespace pangeo dask-scheduler</p>
+<p>This gets the internal IP of the dask scheduler</p>
+<p>We need to switch the single user image to pangeo, see <code>f3b05f08d300c60a8edbcfa934b75fc9c0ca54f3</code></p>
+<p>We can then login to JupyterHub and connect to the scheduler using the IP above:
+actually <code>kube-dns</code> give a name to each service, so we can connect by name</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;dask-scheduler:8786&quot;</span><span class="p">)</span>
+<span class="n">client</span>
+</pre></div>
+
+
+<p>Now we can access the 3 workers that we launched before:</p>
+<div class="highlight"><pre><span></span>Client
+Scheduler: tcp://dask-scheduler:8786
+Dashboard: http://dask-scheduler:8787/status
+Cluster
+Workers: 3
+Cores: 6
+Memory: 12.43 GB
+</pre></div>
+
+
+<p>We can run an example computation with dask array:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask.array</span> <span class="kn">as</span> <span class="nn">da</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">20000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
+<span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>Access the Dask dashboard for monitoring job execution</h3>
+<p>We need to setup ingress so that a path points to the Dask dashboard instead of Jupyterhub,</p>
+<p>Checkout the file <code>dask_shared/dask_webui_ingress.yaml</code> in the repository, it routes the path <code>/dask</code>
+to the <code>dask-scheduler</code> service.</p>
+<p>Create the ingress resource with:</p>
+<div class="highlight"><pre><span></span>sudo kubectl create ingress -n pangeo -f dask_webui_ingress.yaml
+</pre></div>
+
+
+<p>All users can now access the dashboard at:</p>
+<ul>
+<li><a href="https://js-xxx-xxx.jetstream-cloud.org/dask/status">https://js-xxx-xxx.jetstream-cloud.org/dask/status</a></li>
+</ul>
+<p>Make sure to use <code>/dask/status/</code> and not only <code>/dask</code>.
+Currently this is not authenticated, so this address is publicly available.
+A simple way to hide it is to choose a custom name instead of <code>/dask</code> and edit
+the ingress accordingly with:</p>
+<div class="highlight"><pre><span></span>sudo kubectl edit ingress dask -n pangeo
+</pre></div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-05-04T18:00:00-07:00">Fri 04 May 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/jupyter.html">jupyter</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/dask.html">dask</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
