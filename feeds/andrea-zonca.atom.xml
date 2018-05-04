@@ -83,11 +83,7 @@ proxy-6bbf67f6bd-swt7f            &lt;span class="m"&gt;2&lt;/span&gt;/2       R
 
 
 &lt;h3&gt;Access the scheduler and launch a distributed job&lt;/h3&gt;
-&lt;p&gt;kubectl get service --namespace pangeo dask-scheduler&lt;/p&gt;
-&lt;p&gt;This gets the internal IP of the dask scheduler&lt;/p&gt;
-&lt;p&gt;We need to switch the single user image to pangeo, see &lt;code&gt;f3b05f08d300c60a8edbcfa934b75fc9c0ca54f3&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;We can then login to JupyterHub and connect to the scheduler using the IP above:
-actually &lt;code&gt;kube-dns&lt;/code&gt; give a name to each service, so we can connect by name&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;kube-dns&lt;/code&gt; gives a name to each service and automatically propagates it to each pod, so we can connect by name&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dask.distributed&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
 &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dask-scheduler:8786&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;client&lt;/span&gt;
