@@ -100,16 +100,11 @@ jupyter-zonca                         1/1       Running   0          2m
 
 
 <h2>Install Dask</h2>
-<p>We want to deploy a single dask cluster that all the users can submit jobs to:</p>
-<div class="highlight"><pre><span></span>sudo helm repo add dask https://dask.github.io/helm-chart/
-sudo helm repo update
-</pre></div>
-
-
+<p>We want to deploy a single dask cluster that all the users can submit jobs to.</p>
 <p>Customize the <code>dask_shared/dask_config.yaml</code> file available in the repository,
 for testing purposes I set just 1 GB RAM and 1 CPU limits on each of 3 workers.
 We can change <code>replicas</code> of the workers to add more.</p>
-<div class="highlight"><pre><span></span>sudo helm install dask/dask --name=dask --namespace=pangeo -f dask_config.yaml
+<div class="highlight"><pre><span></span>sudo helm install stable/dask --name=dask --namespace=pangeo -f dask_config.yaml
 </pre></div>
 
 
