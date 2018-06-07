@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Setup private dask clusters in Kubernetes alongside JupyterHub on Jetstream | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Setup private dask clusters in Kubernetes alongside JupyterHub on Jetstream</h1>
+        </header>
+        <div class='post-content'>
+            <p>In this post we will leverage software made available by the <a href="https://pangeo-data.github.io">Pangeo community</a> to allow each user of a <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">Jupyterhub instance deployed on Jetstream on top of Kubernetes</a> to launch a set of <a href="https://dask.pydata.org"><code>dask</code></a> workers as containers running inside Kubernetes itself and use them for distributed computing.</p>
+<p>Pangeo also maintains a deployment of this environment on Google Cloud freely accessible at <a href="https://pangeo.pydata.org">pangeo.pydata.org</a>.</p>
+<p><strong>Security considerations</strong>: This deployment grants each user administrative access to the Kubernetes API, so each user could use this privilege to terminate other users' pods or dask workers. Therefore it is suitable only for a community of trusted users. There is <a href="https://github.com/pangeo-data/pangeo/issues/135#issuecomment-384320753">discussion about leveraging namespaces to limit this</a> but it hasn't been implemented yet.</p>
+<h2>Deploy Kubernetes</h2>
+<p>We need to first create Jetstream instances and deploy Kubernetes on them. We can follow the first part of the tutorial at <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html</a>.
+I also tested with Ubuntu 18.04 instead of Ubuntu 16.04 and edited the <code>install-kubeadm.bash</code> accordingly, I also removed version specifications in order to pickup the latest Kubernetes version, currently 1.10. See <a href="https://gist.github.com/zonca/5365fd2245462dedaf2297e0417c4662">my install-kubeadm-18.04.bash</a>.
+Notice that for the <code>http://apt.kubernetes.io/</code> don't have yet Ubuntu 18.04 packages, so I left <code>xenial</code>, this should be updated in the future.</p>
+<p>In order to simplify the setup we will just be using ephemeral storage, later we can update the deployment using either Rook following the <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">steps in my original tutorial</a> or a NFS share (I'll write a tutorial soon about that).</p>
+<h2>Deploy Pangeo</h2>
+<p>Deployment is just a single step because Pangeo published a Helm recipe that depends on the Zero-to-JupyterHub recipe and deploys both in a single step, therefore we <em>should not have deployed JupyterHub beforehand</em>.</p>
+<p>First we need to create a <code>yaml</code> configuration file for the package.
+Checkout the Github repository with all the configuration files on the master node of Kubernetes:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream
+</pre></div>
+
+
+<p>in the <code>pangeo_helm</code> folder, there is already a draft of the configuration file.</p>
+<p>We need to:</p>
+<ul>
+<li>run <code>openssl</code> as instructed inside the file and paste the output tokens to the specified location</li>
+<li>edit the hostname in the <code>ingress</code> section to the hostname of the Jetstream master node</li>
+<li>customize the memory and CPU requirements, currently they are very low so that this can be tested also in a single small instance</li>
+</ul>
+<p>We can then deploy with:</p>
+<div class="highlight"><pre><span></span>sudo helm install pangeo/pangeo -n pangeo --namespace pangeo -f config_pangeo_no_storage.yaml --version=v0.1.1-95ab292
+</pre></div>
+
+
+<p>You can optionally check if there are newer versions of the chart at <a href="https://pangeo-data.github.io/helm-chart/">https://pangeo-data.github.io/helm-chart/</a>.</p>
+<p>Then check that the pods start checking their status with:</p>
+<div class="highlight"><pre><span></span>sudo kubectl -n pangeo get pods
+</pre></div>
+
+
+<p>If any is stuck in Pending, check with:</p>
+<div class="highlight"><pre><span></span>sudo kubectl -n pangeo describe &lt;pod-name&gt;
+</pre></div>
+
+
+<p>Once the <code>hub</code> pod is running, you should be able to connect with your browser to <code>js-xxx-xxx.Jetstream-cloud.org</code>, by default it runs with a dummy authenticator, just digit a username and leave the password empty to login.</p>
+<h2>Launch a dask cluster</h2>
+<p>Once you get the Jupyter Notebook instance, you should see a file named <code>worker-template.yaml</code> in your home folder, this is a template for the configuration and the allocated resources for the pod of each <code>dask</code> worker.
+The default workers for Pangeo are beefy, for testing we can reduce their requirements, see for example my <a href="https://gist.github.com/zonca/21ef3125eee7af5c2548e505d47dc200">worker-template.yaml</a> that works on a small Jetstream VM.</p>
+<p>Then inside <code>examples/</code> we have several example notebooks that show how to use <code>dask</code> for distributed computing.
+<code>dask-array.ipynb</code> shows basic functionality for distributed multi-dimensional arrays.</p>
+<p>The most important piece of code is the creation of dask workers:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask_kubernetes</span> <span class="kn">import</span> <span class="n">KubeCluster</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">KubeCluster</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">cluster</span>
+</pre></div>
+
+
+<p>If we execute this cell <code>dask_kubernetes</code> contacts the Kubernetes API using the <a href="https://github.com/pangeo-data/helm-chart/blob/master/pangeo/templates/dask-kubernetes-rbac.yaml">serviceaccount <code>daskkubernetes</code></a> mounted on the pods by the Helm chart and requests new pods to be launched.
+In fact we can check on the terminal again with:</p>
+<div class="highlight"><pre><span></span>sudo kubectl -n pangeo get pods
+</pre></div>
+
+
+<p>that new pods should be about to run.
+It also provides buttons to change the number of running workers, either manually or adaptively based on the required resources.</p>
+<p>This also runs the <code>dask</code> scheduler on the pod that is running the Jupyter Notebook and we can connect to it with:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+<span class="n">client</span>
+</pre></div>
+
+
+<p>From now on all <code>dask</code> commands will automatically execute commands on the <code>dask</code> cluster.</p>
+<h2>Customize the JupyterHub deployment</h2>
+<p>We can then customize the JupyterHub deployment for example to add authentication or permanent storage.
+Notice that all configuration options inside the <code>config_pangeo_no_storage.yaml</code> are inside the <code>jupyterhub:</code> tag, this is due to the fact that <code>jupyterhub</code> is another Helm package which we are configuring through the <code>pangeo</code> Helm package.
+Therefore make sure that any configuration option found in my previous tutorials or on the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/">Zero-to-Jupyterhub</a> documentation needs to be indented accordingly.</p>
+<p>Then we can either run:</p>
+<div class="highlight"><pre><span></span>sudo helm delete --purge pangeo
+</pre></div>
+
+
+<p>and then install it from scratch again or just update the running cluster with:</p>
+<div class="highlight"><pre><span></span>sudo helm upgrade pangeo -f config_pangeo_no_storage.yaml
+</pre></div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-06-07T18:00:00-07:00">Thu 07 June 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/jupyter.html">jupyter</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/dask.html">dask</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

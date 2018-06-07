@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-05-04T18:00:00-07:00</updated><entry><title>Launch a shared dask cluster in Kubernetes alongside JupyterHub on Jetstream</title><link href="http://zonca.github.io/2018/05/shared-dask-kubernetes-jetstream.html" rel="alternate"></link><published>2018-05-04T18:00:00-07:00</published><updated>2018-05-04T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-05-04:/2018/05/shared-dask-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;Let's assume we have already a Kubernetes deployment and have installed JupyterHub, see for example my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;previous tutorial on Jetstream&lt;/a&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-06-07T18:00:00-07:00</updated><entry><title>Setup private dask clusters in Kubernetes alongside JupyterHub on Jetstream</title><link href="http://zonca.github.io/2018/06/private-dask-kubernetes-jetstream.html" rel="alternate"></link><published>2018-06-07T18:00:00-07:00</published><updated>2018-06-07T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-06-07:/2018/06/private-dask-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;In this post we will leverage software made available by the &lt;a href="https://pangeo-data.github.io"&gt;Pangeo community&lt;/a&gt; to allow each user of a &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;Jupyterhub instance deployed on Jetstream on top of Kubernetes&lt;/a&gt; to launch a set of &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt; workers as containers running inside Kubernetes itself and use them for distributed computing.&lt;/p&gt;
+&lt;p&gt;Pangeo also maintains …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this post we will leverage software made available by the &lt;a href="https://pangeo-data.github.io"&gt;Pangeo community&lt;/a&gt; to allow each user of a &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;Jupyterhub instance deployed on Jetstream on top of Kubernetes&lt;/a&gt; to launch a set of &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt; workers as containers running inside Kubernetes itself and use them for distributed computing.&lt;/p&gt;
+&lt;p&gt;Pangeo also maintains a deployment of this environment on Google Cloud freely accessible at &lt;a href="https://pangeo.pydata.org"&gt;pangeo.pydata.org&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Security considerations&lt;/strong&gt;: This deployment grants each user administrative access to the Kubernetes API, so each user could use this privilege to terminate other users' pods or dask workers. Therefore it is suitable only for a community of trusted users. There is &lt;a href="https://github.com/pangeo-data/pangeo/issues/135#issuecomment-384320753"&gt;discussion about leveraging namespaces to limit this&lt;/a&gt; but it hasn't been implemented yet.&lt;/p&gt;
+&lt;h2&gt;Deploy Kubernetes&lt;/h2&gt;
+&lt;p&gt;We need to first create Jetstream instances and deploy Kubernetes on them. We can follow the first part of the tutorial at &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html&lt;/a&gt;.
+I also tested with Ubuntu 18.04 instead of Ubuntu 16.04 and edited the &lt;code&gt;install-kubeadm.bash&lt;/code&gt; accordingly, I also removed version specifications in order to pickup the latest Kubernetes version, currently 1.10. See &lt;a href="https://gist.github.com/zonca/5365fd2245462dedaf2297e0417c4662"&gt;my install-kubeadm-18.04.bash&lt;/a&gt;.
+Notice that for the &lt;code&gt;http://apt.kubernetes.io/&lt;/code&gt; don't have yet Ubuntu 18.04 packages, so I left &lt;code&gt;xenial&lt;/code&gt;, this should be updated in the future.&lt;/p&gt;
+&lt;p&gt;In order to simplify the setup we will just be using ephemeral storage, later we can update the deployment using either Rook following the &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;steps in my original tutorial&lt;/a&gt; or a NFS share (I'll write a tutorial soon about that).&lt;/p&gt;
+&lt;h2&gt;Deploy Pangeo&lt;/h2&gt;
+&lt;p&gt;Deployment is just a single step because Pangeo published a Helm recipe that depends on the Zero-to-JupyterHub recipe and deploys both in a single step, therefore we &lt;em&gt;should not have deployed JupyterHub beforehand&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;First we need to create a &lt;code&gt;yaml&lt;/code&gt; configuration file for the package.
+Checkout the Github repository with all the configuration files on the master node of Kubernetes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;in the &lt;code&gt;pangeo_helm&lt;/code&gt; folder, there is already a draft of the configuration file.&lt;/p&gt;
+&lt;p&gt;We need to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;run &lt;code&gt;openssl&lt;/code&gt; as instructed inside the file and paste the output tokens to the specified location&lt;/li&gt;
+&lt;li&gt;edit the hostname in the &lt;code&gt;ingress&lt;/code&gt; section to the hostname of the Jetstream master node&lt;/li&gt;
+&lt;li&gt;customize the memory and CPU requirements, currently they are very low so that this can be tested also in a single small instance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We can then deploy with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm install pangeo/pangeo -n pangeo --namespace pangeo -f config_pangeo_no_storage.yaml --version=v0.1.1-95ab292
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can optionally check if there are newer versions of the chart at &lt;a href="https://pangeo-data.github.io/helm-chart/"&gt;https://pangeo-data.github.io/helm-chart/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then check that the pods start checking their status with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo get pods
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If any is stuck in Pending, check with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo describe &amp;lt;pod-name&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once the &lt;code&gt;hub&lt;/code&gt; pod is running, you should be able to connect with your browser to &lt;code&gt;js-xxx-xxx.Jetstream-cloud.org&lt;/code&gt;, by default it runs with a dummy authenticator, just digit a username and leave the password empty to login.&lt;/p&gt;
+&lt;h2&gt;Launch a dask cluster&lt;/h2&gt;
+&lt;p&gt;Once you get the Jupyter Notebook instance, you should see a file named &lt;code&gt;worker-template.yaml&lt;/code&gt; in your home folder, this is a template for the configuration and the allocated resources for the pod of each &lt;code&gt;dask&lt;/code&gt; worker.
+The default workers for Pangeo are beefy, for testing we can reduce their requirements, see for example my &lt;a href="https://gist.github.com/zonca/21ef3125eee7af5c2548e505d47dc200"&gt;worker-template.yaml&lt;/a&gt; that works on a small Jetstream VM.&lt;/p&gt;
+&lt;p&gt;Then inside &lt;code&gt;examples/&lt;/code&gt; we have several example notebooks that show how to use &lt;code&gt;dask&lt;/code&gt; for distributed computing.
+&lt;code&gt;dask-array.ipynb&lt;/code&gt; shows basic functionality for distributed multi-dimensional arrays.&lt;/p&gt;
+&lt;p&gt;The most important piece of code is the creation of dask workers:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dask_kubernetes&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;KubeCluster&lt;/span&gt;
+&lt;span class="n"&gt;cluster&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;KubeCluster&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_workers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;cluster&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If we execute this cell &lt;code&gt;dask_kubernetes&lt;/code&gt; contacts the Kubernetes API using the &lt;a href="https://github.com/pangeo-data/helm-chart/blob/master/pangeo/templates/dask-kubernetes-rbac.yaml"&gt;serviceaccount &lt;code&gt;daskkubernetes&lt;/code&gt;&lt;/a&gt; mounted on the pods by the Helm chart and requests new pods to be launched.
+In fact we can check on the terminal again with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo get pods
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;that new pods should be about to run.
+It also provides buttons to change the number of running workers, either manually or adaptively based on the required resources.&lt;/p&gt;
+&lt;p&gt;This also runs the &lt;code&gt;dask&lt;/code&gt; scheduler on the pod that is running the Jupyter Notebook and we can connect to it with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dask.distributed&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cluster&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;client&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;From now on all &lt;code&gt;dask&lt;/code&gt; commands will automatically execute commands on the &lt;code&gt;dask&lt;/code&gt; cluster.&lt;/p&gt;
+&lt;h2&gt;Customize the JupyterHub deployment&lt;/h2&gt;
+&lt;p&gt;We can then customize the JupyterHub deployment for example to add authentication or permanent storage.
+Notice that all configuration options inside the &lt;code&gt;config_pangeo_no_storage.yaml&lt;/code&gt; are inside the &lt;code&gt;jupyterhub:&lt;/code&gt; tag, this is due to the fact that &lt;code&gt;jupyterhub&lt;/code&gt; is another Helm package which we are configuring through the &lt;code&gt;pangeo&lt;/code&gt; Helm package.
+Therefore make sure that any configuration option found in my previous tutorials or on the &lt;a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/"&gt;Zero-to-Jupyterhub&lt;/a&gt; documentation needs to be indented accordingly.&lt;/p&gt;
+&lt;p&gt;Then we can either run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm delete --purge pangeo
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and then install it from scratch again or just update the running cluster with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo helm upgrade pangeo -f config_pangeo_no_storage.yaml
+&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="dask"></category></entry><entry><title>Launch a shared dask cluster in Kubernetes alongside JupyterHub on Jetstream</title><link href="http://zonca.github.io/2018/05/shared-dask-kubernetes-jetstream.html" rel="alternate"></link><published>2018-05-04T18:00:00-07:00</published><updated>2018-05-04T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-05-04:/2018/05/shared-dask-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;Let's assume we have already a Kubernetes deployment and have installed JupyterHub, see for example my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;previous tutorial on Jetstream&lt;/a&gt;.
 Now that users can login and access a Jupyter Notebook, we would also like to provide them more computing power for their interactive data exploration. The easiest way is through …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Let's assume we have already a Kubernetes deployment and have installed JupyterHub, see for example my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;previous tutorial on Jetstream&lt;/a&gt;.
 Now that users can login and access a Jupyter Notebook, we would also like to provide them more computing power for their interactive data exploration. The easiest way is through &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt;, we can launch a scheduler and any number of workers as containers inside Kubernetes so that users can leverage the computing power of many Jetstream instances at once.&lt;/p&gt;
 &lt;p&gt;There are 2 main strategies, we can give each user their own dask cluster with exclusive access and this would be more performant but cause quick spike of usage of the Kubernetes cluster, or just launch a shared cluster and give all users access to that.&lt;/p&gt;
