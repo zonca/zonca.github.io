@@ -45,7 +45,10 @@
             <h1>Deploy scalable Jupyterhub with Kubernetes on Jetstream</h1>
         </header>
         <div class='post-content'>
-            <p><strong>Updated in February 2018 with newer version of <code>kubeadm-bootstrap</code>, Kubernetes 1.9.2</strong></p>
+            <ul>
+<li><strong>Tested in June 2018 with Ubuntu 18.04 and Kubernetes 1.10</strong></li>
+<li><strong>Updated in February 2018 with newer version of <code>kubeadm-bootstrap</code>, Kubernetes 1.9.2</strong></li>
+</ul>
 <h2>Introduction</h2>
 <p>The best infrastructure available to deploy Jupyterhub at scale is Kubernetes. Kubernetes provides a fault-tolerant system to deploy, manage and scale containers. The Jupyter team released a recipe to deploy Jupyterhub on top of Kubernetes, <a href="https://zero-to-jupyterhub.readthedocs.io">Zero to Jupyterhub</a>. In this deployment both the hub, the proxy and all Jupyter Notebooks servers for the users are running inside Docker containers managed by Kubernetes.</p>
 <p>Kubernetes is a highly sophisticated system, for smaller deployments (30/50 users, less then 10 servers), another option is to use the Docker Swarm mode, I covered this in a <a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html">tutorial on how to deploy it on Jetstream</a>.</p>
