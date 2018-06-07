@@ -39,7 +39,7 @@ Checkout the Github repository with all the configuration files on the master no
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Once the &lt;code&gt;hub&lt;/code&gt; pod is running, you should be able to connect with your browser to &lt;code&gt;js-xxx-xxx.Jetstream-cloud.org&lt;/code&gt;, by default it runs with a dummy authenticator, just digit a username and leave the password empty to login.&lt;/p&gt;
+&lt;p&gt;Once the &lt;code&gt;hub&lt;/code&gt; pod is running, you should be able to connect with your browser to &lt;code&gt;js-xxx-xxx.Jetstream-cloud.org&lt;/code&gt;, by default it runs with a dummy authenticator, at the login form, just type any username and leave the password empty to login.&lt;/p&gt;
 &lt;h2&gt;Launch a dask cluster&lt;/h2&gt;
 &lt;p&gt;Once you get the Jupyter Notebook instance, you should see a file named &lt;code&gt;worker-template.yaml&lt;/code&gt; in your home folder, this is a template for the configuration and the allocated resources for the pod of each &lt;code&gt;dask&lt;/code&gt; worker.
 The default workers for Pangeo are beefy, for testing we can reduce their requirements, see for example my &lt;a href="https://gist.github.com/zonca/21ef3125eee7af5c2548e505d47dc200"&gt;worker-template.yaml&lt;/a&gt; that works on a small Jetstream VM.&lt;/p&gt;
