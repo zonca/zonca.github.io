@@ -1,5 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-06-07T18:00:00-07:00</updated><entry><title>Setup private dask clusters in Kubernetes alongside JupyterHub on Jetstream</title><link href="http://zonca.github.io/2018/06/private-dask-kubernetes-jetstream.html" rel="alternate"></link><published>2018-06-07T18:00:00-07:00</published><updated>2018-06-07T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-06-07:/2018/06/private-dask-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;In this post we will leverage software made available by the &lt;a href="https://pangeo-data.github.io"&gt;Pangeo community&lt;/a&gt; to allow each user of a &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;Jupyterhub instance deployed on Jetstream on top of Kubernetes&lt;/a&gt; to launch a set of &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt; workers as containers running inside Kubernetes itself and use them for distributed computing.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-06-20T18:00:00-07:00</updated><entry><title>How to organize code and data for simulations at NERSC</title><link href="http://zonca.github.io/2018/06/organize-code-data-simulations-nersc.html" rel="alternate"></link><published>2018-06-20T18:00:00-07:00</published><updated>2018-06-20T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-06-20:/2018/06/organize-code-data-simulations-nersc.html</id><summary type="html">&lt;p&gt;I recently improved my strategy for organizing code and data for simulations run at NERSC,
+I'll write it here for reference.&lt;/p&gt;
+&lt;h2&gt;Libraries&lt;/h2&gt;
+&lt;p&gt;I mostly use Python (often with C/C++ extensions), so I first rely on the Anaconda
+module maintained by NERSC, currently &lt;code&gt;python/3.6-anaconda-4.4&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If I need …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I recently improved my strategy for organizing code and data for simulations run at NERSC,
+I'll write it here for reference.&lt;/p&gt;
+&lt;h2&gt;Libraries&lt;/h2&gt;
+&lt;p&gt;I mostly use Python (often with C/C++ extensions), so I first rely on the Anaconda
+module maintained by NERSC, currently &lt;code&gt;python/3.6-anaconda-4.4&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If I need to add many more packages I can create a conda environment, but for just installing
+1 or 2 packages I prefer to just add them to my &lt;code&gt;PYTHONPATH&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I have core libraries that I rely on and often modify to run my simulations,
+those should be installed on Global Common Software: &lt;code&gt;/global/common/software/projectname&lt;/code&gt;
+which is specifically designed to access small files like Python packages.
+I generally create a subfolder and reference it with an environment variable:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; `export PREFIX=/global/common/software/projectname/zonca/python_prefix`
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then I create a &lt;code&gt;env.sh&lt;/code&gt; script in the source folder of the package (in Global Home) that loads
+the environment:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mf"&gt;3.6&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;anaconda-4&lt;/span&gt;&lt;span class="mf"&gt;.4&lt;/span&gt;
+&lt;span class="k"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PREFIX&lt;/span&gt;=&lt;span class="sr"&gt;/global/&lt;/span&gt;&lt;span class="n"&gt;common&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;software&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;projectname&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;python_prefix&lt;/span&gt;
+&lt;span class="k"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;=&lt;span class="nv"&gt;$PREFIX&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;
+&lt;span class="k"&gt;export&lt;/span&gt; &lt;span class="n"&gt;LD_LIBRARY_PATH&lt;/span&gt;=&lt;span class="nv"&gt;$PREFIX&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib:&lt;/span&gt;&lt;span class="nv"&gt;$LD_LIBRARY_PATH&lt;/span&gt;
+&lt;span class="k"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PYTHONPATH&lt;/span&gt;=&lt;span class="nv"&gt;$PREFIX&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;python3&lt;/span&gt;&lt;span class="mf"&gt;.6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;site-packages:&lt;/span&gt;&lt;span class="nv"&gt;$PYTHONPATH&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This environment is automatically propagated to the computing nodes when I submit a SLURM script,
+therefore I do not add any of these environment details to my SLURM scripts.&lt;/p&gt;
+&lt;p&gt;Then I can install a package there with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python setup.py install --prefix=$PREFIX
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or from pip:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install apackage --prefix=$PREFIX
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is also common to install a newer version of a package which is already provided by
+the base environment:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install apackage --ignore-installed --upgrade --no-deps --prefix=$PREFIX
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Simulations SLURM scripts and configuration files&lt;/h2&gt;
+&lt;p&gt;I first create a repository on Github for my simulations and clone it to my home folder at NERSC.
+I generally create a repository for each experiment, then I create a subfolder for each
+type of simulation I am working on.&lt;/p&gt;
+&lt;p&gt;Inside a folder I create parameters files to configure my run and slurm scripts to launch the
+simulations and put everything under version control immediately, I often create a Pull Request
+on Github and ask my collaborators to cross-check the configuration before a submit a run.&lt;/p&gt;
+&lt;p&gt;Smaller input data files, even binaries, can be added for convenience to the Github repository.&lt;/p&gt;
+&lt;p&gt;Once a run has been validated, inside the simulation type folder I createa a subfolder &lt;code&gt;runs/201806_details_about_run&lt;/code&gt; and
+add a &lt;code&gt;README.md&lt;/code&gt;, this will include all the details about the simulation.
+I also tag both the core library I depend on and the simulation repository with the same name e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git tag -a 201806_details_about_run -m &amp;quot;software version used for 201806_details_about_run&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I'll also add the path at NERSC of the input data and output results.&lt;/p&gt;
+&lt;p&gt;Then for future simulations I'll keep modifying the SLURM scripts and parameter files but always have
+a reference to each previous version.&lt;/p&gt;
+&lt;h2&gt;Larger input data and output data&lt;/h2&gt;
+&lt;p&gt;Larger input data and outputs are not suitable for version control and should live in a SCRATCH filesystem.
+I always use the Global Scratch &lt;code&gt;$CSCRATCH&lt;/code&gt; which is available both on Edison on Cori and also
+from the Jupyter Notebook environment at: &lt;a href="https://jupyter.nersc.gov"&gt;https://jupyter.nersc.gov&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I create a root folder for the project at:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$CSCRATCH/projectname
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then a subfolder for each simulation type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$CSCRATCH/projectname/simulation_type_1
+$CSCRATCH/projectname/simulation_type_2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then I symlink those inside the simulation repository as the folder &lt;code&gt;out/&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd $HOME/projectname/simulation_type_1
+ln -s $CSCRATCH/projectname/simulation_type_1 out
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Therefore I can setup my simulation software to save all results inside &lt;code&gt;out/201806_details_about_run&lt;/code&gt;
+and this is going to be written to &lt;code&gt;CSCRATCH&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This setup makes it very convenient to regularly backup everything to tape using &lt;code&gt;cput&lt;/code&gt; which just backs up
+files that are not already on tape, e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd $CSCRATCH
+hsi
+cput -R projectname
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is going to synchronize the backup on tape with the latest results on &lt;code&gt;CSCRATCH&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I do the same for input files:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir $CSCRATCH/projectname/input_simulation_type_1
+cd $HOME/projectname/simulation_type_1
+ln -s $CSCRATCH/projectname/input_simulation_type_1 input
+&lt;/pre&gt;&lt;/div&gt;</content><category term="nersc"></category><category term="python"></category></entry><entry><title>Setup private dask clusters in Kubernetes alongside JupyterHub on Jetstream</title><link href="http://zonca.github.io/2018/06/private-dask-kubernetes-jetstream.html" rel="alternate"></link><published>2018-06-07T18:00:00-07:00</published><updated>2018-06-07T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-06-07:/2018/06/private-dask-kubernetes-jetstream.html</id><summary type="html">&lt;p&gt;In this post we will leverage software made available by the &lt;a href="https://pangeo-data.github.io"&gt;Pangeo community&lt;/a&gt; to allow each user of a &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;Jupyterhub instance deployed on Jetstream on top of Kubernetes&lt;/a&gt; to launch a set of &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt; workers as containers running inside Kubernetes itself and use them for distributed computing.&lt;/p&gt;
 &lt;p&gt;Pangeo also maintains …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this post we will leverage software made available by the &lt;a href="https://pangeo-data.github.io"&gt;Pangeo community&lt;/a&gt; to allow each user of a &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;Jupyterhub instance deployed on Jetstream on top of Kubernetes&lt;/a&gt; to launch a set of &lt;a href="https://dask.pydata.org"&gt;&lt;code&gt;dask&lt;/code&gt;&lt;/a&gt; workers as containers running inside Kubernetes itself and use them for distributed computing.&lt;/p&gt;
 &lt;p&gt;Pangeo also maintains a deployment of this environment on Google Cloud freely accessible at &lt;a href="https://pangeo.pydata.org"&gt;pangeo.pydata.org&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Security considerations&lt;/strong&gt;: This deployment grants each user administrative access to the Kubernetes API, so each user could use this privilege to terminate other users' pods or dask workers. Therefore it is suitable only for a community of trusted users. There is &lt;a href="https://github.com/pangeo-data/pangeo/issues/135#issuecomment-384320753"&gt;discussion about leveraging namespaces to limit this&lt;/a&gt; but it hasn't been implemented yet.&lt;/p&gt;

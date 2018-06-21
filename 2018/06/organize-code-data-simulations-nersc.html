@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>How to organize code and data for simulations at NERSC | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>How to organize code and data for simulations at NERSC</h1>
+        </header>
+        <div class='post-content'>
+            <p>I recently improved my strategy for organizing code and data for simulations run at NERSC,
+I'll write it here for reference.</p>
+<h2>Libraries</h2>
+<p>I mostly use Python (often with C/C++ extensions), so I first rely on the Anaconda
+module maintained by NERSC, currently <code>python/3.6-anaconda-4.4</code>.</p>
+<p>If I need to add many more packages I can create a conda environment, but for just installing
+1 or 2 packages I prefer to just add them to my <code>PYTHONPATH</code>.</p>
+<p>I have core libraries that I rely on and often modify to run my simulations,
+those should be installed on Global Common Software: <code>/global/common/software/projectname</code>
+which is specifically designed to access small files like Python packages.
+I generally create a subfolder and reference it with an environment variable:</p>
+<div class="highlight"><pre><span></span> `export PREFIX=/global/common/software/projectname/zonca/python_prefix`
+</pre></div>
+
+
+<p>Then I create a <code>env.sh</code> script in the source folder of the package (in Global Home) that loads
+the environment:</p>
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">load</span> <span class="n">python</span><span class="o">/</span><span class="mf">3.6</span><span class="o">-</span><span class="n">anaconda-4</span><span class="mf">.4</span>
+<span class="k">export</span> <span class="n">PREFIX</span>=<span class="sr">/global/</span><span class="n">common</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">python_prefix</span>
+<span class="k">export</span> <span class="n">PATH</span>=<span class="nv">$PREFIX</span><span class="o">/</span><span class="n">bin:</span><span class="nv">$PATH</span>
+<span class="k">export</span> <span class="n">LD_LIBRARY_PATH</span>=<span class="nv">$PREFIX</span><span class="o">/</span><span class="n">lib:</span><span class="nv">$LD_LIBRARY_PATH</span>
+<span class="k">export</span> <span class="n">PYTHONPATH</span>=<span class="nv">$PREFIX</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.6</span><span class="o">/</span><span class="n">site-packages:</span><span class="nv">$PYTHONPATH</span>
+</pre></div>
+
+
+<p>This environment is automatically propagated to the computing nodes when I submit a SLURM script,
+therefore I do not add any of these environment details to my SLURM scripts.</p>
+<p>Then I can install a package there with:</p>
+<div class="highlight"><pre><span></span>python setup.py install --prefix=$PREFIX
+</pre></div>
+
+
+<p>or from pip:</p>
+<div class="highlight"><pre><span></span>pip install apackage --prefix=$PREFIX
+</pre></div>
+
+
+<p>It is also common to install a newer version of a package which is already provided by
+the base environment:</p>
+<div class="highlight"><pre><span></span>pip install apackage --ignore-installed --upgrade --no-deps --prefix=$PREFIX
+</pre></div>
+
+
+<h2>Simulations SLURM scripts and configuration files</h2>
+<p>I first create a repository on Github for my simulations and clone it to my home folder at NERSC.
+I generally create a repository for each experiment, then I create a subfolder for each
+type of simulation I am working on.</p>
+<p>Inside a folder I create parameters files to configure my run and slurm scripts to launch the
+simulations and put everything under version control immediately, I often create a Pull Request
+on Github and ask my collaborators to cross-check the configuration before a submit a run.</p>
+<p>Smaller input data files, even binaries, can be added for convenience to the Github repository.</p>
+<p>Once a run has been validated, inside the simulation type folder I createa a subfolder <code>runs/201806_details_about_run</code> and
+add a <code>README.md</code>, this will include all the details about the simulation.
+I also tag both the core library I depend on and the simulation repository with the same name e.g.:</p>
+<div class="highlight"><pre><span></span>git tag -a 201806_details_about_run -m &quot;software version used for 201806_details_about_run&quot;
+</pre></div>
+
+
+<p>I'll also add the path at NERSC of the input data and output results.</p>
+<p>Then for future simulations I'll keep modifying the SLURM scripts and parameter files but always have
+a reference to each previous version.</p>
+<h2>Larger input data and output data</h2>
+<p>Larger input data and outputs are not suitable for version control and should live in a SCRATCH filesystem.
+I always use the Global Scratch <code>$CSCRATCH</code> which is available both on Edison on Cori and also
+from the Jupyter Notebook environment at: <a href="https://jupyter.nersc.gov">https://jupyter.nersc.gov</a>.</p>
+<p>I create a root folder for the project at:</p>
+<div class="highlight"><pre><span></span>$CSCRATCH/projectname
+</pre></div>
+
+
+<p>Then a subfolder for each simulation type:</p>
+<div class="highlight"><pre><span></span>$CSCRATCH/projectname/simulation_type_1
+$CSCRATCH/projectname/simulation_type_2
+</pre></div>
+
+
+<p>Then I symlink those inside the simulation repository as the folder <code>out/</code>:</p>
+<div class="highlight"><pre><span></span>cd $HOME/projectname/simulation_type_1
+ln -s $CSCRATCH/projectname/simulation_type_1 out
+</pre></div>
+
+
+<p>Therefore I can setup my simulation software to save all results inside <code>out/201806_details_about_run</code>
+and this is going to be written to <code>CSCRATCH</code>.</p>
+<p>This setup makes it very convenient to regularly backup everything to tape using <code>cput</code> which just backs up
+files that are not already on tape, e.g.:</p>
+<div class="highlight"><pre><span></span>cd $CSCRATCH
+hsi
+cput -R projectname
+</pre></div>
+
+
+<p>This is going to synchronize the backup on tape with the latest results on <code>CSCRATCH</code>.</p>
+<p>I do the same for input files:</p>
+<div class="highlight"><pre><span></span>mkdir $CSCRATCH/projectname/input_simulation_type_1
+cd $HOME/projectname/simulation_type_1
+ln -s $CSCRATCH/projectname/input_simulation_type_1 input
+</pre></div>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-06-20T18:00:00-07:00">Wed 20 June 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/nersc.html">nersc</a> 
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
