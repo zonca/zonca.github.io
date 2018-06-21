@@ -15,7 +15,7 @@ module maintained by NERSC, currently &lt;code&gt;python/3.6-anaconda-4.4&lt;/co
 those should be installed on Global Common Software: &lt;code&gt;/global/common/software/projectname&lt;/code&gt;
 which is specifically designed to access small files like Python packages.
 I generally create a subfolder and reference it with an environment variable:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; `export PREFIX=/global/common/software/projectname/zonca/python_prefix`
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; export PREFIX=/global/common/software/projectname/zonca/python_prefix
 &lt;/pre&gt;&lt;/div&gt;
 
 
