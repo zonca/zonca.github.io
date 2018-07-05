@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>How to post a PEARC18 paper pre-print to Arxiv | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>How to post a PEARC18 paper pre-print to Arxiv</h1>
+        </header>
+        <div class='post-content'>
+            <h2>Quick version</h2>
+<ul>
+<li>Make sure you have the DOI from ACM</li>
+<li>If you have Latex: create a zip with sources, figures and <code>.bbl</code> (not <code>.bib</code>), no output PDF</li>
+<li>If you have Word: export to PDF</li>
+<li>Go to <a href="https://arxiv.org/submit">https://arxiv.org/submit</a></li>
+<li>Choose the first option for license and "Computer Science" and "Distributed, Parallel, and Cluster Computing" for category</li>
+<li>In Metadata set Comments as: "7 pages, 3 figures, PEARC '18: Practice and Experience in Advanced Research Computing, July 22--26, 2018, Pittsburgh, PA, USA"</li>
+<li><strong>Make sure you set the DOI</strong> or you violate ACM rules</li>
+<li>Follow instructions until you publish</li>
+</ul>
+<p>Follows the step-by-step version:</p>
+<h2>Why upload a pre-print to arXiv</h2>
+<p>Journals provide a Open Access option, but it is very expensive, however, they generally allow authors to upload manuscripts before copy-editing to non-profit pre-print servers like the <code>arXiv</code>.
+This makes your paper accessible to anybody without the need of any Journal subscription, you can also upload your work months before the conference proceedings are available.</p>
+<h2>License</h2>
+<p>Before publishing any pre-print, you need to check on the Journal or Conference website
+if it is allowed and at what conditions.</p>
+<p>PEARC18 in particular publishes with ACM, therefore we can look at the <a href="http://authors.acm.org/main.html">author rights page on the ACM website</a>.</p>
+<p>Currently the requirements for posting a pre-print are:</p>
+<ul>
+<li>the paper needs to be accepted and peer-reviewed</li>
+<li>this is the version by the author, before copy-editing, if any, by the journal</li>
+<li>it needs a DOI pointing to the ACM version of the paper</li>
+</ul>
+<h2>Get a DOI</h2>
+<p>A DOI is generated once the author chooses a license.
+PEARC18 first authors should have received an email around May 10th with a link to the ACM
+website to choose a license.
+There are 3 choices, Open Access is quite expensive, but we do not need that, we are still allowed
+to post the pre-print even with any of the other 2 licenses, I personally recommend the
+"license" option, that does not transfer copyright to ACM.
+After completing this you should receive a DOI, which is a set of numbers of the form <code>10.1145/xxxxx.xxxxxx</code>.
+Also remember to add the license text you will receive via email to the paper before going on with the upload.</p>
+<h2>Prepare your Latex submission</h2>
+<p>The arXiv requires the source for any Latex paper.
+If you are using the online platform <a href="https://overleaf.com">Overleaf</a>, click on "Project" and then "Download as zip" at the bottom.
+If you are using anything else, create a zip file with all the paper sources and figures, <em>not the output PDF</em>, also make sure that you include the <code>.bbl</code> file, not the <code>.bib</code>, so you need to compile your paper locally and add just the <code>.bbl</code> to the archive.
+Also, the arXiv dislikes large figures, so if you already know you have them, better resize or lower their quality before submission. Anyway you can just submit it as it is and check if they are accepted.</p>
+<h2>Prepare your Word submission</h2>
+<p>Export the paper as PDF.</p>
+<h2>Upload to arXiv</h2>
+<ul>
+<li>Go to <a href="https://arxiv.org/submit">https://arxiv.org/submit</a>, either login or create a new account.</li>
+<li>At the submission page, fill the form, for license, the safest is to use the first option: "arXiv.org perpetual, non-exclusive license to distribute this article (Minimal rights required by arXiv.org)"</li>
+<li>For "Archive and Subject Class", choose "Computer Science" and "Distributed, Parallel, and Cluster Computing" unless in the list there is a more suitable field</li>
+<li>Then upload the Latex sources zip file or the conversion of the Word file to PDF.</li>
+<li>Once you have uploaded the zip file, it shows you a list of the archive content, you can delete extra files are not needed to build the paper, if you used the Overleaf ACM template, remove <code>sample-sigconf-authordraft.tex</code></li>
+<li>If the paper doesn't build, the arXiv displays the log, check for missing files or unsupported packages in particular, you can click "Add files" to upload different files</li>
+<li>If the paper successfully builds, click on the "View" button to check that the PDF is fine</li>
+<li>In the Metadata, complete the form, in the Comments, add also the conference information, for example "7 pages, 3 figures, PEARC '18: Practice and Experience in Advanced Research Computing, July 22--26, 2018, Pittsburgh, PA, USA"</li>
+<li>Still in Metadata, <strong>make sure you add the DOI</strong> otherwise it is a violation of the conditions by ACM, the DOI is in the form  <code>10.1145/xxxxxx.xxxx</code></li>
+<li>Finally check the preview and finalize your submission</li>
+<li>The submission is not available immediately, it will first be in "Processing" stage and it will be published in the next few days, you'll get an email with the publishing date and time.</li>
+</ul>
+<h2>Update your submission</h2>
+<ul>
+<li>Anytime before publication you can update (overwrite) your submission</li>
+<li>After your pre-print is published you can update it at will but all previous versions will always be available on the arXiv servers.</li>
+</ul>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-05-12T18:00:00-07:00">Sat 12 May 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/pearc18.html">pearc18</a> 
+<a href="http://zonca.github.io/tag/openscience.html">openscience</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
