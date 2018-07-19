@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-06-20T18:00:00-07:00</updated><entry><title>How to organize code and data for simulations at NERSC</title><link href="http://zonca.github.io/2018/06/organize-code-data-simulations-nersc.html" rel="alternate"></link><published>2018-06-20T18:00:00-07:00</published><updated>2018-06-20T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-06-20:/2018/06/organize-code-data-simulations-nersc.html</id><summary type="html">&lt;p&gt;I recently improved my strategy for organizing code and data for simulations run at NERSC,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-07-19T18:00:00-07:00</updated><entry><title>Create DockerHub auto build</title><link href="http://zonca.github.io/2018/07/create-dockerhub-autobuild.html" rel="alternate"></link><published>2018-07-19T18:00:00-07:00</published><updated>2018-07-19T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-19:/2018/07/create-dockerhub-autobuild.html</id><summary type="html">&lt;p&gt;It is very convenient to create Autobuild repositories on DockerHub linked to
+a Github repository with a &lt;code&gt;Dockerfile&lt;/code&gt;.
+Then every time you commit to Github, Dockerhub is going to build the image on
+their service and make it available on &lt;a href="https://hub.docker.com"&gt;https://hub.docker.com&lt;/a&gt; and can quickly
+be pulled to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;It is very convenient to create Autobuild repositories on DockerHub linked to
+a Github repository with a &lt;code&gt;Dockerfile&lt;/code&gt;.
+Then every time you commit to Github, Dockerhub is going to build the image on
+their service and make it available on &lt;a href="https://hub.docker.com"&gt;https://hub.docker.com&lt;/a&gt; and can quickly
+be pulled to any other system that supports Docker or Singularity.&lt;/p&gt;
+&lt;p&gt;Unfortunately if you have many Github organizations and repositories, the process
+to set a new repository up gets stuck.&lt;/p&gt;
+&lt;p&gt;Fortunately we can bypass the issue by directly accessing the right URL, as suggested
+&lt;a href="https://stackoverflow.com/questions/42792240/dockerhub-create-automated-build-step-stuck-at-creating"&gt;on StackOverflow&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I created a simple page to make this quicker, add the right parameters and it automatically
+builds the right URL, see:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/docker-auto-build"&gt;https://github.com/docker-auto-build&lt;/a&gt;&lt;/p&gt;</content><category term="docker"></category><category term="github"></category></entry><entry><title>How to organize code and data for simulations at NERSC</title><link href="http://zonca.github.io/2018/06/organize-code-data-simulations-nersc.html" rel="alternate"></link><published>2018-06-20T18:00:00-07:00</published><updated>2018-06-20T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-06-20:/2018/06/organize-code-data-simulations-nersc.html</id><summary type="html">&lt;p&gt;I recently improved my strategy for organizing code and data for simulations run at NERSC,
 I'll write it here for reference.&lt;/p&gt;
 &lt;h2&gt;Libraries&lt;/h2&gt;
 &lt;p&gt;I mostly use Python (often with C/C++ extensions), so I first rely on the Anaconda
