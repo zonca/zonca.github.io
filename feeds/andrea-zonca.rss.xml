@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Andrea Zonca's blog - Andrea Zonca</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Thu, 19 Jul 2018 18:00:00 -0700</lastBuildDate><item><title>Create DockerHub auto build</title><link>http://zonca.github.io/2018/07/create-dockerhub-autobuild.html</link><description>&lt;p&gt;It is very convenient to create Autobuild repositories on DockerHub linked to
+<rss version="2.0"><channel><title>Andrea Zonca's blog - Andrea Zonca</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Sun, 22 Jul 2018 12:00:00 -0700</lastBuildDate><item><title>Updated Singularity images for Comet</title><link>http://zonca.github.io/2018/07/singularity-2.5-comet.md.html</link><description>&lt;p&gt;Back in January 2017 I wrote a &lt;a href="https://zonca.github.io/2017/01/singularity-hpc-comet.html"&gt;blog post about running Singularity on Comet&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I recently needed to update all my container images to the latest scientific python packages,
+so I also took the opportunity to create both a Docker auto-build repository on DockerHub
+and a SingularityHub image.&lt;/p&gt;
+&lt;p&gt;Those images …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sun, 22 Jul 2018 12:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2018-07-22:/2018/07/singularity-2.5-comet.md.html</guid><category>singularity</category><category>comet</category></item><item><title>Create DockerHub auto build</title><link>http://zonca.github.io/2018/07/create-dockerhub-autobuild.html</link><description>&lt;p&gt;It is very convenient to create Autobuild repositories on DockerHub linked to
 a Github repository with a &lt;code&gt;Dockerfile&lt;/code&gt;.
 Then every time you commit to Github, Dockerhub is going to build the image on
 their service and make it available on &lt;a href="https://hub.docker.com"&gt;https://hub.docker.com&lt;/a&gt; and can quickly
