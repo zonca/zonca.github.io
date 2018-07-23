@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE</h1>
+        </header>
+        <div class='post-content'>
+            <p>Bob Sinkovits and I are presenting a paper at PEARC18 about:</p>
+<p>"Deploying Jupyter Notebooks at scale on XSEDE resources for Science Gateways and workshops"</p>
+<p>See the pre-print on Arxiv: <a href="https://arxiv.org/abs/1805.04781">https://arxiv.org/abs/1805.04781</a></p>
+<p>Jupyter Notebooks provide an interactive computing environment well suited for Science.
+JupyterHub is a multi-user Notebook environment developed by the Jupyter team.</p>
+<p>In order to provide adequate amount of memory and CPU to many users for example during workshops,
+it is necessary to leverage a distributed system, either leveraging multiple Jetstream instances
+or interfacing with a traditional HPC system.</p>
+<p>In this work we present 3 strategies for deploying JupyterHub on XSEDE resources to support
+a large number of users, each is linked to the step-by-step tutorial with all necessary configuration files:</p>
+<ul>
+<li><a href="https://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html">deploy Jupyterhub on a single Jetstream instance and spawn Jupyter Notebook servers for each user on a computing node of a Supercomputer (for example Comet)</a></li>
+<li><a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html">deploy Jupyterhub on Jetstream using Docker Swarm to distributed the user's containers across many instances and providing persistent storage with quotas through a NFS share</a></li>
+<li><a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">deploy Jupyterhub on top of Kubernetes across Jetstream instances with persistent storage provided by the Ceph distributed filesystem</a></li>
+</ul>
+<p><a href="https://zonca.github.io/docs/pearc18_slides_zonca_sinkovits.pdf">Presentation slides</a></p>
+<p>If are an author at PEARC18, you can follow <a href="https://zonca.github.io/2018/05/pearc18-preprint-arxiv.html">my instructions on how to publish your preprint to Arxiv</a></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-07-23T12:00:00-07:00">Mon 23 July 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/singularity.html">singularity</a> 
+<a href="http://zonca.github.io/tag/comet.html">comet</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

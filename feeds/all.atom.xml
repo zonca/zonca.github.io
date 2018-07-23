@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-07-22T12:00:00-07:00</updated><entry><title>Updated Singularity images for Comet</title><link href="http://zonca.github.io/2018/07/singularity-2.5-comet.html" rel="alternate"></link><published>2018-07-22T12:00:00-07:00</published><updated>2018-07-22T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-22:/2018/07/singularity-2.5-comet.html</id><summary type="html">&lt;p&gt;Back in January 2017 I wrote a &lt;a href="https://zonca.github.io/2017/01/singularity-hpc-comet.html"&gt;blog post about running Singularity on Comet&lt;/a&gt;.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-07-23T12:00:00-07:00</updated><entry><title>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE</title><link href="http://zonca.github.io/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html" rel="alternate"></link><published>2018-07-23T12:00:00-07:00</published><updated>2018-07-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-23:/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html</id><summary type="html">&lt;p&gt;Bob Sinkovits and I are presenting a paper at PEARC18 about:&lt;/p&gt;
+&lt;p&gt;"Deploying Jupyter Notebooks at scale on XSEDE resources for Science Gateways and workshops"&lt;/p&gt;
+&lt;p&gt;See the pre-print on Arxiv: &lt;a href="https://arxiv.org/abs/1805.04781"&gt;https://arxiv.org/abs/1805.04781&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Jupyter Notebooks provide an interactive computing environment well suited for Science.
+JupyterHub is a multi-user …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Bob Sinkovits and I are presenting a paper at PEARC18 about:&lt;/p&gt;
+&lt;p&gt;"Deploying Jupyter Notebooks at scale on XSEDE resources for Science Gateways and workshops"&lt;/p&gt;
+&lt;p&gt;See the pre-print on Arxiv: &lt;a href="https://arxiv.org/abs/1805.04781"&gt;https://arxiv.org/abs/1805.04781&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Jupyter Notebooks provide an interactive computing environment well suited for Science.
+JupyterHub is a multi-user Notebook environment developed by the Jupyter team.&lt;/p&gt;
+&lt;p&gt;In order to provide adequate amount of memory and CPU to many users for example during workshops,
+it is necessary to leverage a distributed system, either leveraging multiple Jetstream instances
+or interfacing with a traditional HPC system.&lt;/p&gt;
+&lt;p&gt;In this work we present 3 strategies for deploying JupyterHub on XSEDE resources to support
+a large number of users, each is linked to the step-by-step tutorial with all necessary configuration files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2017/05/jupyterhub-hpc-batchspawner-ssh.html"&gt;deploy Jupyterhub on a single Jetstream instance and spawn Jupyter Notebook servers for each user on a computing node of a Supercomputer (for example Comet)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2017/10/scalable-jupyterhub-docker-swarm-mode.html"&gt;deploy Jupyterhub on Jetstream using Docker Swarm to distributed the user's containers across many instances and providing persistent storage with quotas through a NFS share&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;deploy Jupyterhub on top of Kubernetes across Jetstream instances with persistent storage provided by the Ceph distributed filesystem&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="https://zonca.github.io/docs/pearc18_slides_zonca_sinkovits.pdf"&gt;Presentation slides&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If are an author at PEARC18, you can follow &lt;a href="https://zonca.github.io/2018/05/pearc18-preprint-arxiv.html"&gt;my instructions on how to publish your preprint to Arxiv&lt;/a&gt;&lt;/p&gt;</content><category term="singularity"></category><category term="comet"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Updated Singularity images for Comet</title><link href="http://zonca.github.io/2018/07/singularity-2.5-comet.html" rel="alternate"></link><published>2018-07-22T12:00:00-07:00</published><updated>2018-07-22T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-22:/2018/07/singularity-2.5-comet.html</id><summary type="html">&lt;p&gt;Back in January 2017 I wrote a &lt;a href="https://zonca.github.io/2017/01/singularity-hpc-comet.html"&gt;blog post about running Singularity on Comet&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I recently needed to update all my container images to the latest scientific python packages,
 so I also took the opportunity to create both a Docker auto-build repository on DockerHub
 and a SingularityHub image.&lt;/p&gt;
