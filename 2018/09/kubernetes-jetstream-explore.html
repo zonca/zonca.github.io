@@ -45,20 +45,46 @@
             <h1>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</h1>
         </header>
         <div class='post-content'>
-            <h2>Test persistent storage with cinder</h2>
-<p>kubectl get storageclass
-NAME                 PROVISIONER            AGE
-standard (default)   kubernetes.io/cinder   1h</p>
-<div class="highlight"><pre><span></span>kubectl create -f alpine-pv.yaml
+            <p>This is the second part of the tutorial on deploying Kubernetes with <code>kubespray</code> and JupyterHub
+on Jetstream.
+It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
+and how the different components play together before installing JupyterHub.
+If you are already familiar with Kubernetes you can skip to the next part.</p>
+<p>All the files for the examples below are available on Github,
+first SSH to the master node (or do this locally if you setup <code>kubectl</code> locally):</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream
+cd jupyterhub-deploy-kubernetes-jetstream
 </pre></div>
 
 
-<p>kubectl label node/kubespray-k8s-node-nf-1 failure-domain.beta.kubernetes.io/zone=nova --overwrite</p>
-<div class="highlight"><pre><span></span>kubectl exec -it alpine -- /bin/bash
+<h2>Test persistent storage with cinder</h2>
+<p>The most important feature that brought me to choose <code>kubespray</code> as method for installing Kubernetes
+is that it automatically sets up persistent storage exploiting Jetstream Volumes.
+The Jetstream team already does a great job in providing a persistent storage solution with adequate
+redundancy via the Cinder project, part of OpenStack.</p>
+<p><code>kubespray</code> sets up a Kubernetes provisioner so that when a container requests persistent storage,
+it talks to the Openstack API and have a dedicated volume (the same type you can create with the
+Jetstream Horizon Web interfaces) automatically created and exposed to Kubernetes.</p>
+<p>This is achieved through a storageclass:</p>
+<div class="highlight"><pre><span></span>kubectl get storageclass
+NAME                 PROVISIONER            AGE
+standard (default)   kubernetes.io/cinder   1h
+</pre></div>
+
+
+<p>See the file <code>alpine-persistent-volume.yaml</code> in the repository on how we can request a Cinder volume
+to be created and attached to a pod.</p>
+<div class="highlight"><pre><span></span>kubectl create -f alpine-persistent-volume.yaml
+</pre></div>
+
+
+<p>We can test it by getting a terminal inside the container (<code>alpine</code> has no <code>bash</code>):</p>
+<div class="highlight"><pre><span></span>kubectl exec -it alpine -- /bin/sh
 </pre></div>
 
 
 <p>look into <code>df -h</code>, check that there is a 5GB mounted filesystem which is persistent.</p>
+<p>Also, back to the Jetstream instance, see how an Openstack volume was dynamically created and attached to the running instance:</p>
 <div class="highlight"><pre><span></span>openstack volume list
 </pre></div>
 

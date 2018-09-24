@@ -87,9 +87,9 @@ Any other platform works as well, also install <code>terraform</code> by copying
 <p>See an <a href="https://github.com/zonca/jetstream_kubespray/pull/2">overview of my changes compared to the standard <code>kubespray</code> release 2.6.0</a>.</p>
 <h3>Run Terraform</h3>
 <p>Inside <code>jetstream_kubespray</code>, copy from my template:</p>
-<div class="highlight"><pre><span></span>export CLUSTER=<span class="cp">${</span><span class="n">OS_USERNAME</span><span class="cp">}</span>_kubespray
-cp -LRp inventory/zonca_kubespray inventory/<span class="nv">$CLUSTER</span>
-cd inventory/<span class="nv">$CLUSTER</span>
+<div class="highlight"><pre><span></span>export CLUSTER=$USER
+cp -LRp inventory/zonca_kubespray inventory/$CLUSTER
+cd inventory/$CLUSTER
 </pre></div>
 
 
@@ -151,6 +151,12 @@ ssh-add ~/.ssh/id_rsa
 </pre></div>
 
 
+<p>If a server is not answering to ping, first try to reboot it:</p>
+<div class="highlight"><pre><span></span>openstack server reboot $CLUSTER-k8s-node-nf-1
+</pre></div>
+
+
+<p>Or delete it and run <code>terraform_apply.sh</code> to create it again.</p>
 <p>check <code>inventory/$CLUSTER/group_vars/all.yml</code>, in particular <code>bootstrap_os</code>, I setup <code>ubuntu</code>, change it to <code>centos</code> if you used the Centos 7 base image.</p>
 <p>Due to a bug in the recipe, run ( see details in the Troubleshooing notes below):</p>
 <div class="highlight"><pre><span></span>export OS_TENANT_ID=$OS_PROJECT_ID

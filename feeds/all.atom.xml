@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-09-23T23:00:00-07:00</updated><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-explore.html</id><summary type="html">&lt;h2&gt;Test persistent storage with cinder&lt;/h2&gt;
-&lt;p&gt;kubectl get storageclass
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-09-23T23:00:00-07:00</updated><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+on Jetstream.
+It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
+and how the different components play together before installing JupyterHub.
+If you are already familiar with Kubernetes you …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+on Jetstream.
+It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
+and how the different components play together before installing JupyterHub.
+If you are already familiar with Kubernetes you can skip to the next part.&lt;/p&gt;
+&lt;p&gt;All the files for the examples below are available on Github,
+first SSH to the master node (or do this locally if you setup &lt;code&gt;kubectl&lt;/code&gt; locally):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream
+cd jupyterhub-deploy-kubernetes-jetstream
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Test persistent storage with cinder&lt;/h2&gt;
+&lt;p&gt;The most important feature that brought me to choose &lt;code&gt;kubespray&lt;/code&gt; as method for installing Kubernetes
+is that it automatically sets up persistent storage exploiting Jetstream Volumes.
+The Jetstream team already does a great job in providing a persistent storage solution with adequate
+redundancy via the Cinder project, part of OpenStack.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;kubespray&lt;/code&gt; sets up a Kubernetes provisioner so that when a container requests persistent storage,
+it talks to the Openstack API and have a dedicated volume (the same type you can create with the
+Jetstream Horizon Web interfaces) automatically created and exposed to Kubernetes.&lt;/p&gt;
+&lt;p&gt;This is achieved through a storageclass:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get storageclass
 NAME                 PROVISIONER            AGE
-standard (default)   kubernetes.io/cinder   1h&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f alpine-pv.yaml
+standard (default)   kubernetes.io/cinder   1h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;kubectl label node/kubespray-k8s-node-nf-1 failure-domain.beta.kubernetes.io/zone=nova --overwrite&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl exec -it alpine -- /bin/bash
+&lt;p&gt;See the file &lt;code&gt;alpine-persistent-volume.yaml&lt;/code&gt; in the repository on how we can request a Cinder volume
+to be created and attached to a pod.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f alpine-persistent-volume.yaml
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Test persistent storage with cinder&lt;/h2&gt;
-&lt;p&gt;kubectl get storageclass
-NAME                 PROVISIONER            AGE
-standard (default)   kubernetes.io/cinder   1h&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f alpine-pv.yaml
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;kubectl label node/kubespray-k8s-node-nf-1 failure-domain.beta.kubernetes.io/zone=nova --overwrite&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl exec -it alpine -- /bin/bash
+&lt;p&gt;We can test it by getting a terminal inside the container (&lt;code&gt;alpine&lt;/code&gt; has no &lt;code&gt;bash&lt;/code&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl exec -it alpine -- /bin/sh
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted filesystem which is persistent.&lt;/p&gt;
+&lt;p&gt;Also, back to the Jetstream instance, see how an Openstack volume was dynamically created and attached to the running instance:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack volume list
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -150,9 +167,9 @@ Any other platform works as well, also install &lt;code&gt;terraform&lt;/code&gt
 &lt;p&gt;See an &lt;a href="https://github.com/zonca/jetstream_kubespray/pull/2"&gt;overview of my changes compared to the standard &lt;code&gt;kubespray&lt;/code&gt; release 2.6.0&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Run Terraform&lt;/h3&gt;
 &lt;p&gt;Inside &lt;code&gt;jetstream_kubespray&lt;/code&gt;, copy from my template:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export CLUSTER=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;OS_USERNAME&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;_kubespray
-cp -LRp inventory/zonca_kubespray inventory/&lt;span class="nv"&gt;$CLUSTER&lt;/span&gt;
-cd inventory/&lt;span class="nv"&gt;$CLUSTER&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export CLUSTER=$USER
+cp -LRp inventory/zonca_kubespray inventory/$CLUSTER
+cd inventory/$CLUSTER
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -214,6 +231,12 @@ ssh-add ~/.ssh/id_rsa
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;If a server is not answering to ping, first try to reboot it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack server reboot $CLUSTER-k8s-node-nf-1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Or delete it and run &lt;code&gt;terraform_apply.sh&lt;/code&gt; to create it again.&lt;/p&gt;
 &lt;p&gt;check &lt;code&gt;inventory/$CLUSTER/group_vars/all.yml&lt;/code&gt;, in particular &lt;code&gt;bootstrap_os&lt;/code&gt;, I setup &lt;code&gt;ubuntu&lt;/code&gt;, change it to &lt;code&gt;centos&lt;/code&gt; if you used the Centos 7 base image.&lt;/p&gt;
 &lt;p&gt;Due to a bug in the recipe, run ( see details in the Troubleshooing notes below):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export OS_TENANT_ID=$OS_PROJECT_ID
