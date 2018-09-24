@@ -25,7 +25,14 @@ bash install_jhub.sh
 
 &lt;p&gt;Once the &lt;code&gt;proxy&lt;/code&gt; is running, even if &lt;code&gt;hub&lt;/code&gt; is still in preparation, you can check
 in browser, you should get "Service Unavailable" which is a good sign that
-the proxy is working.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+the proxy is working.&lt;/p&gt;
+&lt;h2&gt;Customize JupyterHub&lt;/h2&gt;
+&lt;p&gt;After JupyterHub is deployed and integrated with Cinder for persistent volumes,
+for any other customizations, first authentication, you are in good hands as the
+&lt;a href="https://zero-to-jupyterhub.readthedocs.io/en/stable/extending-jupyterhub.html"&gt;Zero-to-Jupyterhub documentation&lt;/a&gt; is great.&lt;/p&gt;
+&lt;p&gt;The only setup that could be peculiar to the deployment on top of &lt;code&gt;kubespray&lt;/code&gt; is setup with HTTPS, see the next section.&lt;/p&gt;
+&lt;h2&gt;Setup HTTPS with letsencrypt&lt;/h2&gt;
+&lt;p&gt;Coming soon&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
 on Jetstream.&lt;/p&gt;
 &lt;p&gt;In the &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;first part, we installed Kubernetes on Jetstream with &lt;code&gt;kubespray&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream

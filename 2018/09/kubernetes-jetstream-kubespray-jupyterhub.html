@@ -59,6 +59,13 @@ bash install_jhub.sh
 <p>Once the <code>proxy</code> is running, even if <code>hub</code> is still in preparation, you can check
 in browser, you should get "Service Unavailable" which is a good sign that
 the proxy is working.</p>
+<h2>Customize JupyterHub</h2>
+<p>After JupyterHub is deployed and integrated with Cinder for persistent volumes,
+for any other customizations, first authentication, you are in good hands as the
+<a href="https://zero-to-jupyterhub.readthedocs.io/en/stable/extending-jupyterhub.html">Zero-to-Jupyterhub documentation</a> is great.</p>
+<p>The only setup that could be peculiar to the deployment on top of <code>kubespray</code> is setup with HTTPS, see the next section.</p>
+<h2>Setup HTTPS with letsencrypt</h2>
+<p>Coming soon</p>
         </div>
     </article>
 
