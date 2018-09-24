@@ -1,5 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-07-23T12:00:00-07:00</updated><entry><title>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE</title><link href="http://zonca.github.io/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html" rel="alternate"></link><published>2018-07-23T12:00:00-07:00</published><updated>2018-07-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-23:/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html</id><summary type="html">&lt;p&gt;Bob Sinkovits and I are presenting a paper at PEARC18 about:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-09-23T23:00:00-07:00</updated><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-explore.html</id><summary type="html">&lt;h2&gt;Test persistent storage with cinder&lt;/h2&gt;
+&lt;p&gt;kubectl get storageclass
+NAME                 PROVISIONER            AGE
+standard (default)   kubernetes.io/cinder   1h&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f alpine-pv.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;kubectl label node/kubespray-k8s-node-nf-1 failure-domain.beta.kubernetes.io/zone=nova --overwrite&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl exec -it alpine -- /bin/bash
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Test persistent storage with cinder&lt;/h2&gt;
+&lt;p&gt;kubectl get storageclass
+NAME                 PROVISIONER            AGE
+standard (default)   kubernetes.io/cinder   1h&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f alpine-pv.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;kubectl label node/kubespray-k8s-node-nf-1 failure-domain.beta.kubernetes.io/zone=nova --overwrite&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl exec -it alpine -- /bin/bash
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted filesystem which is persistent.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack volume list
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack volume list
++--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+
+| ID                                   | Name                                                        | Status | Size | Attached to                                      |
++--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+
+| 508f1ee7-9654-4c84-b1fc-76dd8751cd6e | kubernetes-dynamic-pvc-e83ec4d6-bb9f-11e8-8344-fa163eb22e63 | in-use |    5 | Attached to kubespray-k8s-node-nf-1 on /dev/sdb  |
++--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Test ReplicaSets, Services and Ingress&lt;/h2&gt;
+&lt;p&gt;From Kubernetes in Action:
+&lt;a href="https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia"&gt;https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd kubia_test_ingress
+kubectl create -f kubia-manual.yaml
+kubectl get pods -o wide
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On one of the nodes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ curl &lt;span class="nv"&gt;$KUBIA_MANUAL_IP&lt;/span&gt;:8080
+You&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;ve hit kubia-manual
+
+kubectl delete -f kubia-manual.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Load balancing with ReplicaSets and Services&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f kubia-replicaset.yaml
+kubectl create -f kubia-service.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ kubectl get service
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT&lt;span class="o"&gt;(&lt;/span&gt;S&lt;span class="o"&gt;)&lt;/span&gt;   AGE
+kubernetes   ClusterIP   &lt;span class="m"&gt;10&lt;/span&gt;.233.0.1      &amp;lt;none&amp;gt;        &lt;span class="m"&gt;443&lt;/span&gt;/TCP   22h
+kubia        ClusterIP   &lt;span class="m"&gt;10&lt;/span&gt;.233.28.205   &amp;lt;none&amp;gt;        &lt;span class="m"&gt;80&lt;/span&gt;/TCP    45m
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;curl $KUBIA_SERVICE_IP
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is on port 80 so we don't need &lt;code&gt;:8080&lt;/code&gt; in the URL.
+Run many times and check different kubia services answer.&lt;/p&gt;
+&lt;h3&gt;Publish service externally with ingress&lt;/h3&gt;
+&lt;p&gt;Try to open browser and access the hostname of your master node at:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;http://js-XXX-YYY.jetstream-cloud.org
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Where XXX-YYY are the last 2 groups of digits of the floating IP of the master instance,
+i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.&lt;/p&gt;
+&lt;p&gt;The connection should be refused or hang.&lt;/p&gt;
+&lt;p&gt;Now:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f kubia-ingress.yaml
+kubectl get ingress
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Try again in the browser.&lt;/p&gt;
+&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
+bash install_jhub.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Check some preliminary pods running with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n jhub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once the &lt;code&gt;proxy&lt;/code&gt; is running, even if &lt;code&gt;hub&lt;/code&gt; is still in preparation, you can check
+in browser, you should get "Service Unavailable" which is a good sign that
+the proxy is working.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Kubernetes on Jetstream with Kubespray 1/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2018-09-23T18:00:00-07:00</published><updated>2018-09-23T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
+Kubernetes on Jetstream.
+Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
+Instead of creating Jetstream instances via the Atmosphere web interface and then
+SSHing into the instances and run &lt;code&gt;kubeadm&lt;/code&gt; based commands to setup Docker …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
+Kubernetes on Jetstream.
+Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
+Instead of creating Jetstream instances via the Atmosphere web interface and then
+SSHing into the instances and run &lt;code&gt;kubeadm&lt;/code&gt; based commands to setup Docker and Kubernetes we will:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use the &lt;code&gt;terraform&lt;/code&gt; recipe part of the &lt;code&gt;kubespray&lt;/code&gt; project to interface with the Jetstream API and create a cluster of virtual machines&lt;/li&gt;
+&lt;li&gt;Run the &lt;code&gt;kubespray&lt;/code&gt; ansible recipe to setup a production-ready Kubernetes deployment, optionally with High Availabilty features like redundant master nodes and much more, see &lt;a href="http://kubespray.io"&gt;kubepray.io&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Create Jetstream Virtual machines with Terraform&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;kubespray&lt;/code&gt; is able to deploy production-ready Kubernetes deployments and initially targeted only
+commercial cloud platforms.&lt;/p&gt;
+&lt;p&gt;They recently added support for Openstack via a Terraform recipe which is available in &lt;a href="https://github.com/kubernetes-incubator/kubespray/tree/master/contrib/terraform/openstack"&gt;their Github repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Terraform allows to execute recipes that describe a set of OpenStack resources and their relashionship. In the context of this tutorial, we do not need to learn much about Terraform, we will configure and execute the recipe provided by &lt;code&gt;kubespray&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Requirements&lt;/h3&gt;
+&lt;p&gt;On a Ubuntu 18.04 install &lt;code&gt;python3-openstackclient&lt;/code&gt; with APT.
+Any other platform works as well, also install &lt;code&gt;terraform&lt;/code&gt; by copying the correct binary to &lt;code&gt;/usr/local/bin/&lt;/code&gt;, see &lt;a href="https://www.terraform.io/intro/getting-started/install.html"&gt;https://www.terraform.io/intro/getting-started/install.html&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Request API access&lt;/h3&gt;
+&lt;p&gt;In order to make sure your XSEDE account can access the Jetstream API, you need to contact the Helpdesk, see the &lt;a href="https://iujetstream.atlassian.net/wiki/spaces/JWT/pages/39682057/Using+the+Jetstream+API"&gt;instructions on the Jetstream Wiki&lt;/a&gt;. You will also receive your &lt;strong&gt;TACC&lt;/strong&gt; password, which could be different than your XSEDE one (username is generally the same).&lt;/p&gt;
+&lt;p&gt;Login to the TACC Horizon panel at &lt;a href="https://tacc.jetstream-cloud.org/dashboard"&gt;https://tacc.jetstream-cloud.org/dashboard&lt;/a&gt;, this is basically the low level web interface to OpenStack, a lot more complex and powerful than Atmosphere available at &lt;a href="https://use.jetstream-cloud.org/application"&gt;https://use.jetstream-cloud.org/application&lt;/a&gt;. Use &lt;code&gt;tacc&lt;/code&gt; as domain, your TACC username (generally the same as your XSEDE username) and your TACC password.&lt;/p&gt;
+&lt;p&gt;First choose the right project you would like to charge to in the top dropdown menu (see the XSEDE website if you don't recognize the grant code).&lt;/p&gt;
+&lt;p&gt;Click on Compute / API Access and download the OpenRC V3 authentication file to your machine. Source it typing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;source XX-XXXXXXXX-openrc.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;it should ask for your TACC passwork. This configures all the environment variables needed by the &lt;code&gt;openstack&lt;/code&gt; command line tool to interface with the Openstack API.&lt;/p&gt;
+&lt;p&gt;Test with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack flavor list
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This should return the list of available "sizes" of the Virtual Machines.&lt;/p&gt;
+&lt;h3&gt;Clone kubespray&lt;/h3&gt;
+&lt;p&gt;I had to make a few modifications to &lt;code&gt;kubespray&lt;/code&gt; to adapt it to Jetstream or backport bugfixes not merged yet, so currently better use my fork of &lt;code&gt;kubespray&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/jetstream_kubespray
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;See an &lt;a href="https://github.com/zonca/jetstream_kubespray/pull/2"&gt;overview of my changes compared to the standard &lt;code&gt;kubespray&lt;/code&gt; release 2.6.0&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Run Terraform&lt;/h3&gt;
+&lt;p&gt;Inside &lt;code&gt;jetstream_kubespray&lt;/code&gt;, copy from my template:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export CLUSTER=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;OS_USERNAME&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;_kubespray
+cp -LRp inventory/zonca_kubespray inventory/&lt;span class="nv"&gt;$CLUSTER&lt;/span&gt;
+cd inventory/&lt;span class="nv"&gt;$CLUSTER&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Open and modify &lt;code&gt;cluster.tf&lt;/code&gt;, choose your image and number of nodes.
+Make sure to change the network name to something unique, like the expanded form of &lt;code&gt;$CLUSTER_network&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You can find suitable images (they need to be JS-API-Featured, you cannot use the same instances used in Atmosphere):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack image list | grep &amp;quot;JS-API&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I already preconfigured the network UUID both for IU and TACC, but you can crosscheck
+looking for the &lt;code&gt;public&lt;/code&gt; network in:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack network list
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Inizialize Terraform:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash terraform_init.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the resources:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash terraform_apply.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The last output log of Terraform should contain the IP of the master node &lt;code&gt;k8s_master_fips&lt;/code&gt;, wait for it to boot then
+SSH in with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh ubuntu@$IP
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or &lt;code&gt;centos@$IP&lt;/code&gt; for CentOS images.&lt;/p&gt;
+&lt;p&gt;Inspect with Openstack the resources created:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack server list
+openstack network list
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can cleanup the virtual machines and all other Openstack resources (all data is lost) with &lt;code&gt;bash terraform_destroy.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Install Kubernetes with &lt;code&gt;kubespray&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Change folder back to the root of the &lt;code&gt;jetstream_kubespray&lt;/code&gt; repository,&lt;/p&gt;
+&lt;p&gt;First make sure you have a recent version of &lt;code&gt;ansible&lt;/code&gt; installed, you also need additional modules,
+so first run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install -r requirements.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is useful to create a &lt;code&gt;virtualenv&lt;/code&gt; and install packages inside that.
+This will also install &lt;code&gt;ansible&lt;/code&gt;, it is important to install &lt;code&gt;ansible&lt;/code&gt; with &lt;code&gt;pip&lt;/code&gt; so that the path to access the modules is correct. So remove any pre-installed &lt;code&gt;ansible&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then following the &lt;a href="https://github.com/kubernetes-incubator/kubespray/blob/master/contrib/terraform/openstack/README.md#ansible"&gt;&lt;code&gt;kubespray&lt;/code&gt; documentation&lt;/a&gt;, we setup &lt;code&gt;ssh-agent&lt;/code&gt; so that &lt;code&gt;ansible&lt;/code&gt; can SSH from the machine with public IP to the others:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Test the connection through ansible:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ansible -i inventory/$CLUSTER/hosts -m ping all
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;check &lt;code&gt;inventory/$CLUSTER/group_vars/all.yml&lt;/code&gt;, in particular &lt;code&gt;bootstrap_os&lt;/code&gt;, I setup &lt;code&gt;ubuntu&lt;/code&gt;, change it to &lt;code&gt;centos&lt;/code&gt; if you used the Centos 7 base image.&lt;/p&gt;
+&lt;p&gt;Due to a bug in the recipe, run ( see details in the Troubleshooing notes below):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export OS_TENANT_ID=$OS_PROJECT_ID
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally run the full playbook, it is going to take a good 10 minutes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ansible-playbook --become -i inventory/$CLUSTER/hosts cluster.yml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If the playbook fails with "cannot lock the administrative directory", it is due to the fact that the Virtual Machine is automatically updating so it has locked the APT directory. Just wait a minute and launch it again. It is always safe to run &lt;code&gt;ansible&lt;/code&gt; multiple times.&lt;/p&gt;
+&lt;p&gt;If the playbook gives any error, try to retry the above command, sometimes there are temporary failed tasks, Ansible is designed to be executed multiple times with consistent results.&lt;/p&gt;
+&lt;p&gt;You should have now a Kubernetes cluster running, test it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ssh ubuntu@&lt;span class="nv"&gt;$IP&lt;/span&gt;
+$ kubectl get pods --all-namespaces
+NAMESPACE       NAME                                                   READY     STATUS    RESTARTS   AGE
+cert-manager    cert-manager-78fb746bc7-w9r94                          &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+ingress-nginx   default-backend-v1.4-7795cd847d-g25d8                  &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+ingress-nginx   ingress-nginx-controller-bdjq7                         &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-apiserver-zonca-kubespray-k8s-master-1            &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-controller-manager-zonca-kubespray-k8s-master-1   &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-dns-69f4c8fc58-6vhhs                              &lt;span class="m"&gt;3&lt;/span&gt;/3       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-dns-69f4c8fc58-9jn25                              &lt;span class="m"&gt;3&lt;/span&gt;/3       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-flannel-7hd24                                     &lt;span class="m"&gt;2&lt;/span&gt;/2       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-flannel-lhsvx                                     &lt;span class="m"&gt;2&lt;/span&gt;/2       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-proxy-zonca-kubespray-k8s-master-1                &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-proxy-zonca-kubespray-k8s-node-nf-1               &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kube-scheduler-zonca-kubespray-k8s-master-1            &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kubedns-autoscaler-565b49bbc6-7wttm                    &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     kubernetes-dashboard-6d4dfd56cb-24f98                  &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     nginx-proxy-zonca-kubespray-k8s-node-nf-1              &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+kube-system     tiller-deploy-5c688d5f9b-fpfpg                         &lt;span class="m"&gt;1&lt;/span&gt;/1       Running   &lt;span class="m"&gt;0&lt;/span&gt;          2h
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Compare that you have all those services running also in your cluster.
+We have also configured NGINX to proxy any service that we will later deploy on Kubernetes,
+test it with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ wget localhost
+--2018-09-24 &lt;span class="m"&gt;03&lt;/span&gt;:01:14--  http://localhost/
+Resolving localhost &lt;span class="o"&gt;(&lt;/span&gt;localhost&lt;span class="o"&gt;)&lt;/span&gt;... &lt;span class="m"&gt;127&lt;/span&gt;.0.0.1
+Connecting to localhost &lt;span class="o"&gt;(&lt;/span&gt;localhost&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="m"&gt;127&lt;/span&gt;.0.0.1&lt;span class="p"&gt;|&lt;/span&gt;:80... connected.
+HTTP request sent, awaiting response... &lt;span class="m"&gt;404&lt;/span&gt; Not Found
+&lt;span class="m"&gt;2018&lt;/span&gt;-09-24 &lt;span class="m"&gt;03&lt;/span&gt;:01:14 ERROR &lt;span class="m"&gt;404&lt;/span&gt;: Not Found.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Error 404 is a good sign, the service is up and serving requests, currently there is nothing to deliver.
+Finally test that the routing through the Jetstream instance is working correctly by opening your browser
+and test that if you access &lt;code&gt;js-XX-XXX.jetstream-cloud.org&lt;/code&gt; you also get a &lt;code&gt;default backend - 404&lt;/code&gt; message.
+If any of the tests hangs or cannot connect, there is probably a networking issue.&lt;/p&gt;
+&lt;h3&gt;Troubleshooting notes&lt;/h3&gt;
+&lt;p&gt;For future reference, disregard this.&lt;/p&gt;
+&lt;p&gt;Failing ansible task: &lt;code&gt;openstack_tenant_id is missing&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;fixed with: &lt;code&gt;export OS_TENANT_ID=$OS_PROJECT_ID&lt;/code&gt;, this should be fixed once &lt;a href="https://github.com/kubernetes-incubator/kubespray/pull/2783"&gt;https://github.com/kubernetes-incubator/kubespray/pull/2783&lt;/a&gt; is merged, anyway this is not blocking.&lt;/p&gt;
+&lt;p&gt;Failing task &lt;code&gt;Write cacert file&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;NOTE: had to cherry-pick a commit from &lt;a href="https://github.com/kubernetes-incubator/kubespray/pull/3280"&gt;https://github.com/kubernetes-incubator/kubespray/pull/3280&lt;/a&gt;, this will be unnecessary once this is fixed upstream&lt;/p&gt;
+&lt;h2&gt;(Optional) Setup kubectl locally&lt;/h2&gt;
+&lt;p&gt;We also set &lt;code&gt;kubectl_localhost: true&lt;/code&gt; and &lt;code&gt;kubeconfig_localhost: true&lt;/code&gt;.
+so that &lt;code&gt;kubectl&lt;/code&gt; is installed on your local machine&lt;/p&gt;
+&lt;p&gt;it also copies admin.conf to &lt;/p&gt;
+&lt;p&gt;inventory/$CLUSTER/artifacts&lt;/p&gt;
+&lt;p&gt;now copy that to &lt;code&gt;~/.kube/config&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;this has an issue, it has the internal IP of the Jetstream master.
+We cannot replace it with the public floating ip because the certificate is not valid for that.
+Best workaround is to replace it with &lt;code&gt;127.0.0.1&lt;/code&gt; inside &lt;code&gt;~/.kube/config&lt;/code&gt; at the &lt;code&gt;server:&lt;/code&gt; key.
+Then make a SSH tunnel, we need &lt;code&gt;sudo&lt;/code&gt; because it is a reserved port:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo ssh ubuntu@FLOATINGIPOFMASTER -L 6443:localhost:6443
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;(Optional) Setup helm locally&lt;/h2&gt;
+&lt;p&gt;ssh into the master node, check helm version with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;helm version
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Download the same binary version from &lt;a href="https://github.com/helm/helm/releases"&gt;the release page on Github&lt;/a&gt;
+and copy the binary to &lt;code&gt;/url/local/bin&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl proxy &amp;amp;amp;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is going to proxy the connection to the master node locally so we can use helm:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;helm ls
+&lt;/pre&gt;&lt;/div&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE</title><link href="http://zonca.github.io/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html" rel="alternate"></link><published>2018-07-23T12:00:00-07:00</published><updated>2018-07-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-23:/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html</id><summary type="html">&lt;p&gt;Bob Sinkovits and I are presenting a paper at PEARC18 about:&lt;/p&gt;
 &lt;p&gt;"Deploying Jupyter Notebooks at scale on XSEDE resources for Science Gateways and workshops"&lt;/p&gt;
 &lt;p&gt;See the pre-print on Arxiv: &lt;a href="https://arxiv.org/abs/1805.04781"&gt;https://arxiv.org/abs/1805.04781&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Jupyter Notebooks provide an interactive computing environment well suited for Science.
@@ -186,7 +488,7 @@ Checkout the Github repository with all the configuration files on the master no
 
 
 &lt;p&gt;If any is stuck in Pending, check with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo describe &amp;lt;pod-name&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo describe &amp;amp;lt;pod-name&amp;amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -494,7 +796,7 @@ the deployment will be accessible from outside connections:&lt;/p&gt;
 
 
 &lt;p&gt;and inspect their logs with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker logs &amp;lt;container_id&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker logs &amp;amp;lt;container_id&amp;amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -542,7 +844,7 @@ replace:&lt;/p&gt;
 &lt;p&gt;So that instead of using a Docker Volume named &lt;code&gt;mysql&lt;/code&gt; is creating a bind-mount to &lt;code&gt;/mysql&lt;/code&gt; on the host.&lt;/p&gt;
 &lt;h2&gt;Test jobs&lt;/h2&gt;
 &lt;p&gt;Open a terminal in the BOINC server container:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker exec -it &amp;lt;boincserver&amp;gt; /bin/bash
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker exec -it &amp;amp;lt;boincserver&amp;amp;gt; /bin/bash
 
 
 bin/boinc2docker_create_work.py \
@@ -783,7 +1085,7 @@ support       support-nginx-ingress-default-backend-cb84895fb-qs9pp   1/1       
 &lt;p&gt;Once the setup is complete on the worker, log back in to the master and check that the worker joined Kubernetes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zonca@js-169-xx:~/kubeadm-bootstrap$ sudo kubectl get nodes
 NAME                             STATUS    ROLES     AGE       VERSION
-js-168-yyy.jetstream-cloud.org   Ready     &amp;lt;none&amp;gt;    1m        v1.9.2
+js-168-yyy.jetstream-cloud.org   Ready     &amp;amp;lt;none&amp;amp;gt;    1m        v1.9.2
 js-169-xx.jetstream-cloud.org    Ready     master    2h        v1.9.2
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -935,7 +1237,7 @@ Once the node joins Kubernetes, it will be automatically used as a node for the 
 &lt;h3&gt;Remove a server from Kubernetes&lt;/h3&gt;
 &lt;p&gt;Launch first the &lt;code&gt;kubectl drain&lt;/code&gt; command to move the currently active pods to other nodes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get nodes
-sudo kubectl drain &amp;lt;node name&amp;gt;
+sudo kubectl drain &amp;amp;lt;node name&amp;amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1978,7 +2280,7 @@ docker run --restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul
 
 
 &lt;p&gt;create &lt;code&gt;/etc/auto.home&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;echo &amp;quot;* $HUB_LOCAL_IP:/home/&amp;amp;&amp;quot; | sudo tee /etc/auto.home
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;* $HUB_LOCAL_IP:/home/&amp;amp;amp;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nt"&gt;sudo&lt;/span&gt; &lt;span class="nt"&gt;tee&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;home&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2957,7 +3259,7 @@ mpirun_rsh -np &lt;span class="o"&gt;{&lt;/span&gt;n&lt;span class="o"&gt;}&lt;/
 &lt;p&gt;Here we chose to run 16 IPython engines per Gordon node, so each has access to 4GB of ram, if you need more just change 16 to 8 for example.&lt;/p&gt;
 &lt;h3&gt;Run IPython parallel&lt;/h3&gt;
 &lt;p&gt;You can submit a job to the queue running, &lt;code&gt;n&lt;/code&gt; is equal to the number of processes you want to use, so it needs to be a multiple of the &lt;code&gt;ppn&lt;/code&gt; chosen in the PBS template:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ipcluster start --n=32 &amp;amp;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ipcluster start --n=32 &amp;amp;amp;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3000,8 +3302,8 @@ result = lview.map(exp_10, list_of_args)
 &lt;p&gt;In this code &lt;code&gt;IPython&lt;/code&gt; will distribute uniformly the list of arguments to the engines and the function will be evalutated for each of them and the result copied back to the connecting client running on the login node.&lt;/p&gt;
 &lt;h3&gt;Submit non-python jobs to IPython parallel&lt;/h3&gt;
 &lt;p&gt;Let's assume you have a list of commands you want to run in a text file, one command per line, those could be implemented in any programming language, e.g.:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;date &amp;amp;&amp;gt; date.log
-hostname &amp;amp;&amp;gt; hostname.log
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;date &amp;amp;amp;&amp;amp;gt; date.log
+hostname &amp;amp;amp;&amp;amp;gt; hostname.log
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3117,9 +3419,9 @@ Now right-click and select "Show page source" (in Chrome), and search for "downl
 
 
 &lt;p&gt;This is unicode, so open &lt;code&gt;Python&lt;/code&gt; and do:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;download_url = &amp;quot;PASTE HERE&amp;quot;
-print download_url.decode(&amp;quot;unicode_escape&amp;quot;)
-u&amp;#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;export=download&amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;download_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;PASTE HERE&amp;quot;&lt;/span&gt;
+&lt;span class="nt"&gt;print&lt;/span&gt; &lt;span class="nt"&gt;download_url&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;decode&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;unicode_escape&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nt"&gt;u&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;amp;export=download&amp;amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

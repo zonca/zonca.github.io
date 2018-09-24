@@ -5,29 +5,43 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2018-07-23T09:07:09-00:00</lastmod>
+<lastmod>2018-09-24T03:55:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2018-07-23T09:07:09-00:00</lastmod>
+<lastmod>2018-09-24T03:55:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2018-07-23T09:07:09-00:00</lastmod>
+<lastmod>2018-09-24T03:55:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2018-07-23T09:07:09-00:00</lastmod>
+<lastmod>2018-09-24T03:55:54-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2018/09/kubernetes-jetstream-explore.html</loc>
+<lastmod>2018-09-23T23:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html</loc>
+<lastmod>2018-09-23T18:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -859,7 +873,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2018-07-23T12:00:00-07:53</lastmod>
+<lastmod>2018-09-23T23:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -867,6 +881,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://zonca.github.io/tag/pelican.html</loc>
 <lastmod>2014-02-26T23:00:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/tag/d3.html</loc>
+<lastmod>2013-08-30T08:52:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -964,7 +985,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jetstream.html</loc>
-<lastmod>2018-07-23T12:00:00-07:53</lastmod>
+<lastmod>2018-09-23T23:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -977,8 +998,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/d3.html</loc>
-<lastmod>2013-08-30T08:52:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/kubespray.html</loc>
+<lastmod>2018-09-23T23:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -986,6 +1007,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://zonca.github.io/tag/parallel-programming.html</loc>
 <lastmod>2011-02-16T19:10:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/tag/quote.html</loc>
+<lastmod>2012-08-16T14:07:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1005,8 +1033,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/quote.html</loc>
-<lastmod>2012-08-16T14:07:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/scipy.html</loc>
+<lastmod>2012-10-06T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1075,8 +1103,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/healpix.html</loc>
-<lastmod>2013-01-28T21:06:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/kubernetes.html</loc>
+<lastmod>2018-09-23T23:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1152,8 +1180,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/scipy.html</loc>
-<lastmod>2012-10-06T00:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/healpix.html</loc>
+<lastmod>2013-01-28T21:06:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1314,7 +1342,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2018-07-23T12:00:00-07:53</lastmod>
+<lastmod>2018-09-23T23:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
