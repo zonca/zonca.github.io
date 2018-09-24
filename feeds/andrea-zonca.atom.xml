@@ -42,7 +42,7 @@ to be created and attached to a pod.&lt;/p&gt;
 
 
 &lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted filesystem which is persistent.&lt;/p&gt;
-&lt;p&gt;Also, back to the Jetstream instance, see how an Openstack volume was dynamically created and attached to the running instance:&lt;/p&gt;
+&lt;p&gt;Also, back to the machine with &lt;code&gt;openstack&lt;/code&gt; access, see how an Openstack volume was dynamically created and attached to the running instance:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack volume list
 &lt;/pre&gt;&lt;/div&gt;
 
