@@ -100,28 +100,46 @@ to be created and attached to a pod.</p>
 
 
 <h2>Test ReplicaSets, Services and Ingress</h2>
-<p>From Kubernetes in Action:
-<a href="https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia">https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia</a></p>
+<p>In this section we will explore how to build redundancy and scale in a service with a
+simple example included in the book <a href="https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia">Kubernetes in Action</a>,
+which by the way I highly recommend to get started with Kubernetes.</p>
+<p>First let's deploy a service in our Kubernetes cluster,
+this service just answers to HTTP requests on port 8080 with the message "You've hit kubia-manual":</p>
 <div class="highlight"><pre><span></span>cd kubia_test_ingress
 kubectl create -f kubia-manual.yaml
-kubectl get pods -o wide
 </pre></div>
 
 
-<p>On one of the nodes:</p>
+<p>We can test it by checking at which IP Kubernetes created the pod:</p>
+<div class="highlight"><pre><span></span>kubectl get pods -o wide
+</pre></div>
+
+
+<p>and assign it to the <code>KUBIA_MANUAL_IP</code> variable, then on one of the nodes:</p>
 <div class="highlight"><pre><span></span>$ curl <span class="nv">$KUBIA_MANUAL_IP</span>:8080
 You<span class="err">&#39;</span>ve hit kubia-manual
+</pre></div>
 
-kubectl delete -f kubia-manual.yaml
+
+<p>Finally close it:</p>
+<div class="highlight"><pre><span></span>kubectl delete -f kubia-manual.yaml
 </pre></div>
 
 
 <h3>Load balancing with ReplicaSets and Services</h3>
+<p>Now we want to scale this service up and provide a set of 3 pods instead of just 1:</p>
 <div class="highlight"><pre><span></span>kubectl create -f kubia-replicaset.yaml
-kubectl create -f kubia-service.yaml
 </pre></div>
 
 
+<p>Now we could access those services on 3 different IP addresses, but we would like to have
+a single entry point and automatic load balancing across those instances, so we create
+a Kubernetes "Service" resource:</p>
+<div class="highlight"><pre><span></span>kubectl create -f kubia-service.yaml
+</pre></div>
+
+
+<p>And test it:</p>
 <div class="highlight"><pre><span></span>$ kubectl get service
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
 kubernetes   ClusterIP   <span class="m">10</span>.233.0.1      &lt;none&gt;        <span class="m">443</span>/TCP   22h
@@ -143,7 +161,7 @@ Run many times and check different kubia services answer.</p>
 
 <p>Where XXX-YYY are the last 2 groups of digits of the floating IP of the master instance,
 i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.</p>
-<p>The connection should be refused or hang.</p>
+<p>The connection should be respond with 404.</p>
 <p>Now:</p>
 <div class="highlight"><pre><span></span>kubectl create -f kubia-ingress.yaml
 kubectl get ingress

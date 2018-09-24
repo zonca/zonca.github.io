@@ -58,28 +58,46 @@ to be created and attached to a pod.&lt;/p&gt;
 
 
 &lt;h2&gt;Test ReplicaSets, Services and Ingress&lt;/h2&gt;
-&lt;p&gt;From Kubernetes in Action:
-&lt;a href="https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia"&gt;https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In this section we will explore how to build redundancy and scale in a service with a
+simple example included in the book &lt;a href="https://github.com/luksa/kubernetes-in-action/tree/master/Chapter02/kubia"&gt;Kubernetes in Action&lt;/a&gt;,
+which by the way I highly recommend to get started with Kubernetes.&lt;/p&gt;
+&lt;p&gt;First let's deploy a service in our Kubernetes cluster,
+this service just answers to HTTP requests on port 8080 with the message "You've hit kubia-manual":&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd kubia_test_ingress
 kubectl create -f kubia-manual.yaml
-kubectl get pods -o wide
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;On one of the nodes:&lt;/p&gt;
+&lt;p&gt;We can test it by checking at which IP Kubernetes created the pod:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -o wide
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and assign it to the &lt;code&gt;KUBIA_MANUAL_IP&lt;/code&gt; variable, then on one of the nodes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ curl &lt;span class="nv"&gt;$KUBIA_MANUAL_IP&lt;/span&gt;:8080
 You&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;ve hit kubia-manual
+&lt;/pre&gt;&lt;/div&gt;
 
-kubectl delete -f kubia-manual.yaml
+
+&lt;p&gt;Finally close it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl delete -f kubia-manual.yaml
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Load balancing with ReplicaSets and Services&lt;/h3&gt;
+&lt;p&gt;Now we want to scale this service up and provide a set of 3 pods instead of just 1:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f kubia-replicaset.yaml
-kubectl create -f kubia-service.yaml
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;Now we could access those services on 3 different IP addresses, but we would like to have
+a single entry point and automatic load balancing across those instances, so we create
+a Kubernetes "Service" resource:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f kubia-service.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And test it:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ kubectl get service
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT&lt;span class="o"&gt;(&lt;/span&gt;S&lt;span class="o"&gt;)&lt;/span&gt;   AGE
 kubernetes   ClusterIP   &lt;span class="m"&gt;10&lt;/span&gt;.233.0.1      &amp;lt;none&amp;gt;        &lt;span class="m"&gt;443&lt;/span&gt;/TCP   22h
@@ -101,7 +119,7 @@ Run many times and check different kubia services answer.&lt;/p&gt;
 
 &lt;p&gt;Where XXX-YYY are the last 2 groups of digits of the floating IP of the master instance,
 i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.&lt;/p&gt;
-&lt;p&gt;The connection should be refused or hang.&lt;/p&gt;
+&lt;p&gt;The connection should be respond with 404.&lt;/p&gt;
 &lt;p&gt;Now:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f kubia-ingress.yaml
 kubectl get ingress
