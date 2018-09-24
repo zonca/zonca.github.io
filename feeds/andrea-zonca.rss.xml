@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Andrea Zonca's blog - Andrea Zonca</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Sun, 23 Sep 2018 23:00:00 -0700</lastBuildDate><item><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link>http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html</link><description>&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+<rss version="2.0"><channel><title>Andrea Zonca's blog - Andrea Zonca</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Mon, 24 Sep 2018 01:00:00 -0700</lastBuildDate><item><title>Deploy JupyterHub on Kubernetes deployment on Jetstream created with Kubespray 3/3</title><link>http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html</link><description>&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
+bash install_jhub.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Check some preliminary pods running with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n jhub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once the &lt;code&gt;proxy&lt;/code&gt; is running, even if &lt;code&gt;hub&lt;/code&gt; is still in preparation, you can check
+in browser, you should get "Service Unavailable" which is a good sign that
+the proxy is …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Mon, 24 Sep 2018 01:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2018-09-24:/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html</guid><category>kubernetes</category><category>kubespray</category><category>jetstream</category><category>jupyterhub</category></item><item><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link>http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html</link><description>&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
 on Jetstream.&lt;/p&gt;
 &lt;p&gt;In the &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;first part, we installed Kubernetes on Jetstream with &lt;code&gt;kubespray&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
