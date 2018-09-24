@@ -218,8 +218,11 @@ If any of the tests hangs or cannot connect, there is probably a networking issu
 <h2>(Optional) Setup kubectl locally</h2>
 <p>We also set <code>kubectl_localhost: true</code> and <code>kubeconfig_localhost: true</code>.
 so that <code>kubectl</code> is installed on your local machine</p>
-<p>it also copies admin.conf to </p>
-<p>inventory/$CLUSTER/artifacts</p>
+<p>it also copies admin.conf to:</p>
+<div class="highlight"><pre><span></span>inventory/$CLUSTER/artifacts
+</pre></div>
+
+
 <p>now copy that to <code>~/.kube/config</code></p>
 <p>this has an issue, it has the internal IP of the Jetstream master.
 We cannot replace it with the public floating ip because the certificate is not valid for that.
@@ -237,12 +240,6 @@ Then make a SSH tunnel, we need <code>sudo</code> because it is a reserved port:
 
 <p>Download the same binary version from <a href="https://github.com/helm/helm/releases">the release page on Github</a>
 and copy the binary to <code>/url/local/bin</code>.</p>
-<p>Run:</p>
-<div class="highlight"><pre><span></span>kubectl proxy &amp;amp;
-</pre></div>
-
-
-<p>This is going to proxy the connection to the master node locally so we can use helm:</p>
 <div class="highlight"><pre><span></span>helm ls
 </pre></div>
         </div>

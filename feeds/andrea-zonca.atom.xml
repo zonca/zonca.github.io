@@ -336,8 +336,11 @@ If any of the tests hangs or cannot connect, there is probably a networking issu
 &lt;h2&gt;(Optional) Setup kubectl locally&lt;/h2&gt;
 &lt;p&gt;We also set &lt;code&gt;kubectl_localhost: true&lt;/code&gt; and &lt;code&gt;kubeconfig_localhost: true&lt;/code&gt;.
 so that &lt;code&gt;kubectl&lt;/code&gt; is installed on your local machine&lt;/p&gt;
-&lt;p&gt;it also copies admin.conf to &lt;/p&gt;
-&lt;p&gt;inventory/$CLUSTER/artifacts&lt;/p&gt;
+&lt;p&gt;it also copies admin.conf to:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;inventory/$CLUSTER/artifacts
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;now copy that to &lt;code&gt;~/.kube/config&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;this has an issue, it has the internal IP of the Jetstream master.
 We cannot replace it with the public floating ip because the certificate is not valid for that.
@@ -355,12 +358,6 @@ Then make a SSH tunnel, we need &lt;code&gt;sudo&lt;/code&gt; because it is a re
 
 &lt;p&gt;Download the same binary version from &lt;a href="https://github.com/helm/helm/releases"&gt;the release page on Github&lt;/a&gt;
 and copy the binary to &lt;code&gt;/url/local/bin&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl proxy &amp;amp;amp;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;This is going to proxy the connection to the master node locally so we can use helm:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;helm ls
 &lt;/pre&gt;&lt;/div&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE</title><link href="http://zonca.github.io/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html" rel="alternate"></link><published>2018-07-23T12:00:00-07:00</published><updated>2018-07-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-07-23:/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html</id><summary type="html">&lt;p&gt;Bob Sinkovits and I are presenting a paper at PEARC18 about:&lt;/p&gt;
 &lt;p&gt;"Deploying Jupyter Notebooks at scale on XSEDE resources for Science Gateways and workshops"&lt;/p&gt;
