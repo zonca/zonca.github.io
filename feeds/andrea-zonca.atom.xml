@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-09-23T23:00:00-07:00</updated><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
-on Jetstream.
-It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
-and how the different components play together before installing JupyterHub.
-If you are already familiar with Kubernetes you …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
-on Jetstream.
-It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-09-23T23:00:00-07:00</updated><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+on Jetstream.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;first part, we installed Kubernetes on Jetstream with &lt;code&gt;kubespray&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
+and how the different components play together …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+on Jetstream.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;first part, we installed Kubernetes on Jetstream with &lt;code&gt;kubespray&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
 and how the different components play together before installing JupyterHub.
 If you are already familiar with Kubernetes you can skip to the next part.&lt;/p&gt;
 &lt;p&gt;All the files for the examples below are available on Github,
@@ -107,21 +108,7 @@ kubectl get ingress
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Try again in the browser.&lt;/p&gt;
-&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
-bash install_jhub.sh
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Check some preliminary pods running with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n jhub
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Once the &lt;code&gt;proxy&lt;/code&gt; is running, even if &lt;code&gt;hub&lt;/code&gt; is still in preparation, you can check
-in browser, you should get "Service Unavailable" which is a good sign that
-the proxy is working.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Kubernetes on Jetstream with Kubespray 1/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2018-09-23T18:00:00-07:00</published><updated>2018-09-23T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
+&lt;p&gt;Try again in the browser.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Kubernetes on Jetstream with Kubespray 1/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2018-09-23T18:00:00-07:00</published><updated>2018-09-23T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
 Kubernetes on Jetstream.
 Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
 Instead of creating Jetstream instances via the Atmosphere web interface and then

@@ -5,34 +5,34 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2018-09-24T05:20:26-00:00</lastmod>
+<lastmod>2018-09-24T05:28:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2018-09-24T05:20:26-00:00</lastmod>
+<lastmod>2018-09-24T05:28:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2018-09-24T05:20:26-00:00</lastmod>
+<lastmod>2018-09-24T05:28:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2018-09-24T05:20:26-00:00</lastmod>
+<lastmod>2018-09-24T05:28:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://zonca.github.io/2018/09/kubernetes-jetstream-explore.html</loc>
+<loc>http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html</loc>
 <lastmod>2018-09-23T23:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
