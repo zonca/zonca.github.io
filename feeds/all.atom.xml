@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-09-24T01:00:00-07:00</updated><entry><title>Deploy JupyterHub on Kubernetes deployment on Jetstream created with Kubespray 3/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html" rel="alternate"></link><published>2018-09-24T01:00:00-07:00</published><updated>2018-09-24T01:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-24:/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html</id><summary type="html">&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
+&lt;p&gt;First run&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash create_secrets.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;to create the secret strings needed by JupyterHub then edit its output
+&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
 bash install_jhub.sh
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Check some preliminary pods running with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n jhub
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n jhub …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
+&lt;p&gt;First run&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash create_secrets.sh
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Once the &lt;code&gt;proxy&lt;/code&gt; is running, even if &lt;code&gt;hub&lt;/code&gt; is still in preparation, you can check
-in browser, you should get "Service Unavailable" which is a good sign that
-the proxy is …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Install Jupyterhub&lt;/h2&gt;
+&lt;p&gt;to create the secret strings needed by JupyterHub then edit its output
+&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
 bash install_jhub.sh
 &lt;/pre&gt;&lt;/div&gt;
@@ -1037,6 +1045,7 @@ we did before:&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;Make sure that &lt;code&gt;JETSTREAM_SWIFT_ENDPOINT&lt;/code&gt; &lt;strong&gt;does not&lt;/strong&gt; include &lt;code&gt;/swift/v1&lt;/code&gt;!&lt;/p&gt;
 &lt;h3&gt;Read a file from local filesystem and write to Object store&lt;/h3&gt;
 &lt;p&gt;See &lt;a href="https://gist.github.com/zonca/f7cb1c7845f6b821dc8d178f84253ba3"&gt;this notebook as an example of writing to object store&lt;/a&gt;,
 first we make sure to have the necessary Python packages,
