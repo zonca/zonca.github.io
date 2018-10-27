@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2018-09-25T04:03:40-00:00</lastmod>
+<lastmod>2018-10-27T00:45:03-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2018-09-25T04:03:40-00:00</lastmod>
+<lastmod>2018-10-27T00:45:03-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2018-09-25T04:03:40-00:00</lastmod>
+<lastmod>2018-10-27T00:45:03-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2018-09-25T04:03:40-00:00</lastmod>
+<lastmod>2018-10-27T00:45:03-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2018/10/pandas-astro-example.html</loc>
+<lastmod>2018-10-26T18:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -880,7 +887,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2018-09-24T01:00:00-07:53</lastmod>
+<lastmod>2018-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -949,8 +956,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/general-physics.html</loc>
-<lastmod>2008-03-29T02:13:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/cosmology.html</loc>
+<lastmod>2013-09-17T18:30:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1180,8 +1187,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/unit-test.html</loc>
-<lastmod>2014-09-30T14:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/binder.html</loc>
+<lastmod>2018-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1251,7 +1258,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyter.html</loc>
-<lastmod>2018-06-07T18:00:00-07:53</lastmod>
+<lastmod>2018-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1271,6 +1278,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/general-physics.html</loc>
+<lastmod>2008-03-29T02:13:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/zarr.html</loc>
 <lastmod>2018-03-03T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
@@ -1278,8 +1292,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/cosmology.html</loc>
-<lastmod>2013-09-17T18:30:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/unit-test.html</loc>
+<lastmod>2014-09-30T14:00:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/tag/pandas.html</loc>
+<lastmod>2018-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1349,7 +1370,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2018-09-24T01:00:00-07:53</lastmod>
+<lastmod>2018-10-26T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
