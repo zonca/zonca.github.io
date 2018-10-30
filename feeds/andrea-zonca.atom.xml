@@ -40,7 +40,24 @@ for any other customizations, first authentication, you are in good hands as the
 &lt;a href="https://zero-to-jupyterhub.readthedocs.io/en/stable/extending-jupyterhub.html"&gt;Zero-to-Jupyterhub documentation&lt;/a&gt; is great.&lt;/p&gt;
 &lt;p&gt;The only setup that could be peculiar to the deployment on top of &lt;code&gt;kubespray&lt;/code&gt; is setup with HTTPS, see the next section.&lt;/p&gt;
 &lt;h2&gt;Setup HTTPS with letsencrypt&lt;/h2&gt;
-&lt;p&gt;Coming soon&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
+&lt;p&gt;Kubespray instead of installing &lt;code&gt;kube-lego&lt;/code&gt;, installs &lt;a href="https://cert-manager.readthedocs.io/en/latest/index.html"&gt;&lt;code&gt;certmanager&lt;/code&gt;&lt;/a&gt; to handle HTTPS certificates.&lt;/p&gt;
+&lt;p&gt;First we need to create a Issuer, set your email inside &lt;code&gt;setup_https_kubespray/https_issuer.yml&lt;/code&gt; and create it with the usual:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubetcl create -f setup_https_kubespray/https_issuer.yml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then we can manually create a HTTPS certificate, &lt;code&gt;certmanager&lt;/code&gt; can be configured to handle this automatically, but as we only need a domain this is pretty quick, edit &lt;code&gt;setup_https_kubespray/https_certificate.yml&lt;/code&gt; and set the domain name of your master node, then create the certificate resource with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubetcl create -f setup_https_kubespray/https_certificate.yml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Finally we can configure JupyterHub to use this certificate, first edit your &lt;code&gt;secrets.yaml&lt;/code&gt; following as an example the file &lt;code&gt;setup_https_kubespray/example_letsencrypt_secrets.yaml&lt;/code&gt;, then update your JupyterHub configuration running again:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash install_jhub.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Feedback&lt;/h2&gt;
+&lt;p&gt;Feedback on this is very welcome, please open an issue on the &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream"&gt;Github repository&lt;/a&gt; or email me at &lt;code&gt;zonca&lt;/code&gt; on the domain of the San Diego Supercomputer Center (sdsc.edu).&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
 on Jetstream.&lt;/p&gt;
 &lt;p&gt;In the &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;first part, we installed Kubernetes on Jetstream with &lt;code&gt;kubespray&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;It is optional, its main purpose is to familiarize with the Kubernetes deployment on Jetstream
