@@ -183,11 +183,12 @@ kubectl get ingress
 
 &lt;p&gt;Try again in the browser.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Kubernetes on Jetstream with Kubespray 1/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2018-09-23T18:00:00-07:00</published><updated>2018-09-23T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
 Kubernetes on Jetstream.
-Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
-Instead of creating Jetstream instances via the Atmosphere web interface and then
-SSHing into the instances and run &lt;code&gt;kubeadm&lt;/code&gt; based commands to setup Docker …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
+This material was presented as a tutorial at the Gateways 2018 conference, see also &lt;a href="https://figshare.com/articles/Hands-on_Tutorial_Deploying_Kubernetes_and_JupyterHub_on_Jetstream/7137884"&gt;the slides on Figshare&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
+Instead of creating Jetstream instances via …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
 Kubernetes on Jetstream.
-Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
+This material was presented as a tutorial at the Gateways 2018 conference, see also &lt;a href="https://figshare.com/articles/Hands-on_Tutorial_Deploying_Kubernetes_and_JupyterHub_on_Jetstream/7137884"&gt;the slides on Figshare&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
 Instead of creating Jetstream instances via the Atmosphere web interface and then
 SSHing into the instances and run &lt;code&gt;kubeadm&lt;/code&gt; based commands to setup Docker and Kubernetes we will:&lt;/p&gt;
 &lt;ul&gt;
@@ -349,6 +350,8 @@ HTTP request sent, awaiting response... &lt;span class="m"&gt;404&lt;/span&gt; N
 Finally test that the routing through the Jetstream instance is working correctly by opening your browser
 and test that if you access &lt;code&gt;js-XX-XXX.jetstream-cloud.org&lt;/code&gt; you also get a &lt;code&gt;default backend - 404&lt;/code&gt; message.
 If any of the tests hangs or cannot connect, there is probably a networking issue.&lt;/p&gt;
+&lt;h2&gt;Next&lt;/h2&gt;
+&lt;p&gt;Next you can &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;explore the kubernetes deployment to learn more about how you deploy resources in the second part of my tutorial&lt;/a&gt; or skip it and proceed directly to the &lt;a href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html"&gt;third and final part of the tutorial and deploy Jupyterhub and configure it with HTTS&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Troubleshooting notes&lt;/h3&gt;
 &lt;p&gt;For future reference, disregard this.&lt;/p&gt;
 &lt;p&gt;Failing ansible task: &lt;code&gt;openstack_tenant_id is missing&lt;/code&gt;&lt;/p&gt;

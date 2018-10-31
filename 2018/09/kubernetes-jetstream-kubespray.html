@@ -47,7 +47,8 @@
         <div class='post-content'>
             <p>The purpose of this tutorial series is to deploy Jupyterhub on top of
 Kubernetes on Jetstream.
-Compared to my <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">initial tutorial</a>, I focused on improving automation.
+This material was presented as a tutorial at the Gateways 2018 conference, see also <a href="https://figshare.com/articles/Hands-on_Tutorial_Deploying_Kubernetes_and_JupyterHub_on_Jetstream/7137884">the slides on Figshare</a>.</p>
+<p>Compared to my <a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html">initial tutorial</a>, I focused on improving automation.
 Instead of creating Jetstream instances via the Atmosphere web interface and then
 SSHing into the instances and run <code>kubeadm</code> based commands to setup Docker and Kubernetes we will:</p>
 <ul>
@@ -209,6 +210,8 @@ HTTP request sent, awaiting response... <span class="m">404</span> Not Found
 Finally test that the routing through the Jetstream instance is working correctly by opening your browser
 and test that if you access <code>js-XX-XXX.jetstream-cloud.org</code> you also get a <code>default backend - 404</code> message.
 If any of the tests hangs or cannot connect, there is probably a networking issue.</p>
+<h2>Next</h2>
+<p>Next you can <a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html">explore the kubernetes deployment to learn more about how you deploy resources in the second part of my tutorial</a> or skip it and proceed directly to the <a href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html">third and final part of the tutorial and deploy Jupyterhub and configure it with HTTS</a>.</p>
 <h3>Troubleshooting notes</h3>
 <p>For future reference, disregard this.</p>
 <p>Failing ansible task: <code>openstack_tenant_id is missing</code></p>
