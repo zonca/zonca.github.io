@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2018-10-31T15:47:37-00:00</lastmod>
+<lastmod>2018-11-09T05:10:14-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2018-10-31T15:47:37-00:00</lastmod>
+<lastmod>2018-11-09T05:10:14-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2018-10-31T15:47:37-00:00</lastmod>
+<lastmod>2018-11-09T05:10:14-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2018-10-31T15:47:37-00:00</lastmod>
+<lastmod>2018-11-09T05:10:14-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2018/11/jupyterhub-supercomputer.html</loc>
+<lastmod>2018-11-07T11:00:00-08:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -887,7 +894,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2018-10-26T18:00:00-07:53</lastmod>
+<lastmod>2018-11-07T11:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -991,6 +998,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/parallel-programming.html</loc>
+<lastmod>2011-02-16T19:10:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/sdsc.html</loc>
 <lastmod>2017-08-11T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
@@ -1019,8 +1033,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/parallel-programming.html</loc>
-<lastmod>2011-02-16T19:10:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/python.html</loc>
+<lastmod>2018-06-20T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1124,8 +1138,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/python.html</loc>
-<lastmod>2018-06-20T18:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/xsede.html</loc>
+<lastmod>2018-11-07T11:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1139,7 +1153,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyterhub.html</loc>
-<lastmod>2018-09-24T01:00:00-07:53</lastmod>
+<lastmod>2018-11-07T11:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1335,7 +1349,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/comet.html</loc>
-<lastmod>2018-07-23T12:00:00-07:53</lastmod>
+<lastmod>2018-11-07T11:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1370,7 +1384,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2018-10-26T18:00:00-07:53</lastmod>
+<lastmod>2018-11-07T11:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

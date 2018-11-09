@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Deploy JupyterHub on a Supercomputer for a workshop or tutorial 2018 edition | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Deploy JupyterHub on a Supercomputer for a workshop or tutorial 2018 edition</h1>
+        </header>
+        <div class='post-content'>
+            <p>I described how to deploy JupyterHub with each user session running on a different
+node of a Supercomputer in <a href="https://arxiv.org/abs/1805.04781">my paper for PEARC18</a>,
+however things are moving fast in the space and I am employing a different strategy
+this year, in particular relying on <a href="https://the-littlest-jupyterhub.readthedocs.io">the littlest JupyterHub project</a>
+for the initial deployment.</p>
+<h2>Initial deployment of JupyterHub</h2>
+<p><a href="https://the-littlest-jupyterhub.readthedocs.io">The littlest JupyterHub project</a> has great documentation
+on how to deploy JupyterHub working on a single server on a wide array of providers.</p>
+<p>In my case I logged in to the <a href="https://dashboard.cloud.sdsc.edu/">dashboard</a> of <a href="http://www.sdsc.edu/services/ci/cloud.html">SDSC Cloud</a>, a OpenStack
+deployment at the San Diego Supercomputer Center, and requested an instance with 16 GB of RAM and 6 vCPUs with Ubuntu 18.04. Make sure you attach a floating public IP to the instance and open up ports 22 for SSH and 80,443 for HTTP/HTTPS.</p>
+<p>Then I followed the <a href="https://the-littlest-jupyterhub.readthedocs.io/en/latest/install/custom-server.html">installation tutorial for custom servers</a>, just make sure that you first create in the virtual machine the admin user you specify in the installation script, also
+make sure to use the same username of your Github account, as we will later setup Github Authentication.</p>
+<p>You can connect to the instance and check JupyterHub is working and you can login with your user and access the admin panel,
+for SDSC Cloud the address is <code>http://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</code>, filled in with the instance floating IP address.</p>
+<h3>Setup HTTPS</h3>
+<p>Follow the Littlest JupyterHub documentation on how to get a SSL certificate through Letsencrypt automatically, after this you should be able to access JupyterHub from <code>https://xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</code> or a custom domain you pointed there.</p>
+<h2>Authentication with Github</h2>
+<p>Follow the Littlest JupyterHub documentation, just make sure to set the <code>http</code> address and not the <code>https</code> address.</p>
+<h2>Interface with Comet via batchspawner</h2>
+<p>We want all users to run on Comet as a single "Gateway" user, as JupyterHub executes as the <code>root</code> user on the server, we want to create a SSH key for the <code>root</code> user and copy the public key to the home folder of the gateway user on Comet so that we can SSH without a password.</p>
+<p>Instead, if you would like each user to utilize their own XSEDE account, you need them to authenticate via XSEDE and get a certificate from the XSEDE API that can be used to login to Comet on behalf of the user, see <a href="https://github.com/jupyterhub/jupyterhub-deploy-hpc/tree/master/batchspawner-xsedeoauth-sshtunnel-sdsccomet">an example deployment of this</a>.</p>
+<p>First install <code>batchspawner</code> with <code>pip</code> in the Python environment of the hub, this is different than the Python environment of the user, you can have access to it logging in with the <code>root</code> user and running:</p>
+<div class="highlight"><pre><span></span>export PATH=/opt/tljh/hub/bin:<span class="cp">${</span><span class="n">PATH</span><span class="cp">}</span>
+</pre></div>
+
+
+<p>Set the configuration file, see <code>spawner.py</code> FIXME</p>
+<p>Reload the Jupyterhub configuration with:</p>
+<div class="highlight"><pre><span></span>tljh-config reload
+</pre></div>
+
+
+<p>You can then check the Hub logs with <code>sudo journalctl -r -u jupyterhub</code></p>
+<h2>Acknoledgements</h2>
+<p>Thanks to the Jupyter and JupyterHub teams for releasing great software with outstanding documentation, in particular Yuvi Panda for the simplicity and elegance in the design of the Littlest JupyterHub deployment.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-11-07T11:00:00-08:00">Wed 07 November 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/comet.html">comet</a> 
+<a href="http://zonca.github.io/tag/xsede.html">xsede</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
