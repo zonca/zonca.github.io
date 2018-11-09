@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Bring your computing to the San Diego Supercomputer Center | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Bring your computing to the San Diego Supercomputer Center</h1>
+        </header>
+        <div class='post-content'>
+            <p>I am often asked what computing resources are available at the San Diego Supercomputer Center for scientists and what is the best way to be granted access. I decided to write a blog post with an overview of all the options, consider that I'm writing this in October 2018, so please cross-check on the official websites.</p>
+<h2>Comet</h2>
+<p>Our key resource is the <a href="http://www.sdsc.edu/support/user_guides/comet.html">Comet Supercomputer</a>, a 2000 nodes traditional supercomputer with 72 GPU nodes, each with 4 GPUs.
+Comet has powerful CPUs with 24 cores and lots of memory per node (128GB) and a very fast local flash drive on each node.
+It is also suitable to run large amounts of single node jobs, so you can exploit it even if you don't have a multi-node parallel software.</p>
+<p>Comet is a XSEDE resource, XSEDE is basically a consortium of many large US supercomputers dedicated to Science,  it reviews applications from US scientists and grants them supercomputing resources for free. It is funded by National Science Foundation.</p>
+<h3>How to request resources on Comet</h3>
+<p>Ordered from the lowest to the largest amount of resources needed, which means they are ordered by the amount of effort it takes to get each type of allocation.</p>
+<p>The amount of resources on Comet are billed in core hours (sometimes named SUs), if you request a Comet node for 1 hour you are charged 24 hours, comet GPUs are billed 14 core hours for each hour on each GPU. The newest Comet GPU nodes have P100 instead of K80, those are billed 1.5 times the older GPU nodes, i.e. 21 core hours per hour.
+Comet also has a shared queue where you can request and be charged for a portion of a Comet node (you also get the proportional amount of memory), i.e. you can request 6 cores and pay only 6 core hours per hour and get access to 32GB of RAM.</p>
+<h4>Trial allocation</h4>
+<p>Anybody can request a trial allocation on Comet with a quick 1 paragraph justification and be approved within a day for 1000 core hours to be used within 6 month. This is useful to try Comet out, run some test jobs. See the <a href="https://portal.xsede.org/allocations/startup#trial">trial allocation page on the XSEDE website</a>.</p>
+<h4>Campus champions</h4>
+<p>Most US universities have a reference person that facilitates access to XSEDE supercomputers, it is often somebody in the Information Technology office or in a Chancellor of Research or a professor. This person is given a large amount of supercomputing hours on all XSEDE resources and local professors, postdocs and graduate students can request to be added to this allocation and use many thousands of core hours, depending on availability.
+Campus champions are currently available in 241 (!!) US institutions, <a href="https://www.xsede.org/web/site/community-engagement/campus-champions/current">see the list on the XSEDE website</a>.</p>
+<h4>HPC@UC</h4>
+<p>If you are at any of the University of California campuses, you have an expedited way of getting resources at SDSC.
+You can submit a request for up to 1 million core hours (more often ~500K core hours) on Comet on the <a href="http://www.sdsc.edu/collaborate/hpc_at_uc.html">HPC@UC page</a>. It just requires a 3 page justification and is answered within 10 business days. You are not eligible if your research group has an active XSEDE allocation.</p>
+<h4>Startup allocation</h4>
+<p>Startup allocations are really quick to prepare, they just require a 1 page justification and CV of the Principal Investigator and grant up to 50K core hours on Comet, if your research is funded by NSF/NASA/NIH remember to specify that. See the <a href="https://portal.xsede.org/allocations/startup">startup page on XSEDE for more details</a>.</p>
+<p>They are reviewed continously so you should be approved within a few days. Generally you are supposed to utilize the amount of hours within 1 year, but if your science project is funded for a longer period, you can request a multi-year allocation.</p>
+<h4>XRAC allocation</h4>
+<p>XRAC allocations are full fledged proposals, you can request up to a few million hours on Comet, here you must provide a detailed justification of the resources requested, demonstrate that your software is able to efficiently scale up in parallel, i.e. if in production you want to run on 100 nodes, you should run it on 5/10/50/100 nodes and check that performance does not degrade too much with increased parallelism.
+You should have performed those tests in a startup allocation.
+The XRAC requests are reviewed quarterly, see the <a href="https://portal.xsede.org/allocations/research">Research allocations page</a>, there is also a recorded webinar.</p>
+<h2>Triton Shared Computing Cluster</h2>
+<p>The Triton Shared Computing Cluster is a supercomputer at SDSC with specifications a bit lower than Comet and that is not allocated through XSEDE, resources are paid by the users. XSEDE resources are always oversubscribed and often only a portion of the resources requested is granted, scientific groups that do not get enough resources through XSEDE can complement it with an allocation on TSCC.</p>
+<p>The easiest way to get computational hours on TSCC is a pay-as-you-go option where you buy an amount of core-hours at $6c / core-hour (academics have a lower rate based on affiliation).</p>
+<p>But the most cost-effective way is to buy a node to be added to the cluster  for 3 years with full hardware warranty plus 1 extra year with no warranty, so if it breaks it needs to be removed.
+You pay a fixed price to buy the node (~$6K) plus yearly operations (~$1.8K if not subsidized by your University, in UC campuses this is generally subsidized and is ~$.5K), see <a href="http://www.sdsc.edu/services/hpc/tscc-purchase.html">the updated costs on the TSCC page</a>, also get in touch with them directly for more details.  You can also buy a node with GPUs.</p>
+<p>Then, instead of having direct access to that node, you are given an allocation as big as the computing hours that your node provides to the cluster. This is great because it allows you to not be penalized for incosistent usage patterns. You can pay for 1 node and then use tens of nodes together once in a while. If you have the yearly operations subsidized by campus, the cost per core hour is about $2c, which is quite competitive, and the cluster is in SDSC machine room and professionally managed, updated, backed up.</p>
+<h2>Colocation</h2>
+<p>Larger collaborations might need dedicated resources, it is possible to buy your own nodes, in units of entire racks (48 Rack Units), which depending on the type of blades can be 12 or 24 nodes and colocate it in SDSC's machine room. See the detailed cost on the <a href="http://www.sdsc.edu/services/it/colocation.html">colocation page</a>, this is a custom solution and it is not easy to give a simple cost estimate, better write and ask for a quote.</p>
+<h2>Cloud resources (Virtual Machines)</h2>
+<p>SDSC also manages a OpenStack deployment, which is especially suitable for running services, for example websites, databases, APIs but it is also suitable to run long-running single node jobs or interactive data analysis (think Jupyter Notebooks). And Kubernetes, of course! (see my <a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html">tutorial for Jetstream, which works also on SDSC Cloud</a>.
+This is also equivalent to Amazon Elastic Cloud Compute (EC2), here you pay for what you use, within UC you provide a funding index and that is charged for each hour used, see the full pricing on the <a href="http://www.sdsc.edu/services/it/cloud.html">SDSC cloud page</a>, roughly you are charged $8c an hour for a Virtual Machine with 1 core and 4GB of RAM.</p>
+<h2>Feedback</h2>
+<p>If you have questions please email me at zonca on the sdsc.edu domain or tweet @andreazonca.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-10-24T18:00:00-07:00">Wed 24 October 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/comet.html">comet</a> 
+<a href="http://zonca.github.io/tag/sdsc.html">sdsc</a> 
+<a href="http://zonca.github.io/tag/xsede.html">xsede</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
