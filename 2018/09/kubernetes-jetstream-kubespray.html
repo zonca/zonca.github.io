@@ -53,13 +53,13 @@ Instead of creating Jetstream instances via the Atmosphere web interface and the
 SSHing into the instances and run <code>kubeadm</code> based commands to setup Docker and Kubernetes we will:</p>
 <ul>
 <li>Use the <code>terraform</code> recipe part of the <code>kubespray</code> project to interface with the Jetstream API and create a cluster of virtual machines</li>
-<li>Run the <code>kubespray</code> ansible recipe to setup a production-ready Kubernetes deployment, optionally with High Availabilty features like redundant master nodes and much more, see <a href="http://kubespray.io">kubepray.io</a>.</li>
+<li>Run the <code>kubespray</code> ansible recipe to setup a production-ready Kubernetes deployment, optionally with High Availability features like redundant master nodes and much more, see <a href="http://kubespray.io">kubepray.io</a>.</li>
 </ul>
 <h2>Create Jetstream Virtual machines with Terraform</h2>
 <p><code>kubespray</code> is able to deploy production-ready Kubernetes deployments and initially targeted only
 commercial cloud platforms.</p>
 <p>They recently added support for Openstack via a Terraform recipe which is available in <a href="https://github.com/kubernetes-incubator/kubespray/tree/master/contrib/terraform/openstack">their Github repository</a>.</p>
-<p>Terraform allows to execute recipes that describe a set of OpenStack resources and their relashionship. In the context of this tutorial, we do not need to learn much about Terraform, we will configure and execute the recipe provided by <code>kubespray</code>.</p>
+<p>Terraform allows to execute recipes that describe a set of OpenStack resources and their relationship. In the context of this tutorial, we do not need to learn much about Terraform, we will configure and execute the recipe provided by <code>kubespray</code>.</p>
 <h3>Requirements</h3>
 <p>On a Ubuntu 18.04 install <code>python3-openstackclient</code> with APT.
 Any other platform works as well, also install <code>terraform</code> by copying the correct binary to <code>/usr/local/bin/</code>, see <a href="https://www.terraform.io/intro/getting-started/install.html">https://www.terraform.io/intro/getting-started/install.html</a>.</p>
@@ -72,7 +72,7 @@ Any other platform works as well, also install <code>terraform</code> by copying
 </pre></div>
 
 
-<p>it should ask for your TACC passwork. This configures all the environment variables needed by the <code>openstack</code> command line tool to interface with the Openstack API.</p>
+<p>it should ask for your TACC password. This configures all the environment variables needed by the <code>openstack</code> command line tool to interface with the Openstack API.</p>
 <p>Test with:</p>
 <div class="highlight"><pre><span></span>openstack flavor list
 </pre></div>
@@ -80,7 +80,7 @@ Any other platform works as well, also install <code>terraform</code> by copying
 
 <p>This should return the list of available "sizes" of the Virtual Machines.</p>
 <h3>Clone kubespray</h3>
-<p>I had to make a few modifications to <code>kubespray</code> to adapt it to Jetstream or backport bugfixes not merged yet, so currently better use my fork of <code>kubespray</code>:</p>
+<p>I had to make a few modifications to <code>kubespray</code> to adapt it to Jetstream or backport bug fixes not merged yet, so currently better use my fork of <code>kubespray</code>:</p>
 <div class="highlight"><pre><span></span>git clone https://github.com/zonca/jetstream_kubespray
 </pre></div>
 
@@ -107,7 +107,7 @@ looking for the <code>public</code> network in:</p>
 </pre></div>
 
 
-<p>Inizialize Terraform:</p>
+<p>Initialize Terraform:</p>
 <div class="highlight"><pre><span></span>bash terraform_init.sh
 </pre></div>
 
@@ -159,7 +159,7 @@ ssh-add ~/.ssh/id_rsa
 
 <p>Or delete it and run <code>terraform_apply.sh</code> to create it again.</p>
 <p>check <code>inventory/$CLUSTER/group_vars/all.yml</code>, in particular <code>bootstrap_os</code>, I setup <code>ubuntu</code>, change it to <code>centos</code> if you used the Centos 7 base image.</p>
-<p>Due to a bug in the recipe, run ( see details in the Troubleshooing notes below):</p>
+<p>Due to a bug in the recipe, run ( see details in the Troubleshooting notes below):</p>
 <div class="highlight"><pre><span></span>export OS_TENANT_ID=$OS_PROJECT_ID
 </pre></div>
 
@@ -221,7 +221,7 @@ If any of the tests hangs or cannot connect, there is probably a networking issu
 <h2>(Optional) Setup kubectl locally</h2>
 <p>We also set <code>kubectl_localhost: true</code> and <code>kubeconfig_localhost: true</code>.
 so that <code>kubectl</code> is installed on your local machine</p>
-<p>it also copies admin.conf to:</p>
+<p>it also copies <code>admin.conf</code> to:</p>
 <div class="highlight"><pre><span></span>inventory/$CLUSTER/artifacts
 </pre></div>
 

@@ -272,13 +272,13 @@ Instead of creating Jetstream instances via the Atmosphere web interface and the
 SSHing into the instances and run &lt;code&gt;kubeadm&lt;/code&gt; based commands to setup Docker and Kubernetes we will:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Use the &lt;code&gt;terraform&lt;/code&gt; recipe part of the &lt;code&gt;kubespray&lt;/code&gt; project to interface with the Jetstream API and create a cluster of virtual machines&lt;/li&gt;
-&lt;li&gt;Run the &lt;code&gt;kubespray&lt;/code&gt; ansible recipe to setup a production-ready Kubernetes deployment, optionally with High Availabilty features like redundant master nodes and much more, see &lt;a href="http://kubespray.io"&gt;kubepray.io&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Run the &lt;code&gt;kubespray&lt;/code&gt; ansible recipe to setup a production-ready Kubernetes deployment, optionally with High Availability features like redundant master nodes and much more, see &lt;a href="http://kubespray.io"&gt;kubepray.io&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Create Jetstream Virtual machines with Terraform&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;kubespray&lt;/code&gt; is able to deploy production-ready Kubernetes deployments and initially targeted only
 commercial cloud platforms.&lt;/p&gt;
 &lt;p&gt;They recently added support for Openstack via a Terraform recipe which is available in &lt;a href="https://github.com/kubernetes-incubator/kubespray/tree/master/contrib/terraform/openstack"&gt;their Github repository&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Terraform allows to execute recipes that describe a set of OpenStack resources and their relashionship. In the context of this tutorial, we do not need to learn much about Terraform, we will configure and execute the recipe provided by &lt;code&gt;kubespray&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Terraform allows to execute recipes that describe a set of OpenStack resources and their relationship. In the context of this tutorial, we do not need to learn much about Terraform, we will configure and execute the recipe provided by &lt;code&gt;kubespray&lt;/code&gt;.&lt;/p&gt;
 &lt;h3&gt;Requirements&lt;/h3&gt;
 &lt;p&gt;On a Ubuntu 18.04 install &lt;code&gt;python3-openstackclient&lt;/code&gt; with APT.
 Any other platform works as well, also install &lt;code&gt;terraform&lt;/code&gt; by copying the correct binary to &lt;code&gt;/usr/local/bin/&lt;/code&gt;, see &lt;a href="https://www.terraform.io/intro/getting-started/install.html"&gt;https://www.terraform.io/intro/getting-started/install.html&lt;/a&gt;.&lt;/p&gt;
@@ -291,7 +291,7 @@ Any other platform works as well, also install &lt;code&gt;terraform&lt;/code&gt
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;it should ask for your TACC passwork. This configures all the environment variables needed by the &lt;code&gt;openstack&lt;/code&gt; command line tool to interface with the Openstack API.&lt;/p&gt;
+&lt;p&gt;it should ask for your TACC password. This configures all the environment variables needed by the &lt;code&gt;openstack&lt;/code&gt; command line tool to interface with the Openstack API.&lt;/p&gt;
 &lt;p&gt;Test with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack flavor list
 &lt;/pre&gt;&lt;/div&gt;
@@ -299,7 +299,7 @@ Any other platform works as well, also install &lt;code&gt;terraform&lt;/code&gt
 
 &lt;p&gt;This should return the list of available "sizes" of the Virtual Machines.&lt;/p&gt;
 &lt;h3&gt;Clone kubespray&lt;/h3&gt;
-&lt;p&gt;I had to make a few modifications to &lt;code&gt;kubespray&lt;/code&gt; to adapt it to Jetstream or backport bugfixes not merged yet, so currently better use my fork of &lt;code&gt;kubespray&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;I had to make a few modifications to &lt;code&gt;kubespray&lt;/code&gt; to adapt it to Jetstream or backport bug fixes not merged yet, so currently better use my fork of &lt;code&gt;kubespray&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/jetstream_kubespray
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -326,7 +326,7 @@ looking for the &lt;code&gt;public&lt;/code&gt; network in:&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Inizialize Terraform:&lt;/p&gt;
+&lt;p&gt;Initialize Terraform:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash terraform_init.sh
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -378,7 +378,7 @@ ssh-add ~/.ssh/id_rsa
 
 &lt;p&gt;Or delete it and run &lt;code&gt;terraform_apply.sh&lt;/code&gt; to create it again.&lt;/p&gt;
 &lt;p&gt;check &lt;code&gt;inventory/$CLUSTER/group_vars/all.yml&lt;/code&gt;, in particular &lt;code&gt;bootstrap_os&lt;/code&gt;, I setup &lt;code&gt;ubuntu&lt;/code&gt;, change it to &lt;code&gt;centos&lt;/code&gt; if you used the Centos 7 base image.&lt;/p&gt;
-&lt;p&gt;Due to a bug in the recipe, run ( see details in the Troubleshooing notes below):&lt;/p&gt;
+&lt;p&gt;Due to a bug in the recipe, run ( see details in the Troubleshooting notes below):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export OS_TENANT_ID=$OS_PROJECT_ID
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -440,7 +440,7 @@ If any of the tests hangs or cannot connect, there is probably a networking issu
 &lt;h2&gt;(Optional) Setup kubectl locally&lt;/h2&gt;
 &lt;p&gt;We also set &lt;code&gt;kubectl_localhost: true&lt;/code&gt; and &lt;code&gt;kubeconfig_localhost: true&lt;/code&gt;.
 so that &lt;code&gt;kubectl&lt;/code&gt; is installed on your local machine&lt;/p&gt;
-&lt;p&gt;it also copies admin.conf to:&lt;/p&gt;
+&lt;p&gt;it also copies &lt;code&gt;admin.conf&lt;/code&gt; to:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;inventory/$CLUSTER/artifacts
 &lt;/pre&gt;&lt;/div&gt;
 
