@@ -85,7 +85,7 @@ to be created and attached to a pod.</p>
 </pre></div>
 
 
-<p>look into <code>df -h</code>, check that there is a 5GB mounted filesystem which is persistent.</p>
+<p>look into <code>df -h</code>, check that there is a 5GB mounted file system which is persistent.</p>
 <p>Also, back to the machine with <code>openstack</code> access, see how an Openstack volume was dynamically created and attached to the running instance:</p>
 <div class="highlight"><pre><span></span>openstack volume list
 </pre></div>
@@ -162,14 +162,20 @@ Run many times and check different kubia services answer.</p>
 
 <p>Where XXX-YYY are the last 2 groups of digits of the floating IP of the master instance,
 i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.</p>
-<p>The connection should be respond with 404.</p>
+<p>The connection should respond with 404.</p>
+<p>At this point, edit the <code>kubia-ingress.yaml</code> file and replace the <code>host</code> value with the master node domain name you just derived.</p>
 <p>Now:</p>
 <div class="highlight"><pre><span></span>kubectl create -f kubia-ingress.yaml
 kubectl get ingress
 </pre></div>
 
 
-<p>Try again in the browser.</p>
+<p>Try again in the browser. You should now see something like:</p>
+<p>"You've hit kubia-jqwwp"</p>
+<p>Force reload the browser page a few times and you will see you are hitting a different kubia service.</p>
+<p>Finally,</p>
+<div class="highlight"><pre><span></span>kubectl delete -f kubia-ingress.yaml
+</pre></div>
         </div>
     </article>
 

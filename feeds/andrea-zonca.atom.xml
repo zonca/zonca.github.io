@@ -176,7 +176,7 @@ to be created and attached to a pod.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted filesystem which is persistent.&lt;/p&gt;
+&lt;p&gt;look into &lt;code&gt;df -h&lt;/code&gt;, check that there is a 5GB mounted file system which is persistent.&lt;/p&gt;
 &lt;p&gt;Also, back to the machine with &lt;code&gt;openstack&lt;/code&gt; access, see how an Openstack volume was dynamically created and attached to the running instance:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack volume list
 &lt;/pre&gt;&lt;/div&gt;
@@ -253,14 +253,20 @@ Run many times and check different kubia services answer.&lt;/p&gt;
 
 &lt;p&gt;Where XXX-YYY are the last 2 groups of digits of the floating IP of the master instance,
 i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.&lt;/p&gt;
-&lt;p&gt;The connection should be respond with 404.&lt;/p&gt;
+&lt;p&gt;The connection should respond with 404.&lt;/p&gt;
+&lt;p&gt;At this point, edit the &lt;code&gt;kubia-ingress.yaml&lt;/code&gt; file and replace the &lt;code&gt;host&lt;/code&gt; value with the master node domain name you just derived.&lt;/p&gt;
 &lt;p&gt;Now:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f kubia-ingress.yaml
 kubectl get ingress
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Try again in the browser.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Kubernetes on Jetstream with Kubespray 1/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2018-09-23T18:00:00-07:00</published><updated>2018-09-23T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
+&lt;p&gt;Try again in the browser. You should now see something like:&lt;/p&gt;
+&lt;p&gt;"You've hit kubia-jqwwp"&lt;/p&gt;
+&lt;p&gt;Force reload the browser page a few times and you will see you are hitting a different kubia service.&lt;/p&gt;
+&lt;p&gt;Finally,&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl delete -f kubia-ingress.yaml
+&lt;/pre&gt;&lt;/div&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Kubernetes on Jetstream with Kubespray 1/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2018-09-23T18:00:00-07:00</published><updated>2018-09-23T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;The purpose of this tutorial series is to deploy Jupyterhub on top of
 Kubernetes on Jetstream.
 This material was presented as a tutorial at the Gateways 2018 conference, see also &lt;a href="https://figshare.com/articles/Hands-on_Tutorial_Deploying_Kubernetes_and_JupyterHub_on_Jetstream/7137884"&gt;the slides on Figshare&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Compared to my &lt;a href="https://zonca.github.io/2017/12/scalable-jupyterhub-kubernetes-jetstream.html"&gt;initial tutorial&lt;/a&gt;, I focused on improving automation.
@@ -430,7 +436,7 @@ Finally test that the routing through the Jetstream instance is working correctl
 and test that if you access &lt;code&gt;js-XX-XXX.jetstream-cloud.org&lt;/code&gt; you also get a &lt;code&gt;default backend - 404&lt;/code&gt; message.
 If any of the tests hangs or cannot connect, there is probably a networking issue.&lt;/p&gt;
 &lt;h2&gt;Next&lt;/h2&gt;
-&lt;p&gt;Next you can &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;explore the kubernetes deployment to learn more about how you deploy resources in the second part of my tutorial&lt;/a&gt; or skip it and proceed directly to the &lt;a href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html"&gt;third and final part of the tutorial and deploy Jupyterhub and configure it with HTTS&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Next you can &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;explore the kubernetes deployment to learn more about how you deploy resources in the second part of my tutorial&lt;/a&gt; or skip it and proceed directly to the &lt;a href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html"&gt;third and final part of the tutorial and deploy Jupyterhub and configure it with HTTPS&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Troubleshooting notes&lt;/h3&gt;
 &lt;p&gt;For future reference, disregard this.&lt;/p&gt;
 &lt;p&gt;Failing ansible task: &lt;code&gt;openstack_tenant_id is missing&lt;/code&gt;&lt;/p&gt;
