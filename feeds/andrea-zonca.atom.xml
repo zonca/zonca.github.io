@@ -95,7 +95,7 @@ This is also equivalent to Amazon Elastic Cloud Compute (EC2), here you pay for 
 
 
 &lt;p&gt;to create the secret strings needed by JupyterHub then edit its output
-&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed.&lt;/p&gt;
+&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed. For example, supply the Jetstream DNS name of the master node &lt;code&gt;http://js-XXX-YYY.jetstream-cloud.org&lt;/code&gt;. See &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;part 2&lt;/a&gt;, "Publish service externally with ingress".&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
 bash install_jhub.sh
 &lt;/pre&gt;&lt;/div&gt;
@@ -3344,13 +3344,13 @@ Another opportunity is to work as Research Scientist in a specific research grou
 &lt;p&gt;Finally the Github repository with additional material, under MIT license:
 &lt;a href="https://github.com/zonca/machine-learning-at-scale-with-python"&gt;https://github.com/zonca/machine-learning-at-scale-with-python&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Any feedback is appreciated, google+, twitter or email.&lt;/p&gt;</content><category term="python"></category><category term="machine-learning"></category></entry><entry><title>Python on Gordon</title><link href="http://zonca.github.io/2014/03/setup-ipython-notebook-parallel-Gordon.html" rel="alternate"></link><published>2014-03-20T19:30:00-07:00</published><updated>2014-03-20T19:30:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2014-03-20:/2014/03/setup-ipython-notebook-parallel-Gordon.html</id><summary type="html">&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c c-Singleline"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c1"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Install virtualenv&lt;/h3&gt;
 &lt;p&gt;Then we need to setup a sandboxed local environment to install other packages, by using &lt;code&gt;virtualenv&lt;/code&gt;, get the link …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Gordon has already a &lt;code&gt;python&lt;/code&gt; environment setup which can be activated by loading the &lt;code&gt;python&lt;/code&gt; module:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c c-Singleline"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="c1"&gt;# add this to .bashrc to load it at every login&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
