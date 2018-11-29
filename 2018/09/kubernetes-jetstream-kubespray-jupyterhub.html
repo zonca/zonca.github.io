@@ -76,12 +76,12 @@ for any other customizations, first authentication, you are in good hands as the
 <h2>Setup HTTPS with letsencrypt</h2>
 <p>Kubespray instead of installing <code>kube-lego</code>, installs <a href="https://cert-manager.readthedocs.io/en/latest/index.html"><code>certmanager</code></a> to handle HTTPS certificates.</p>
 <p>First we need to create a Issuer, set your email inside <code>setup_https_kubespray/https_issuer.yml</code> and create it with the usual:</p>
-<div class="highlight"><pre><span></span>kubetcl create -f setup_https_kubespray/https_issuer.yml
+<div class="highlight"><pre><span></span>kubectl create -f setup_https_kubespray/https_issuer.yml
 </pre></div>
 
 
 <p>Then we can manually create a HTTPS certificate, <code>certmanager</code> can be configured to handle this automatically, but as we only need a domain this is pretty quick, edit <code>setup_https_kubespray/https_certificate.yml</code> and set the domain name of your master node, then create the certificate resource with:</p>
-<div class="highlight"><pre><span></span>kubetcl create -f setup_https_kubespray/https_certificate.yml
+<div class="highlight"><pre><span></span>kubectl create -f setup_https_kubespray/https_certificate.yml
 </pre></div>
 
 

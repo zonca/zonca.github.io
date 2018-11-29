@@ -117,12 +117,12 @@ for any other customizations, first authentication, you are in good hands as the
 &lt;h2&gt;Setup HTTPS with letsencrypt&lt;/h2&gt;
 &lt;p&gt;Kubespray instead of installing &lt;code&gt;kube-lego&lt;/code&gt;, installs &lt;a href="https://cert-manager.readthedocs.io/en/latest/index.html"&gt;&lt;code&gt;certmanager&lt;/code&gt;&lt;/a&gt; to handle HTTPS certificates.&lt;/p&gt;
 &lt;p&gt;First we need to create a Issuer, set your email inside &lt;code&gt;setup_https_kubespray/https_issuer.yml&lt;/code&gt; and create it with the usual:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubetcl create -f setup_https_kubespray/https_issuer.yml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f setup_https_kubespray/https_issuer.yml
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then we can manually create a HTTPS certificate, &lt;code&gt;certmanager&lt;/code&gt; can be configured to handle this automatically, but as we only need a domain this is pretty quick, edit &lt;code&gt;setup_https_kubespray/https_certificate.yml&lt;/code&gt; and set the domain name of your master node, then create the certificate resource with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubetcl create -f setup_https_kubespray/https_certificate.yml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f setup_https_kubespray/https_certificate.yml
 &lt;/pre&gt;&lt;/div&gt;
 
 
