@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Setup two factor authentication for UCSD, and Lastpass | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Setup two factor authentication for UCSD, and Lastpass</h1>
+        </header>
+        <div class='post-content'>
+            <p>Starting at the end of January 2019 UCSD requires every employee to have activated
+two factor authentication.</p>
+<p>Go over to <a href="https://duo-registration.ucsd.edu">https://duo-registration.ucsd.edu</a> to register your devices and
+<a href="https://twostep.ucsd.edu">https://twostep.ucsd.edu</a> to read more details.</p>
+<p>Here some suggestions after I have used this for a few months.</p>
+<p>The most convenient option is definitely to have the Duo application installed on
+your phone, so that once you try to login it sends a notification to your phone,
+you click accept and you're done.</p>
+<p>Second best is to use the Duo or the Google Authenticator app to generate codes,
+then you can copy those codes into the login form, and this is anyway needed for
+VPN access, you choose the "2 Steps secured - allthroughucsd" option, type your
+password followed by a comma and the code.</p>
+<p>Then you can just add a mobile number and receive a text or add a landline and
+receive a call.</p>
+<p>I also recommend to buy a security key and add it as a authentication option
+at <a href="https://duo-registration.ucsd.edu">https://duo-registration.ucsd.edu</a>, either <a href="https://store.google.com/product/titan_security_key_kit">Google Titan</a> or a <a href="https://www.yubico.com/products/yubikey-hardware/">Yubico key</a> (I have a Titan), you can
+keep it always with you so that if you don't have your phone or the phone battery
+is dead, you can plug the security key in your USB port on the laptop and click on
+its button to authenticate.</p>
+<h2>Other services</h2>
+<p>Now that you already have Duo installed on your phone, I recommend to also activate
+two factor auth on all other services:</p>
+<ul>
+<li>XSEDE</li>
+<li>NERSC</li>
+<li>Google</li>
+<li>Github</li>
+<li>Amazon</li>
+<li>Microsoft</li>
+<li>Dropbox</li>
+</ul>
+<p>Consider that most of them just request the second step verification if you are on
+a new device, so you need to do the verification just once in a while and it provides
+a lot of security. Many of those also support the security key.</p>
+<h2>Password handling with Lastpass</h2>
+<p>As you are into security, just go all the way and also install a password manager.
+UCSD provides free enterprise accounts for all employees, see <a href="https://blink.ucsd.edu/technology/security/services/lastpass/index.html">the details</a>.</p>
+<p>With Lastpass, you just remember 1 strong password to descrypt all of your other passwords.
+If you ever used the Google Chrome builtin password manager, this is way way better.</p>
+<p>You install the Lastpass extension on your browsers and the Lastpass app on your phone.</p>
+<p>The only issue with Lastpass is that by default the Lastpass app on the smartphone automatically
+logsout every 30 minutes or so, so you have to re-authenticate very often. This is due to UCSD
+having configured it too strictly. I recommend to have a personal account and save all of the passwords
+in the personal account and then link it from the Enterprise account.
+Now from the desktop/laptop browsers you can use your Enterprise account, from the smartphone app instead
+use the personal account.</p>
+<p>You can also automatically import your Google Chrome passwords into Lastpass.</p>
+<p>Now you have no excuse to re-use the same password, automatically generate a 20 char random password and save it in Lastpass.</p>
+<h3>Save one-time codes</h3>
+<p>When you activate two factor auth on Google/Github and many other services, they also give you some one-time codes that you can use to login to the service if you do not have access to your phone, you can save them as "Notes" into the related account inside Lastpass.</p>
+<h3>Activate 2 factor auth for Lastpass</h3>
+<p>You should also activate 2 factor auth in Lastpass, it also supports Duo so the configuration is similar to the configuration for UCSD. Only issue is that they do not support a security key here, so you can only add your smartphone.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-12-12T18:00:00-08:00">Wed 12 December 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/security.html">security</a> 
+<a href="http://zonca.github.io/tag/ucsd.html">ucsd</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

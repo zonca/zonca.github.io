@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-11-07T11:00:00-08:00</updated><entry><title>Deploy JupyterHub on a Supercomputer for a workshop or tutorial 2018 edition</title><link href="http://zonca.github.io/2018/11/jupyterhub-supercomputer.html" rel="alternate"></link><published>2018-11-07T11:00:00-08:00</published><updated>2018-11-07T11:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-11-07:/2018/11/jupyterhub-supercomputer.html</id><summary type="html">&lt;p&gt;I described how to deploy JupyterHub with each user session running on a different
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-12-12T18:00:00-08:00</updated><entry><title>Setup two factor authentication for UCSD, and Lastpass</title><link href="http://zonca.github.io/2018/12/twofactor-auth-ucsd.html" rel="alternate"></link><published>2018-12-12T18:00:00-08:00</published><updated>2018-12-12T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-12-12:/2018/12/twofactor-auth-ucsd.html</id><summary type="html">&lt;p&gt;Starting at the end of January 2019 UCSD requires every employee to have activated
+two factor authentication.&lt;/p&gt;
+&lt;p&gt;Go over to &lt;a href="https://duo-registration.ucsd.edu"&gt;https://duo-registration.ucsd.edu&lt;/a&gt; to register your devices and
+&lt;a href="https://twostep.ucsd.edu"&gt;https://twostep.ucsd.edu&lt;/a&gt; to read more details.&lt;/p&gt;
+&lt;p&gt;Here some suggestions after I have used this for a few months.&lt;/p&gt;
+&lt;p&gt;The …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Starting at the end of January 2019 UCSD requires every employee to have activated
+two factor authentication.&lt;/p&gt;
+&lt;p&gt;Go over to &lt;a href="https://duo-registration.ucsd.edu"&gt;https://duo-registration.ucsd.edu&lt;/a&gt; to register your devices and
+&lt;a href="https://twostep.ucsd.edu"&gt;https://twostep.ucsd.edu&lt;/a&gt; to read more details.&lt;/p&gt;
+&lt;p&gt;Here some suggestions after I have used this for a few months.&lt;/p&gt;
+&lt;p&gt;The most convenient option is definitely to have the Duo application installed on
+your phone, so that once you try to login it sends a notification to your phone,
+you click accept and you're done.&lt;/p&gt;
+&lt;p&gt;Second best is to use the Duo or the Google Authenticator app to generate codes,
+then you can copy those codes into the login form, and this is anyway needed for
+VPN access, you choose the "2 Steps secured - allthroughucsd" option, type your
+password followed by a comma and the code.&lt;/p&gt;
+&lt;p&gt;Then you can just add a mobile number and receive a text or add a landline and
+receive a call.&lt;/p&gt;
+&lt;p&gt;I also recommend to buy a security key and add it as a authentication option
+at &lt;a href="https://duo-registration.ucsd.edu"&gt;https://duo-registration.ucsd.edu&lt;/a&gt;, either &lt;a href="https://store.google.com/product/titan_security_key_kit"&gt;Google Titan&lt;/a&gt; or a &lt;a href="https://www.yubico.com/products/yubikey-hardware/"&gt;Yubico key&lt;/a&gt; (I have a Titan), you can
+keep it always with you so that if you don't have your phone or the phone battery
+is dead, you can plug the security key in your USB port on the laptop and click on
+its button to authenticate.&lt;/p&gt;
+&lt;h2&gt;Other services&lt;/h2&gt;
+&lt;p&gt;Now that you already have Duo installed on your phone, I recommend to also activate
+two factor auth on all other services:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;XSEDE&lt;/li&gt;
+&lt;li&gt;NERSC&lt;/li&gt;
+&lt;li&gt;Google&lt;/li&gt;
+&lt;li&gt;Github&lt;/li&gt;
+&lt;li&gt;Amazon&lt;/li&gt;
+&lt;li&gt;Microsoft&lt;/li&gt;
+&lt;li&gt;Dropbox&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Consider that most of them just request the second step verification if you are on
+a new device, so you need to do the verification just once in a while and it provides
+a lot of security. Many of those also support the security key.&lt;/p&gt;
+&lt;h2&gt;Password handling with Lastpass&lt;/h2&gt;
+&lt;p&gt;As you are into security, just go all the way and also install a password manager.
+UCSD provides free enterprise accounts for all employees, see &lt;a href="https://blink.ucsd.edu/technology/security/services/lastpass/index.html"&gt;the details&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;With Lastpass, you just remember 1 strong password to descrypt all of your other passwords.
+If you ever used the Google Chrome builtin password manager, this is way way better.&lt;/p&gt;
+&lt;p&gt;You install the Lastpass extension on your browsers and the Lastpass app on your phone.&lt;/p&gt;
+&lt;p&gt;The only issue with Lastpass is that by default the Lastpass app on the smartphone automatically
+logsout every 30 minutes or so, so you have to re-authenticate very often. This is due to UCSD
+having configured it too strictly. I recommend to have a personal account and save all of the passwords
+in the personal account and then link it from the Enterprise account.
+Now from the desktop/laptop browsers you can use your Enterprise account, from the smartphone app instead
+use the personal account.&lt;/p&gt;
+&lt;p&gt;You can also automatically import your Google Chrome passwords into Lastpass.&lt;/p&gt;
+&lt;p&gt;Now you have no excuse to re-use the same password, automatically generate a 20 char random password and save it in Lastpass.&lt;/p&gt;
+&lt;h3&gt;Save one-time codes&lt;/h3&gt;
+&lt;p&gt;When you activate two factor auth on Google/Github and many other services, they also give you some one-time codes that you can use to login to the service if you do not have access to your phone, you can save them as "Notes" into the related account inside Lastpass.&lt;/p&gt;
+&lt;h3&gt;Activate 2 factor auth for Lastpass&lt;/h3&gt;
+&lt;p&gt;You should also activate 2 factor auth in Lastpass, it also supports Duo so the configuration is similar to the configuration for UCSD. Only issue is that they do not support a security key here, so you can only add your smartphone.&lt;/p&gt;</content><category term="security"></category><category term="ucsd"></category></entry><entry><title>Deploy JupyterHub on a Supercomputer for a workshop or tutorial 2018 edition</title><link href="http://zonca.github.io/2018/11/jupyterhub-supercomputer.html" rel="alternate"></link><published>2018-11-07T11:00:00-08:00</published><updated>2018-11-07T11:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-11-07:/2018/11/jupyterhub-supercomputer.html</id><summary type="html">&lt;p&gt;I described how to deploy JupyterHub with each user session running on a different
 node of a Supercomputer in &lt;a href="https://arxiv.org/abs/1805.04781"&gt;my paper for PEARC18&lt;/a&gt;,
 however things are moving fast in the space and I am employing a different strategy
 this year, in particular relying on &lt;a href="https://the-littlest-jupyterhub.readthedocs.io"&gt;the littlest JupyterHub project&lt;/a&gt;
