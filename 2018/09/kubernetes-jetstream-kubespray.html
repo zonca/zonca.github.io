@@ -231,7 +231,7 @@ so that <code>kubectl</code> is installed on your local machine</p>
 We cannot replace it with the public floating ip because the certificate is not valid for that.
 Best workaround is to replace it with <code>127.0.0.1</code> inside <code>~/.kube/config</code> at the <code>server:</code> key.
 Then make a SSH tunnel, we need <code>sudo</code> because it is a reserved port:</p>
-<div class="highlight"><pre><span></span>sudo ssh ubuntu@FLOATINGIPOFMASTER -L 6443:localhost:6443
+<div class="highlight"><pre><span></span>sudo ssh ubuntu@$IP -L 6443:localhost:6443
 </pre></div>
 
 
