@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2018-12-20T21:29:53-00:00</lastmod>
+<lastmod>2018-12-20T21:32:38-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2018-12-20T21:29:53-00:00</lastmod>
+<lastmod>2018-12-20T21:32:38-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2018-12-20T21:29:53-00:00</lastmod>
+<lastmod>2018-12-20T21:32:38-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2018-12-20T21:29:53-00:00</lastmod>
+<lastmod>2018-12-20T21:32:38-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2018/12/kubernetes-jetstream-kubespray-pangeo.html</loc>
+<lastmod>2018-12-20T01:00:00-08:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -908,7 +915,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2018-12-12T18:00:00-07:53</lastmod>
+<lastmod>2018-12-20T01:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1027,7 +1034,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jetstream.html</loc>
-<lastmod>2018-09-24T01:00:00-07:53</lastmod>
+<lastmod>2018-12-20T01:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1041,7 +1048,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/kubespray.html</loc>
-<lastmod>2018-09-24T01:00:00-07:53</lastmod>
+<lastmod>2018-12-20T01:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1146,7 +1153,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/kubernetes.html</loc>
-<lastmod>2018-09-24T01:00:00-07:53</lastmod>
+<lastmod>2018-12-20T01:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1167,7 +1174,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyterhub.html</loc>
-<lastmod>2018-11-07T11:00:00-07:53</lastmod>
+<lastmod>2018-12-20T01:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1412,7 +1419,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2018-12-12T18:00:00-07:53</lastmod>
+<lastmod>2018-12-20T01:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

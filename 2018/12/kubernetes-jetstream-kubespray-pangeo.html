@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Deploy Pangeo on Kubernetes deployment on Jetstream created with Kubespray | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Deploy Pangeo on Kubernetes deployment on Jetstream created with Kubespray</h1>
+        </header>
+        <div class='post-content'>
+            <p>The <a href="http://pangeo.io/">Pangeo collaboration for Big Data Geoscience</a> maintains a helm
+chart with a prefigured JupyterHub deployment on Kubernetes which also supports launching
+private dask workers.
+This is very useful because the Jupyter Notebook users can launch a cluster of worker
+containers inside Kubernetes and process larger amounts of data than they could using only
+their notebook container.</p>
+<h2>Setup Kubernetes on Jetstream with Kubespray</h2>
+<p>First check out my <a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html">tutorial on deploying Kubernetes on Jetstream with Kubespray</a>.
+You just need to complete the first part, <strong>do not install</strong> JupyterHub, it is installed
+as part of the Pangeo deployment.</p>
+<h2>Install Pangeo with Helm</h2>
+<p>Pangeo publishes a <a href="https://github.com/pangeo-data/helm-chart">Helm chart</a> (a software package for Kubernetes) and we can leverage that
+to setup the deployment.</p>
+<p>First add the repository:</p>
+<div class="highlight"><pre><span></span>helm repo add pangeo https://pangeo-data.github.io/helm-chart/
+helm repo update
+</pre></div>
+
+
+<p>Then download my repository with all the configuration files and helper scripts:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream
+</pre></div>
+
+
+<p>Create a <code>secrets.yaml</code> file running:</p>
+<div class="highlight"><pre><span></span>bash create_secrets.sh
+</pre></div>
+
+
+<p>Then head to the <code>pangeo_helm</code> folder and customize <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/pangeo_helm/config_jupyterhub_pangeo_helm.yaml"><code>config_jupyterhub_pangeo_helm.yaml</code></a>,</p>
+<ul>
+<li>I have prepopulated very small limits for testing, increase those for production</li>
+<li>I am using the docker image <code>zonca/pangeo_notebook_rsignell</code>, you can remove <code>image:</code> and the 2 lines below to use the standard Pangeo notebook image (defined in their <a href="https://github.com/pangeo-data/helm-chart/blob/master/pangeo/values.yaml"><code>values.yaml</code></a>)</li>
+<li>Copy <code>cookieSecret</code> and <code>secretToken</code> from <code>secrets.yaml</code> you created above</li>
+<li>Customize <code>ingress</code> - <code>hosts</code> with the hostname of your master instance</li>
+</ul>
+<p>Finally you can deploy it running:</p>
+<div class="highlight"><pre><span></span>bash install_pangeo.sh
+</pre></div>
+
+
+<p>Login by pointing your browser at <a href="http://js-XXX-YYY.jetstream-cloud.org">http://js-XXX-YYY.jetstream-cloud.org</a>, the default dummy authenticator only needs a username and empty password.</p>
+<h2>Customize and launch dask workers</h2>
+<p>Once you login to the Jupyter Notebook, you can customize the <code>worker-template.yaml</code> file available in your home folder,
+I have <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/pangeo_helm/worker_template.yaml">an example of it with very small limits</a> in the <code>pangeo_helm</code> folder.</p>
+<p>This file is used by <code>dask_kubernetes</code> to launch workers on your behalf, see for example the <code>dask-array.ipynb</code> notebook available in your home folder:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask_kubernetes</span> <span class="kn">import</span> <span class="n">KubeCluster</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">KubeCluster</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">cluster</span>
+</pre></div>
+
+
+<p>This will launch 3 workers on the cluster which are then available to launch jobs on with <a href="https://dask.pydata.org"><code>dask</code></a>.</p>
+<p>You can check with <code>kubectl</code> that the workers are executing:</p>
+<div class="highlight"><pre><span></span>$ kubectl get pods -n pangeo
+NAME                         READY   STATUS    RESTARTS   AGE
+dask-zonca-d191b7a4-d8jhft   <span class="m">1</span>/1     Running   <span class="m">0</span>          28m
+dask-zonca-d191b7a4-dx9dhs   <span class="m">1</span>/1     Running   <span class="m">0</span>          28m
+dask-zonca-d191b7a4-dzmgvv   <span class="m">1</span>/1     Running   <span class="m">0</span>          28m
+hub-55f5bf597-f5bnt          <span class="m">1</span>/1     Running   <span class="m">0</span>          55m
+jupyter-zonca                <span class="m">1</span>/1     Running   <span class="m">0</span>          38m
+proxy-66576956d7-r926j       <span class="m">1</span>/1     Running   <span class="m">0</span>          55m
+</pre></div>
+
+
+<p>And also access the Dask GUI, using the menu on the left or the link provided by <code>dask_kubernetes</code> inside the Notebook.</p>
+<p><img alt="Screenshot of the Dask UI" src="/images/dask_ui_workers.png"></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2018-12-20T01:00:00-08:00">Thu 20 December 2018</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/kubernetes.html">kubernetes</a> 
+<a href="http://zonca.github.io/tag/kubespray.html">kubespray</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
