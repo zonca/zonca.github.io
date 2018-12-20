@@ -512,11 +512,15 @@ so that &lt;code&gt;kubectl&lt;/code&gt; is installed on your local machine&lt;/
 &lt;p&gt;this has an issue, it has the internal IP of the Jetstream master.
 We cannot replace it with the public floating ip because the certificate is not valid for that.
 Best workaround is to replace it with &lt;code&gt;127.0.0.1&lt;/code&gt; inside &lt;code&gt;~/.kube/config&lt;/code&gt; at the &lt;code&gt;server:&lt;/code&gt; key.
-Then make a SSH tunnel, we need &lt;code&gt;sudo&lt;/code&gt; because it is a reserved port:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo ssh ubuntu@$IP -L 6443:localhost:6443
+Then make a SSH tunnel:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh ubuntu@$IP -f -L 6443:localhost:6443 sleep 3h
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-f&lt;/code&gt; sends the process in the background&lt;/li&gt;
+&lt;li&gt;executing &lt;code&gt;sleep&lt;/code&gt; for 3 hours makes the tunnel automatically close after 3 hours, otherwise &lt;code&gt;-N&lt;/code&gt; would keep the tunnel permanently open&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2&gt;(Optional) Setup helm locally&lt;/h2&gt;
 &lt;p&gt;ssh into the master node, check helm version with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;helm version

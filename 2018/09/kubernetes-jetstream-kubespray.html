@@ -230,11 +230,15 @@ so that <code>kubectl</code> is installed on your local machine</p>
 <p>this has an issue, it has the internal IP of the Jetstream master.
 We cannot replace it with the public floating ip because the certificate is not valid for that.
 Best workaround is to replace it with <code>127.0.0.1</code> inside <code>~/.kube/config</code> at the <code>server:</code> key.
-Then make a SSH tunnel, we need <code>sudo</code> because it is a reserved port:</p>
-<div class="highlight"><pre><span></span>sudo ssh ubuntu@$IP -L 6443:localhost:6443
+Then make a SSH tunnel:</p>
+<div class="highlight"><pre><span></span>ssh ubuntu@$IP -f -L 6443:localhost:6443 sleep 3h
 </pre></div>
 
 
+<ul>
+<li><code>-f</code> sends the process in the background</li>
+<li>executing <code>sleep</code> for 3 hours makes the tunnel automatically close after 3 hours, otherwise <code>-N</code> would keep the tunnel permanently open</li>
+</ul>
 <h2>(Optional) Setup helm locally</h2>
 <p>ssh into the master node, check helm version with:</p>
 <div class="highlight"><pre><span></span>helm version
