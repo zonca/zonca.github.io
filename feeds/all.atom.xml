@@ -94,6 +94,9 @@ at &lt;a href="https://duo-registration.ucsd.edu"&gt;https://duo-registration.uc
 keep it always with you so that if you don't have your phone or the phone battery
 is dead, you can plug the security key in your USB port on the laptop and click on
 its button to authenticate.&lt;/p&gt;
+&lt;p&gt;Anther option is to request a fob token, a device that generates and displays timed codes and that
+is independent of a phone, see &lt;a href="https://blink.ucsd.edu/technology/security/services/two-step-login/guide.html#token"&gt;instructions on the UCSD website&lt;/a&gt;. They say there are only a limited number available and you need
+to be prepared to justify why you are requesting one.&lt;/p&gt;
 &lt;h2&gt;Other services&lt;/h2&gt;
 &lt;p&gt;Now that you already have Duo installed on your phone, I recommend to also activate
 two factor auth on all other services:&lt;/p&gt;
