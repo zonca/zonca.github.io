@@ -13,7 +13,7 @@ their notebook container.&lt;/p&gt;
 &lt;p&gt;First check out my &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;tutorial on deploying Kubernetes on Jetstream with Kubespray&lt;/a&gt;.
 You just need to complete the first part, &lt;strong&gt;do not install&lt;/strong&gt; JupyterHub, it is installed
 as part of the Pangeo deployment.&lt;/p&gt;
-&lt;p&gt;I also recommend to setup &lt;code&gt;kubectl&lt;/code&gt; and &lt;code&gt;helm&lt;/code&gt; to run locally so that the following steps can be executed on the local machine,
+&lt;p&gt;I also recommend to setup &lt;code&gt;kubectl&lt;/code&gt; and &lt;code&gt;helm&lt;/code&gt; to run locally so that the following steps can be executed on the local machine, see the instructions at the bottom of the tutorial mentioned above.
 otherwise you need to &lt;code&gt;ssh&lt;/code&gt; into the master node and type &lt;code&gt;helm&lt;/code&gt; commands there.&lt;/p&gt;
 &lt;h2&gt;Install Pangeo with Helm&lt;/h2&gt;
 &lt;p&gt;Pangeo publishes a &lt;a href="https://github.com/pangeo-data/helm-chart"&gt;Helm chart&lt;/a&gt; (a software package for Kubernetes) and we can leverage that
