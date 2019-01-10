@@ -13,6 +13,8 @@ their notebook container.&lt;/p&gt;
 &lt;p&gt;First check out my &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;tutorial on deploying Kubernetes on Jetstream with Kubespray&lt;/a&gt;.
 You just need to complete the first part, &lt;strong&gt;do not install&lt;/strong&gt; JupyterHub, it is installed
 as part of the Pangeo deployment.&lt;/p&gt;
+&lt;p&gt;I also recommend to setup &lt;code&gt;kubectl&lt;/code&gt; and &lt;code&gt;helm&lt;/code&gt; to run locally so that the following steps can be executed on the local machine,
+otherwise you need to &lt;code&gt;ssh&lt;/code&gt; into the master node and type &lt;code&gt;helm&lt;/code&gt; commands there.&lt;/p&gt;
 &lt;h2&gt;Install Pangeo with Helm&lt;/h2&gt;
 &lt;p&gt;Pangeo publishes a &lt;a href="https://github.com/pangeo-data/helm-chart"&gt;Helm chart&lt;/a&gt; (a software package for Kubernetes) and we can leverage that
 to setup the deployment.&lt;/p&gt;
@@ -225,7 +227,7 @@ This is also equivalent to Amazon Elastic Cloud Compute (EC2), here you pay for 
 
 
 &lt;p&gt;to create the secret strings needed by JupyterHub then edit its output
-&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed. For example, supply the Jetstream DNS name of the master node &lt;code&gt;http://js-XXX-YYY.jetstream-cloud.org&lt;/code&gt;. See &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;part 2&lt;/a&gt;, "Publish service externally with ingress".&lt;/p&gt;
+&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed. For example, supply the Jetstream DNS name of the master node &lt;code&gt;http://js-XXX-YYY.jetstream-cloud.org&lt;/code&gt; (XXX and YYY are the last 2 groups of the floating IP of the instance AAA.BBB.XXX.YYY). See &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;part 2&lt;/a&gt;, "Publish service externally with ingress".&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
 bash install_jhub.sh
 &lt;/pre&gt;&lt;/div&gt;
