@@ -90,6 +90,24 @@ for any other customizations, first authentication, you are in good hands as the
 </pre></div>
 
 
+<h2>Setup HTTPS with custom certificates</h2>
+<p>In case you have custom certificates for your domain, first create a secret in the jupyterhub namespace with:</p>
+<div class="highlight"><pre><span></span>kubectl create secret tls cert-secret --key ssl.key --cert ssl.crt -n jhub
+</pre></div>
+
+
+<p>Then setup ingress to use this in <code>secrets.yaml</code>:</p>
+<div class="highlight"><pre><span></span><span class="n">ingress</span><span class="o">:</span>
+  <span class="n">enabled</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">hosts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">js</span><span class="o">-</span><span class="n">XX</span><span class="o">-</span><span class="n">YYY</span><span class="o">.</span><span class="na">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="na">org</span>
+  <span class="n">tls</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">hosts</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">js</span><span class="o">-</span><span class="n">XX</span><span class="o">-</span><span class="n">YYY</span><span class="o">.</span><span class="na">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="na">org</span>
+    <span class="n">secretName</span><span class="o">:</span> <span class="n">cert</span><span class="o">-</span><span class="n">secret</span>
+</pre></div>
+
+
 <h2>Feedback</h2>
 <p>Feedback on this is very welcome, please open an issue on the <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream">Github repository</a> or email me at <code>zonca</code> on the domain of the San Diego Supercomputer Center (sdsc.edu).</p>
         </div>

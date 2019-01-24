@@ -263,6 +263,24 @@ for any other customizations, first authentication, you are in good hands as the
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;h2&gt;Setup HTTPS with custom certificates&lt;/h2&gt;
+&lt;p&gt;In case you have custom certificates for your domain, first create a secret in the jupyterhub namespace with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create secret tls cert-secret --key ssl.key --cert ssl.crt -n jhub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then setup ingress to use this in &lt;code&gt;secrets.yaml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;ingress&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;
+  &lt;span class="n"&gt;hosts&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;js&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;XX&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;YYY&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;jetstream&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;org&lt;/span&gt;
+  &lt;span class="n"&gt;tls&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;hosts&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;js&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;XX&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;YYY&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;jetstream&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;org&lt;/span&gt;
+    &lt;span class="n"&gt;secretName&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;cert&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;secret&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h2&gt;Feedback&lt;/h2&gt;
 &lt;p&gt;Feedback on this is very welcome, please open an issue on the &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream"&gt;Github repository&lt;/a&gt; or email me at &lt;code&gt;zonca&lt;/code&gt; on the domain of the San Diego Supercomputer Center (sdsc.edu).&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
 on Jetstream.&lt;/p&gt;
