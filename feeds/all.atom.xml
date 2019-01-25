@@ -1228,12 +1228,13 @@ docker exec boinc boinccmd --project_attach $URL $account_key
 30-Mar-2018 13:02:18 [---] Vbox app stderr indicates CPU VM extensions disabled
 30-Mar-2018 13:02:18 [boincserver] Computation for task boinc2docker_3766_1522410497.503524_1 finished
 30-Mar-2018 13:02:18 [boincserver] Output file boinc2docker_3766_1522410497.503524_1_r1095010587_0.tgz for task boinc2docker_3766_1522410497.503524_1 absent
-&lt;/pre&gt;&lt;/div&gt;</content><category term="boinc"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Use the distributed file format Zarr on Jetstream Swift object storage</title><link href="http://zonca.github.io/2018/03/zarr-on-jetstream.html" rel="alternate"></link><published>2018-03-03T18:00:00-08:00</published><updated>2018-03-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-03:/2018/03/zarr-on-jetstream.html</id><summary type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="boinc"></category><category term="jetstream"></category><category term="gateways"></category></entry><entry><title>Use the distributed file format Zarr on Jetstream Swift object storage</title><link href="http://zonca.github.io/2018/03/zarr-on-jetstream.html" rel="alternate"></link><published>2018-03-03T18:00:00-08:00</published><updated>2018-03-03T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-03:/2018/03/zarr-on-jetstream.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Updated again in January 2019&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;Zarr&lt;/h2&gt;
 &lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
 &lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Python,
 and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
-&lt;a href="https://github.com/dask/s3fs"&gt;Amazon S3&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;Use OpenStack swift on …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;Zarr&lt;/h2&gt;
+&lt;a href="https://github.com/dask/s3fs"&gt;Amazon …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Updated again in January 2019&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;Zarr&lt;/h2&gt;
 &lt;p&gt;Zarr is a pretty new file format designed for cloud computing, see &lt;a href="http://zarr.readthedocs.io"&gt;documentation&lt;/a&gt; and &lt;a href="https://www.youtube.com/watch?v=np_p4JBAIYI"&gt;a webinar&lt;/a&gt; for more details.&lt;/p&gt;
 &lt;p&gt;Zarr is also supported by &lt;a href="http://dask.pydata.org"&gt;dask&lt;/a&gt;, the parallel computing framework for Python,
 and the Dask team implemented storage backends for &lt;a href="https://github.com/dask/gcsfs"&gt;Google Cloud Storage&lt;/a&gt; and
@@ -1259,6 +1260,8 @@ having workers distributed on multiple nodes, just make sure that all the worker
 &lt;p&gt;In this case we need authentication.&lt;/p&gt;
 &lt;p&gt;First you need to ask to the XSEDE helpdesk API access to Jetstream, this also gives access
 to the Horizon interface, which has many advanced features that are not available in Atmosphere.&lt;/p&gt;
+&lt;p&gt;Consider that credentials are different whether you are using the object store at IU or TACC,
+therefore make sure that credentials and &lt;code&gt;JETSTREAM_SWIFT_ENDPOINT&lt;/code&gt; are consistent.&lt;/p&gt;
 &lt;h3&gt;Create a bucket&lt;/h3&gt;
 &lt;p&gt;Object store systems are organized on buckets, which are like root folders of our filesystem.
 From the Horizon interface, we can choose Object Store -&amp;gt; Containers (quite confusing way of referring to buckets in OpenStack).
@@ -1307,7 +1310,16 @@ we did before:&lt;/p&gt;
 first we make sure to have the necessary Python packages,
 then we use &lt;code&gt;xarray&lt;/code&gt; to read data from NetCDF and then write back to Zarr first locally and then
 via &lt;code&gt;s3fs&lt;/code&gt; to Openstack Swift.&lt;/p&gt;
-&lt;p&gt;See the Zarr documentation about how to tweak, compression, data transformations and chunking.&lt;/p&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="zarr"></category></entry><entry><title>Install custom Python environment on Jupyter Notebooks at NERSC</title><link href="http://zonca.github.io/2017/12/custom-conda-python-jupyter-nersc.html" rel="alternate"></link><published>2017-12-21T18:00:00-08:00</published><updated>2017-12-21T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-21:/2017/12/custom-conda-python-jupyter-nersc.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at NERSC&lt;/h2&gt;
+&lt;p&gt;See the Zarr documentation about how to tweak, compression, data transformations and chunking.&lt;/p&gt;
+&lt;h3&gt;Troubleshooting&lt;/h3&gt;
+&lt;p&gt;In case anything doesn't work, you can get the debug logging executing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;boto3&lt;/span&gt;
+&lt;span class="n"&gt;boto3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_stream_logger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;before&lt;/strong&gt; executing &lt;code&gt;s3fs&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Also, in case you believe anything is not working in &lt;code&gt;s3fs&lt;/code&gt;, here is a &lt;a href="https://gist.github.com/zonca/73e14d98698cba67d71a55309b02b265"&gt;handy test script using only &lt;code&gt;boto3&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="zarr"></category></entry><entry><title>Install custom Python environment on Jupyter Notebooks at NERSC</title><link href="http://zonca.github.io/2017/12/custom-conda-python-jupyter-nersc.html" rel="alternate"></link><published>2017-12-21T18:00:00-08:00</published><updated>2017-12-21T18:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2017-12-21:/2017/12/custom-conda-python-jupyter-nersc.html</id><summary type="html">&lt;h2&gt;Jupyter Notebooks at NERSC&lt;/h2&gt;
 &lt;p&gt;NERSC has provided a JupyterHub instance for quite some time to all NERSC users.
 It is currently running on a dedicated large-memory node on Cori, so now it can access also data on
 Cori &lt;code&gt;$SCRATCH&lt;/code&gt;, not only &lt;code&gt;/project&lt;/code&gt; and &lt;code&gt;$HOME&lt;/code&gt;. See &lt;a href="http://www.nersc.gov/users/data-analytics/data-analytics-2/jupyter-and-rstudio/"&gt;their documentation&lt;/a&gt;&lt;/p&gt;

@@ -45,7 +45,8 @@
             <h1>Use the distributed file format Zarr on Jetstream Swift object storage</h1>
         </header>
         <div class='post-content'>
-            <h2>Zarr</h2>
+            <p><strong>Updated again in January 2019</strong></p>
+<h2>Zarr</h2>
 <p>Zarr is a pretty new file format designed for cloud computing, see <a href="http://zarr.readthedocs.io">documentation</a> and <a href="https://www.youtube.com/watch?v=np_p4JBAIYI">a webinar</a> for more details.</p>
 <p>Zarr is also supported by <a href="http://dask.pydata.org">dask</a>, the parallel computing framework for Python,
 and the Dask team implemented storage backends for <a href="https://github.com/dask/gcsfs">Google Cloud Storage</a> and
@@ -71,6 +72,8 @@ having workers distributed on multiple nodes, just make sure that all the worker
 <p>In this case we need authentication.</p>
 <p>First you need to ask to the XSEDE helpdesk API access to Jetstream, this also gives access
 to the Horizon interface, which has many advanced features that are not available in Atmosphere.</p>
+<p>Consider that credentials are different whether you are using the object store at IU or TACC,
+therefore make sure that credentials and <code>JETSTREAM_SWIFT_ENDPOINT</code> are consistent.</p>
 <h3>Create a bucket</h3>
 <p>Object store systems are organized on buckets, which are like root folders of our filesystem.
 From the Horizon interface, we can choose Object Store -&gt; Containers (quite confusing way of referring to buckets in OpenStack).
@@ -120,6 +123,15 @@ first we make sure to have the necessary Python packages,
 then we use <code>xarray</code> to read data from NetCDF and then write back to Zarr first locally and then
 via <code>s3fs</code> to Openstack Swift.</p>
 <p>See the Zarr documentation about how to tweak, compression, data transformations and chunking.</p>
+<h3>Troubleshooting</h3>
+<p>In case anything doesn't work, you can get the debug logging executing:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="n">boto3</span><span class="o">.</span><span class="n">set_stream_logger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><strong>before</strong> executing <code>s3fs</code>.</p>
+<p>Also, in case you believe anything is not working in <code>s3fs</code>, here is a <a href="https://gist.github.com/zonca/73e14d98698cba67d71a55309b02b265">handy test script using only <code>boto3</code></a>.</p>
         </div>
     </article>
 
