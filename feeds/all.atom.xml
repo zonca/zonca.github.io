@@ -227,7 +227,7 @@ This is also equivalent to Amazon Elastic Cloud Compute (EC2), here you pay for 
 
 
 &lt;p&gt;to create the secret strings needed by JupyterHub then edit its output
-&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed. For example, supply the Jetstream DNS name of the master node &lt;code&gt;http://js-XXX-YYY.jetstream-cloud.org&lt;/code&gt; (XXX and YYY are the last 2 groups of the floating IP of the instance AAA.BBB.XXX.YYY). See &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;part 2&lt;/a&gt;, "Publish service externally with ingress".&lt;/p&gt;
+&lt;code&gt;secrets.yaml&lt;/code&gt; to make sure it is consistent, edit the &lt;code&gt;hosts&lt;/code&gt; lines if needed. For example, supply the Jetstream DNS name of the master node &lt;code&gt;js-XXX-YYY.jetstream-cloud.org&lt;/code&gt; (XXX and YYY are the last 2 groups of the floating IP of the instance AAA.BBB.XXX.YYY). See &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;part 2&lt;/a&gt;, "Publish service externally with ingress".&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash configure_helm_jupyterhub.sh
 bash install_jhub.sh
 &lt;/pre&gt;&lt;/div&gt;
