@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Scale Kubernetes manually on Jetstream | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Scale Kubernetes manually on Jetstream</h1>
+        </header>
+        <div class='post-content'>
+            <p>We would like to modify the number of Openstack virtual machines available to Kubernetes.
+Ideally we would like to do this automatically based on the load on JupyterHub, that is the
+target.
+For now we will increase and decrease the size manually.
+This can be useful for example if you make a test deployment with only 1 worker node a week
+before a workshop and then scale it up to 10 or more instances the day before the workshop
+begins.</p>
+<p>This assumes you have <a href="http://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html">deployed Kubernetes and JupyterHub already</a></p>
+<h2>Create a new Openstack Virtual Machine with Terraform</h2>
+<p>To add nodes, enter the <code>inventory/$CLUSTER</code> folder, we can edit <code>cluster.tf</code> and increase <code>number_of_k8s_nodes_no_floating_ip</code>, in my testing I have increased it from 1 to 3.</p>
+<p>Then we can run again <code>terraform_apply.sh</code>, this should run Terraform and create a new resource:</p>
+<div class="highlight"><pre><span></span>Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+</pre></div>
+
+
+<p>Check first that your machine has booted correctly running:</p>
+<div class="highlight"><pre><span></span>openstack server list
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>+--------------------------------------+---------------------+--------+--------------------------------------------+-------------------------------------+----------+
+| ID                                   | Name                | Status | Networks                                   | Image                               | Flavor   |
++--------------------------------------+---------------------+--------+--------------------------------------------+-------------------------------------+----------+
+| 4ea73e65-2bff-42c9-8c4b-6c6928ad1b77 | zonca-k8s-node-nf-3 | ACTIVE | zonca_k8s_network=10.0.0.7                 | JS-API-Featured-Ubuntu18-Dec-7-2018 | m1.small |                                                       | 0cf1552e-ef0c-48b0-ac24-571301809273 | zonca-k8s-node-nf-2 | ACTIVE | zonca_k8s_network=10.0.0.11                | JS-API-Featured-Ubuntu18-Dec-7-2018 | m1.small |                                                       | e3731cde-cf6e-4556-8bda-0eebc0c7f08e | zonca-k8s-master-1  | ACTIVE | zonca_k8s_network=10.0.0.9, xxx.xxx.xxx.xx | JS-API-Featured-Ubuntu18-Dec-7-2018 | m1.small |
+| 443c6861-1a13-4080-b5a3-e005bb34a77c | zonca-k8s-node-nf-1 | ACTIVE | zonca_k8s_network=10.0.0.3                 | JS-API-Featured-Ubuntu18-Dec-7-2018 | m1.small |
++--------------------------------------+---------------------+--------+--------------------------------------------+-------------------------------------+----------+
+</pre></div>
+
+
+<p>As expected we have now 1 master and 3 nodes.</p>
+<p>Then change the folder to the root of the repository and check you can connect to it with:</p>
+<div class="highlight"><pre><span></span>ansible -i inventory/$CLUSTER/hosts -m ping all
+</pre></div>
+
+
+<p>If any of the new nodes is Unreachable, you can try rebooting them with:</p>
+<div class="highlight"><pre><span></span>openstack server reboot zonca-k8s-node-nf-3
+</pre></div>
+
+
+<h3>Configure the new instances for Kubernetes</h3>
+<p><code>kubespray</code> has a special playbook <code>scale.yml</code> that impacts as little as possible the nodes
+already running.
+I have created a script <code>k8s_scale.sh</code> in the root folder of my <code>jetstream_kubespray</code> repository,
+launch:</p>
+<div class="highlight"><pre><span></span>bash k8s_scale.sh
+</pre></div>
+
+
+<p><a href="https://github.com/kubernetes-sigs/kubespray/blob/master/docs/getting-started.md#adding-nodes">See for reference the <code>kubespray</code> documentation</a></p>
+<p>Once this completes (re-run it if it stops at some point), you should see what Ansible modified:</p>
+<div class="highlight"><pre><span></span>zonca-k8s-master-1         : ok=25   changed=3    unreachable=0    failed=0                                   zonca-k8s-node-nf-1        : ok=247  changed=16   unreachable=0    failed=0
+zonca-k8s-node-nf-2        : ok=257  changed=77   unreachable=0    failed=0                                   zonca-k8s-node-nf-3        : ok=257  changed=77   unreachable=0    failed=0
+</pre></div>
+
+
+<p>At this point you should check the nodes are seen by Kubernetes with <code>kubectl get nodes</code>:</p>
+<div class="highlight"><pre><span></span>NAME                  STATUS   ROLES    AGE     VERSION                                                       zonca-k8s-master-1    Ready    master   4h29m   v1.12.5                                                       zonca-k8s-node-nf-1   Ready    node     4h28m   v1.12.5                                                       zonca-k8s-node-nf-2   Ready    node     5m11s   v1.12.5                                                       zonca-k8s-node-nf-3   Ready    node     5m11s   v1.12.5
+</pre></div>
+
+
+<h2>Reduce the number of nodes</h2>
+<p>Kubernetes is built to be resilient to node losses, so you could just brutally delete a node with <code>openstack server delete</code>. However, there is a dedicated playbook, <code>remove-node.yml</code>, to remove a node cleanly migrating any running services to other nodes and lowering the risk of anything malfunctioning.
+I created a script <code>k8s_remove_node.sh</code>, pass the name of the node you would like to eliminate (or a comma separated list of many names):</p>
+<div class="highlight"><pre><span></span>bash k8s_remove_node.sh zonca-k8s-node-nf-3
+</pre></div>
+
+
+<p>Now the node has disappeared by <code>kubectl get nodes</code> but the underlying Openstack instance is still running, delete it with:</p>
+<div class="highlight"><pre><span></span>openstack server delete zonca-k8s-node-nf-3
+</pre></div>
+
+
+<p>For consistency you could now modify <code>inventory/$CLUSTER/cluster.tf</code> and reduce the number of nodes accordingly.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2019-02-22T21:00:00-08:00">Fri 22 February 2019</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/kubernetes.html">kubernetes</a> 
+<a href="http://zonca.github.io/tag/kubespray.html">kubespray</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
