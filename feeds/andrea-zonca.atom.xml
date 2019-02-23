@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2018-12-20T01:00:00-08:00</updated><entry><title>Deploy Pangeo on Kubernetes deployment on Jetstream created with Kubespray</title><link href="http://zonca.github.io/2018/12/kubernetes-jetstream-kubespray-pangeo.html" rel="alternate"></link><published>2018-12-20T01:00:00-08:00</published><updated>2018-12-20T01:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-12-20:/2018/12/kubernetes-jetstream-kubespray-pangeo.html</id><summary type="html">&lt;p&gt;The &lt;a href="http://pangeo.io/"&gt;Pangeo collaboration for Big Data Geoscience&lt;/a&gt; maintains a helm
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-09-22T18:00:00-07:00</updated><entry><title>Deploy Kubernetes on Jetstream with Kubespray 2.8.2 1/2</title><link href="http://zonca.github.io/2019/09/kubernetes-jetstream-kubespray.html" rel="alternate"></link><published>2019-09-22T18:00:00-07:00</published><updated>2019-09-22T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-09-22:/2019/09/kubernetes-jetstream-kubespray.html</id><summary type="html">&lt;p&gt;Back in September 2018 I published a &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html"&gt;tutorial to deploy Kubernetes on Jetstream&lt;/a&gt; using Kubernetes.&lt;/p&gt;
+&lt;p&gt;Software in the Kubernetes space moves very fast, so I decided to update the recipe to use the newer Kubespray 2.8.2 that deploys Kubernetes v1.12.5.&lt;/p&gt;
+&lt;p&gt;Please follow the old tutorial and …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Back in September 2018 I published a &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html"&gt;tutorial to deploy Kubernetes on Jetstream&lt;/a&gt; using Kubernetes.&lt;/p&gt;
+&lt;p&gt;Software in the Kubernetes space moves very fast, so I decided to update the recipe to use the newer Kubespray 2.8.2 that deploys Kubernetes v1.12.5.&lt;/p&gt;
+&lt;p&gt;Please follow the old tutorial and note the updates below.&lt;/p&gt;
+&lt;h3&gt;Switch to kubespray 2.8.2&lt;/h3&gt;
+&lt;p&gt;Once you get my fork of kubespray with a few fixes for Jetstream:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/zonca/jetstream_kubespray
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;switch to the newer 2.8.2 version&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git checkout -b branch_v2.8.2 origin/branch_v2.8.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;See an &lt;a href="https://github.com/zonca/jetstream_kubespray/pull/5"&gt;overview of my changes compared to the standard &lt;code&gt;kubespray&lt;/code&gt; release 2.8.2&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Use the new template&lt;/h3&gt;
+&lt;p&gt;The name of my template is now just &lt;code&gt;zonca&lt;/code&gt; instead of &lt;code&gt;zonca_kubespray&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Before running Terraform, inside &lt;code&gt;jetstream_kubespray&lt;/code&gt;, copy from my template:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;export CLUSTER=$USER
+cp -LRp inventory/zonca inventory/$CLUSTER
+cd inventory/$CLUSTER
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Explore kubernetes&lt;/h3&gt;
+&lt;p&gt;In case you are interested in exploring some of the capabilities of Kubernetes, you can check &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html"&gt;the second part of my tutorial&lt;/a&gt;, nothing in this section is required to run JupyterHub.&lt;/p&gt;
+&lt;h3&gt;Install JupyterHub&lt;/h3&gt;
+&lt;p&gt;Finally you can use &lt;code&gt;helm&lt;/code&gt; to install JupyterHub, see the &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-jupyterhub.html"&gt;last part of my tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Consider that I have updated the repository &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream"&gt;https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream&lt;/a&gt; to install the &lt;code&gt;0.8.0&lt;/code&gt; version of the &lt;code&gt;helm&lt;/code&gt; package just released yesterday, see &lt;a href="https://blog.jupyter.org/zero-to-jupyterhub-helm-chart-0-8-b99e0a79fd2a"&gt;their blog post with more details&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Thanks&lt;/h3&gt;
+&lt;p&gt;Thanks to the Kubernetes, Kubespray and JupyterHub community for delivering great open-source software and to XSEDE for giving me the opportunity to work on this. Special thanks to my collaborators Julien Chastang and Rich Signell.&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category></entry><entry><title>Deploy Pangeo on Kubernetes deployment on Jetstream created with Kubespray</title><link href="http://zonca.github.io/2018/12/kubernetes-jetstream-kubespray-pangeo.html" rel="alternate"></link><published>2018-12-20T01:00:00-08:00</published><updated>2018-12-20T01:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-12-20:/2018/12/kubernetes-jetstream-kubespray-pangeo.html</id><summary type="html">&lt;p&gt;The &lt;a href="http://pangeo.io/"&gt;Pangeo collaboration for Big Data Geoscience&lt;/a&gt; maintains a helm
 chart with a prefigured JupyterHub deployment on Kubernetes which also supports launching
 private dask workers.
 This is very useful because the Jupyter Notebook users can launch a cluster of worker
