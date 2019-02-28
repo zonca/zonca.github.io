@@ -442,18 +442,19 @@ kubectl get pv -n jhub -o yaml &amp;amp;gt; pv.yaml
 
 
 &lt;p&gt;Then open the files with a text editor and delete the Persistent Volume and the Persistent Volume Claim related to &lt;code&gt;hub-db-dir&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Just to be safe, edit &lt;code&gt;pv.yaml&lt;/code&gt; and set:&lt;/p&gt;
+&lt;p&gt;Edit &lt;code&gt;pv.yaml&lt;/code&gt; and set:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  persistentVolumeReclaimPolicy:Retain
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Now combine the 2 yaml files in a single one, you can split with &lt;code&gt;---&lt;/code&gt; between the two. Otherwise if you create the PV first, it is deleted because there is no PVC; if you create the PVC first, a PV is automatically created by the provisioner.&lt;/p&gt;
+&lt;p&gt;Otherwise if you create the PV first, it is deleted because there is no PVC.&lt;/p&gt;
+&lt;p&gt;Also remove the &lt;code&gt;ClaimRef&lt;/code&gt; section of all the volumes in &lt;code&gt;pv.yaml&lt;/code&gt;, otherwise you get the error "two claims are bound to the same volume, this one is bound incorrectly" on the PVC.&lt;/p&gt;
 &lt;p&gt;Now we can proceed to create the cluster again and then restore the volumes with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl apply -f combined.yaml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl apply -f pv.yaml
+kubectl apply -f pvc.yaml
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;so that in case anything goes wrong the Openstack Volumes are not deleted&lt;/p&gt;
 &lt;h2&gt;Feedback&lt;/h2&gt;
 &lt;p&gt;Feedback on this is very welcome, please open an issue on the &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream"&gt;Github repository&lt;/a&gt; or email me at &lt;code&gt;zonca&lt;/code&gt; on the domain of the San Diego Supercomputer Center (sdsc.edu).&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
 on Jetstream.&lt;/p&gt;

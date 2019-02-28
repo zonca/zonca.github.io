@@ -160,18 +160,19 @@ kubectl get pv -n jhub -o yaml &amp;gt; pv.yaml
 
 
 <p>Then open the files with a text editor and delete the Persistent Volume and the Persistent Volume Claim related to <code>hub-db-dir</code>.</p>
-<p>Just to be safe, edit <code>pv.yaml</code> and set:</p>
+<p>Edit <code>pv.yaml</code> and set:</p>
 <div class="highlight"><pre><span></span>  persistentVolumeReclaimPolicy:Retain
 </pre></div>
 
 
-<p>Now combine the 2 yaml files in a single one, you can split with <code>---</code> between the two. Otherwise if you create the PV first, it is deleted because there is no PVC; if you create the PVC first, a PV is automatically created by the provisioner.</p>
+<p>Otherwise if you create the PV first, it is deleted because there is no PVC.</p>
+<p>Also remove the <code>ClaimRef</code> section of all the volumes in <code>pv.yaml</code>, otherwise you get the error "two claims are bound to the same volume, this one is bound incorrectly" on the PVC.</p>
 <p>Now we can proceed to create the cluster again and then restore the volumes with:</p>
-<div class="highlight"><pre><span></span>kubectl apply -f combined.yaml
+<div class="highlight"><pre><span></span>kubectl apply -f pv.yaml
+kubectl apply -f pvc.yaml
 </pre></div>
 
 
-<p>so that in case anything goes wrong the Openstack Volumes are not deleted</p>
 <h2>Feedback</h2>
 <p>Feedback on this is very welcome, please open an issue on the <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream">Github repository</a> or email me at <code>zonca</code> on the domain of the San Diego Supercomputer Center (sdsc.edu).</p>
         </div>
