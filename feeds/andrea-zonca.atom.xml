@@ -392,6 +392,68 @@ for any other customizations, first authentication, you are in good hands as the
 
 &lt;h2&gt;Modify the Kubernetes cluster size&lt;/h2&gt;
 &lt;p&gt;See a followup short tutorial on &lt;a href="https://zonca.github.io/2019/22/scale-kubernetes-jupyterhub-manually.html"&gt;scaling Kubernetes manually&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Persistence of user data&lt;/h2&gt;
+&lt;p&gt;When a JupyterHub user logs in for the first time, a Kubernetes &lt;code&gt;PersistentVolumeClaim&lt;/code&gt; of the size defined in the configuration file is created. This is a Kubernetes resource that defines a request for storage.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pvc -n jhub
+NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+claim-zonca   Bound    pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            standard       2m34s
+hub-db-dir    Bound    pvc-353114a7-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            standard       6m34s
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Inspecting the claims we find out that we have a claim for the user and a claim to store the database of JupyterHub. Currently they are already Bound because they are already satistied.&lt;/p&gt;
+&lt;p&gt;Those claims are then satisfied by our Openstack Cinder provisioner to create a Openstack volume and wrap it into a Kubernetes &lt;code&gt;PersistentVolume&lt;/code&gt; resource:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pv -n jhub
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM              STORAGECLASS   REASON   AGE
+pvc-353114a7-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete           Bound    jhub/hub-db-dir    standard                8m52s
+pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete           Bound    jhub/claim-zonca   standard                5m4s
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This corresponds to Openstack volumes automatically mounted onto the node that is executing the user pod:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;+--------------------------------------+-------------------------------------------------------------+-----------+------+----------------------------------------------+
+| ID                                   | Name                                                        | Status    | Size | Attached to                                  |
++--------------------------------------+-------------------------------------------------------------+-----------+------+----------------------------------------------+
+| e6eddaaa-d40d-4832-addd-a05343ec3a80 | kubernetes-dynamic-pvc-c469967a-3968-11e9-aaad-fa163e9c7d08 | in-use    |    1 | Attached to zonca-k8s-node-nf-1 on /dev/sdc  |
+| 00f1e822-8098-4633-804e-46ba44d7de7e | kubernetes-dynamic-pvc-353114a7-3968-11e9-aaad-fa163e9c7d08 | in-use    |    1 | Attached to zonca-k8s-node-nf-1 on /dev/sdb  |
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If the user disconnects, the Openstack volume is un-attached from the instance but it is not delete and it is mounted back, optionally on another instance, if the user logs back in.&lt;/p&gt;
+&lt;h3&gt;Delete and reinstall JupyterHub&lt;/h3&gt;
+&lt;p&gt;Helm release deleted:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;helm delete --purge jhub
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As long as you do not delete the whole namespace, the volumes are not deleted, therefore you can re-deploy the same version or a newer version using &lt;code&gt;helm&lt;/code&gt; and the same volume is mounted back for the user&lt;/p&gt;
+&lt;h3&gt;Delete and recreate Openstack instances&lt;/h3&gt;
+&lt;p&gt;When we run terraform to delete all Openstack resources:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash terraform_destroy.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;this does not include the Openstack volumes that are created by the Kubernetes persistent volume provisioner.&lt;/p&gt;
+&lt;p&gt;The problem is that if we recreate Kubernetes again, it doesn't know how to link the Openstack volume to the Persistent Volume of a user.
+Therefore we need to backup the Persistent Volumes and the Persistent Volume Claims resources before tearing Kubernetes down:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pvc -n jhub -o yaml &amp;amp;gt; pvc.yaml
+kubectl get pv -n jhub -o yaml &amp;amp;gt; pv.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then open the files with a text editor and delete the Persistent Volume and the Persistent Volume Claim related to &lt;code&gt;hub-db-dir&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Just to be safe, edit &lt;code&gt;pv.yaml&lt;/code&gt; and set:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  persistentVolumeReclaimPolicy:Retain
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now combine the 2 yaml files in a single one, you can split with &lt;code&gt;---&lt;/code&gt; between the two. Otherwise if you create the PV first, it is deleted because there is no PVC; if you create the PVC first, a PV is automatically created by the provisioner.&lt;/p&gt;
+&lt;p&gt;Now we can proceed to create the cluster again and then restore the volumes with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl apply -f combined.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;so that in case anything goes wrong the Openstack Volumes are not deleted&lt;/p&gt;
 &lt;h2&gt;Feedback&lt;/h2&gt;
 &lt;p&gt;Feedback on this is very welcome, please open an issue on the &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream"&gt;Github repository&lt;/a&gt; or email me at &lt;code&gt;zonca&lt;/code&gt; on the domain of the San Diego Supercomputer Center (sdsc.edu).&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Explore a Kubernetes deployment on Jetstream with Kubespray 2/3</title><link href="http://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html" rel="alternate"></link><published>2018-09-23T23:00:00-07:00</published><updated>2018-09-23T23:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-09-23:/2018/09/kubernetes-jetstream-kubespray-explore.html</id><summary type="html">&lt;p&gt;This is the second part of the tutorial on deploying Kubernetes with &lt;code&gt;kubespray&lt;/code&gt; and JupyterHub
 on Jetstream.&lt;/p&gt;
