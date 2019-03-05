@@ -434,6 +434,11 @@ pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete     
 
 
 &lt;p&gt;this does not include the Openstack volumes that are created by the Kubernetes persistent volume provisioner.&lt;/p&gt;
+&lt;p&gt;In case we are interested in keeping the same ip address, run instead:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash terraform_destroy_keep_floatingip.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;The problem is that if we recreate Kubernetes again, it doesn't know how to link the Openstack volume to the Persistent Volume of a user.
 Therefore we need to backup the Persistent Volumes and the Persistent Volume Claims resources before tearing Kubernetes down:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pvc -n jhub -o yaml &amp;amp;gt; pvc.yaml
