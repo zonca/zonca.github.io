@@ -159,6 +159,7 @@ kubectl get pv -n jhub -o yaml &amp;gt; pv.yaml
 </pre></div>
 
 
+<p>I recommend always to run <code>kubectl</code> on the local machine instead of the master node, because if you delete the master instance you loose any temporary modification to your scripts. In this case, even more importantly, if you are running on the master node please backup <code>pvc.yaml</code> and <code>pv.yaml</code> locally before running <code>terraform_destroy.sh</code> or they will be wiped out.</p>
 <p>Then open the files with a text editor and delete the Persistent Volume and the Persistent Volume Claim related to <code>hub-db-dir</code>.</p>
 <p>Edit <code>pv.yaml</code> and set:</p>
 <div class="highlight"><pre><span></span>  persistentVolumeReclaimPolicy:Retain
