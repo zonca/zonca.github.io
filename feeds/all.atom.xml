@@ -391,7 +391,7 @@ for any other customizations, first authentication, you are in good hands as the
 
 
 &lt;h2&gt;Modify the Kubernetes cluster size&lt;/h2&gt;
-&lt;p&gt;See a followup short tutorial on &lt;a href="https://zonca.github.io/2019/22/scale-kubernetes-jupyterhub-manually.html"&gt;scaling Kubernetes manually&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See a followup short tutorial on &lt;a href="https://zonca.github.io/2019/02/scale-kubernetes-jupyterhub-manually.html"&gt;scaling Kubernetes manually&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Persistence of user data&lt;/h2&gt;
 &lt;p&gt;When a JupyterHub user logs in for the first time, a Kubernetes &lt;code&gt;PersistentVolumeClaim&lt;/code&gt; of the size defined in the configuration file is created. This is a Kubernetes resource that defines a request for storage.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pvc -n jhub
