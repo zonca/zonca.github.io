@@ -159,8 +159,8 @@ pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete     
 
 <p>The problem is that if we recreate Kubernetes again, it doesn't know how to link the Openstack volume to the Persistent Volume of a user.
 Therefore we need to backup the Persistent Volumes and the Persistent Volume Claims resources before tearing Kubernetes down:</p>
-<div class="highlight"><pre><span></span>kubectl get pvc -n jhub -o yaml &amp;gt; pvc.yaml
-kubectl get pv -n jhub -o yaml &amp;gt; pv.yaml
+<div class="highlight"><pre><span></span>kubectl get pvc -n jhub -o yaml &gt; pvc.yaml
+kubectl get pv -n jhub -o yaml &gt; pv.yaml
 </pre></div>
 
 

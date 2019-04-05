@@ -116,7 +116,7 @@ the deployment will be accessible from outside connections:</p>
 
 
 <p>and inspect their logs with:</p>
-<div class="highlight"><pre><span></span>docker logs &amp;lt;container_id&amp;gt;
+<div class="highlight"><pre><span></span>docker logs &lt;container_id&gt;
 </pre></div>
 
 
@@ -164,7 +164,7 @@ replace:</p>
 <p>So that instead of using a Docker Volume named <code>mysql</code> is creating a bind-mount to <code>/mysql</code> on the host.</p>
 <h2>Test jobs</h2>
 <p>Open a terminal in the BOINC server container:</p>
-<div class="highlight"><pre><span></span>docker exec -it &amp;lt;boincserver&amp;gt; /bin/bash
+<div class="highlight"><pre><span></span>docker exec -it &lt;boincserver&gt; /bin/bash
 
 
 bin/boinc2docker_create_work.py \

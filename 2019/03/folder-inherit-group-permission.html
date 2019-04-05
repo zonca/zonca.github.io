@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>wget file from google drive | Andrea Zonca's blog</title>
+        <title>Inherit group permission in folder | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -42,24 +42,31 @@
 <div class="post">
     <article>
         <header>
-            <h1>wget file from google drive</h1>
+            <h1>Inherit group permission in folder</h1>
         </header>
         <div class='post-content'>
-            <p>Sometimes it is useful, even more if you have a chromebook, to upload a file to Google Drive and then use <code>wget</code> to retrieve it from a server remotely.</p>
-<p>In order to do this you need to make the file available to "Anyone with the link", then click on that link from your local machine and get to the download page that displays a Download button.
-Now right-click and select "Show page source" (in Chrome), and search for "downloadUrl", copy the url that starts with <code>https://docs.google.com</code>, for example:</p>
-<div class="highlight"><pre><span></span>https://docs.google.com/uc?id\u003d0ByPZe438mUkZVkNfTHZLejFLcnc\u0026export\u003ddownload\u0026revid\u003d0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ
+            <p>I have googled this so many times...</p>
+<p>On shared systems, like Supercomputers, you often belong to many different Unix
+groups, and that membership allows you to access data from specific projects you
+are working on and you can share data with your collaborators.</p>
+<p>If you set SGID on a folder, any folder of file created in that folder will automatically
+belong to the Unix group of that folder, and not your default group.
+You first set the right group on the folder, recursively so that older files will get
+the right permissions:</p>
+<div class="highlight"><pre><span></span>chown -R somegroup sharedfolder
 </pre></div>
 
 
-<p>This is unicode, so open <code>Python</code> and do:</p>
-<div class="highlight"><pre><span></span>download_url = &quot;PASTE HERE&quot;
-print download_url.decode(&quot;unicode_escape&quot;)
-u&#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;export=download&amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&#39;
+<p>Then you set the SGID so future files will automatically belong to <code>somegroup</code>:</p>
+<div class="highlight"><pre><span></span>chmod g+s sharedfolder
 </pre></div>
 
 
-<p>The last url can be pasted into a terminal and used with <code>wget</code>.</p>
+<p>This is very useful for example in the <code>/project</code> filesystem at NERSC, you can set
+the SGID so that every file that is copied to the shared <code>/project</code> filesystem is
+accessible by other collaborators.</p>
+<p>Related to this is also the default <code>umask</code>, most systems by default give "read" permission
+for the group, so setting SGID is enough, otherwise it is also necessary to configure <code>umask</code> properly.</p>
         </div>
     </article>
 
@@ -67,7 +74,7 @@ u&#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;export=down
         <ul>
             <li>
                 <strong>Published:</strong>
-                <i><time datetime="2014-01-31T18:00:00-08:00">Fri 31 January 2014</time></i>
+                <i><time datetime="2019-03-24T18:00:00-07:00">Sun 24 March 2019</time></i>
             </li>
             <li>
                 <strong>In:</strong>
@@ -75,7 +82,9 @@ u&#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;export=down
             </li>
             <li>
                 <strong>Tags:</strong>
-<a href="http://zonca.github.io/tag/bash.html">bash</a> 
+<a href="http://zonca.github.io/tag/jupyter.html">jupyter</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/zarr.html">zarr</a> 
             </li>
             <li>
                 <strong>Written by:</strong>

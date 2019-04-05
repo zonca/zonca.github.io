@@ -159,7 +159,7 @@ docker run --restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul
 
 
 <p>create <code>/etc/auto.home</code>:</p>
-<div class="highlight"><pre><span></span><span class="nt">echo</span> <span class="s2">&quot;* $HUB_LOCAL_IP:/home/&amp;amp;&quot;</span> <span class="o">|</span> <span class="nt">sudo</span> <span class="nt">tee</span> <span class="o">/</span><span class="nt">etc</span><span class="o">/</span><span class="nt">auto</span><span class="p">.</span><span class="nc">home</span>
+<div class="highlight"><pre><span></span>echo &quot;* $HUB_LOCAL_IP:/home/&amp;&quot; | sudo tee /etc/auto.home
 </pre></div>
 
 

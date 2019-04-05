@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-02-22T21:00:00-08:00</updated><entry><title>Scale Kubernetes manually on Jetstream</title><link href="http://zonca.github.io/2019/02/scale-kubernetes-jupyterhub-manually.html" rel="alternate"></link><published>2019-02-22T21:00:00-08:00</published><updated>2019-02-22T21:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-02-22:/2019/02/scale-kubernetes-jupyterhub-manually.html</id><summary type="html">&lt;p&gt;We would like to modify the number of Openstack virtual machines available to Kubernetes.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-03-24T18:00:00-07:00</updated><entry><title>Inherit group permission in folder</title><link href="http://zonca.github.io/2019/03/folder-inherit-group-permission.html" rel="alternate"></link><published>2019-03-24T18:00:00-07:00</published><updated>2019-03-24T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-03-24:/2019/03/folder-inherit-group-permission.html</id><summary type="html">&lt;p&gt;I have googled this so many times...&lt;/p&gt;
+&lt;p&gt;On shared systems, like Supercomputers, you often belong to many different Unix
+groups, and that membership allows you to access data from specific projects you
+are working on and you can share data with your collaborators.&lt;/p&gt;
+&lt;p&gt;If you set SGID on a folder …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I have googled this so many times...&lt;/p&gt;
+&lt;p&gt;On shared systems, like Supercomputers, you often belong to many different Unix
+groups, and that membership allows you to access data from specific projects you
+are working on and you can share data with your collaborators.&lt;/p&gt;
+&lt;p&gt;If you set SGID on a folder, any folder of file created in that folder will automatically
+belong to the Unix group of that folder, and not your default group.
+You first set the right group on the folder, recursively so that older files will get
+the right permissions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;chown -R somegroup sharedfolder
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then you set the SGID so future files will automatically belong to &lt;code&gt;somegroup&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;chmod g+s sharedfolder
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is very useful for example in the &lt;code&gt;/project&lt;/code&gt; filesystem at NERSC, you can set
+the SGID so that every file that is copied to the shared &lt;code&gt;/project&lt;/code&gt; filesystem is
+accessible by other collaborators.&lt;/p&gt;
+&lt;p&gt;Related to this is also the default &lt;code&gt;umask&lt;/code&gt;, most systems by default give "read" permission
+for the group, so setting SGID is enough, otherwise it is also necessary to configure &lt;code&gt;umask&lt;/code&gt; properly.&lt;/p&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="zarr"></category></entry><entry><title>Scale Kubernetes manually on Jetstream</title><link href="http://zonca.github.io/2019/02/scale-kubernetes-jupyterhub-manually.html" rel="alternate"></link><published>2019-02-22T21:00:00-08:00</published><updated>2019-02-22T21:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-02-22:/2019/02/scale-kubernetes-jupyterhub-manually.html</id><summary type="html">&lt;p&gt;We would like to modify the number of Openstack virtual machines available to Kubernetes.
 Ideally we would like to do this automatically based on the load on JupyterHub, that is the
 target.
 For now we will increase and decrease the size manually.
@@ -441,8 +466,8 @@ pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete     
 
 &lt;p&gt;The problem is that if we recreate Kubernetes again, it doesn't know how to link the Openstack volume to the Persistent Volume of a user.
 Therefore we need to backup the Persistent Volumes and the Persistent Volume Claims resources before tearing Kubernetes down:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pvc -n jhub -o yaml &amp;amp;gt; pvc.yaml
-kubectl get pv -n jhub -o yaml &amp;amp;gt; pv.yaml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pvc -n jhub -o yaml &amp;gt; pvc.yaml
+kubectl get pv -n jhub -o yaml &amp;gt; pv.yaml
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -990,7 +1015,7 @@ Checkout the Github repository with all the configuration files on the master no
 
 
 &lt;p&gt;If any is stuck in Pending, check with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo describe &amp;amp;lt;pod-name&amp;amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl -n pangeo describe &amp;lt;pod-name&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1298,7 +1323,7 @@ the deployment will be accessible from outside connections:&lt;/p&gt;
 
 
 &lt;p&gt;and inspect their logs with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker logs &amp;amp;lt;container_id&amp;amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker logs &amp;lt;container_id&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1346,7 +1371,7 @@ replace:&lt;/p&gt;
 &lt;p&gt;So that instead of using a Docker Volume named &lt;code&gt;mysql&lt;/code&gt; is creating a bind-mount to &lt;code&gt;/mysql&lt;/code&gt; on the host.&lt;/p&gt;
 &lt;h2&gt;Test jobs&lt;/h2&gt;
 &lt;p&gt;Open a terminal in the BOINC server container:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker exec -it &amp;amp;lt;boincserver&amp;amp;gt; /bin/bash
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker exec -it &amp;lt;boincserver&amp;gt; /bin/bash
 
 
 bin/boinc2docker_create_work.py \
@@ -1600,7 +1625,7 @@ support       support-nginx-ingress-default-backend-cb84895fb-qs9pp   1/1       
 &lt;p&gt;Once the setup is complete on the worker, log back in to the master and check that the worker joined Kubernetes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zonca@js-169-xx:~/kubeadm-bootstrap$ sudo kubectl get nodes
 NAME                             STATUS    ROLES     AGE       VERSION
-js-168-yyy.jetstream-cloud.org   Ready     &amp;amp;lt;none&amp;amp;gt;    1m        v1.9.2
+js-168-yyy.jetstream-cloud.org   Ready     &amp;lt;none&amp;gt;    1m        v1.9.2
 js-169-xx.jetstream-cloud.org    Ready     master    2h        v1.9.2
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1752,7 +1777,7 @@ Once the node joins Kubernetes, it will be automatically used as a node for the 
 &lt;h3&gt;Remove a server from Kubernetes&lt;/h3&gt;
 &lt;p&gt;Launch first the &lt;code&gt;kubectl drain&lt;/code&gt; command to move the currently active pods to other nodes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl get nodes
-sudo kubectl drain &amp;amp;lt;node name&amp;amp;gt;
+sudo kubectl drain &amp;lt;node name&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -2795,7 +2820,7 @@ docker run --restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul
 
 
 &lt;p&gt;create &lt;code&gt;/etc/auto.home&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;* $HUB_LOCAL_IP:/home/&amp;amp;amp;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nt"&gt;sudo&lt;/span&gt; &lt;span class="nt"&gt;tee&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nt"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;home&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;echo &amp;quot;* $HUB_LOCAL_IP:/home/&amp;amp;&amp;quot; | sudo tee /etc/auto.home
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3515,8 +3540,8 @@ It is used extensively in industry, not much in academia.&lt;/p&gt;
 &lt;p&gt;There has been some discussion about this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Code review is the formal process where a programmer inspects in detail a piece of software developed by somebody else in order to improve code quality by catching bugs, improve readibility and usability.
 It is used extensively in industry, not much in academia.&lt;/p&gt;
 &lt;p&gt;There has been some discussion about this lately, see:
-&lt;em&gt; &lt;a href="http://ivory.idyll.org/blog/on-code-review-of-scientific-code.html"&gt;A few thoughts on code review of scientific code&lt;/a&gt; by Titus Brown
-&lt;/em&gt; &lt;a href="http://mozillascience.org/code-review-for-science-what-we-learned/"&gt;Code review for science: What we learned&lt;/a&gt; by Kaitlin Thaney&lt;/p&gt;
+* &lt;a href="http://ivory.idyll.org/blog/on-code-review-of-scientific-code.html"&gt;A few thoughts on code review of scientific code&lt;/a&gt; by Titus Brown
+* &lt;a href="http://mozillascience.org/code-review-for-science-what-we-learned/"&gt;Code review for science: What we learned&lt;/a&gt; by Kaitlin Thaney&lt;/p&gt;
 &lt;p&gt;I participated in the &lt;a href="http://software-carpentry.org/blog/2014/01/code-review-round-2.html"&gt;second code review pilot study of Software Carpentry&lt;/a&gt; where I was paired to a research group in Genomics and I reviewed some of their analysis code.
 In this blog post I'd like to write about some guidelines and best practices on how to perform code review of scientific code.&lt;/p&gt;
 &lt;p&gt;Best use of code review is on libraries, prior to publication, because an improvement in code quality can help future users of the code. One-off analysis scripts benefit less from the process.&lt;/p&gt;
@@ -3774,7 +3799,7 @@ mpirun_rsh -np &lt;span class="o"&gt;{&lt;/span&gt;n&lt;span class="o"&gt;}&lt;/
 &lt;p&gt;Here we chose to run 16 IPython engines per Gordon node, so each has access to 4GB of ram, if you need more just change 16 to 8 for example.&lt;/p&gt;
 &lt;h3&gt;Run IPython parallel&lt;/h3&gt;
 &lt;p&gt;You can submit a job to the queue running, &lt;code&gt;n&lt;/code&gt; is equal to the number of processes you want to use, so it needs to be a multiple of the &lt;code&gt;ppn&lt;/code&gt; chosen in the PBS template:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ipcluster start --n=32 &amp;amp;amp;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ipcluster start --n=32 &amp;amp;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3817,8 +3842,8 @@ result = lview.map(exp_10, list_of_args)
 &lt;p&gt;In this code &lt;code&gt;IPython&lt;/code&gt; will distribute uniformly the list of arguments to the engines and the function will be evalutated for each of them and the result copied back to the connecting client running on the login node.&lt;/p&gt;
 &lt;h3&gt;Submit non-python jobs to IPython parallel&lt;/h3&gt;
 &lt;p&gt;Let's assume you have a list of commands you want to run in a text file, one command per line, those could be implemented in any programming language, e.g.:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;date &amp;amp;amp;&amp;amp;gt; date.log
-hostname &amp;amp;amp;&amp;amp;gt; hostname.log
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;date &amp;amp;&amp;gt; date.log
+hostname &amp;amp;&amp;gt; hostname.log
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -3934,9 +3959,9 @@ Now right-click and select "Show page source" (in Chrome), and search for "downl
 
 
 &lt;p&gt;This is unicode, so open &lt;code&gt;Python&lt;/code&gt; and do:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;download_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;PASTE HERE&amp;quot;&lt;/span&gt;
-&lt;span class="nt"&gt;print&lt;/span&gt; &lt;span class="nt"&gt;download_url&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;decode&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;unicode_escape&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-&lt;span class="nt"&gt;u&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;amp;export=download&amp;amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;download_url = &amp;quot;PASTE HERE&amp;quot;
+print download_url.decode(&amp;quot;unicode_escape&amp;quot;)
+u&amp;#39;https://docs.google.com/uc?id=0ByPZe438mUkZVkNfTHZLejFLcnc&amp;amp;export=download&amp;amp;revid=0ByPZe438mUkZbUIxRkYvM2dwbVduRUxSVXNERm0zZFFiU2c0PQ&amp;#39;
 &lt;/pre&gt;&lt;/div&gt;
 
 

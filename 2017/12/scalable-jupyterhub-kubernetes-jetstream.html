@@ -84,7 +84,7 @@ support       support-nginx-ingress-default-backend-cb84895fb-qs9pp   1/1       
 <p>Once the setup is complete on the worker, log back in to the master and check that the worker joined Kubernetes:</p>
 <div class="highlight"><pre><span></span>zonca@js-169-xx:~/kubeadm-bootstrap$ sudo kubectl get nodes
 NAME                             STATUS    ROLES     AGE       VERSION
-js-168-yyy.jetstream-cloud.org   Ready     &amp;lt;none&amp;gt;    1m        v1.9.2
+js-168-yyy.jetstream-cloud.org   Ready     &lt;none&gt;    1m        v1.9.2
 js-169-xx.jetstream-cloud.org    Ready     master    2h        v1.9.2
 </pre></div>
 
@@ -236,7 +236,7 @@ Once the node joins Kubernetes, it will be automatically used as a node for the 
 <h3>Remove a server from Kubernetes</h3>
 <p>Launch first the <code>kubectl drain</code> command to move the currently active pods to other nodes:</p>
 <div class="highlight"><pre><span></span>sudo kubectl get nodes
-sudo kubectl drain &amp;lt;node name&amp;gt;
+sudo kubectl drain &lt;node name&gt;
 </pre></div>
 
 

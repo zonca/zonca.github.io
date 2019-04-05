@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2019-03-06T23:38:38-00:00</lastmod>
+<lastmod>2019-04-05T17:46:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2019-03-06T23:38:38-00:00</lastmod>
+<lastmod>2019-04-05T17:46:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2019-03-06T23:38:38-00:00</lastmod>
+<lastmod>2019-04-05T17:46:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2019-03-06T23:38:38-00:00</lastmod>
+<lastmod>2019-04-05T17:46:02-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2019/03/folder-inherit-group-permission.html</loc>
+<lastmod>2019-03-24T18:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -929,7 +936,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2019-02-22T21:00:00-07:53</lastmod>
+<lastmod>2019-03-24T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1048,7 +1055,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jetstream.html</loc>
-<lastmod>2019-02-22T21:00:00-07:53</lastmod>
+<lastmod>2019-03-24T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1082,8 +1089,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/gateways.html</loc>
-<lastmod>2018-03-29T18:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/ucsd.html</loc>
+<lastmod>2018-12-12T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1131,8 +1138,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/ucsd.html</loc>
-<lastmod>2018-12-12T18:00:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/gateways.html</loc>
+<lastmod>2018-03-29T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1321,7 +1328,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyter.html</loc>
-<lastmod>2018-10-26T18:00:00-07:53</lastmod>
+<lastmod>2019-03-24T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1349,7 +1356,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/zarr.html</loc>
-<lastmod>2018-03-03T18:00:00-07:53</lastmod>
+<lastmod>2019-03-24T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1433,7 +1440,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2019-02-22T21:00:00-07:53</lastmod>
+<lastmod>2019-03-24T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
