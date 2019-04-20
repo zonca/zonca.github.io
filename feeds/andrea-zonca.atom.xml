@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-03-24T18:00:00-07:00</updated><entry><title>Inherit group permission in folder</title><link href="http://zonca.github.io/2019/03/folder-inherit-group-permission.html" rel="alternate"></link><published>2019-03-24T18:00:00-07:00</published><updated>2019-03-24T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-03-24:/2019/03/folder-inherit-group-permission.html</id><summary type="html">&lt;p&gt;I have googled this so many times...&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-04-20T00:00:00-07:00</updated><entry><title>Kubernetes monitoring with Prometheus and Grafana</title><link href="http://zonca.github.io/2019/04/kubernetes-monitoring-prometheus-grafana.html" rel="alternate"></link><published>2019-04-20T00:00:00-07:00</published><updated>2019-04-20T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-04-20:/2019/04/kubernetes-monitoring-prometheus-grafana.html</id><summary type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
+Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
+to access those data and provide real-time plotting and inspection capability.
+Moreover, they both provide systems …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
+Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
+to access those data and provide real-time plotting and inspection capability.
+Moreover, they both provide systems to send alerts in case some conditions on the state of the cluster are met, i.e. using more than 90% of RAM or CPU.&lt;/p&gt;
+&lt;p&gt;Both Prometheus and Grafana can be installed separately with Helm recipes or using the Prometheus operator Helm recipe,
+however those deployments do not have any preconfigured dashboards, it is easier to get started thanks to the &lt;code&gt;kube-prometheus&lt;/code&gt; project,
+which not only installs Prometheus and Grafana, but also preconfigures about 10 different Grafana dashboards to explore in depth
+the status of a Kubernetes cluster.&lt;/p&gt;
+&lt;p&gt;The main issue is that customizing it is really complicated, it requires modifying &lt;code&gt;jsonnet&lt;/code&gt; templates and recompiling them with a &lt;code&gt;jsonnet&lt;/code&gt; builder which requires &lt;code&gt;go&lt;/code&gt;, however I don't foresee the need to do that for most users.&lt;/p&gt;
+&lt;p&gt;Unfortunately it is not based on Helm, so you need to first checkout the repository:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/coreos/kube-prometheus
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and then follow the instructions &lt;a href="https://github.com/coreos/kube-prometheus#quickstart"&gt;in the documentation&lt;/a&gt;,
+copied here for convenience:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f manifests/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;wait a moment, do not worry if some of the tasks fails, they should get fixed running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl apply -f manifests/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This creates several pods in the &lt;code&gt;monitoring&lt;/code&gt; namespace:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n monitoring
+NAME                                   READY   STATUS    RESTARTS   AGE
+alertmanager-main-0                    2/2     Running   0          13m
+alertmanager-main-1                    2/2     Running   0          13m
+alertmanager-main-2                    2/2     Running   0          13m
+grafana-9d97dfdc7-zkfft                1/1     Running   0          14m
+kube-state-metrics-7c7979b6bc-srcvk    4/4     Running   0          12m
+node-exporter-b6n2w                    2/2     Running   0          14m
+node-exporter-cgp46                    2/2     Running   0          14m
+prometheus-adapter-b7d894c9c-z2ph7     1/1     Running   0          14m
+prometheus-k8s-0                       3/3     Running   1          13m
+prometheus-k8s-1                       3/3     Running   1          13m
+prometheus-operator-65c44fb7b7-8ltzs   1/1     Running   0          14m
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then you can setup forwarding on your laptop to export grafana locally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl --namespace monitoring port-forward svc/grafana 3000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Access &lt;code&gt;localhost:3000&lt;/code&gt; with your browser and you should be able to navigate through all the statistics of your cluster,
+see for example this screenshot.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Screenshot of the Grafana UI" src="/images/grafana.png"&gt;&lt;/p&gt;
+&lt;h2&gt;Setup alerts&lt;/h2&gt;
+&lt;p&gt;Grafana supports email alerts, but it needs a SMTP server, and it is not easy to setup and to avoid being filtered as spam.
+The easiest way is to setup an alert to Slack, and optionally be notified via email of Slack messages.&lt;/p&gt;
+&lt;p&gt;Follow the &lt;a href="https://grafana.com/docs/alerting/notifications/#slack"&gt;instructions for slack on the Grafana documentation&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a Slack app, name it e.g. Grafana&lt;/li&gt;
+&lt;li&gt;Add feature "Incoming webhook"&lt;/li&gt;
+&lt;li&gt;Create a incoming webhook in the workspace and channel your prefer on Slack&lt;/li&gt;
+&lt;li&gt;In the Grafana Alerting menu, set the webhook incoming url, the channel name&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="Screenshot of the Grafana slack notification" src="/images/grafana_slack.png"&gt;&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Inherit group permission in folder</title><link href="http://zonca.github.io/2019/03/folder-inherit-group-permission.html" rel="alternate"></link><published>2019-03-24T18:00:00-07:00</published><updated>2019-03-24T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-03-24:/2019/03/folder-inherit-group-permission.html</id><summary type="html">&lt;p&gt;I have googled this so many times...&lt;/p&gt;
 &lt;p&gt;On shared systems, like Supercomputers, you often belong to many different Unix
 groups, and that membership allows you to access data from specific projects you
 are working on and you can share data with your collaborators.&lt;/p&gt;
@@ -1248,59 +1311,7 @@ Currently this is not authenticated, so this address is publicly available.
 A simple way to hide it is to choose a custom name instead of &lt;code&gt;/dask&lt;/code&gt; and edit
 the ingress accordingly with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo kubectl edit ingress dask -n pangeo
-&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="dask"></category></entry><entry><title>Kubernetes monitoring with Prometheus and Grafana</title><link href="http://zonca.github.io/2018/04/kubernetes-monitoring-prometheus-grafana.html" rel="alternate"></link><published>2018-04-20T00:00:00-07:00</published><updated>2018-04-20T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-04-20:/2018/04/kubernetes-monitoring-prometheus-grafana.html</id><summary type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
-Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
-to access those data and provide real-time plotting and inspection capability.
-Moreover, they both provide systems …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
-Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
-to access those data and provide real-time plotting and inspection capability.
-Moreover, they both provide systems to send alerts in case some conditions on the state of the cluster are met, i.e. using more than 90% of RAM or CPU.&lt;/p&gt;
-&lt;p&gt;Both Prometheus and Grafana can be installed separately with Helm recipes or using the Prometheus operator Helm recipe,
-however those deployments do not have any preconfigured dashboards, it is easier to get started thanks to the &lt;code&gt;kube-prometheus&lt;/code&gt; project,
-which not only installs Prometheus and Grafana, but also preconfigures about 10 different Grafana dashboards to explore in depth
-the status of a Kubernetes cluster.&lt;/p&gt;
-&lt;p&gt;The main issue is that customizing it is really complicated, it requires modifying &lt;code&gt;jsonnet&lt;/code&gt; templates and recompiling them with a &lt;code&gt;jsonnet&lt;/code&gt; builder which requires &lt;code&gt;go&lt;/code&gt;, however I don't foresee the need to do that for most users.&lt;/p&gt;
-&lt;p&gt;Unfortunately it is not based on Helm, so you need to first checkout the repository:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/coreos/kube-prometheus
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;and then follow the instructions &lt;a href="https://github.com/coreos/kube-prometheus#quickstart"&gt;in the documentation&lt;/a&gt;,
-copied here for convenience:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f manifests/
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;wait a moment, do not worry if some of the tasks fails, they should get fixed running:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl apply -f manifests/
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;This creates several pods in the &lt;code&gt;monitoring&lt;/code&gt; namespace:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get pods -n monitoring
-NAME                                   READY   STATUS    RESTARTS   AGE
-alertmanager-main-0                    2/2     Running   0          13m
-alertmanager-main-1                    2/2     Running   0          13m
-alertmanager-main-2                    2/2     Running   0          13m
-grafana-9d97dfdc7-zkfft                1/1     Running   0          14m
-kube-state-metrics-7c7979b6bc-srcvk    4/4     Running   0          12m
-node-exporter-b6n2w                    2/2     Running   0          14m
-node-exporter-cgp46                    2/2     Running   0          14m
-prometheus-adapter-b7d894c9c-z2ph7     1/1     Running   0          14m
-prometheus-k8s-0                       3/3     Running   1          13m
-prometheus-k8s-1                       3/3     Running   1          13m
-prometheus-operator-65c44fb7b7-8ltzs   1/1     Running   0          14m
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Then you can setup forwarding on your laptop to export grafana locally:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl --namespace monitoring port-forward svc/grafana 3000
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Access &lt;code&gt;localhost:3000&lt;/code&gt; with your browser and you should be able to navigate through all the statistics of your cluster,
-see for example this screenshot.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Screenshot of the Grafana UI" src="/images/grafana.png"&gt;&lt;/p&gt;</content><category term="kubernetes"></category><category term="kubespray"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Install a BOINC server on Jetstream</title><link href="http://zonca.github.io/2018/03/boinc-server-jetstream.html" rel="alternate"></link><published>2018-03-29T18:00:00-07:00</published><updated>2018-03-29T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-29:/2018/03/boinc-server-jetstream.html</id><summary type="html">&lt;p&gt;&lt;a href="https://boinc.berkeley.edu/"&gt;BOINC&lt;/a&gt; is the leading platform for volunteer computing.&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="jupyter"></category><category term="jetstream"></category><category term="dask"></category></entry><entry><title>Install a BOINC server on Jetstream</title><link href="http://zonca.github.io/2018/03/boinc-server-jetstream.html" rel="alternate"></link><published>2018-03-29T18:00:00-07:00</published><updated>2018-03-29T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2018-03-29:/2018/03/boinc-server-jetstream.html</id><summary type="html">&lt;p&gt;&lt;a href="https://boinc.berkeley.edu/"&gt;BOINC&lt;/a&gt; is the leading platform for volunteer computing.&lt;/p&gt;
 &lt;p&gt;Scientists can create a project on the platform and submit computational jobs that will
 be executed on computers of volunteers all over the world.&lt;/p&gt;
 &lt;p&gt;In this post we'll deploy a BOINC server on Jetstream. All US scientists can get a free

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Kubernetes monitoring with Prometheus and Grafana | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="https://plus.google.com/+AndreaZonca?rel=author" class="ss-icon ss-social" title="on googleplus">GooglePlus</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Kubernetes monitoring with Prometheus and Grafana</h1>
+        </header>
+        <div class='post-content'>
+            <p>In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
+Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
+to access those data and provide real-time plotting and inspection capability.
+Moreover, they both provide systems to send alerts in case some conditions on the state of the cluster are met, i.e. using more than 90% of RAM or CPU.</p>
+<p>Both Prometheus and Grafana can be installed separately with Helm recipes or using the Prometheus operator Helm recipe,
+however those deployments do not have any preconfigured dashboards, it is easier to get started thanks to the <code>kube-prometheus</code> project,
+which not only installs Prometheus and Grafana, but also preconfigures about 10 different Grafana dashboards to explore in depth
+the status of a Kubernetes cluster.</p>
+<p>The main issue is that customizing it is really complicated, it requires modifying <code>jsonnet</code> templates and recompiling them with a <code>jsonnet</code> builder which requires <code>go</code>, however I don't foresee the need to do that for most users.</p>
+<p>Unfortunately it is not based on Helm, so you need to first checkout the repository:</p>
+<div class="highlight"><pre><span></span>git clone https://github.com/coreos/kube-prometheus
+</pre></div>
+
+
+<p>and then follow the instructions <a href="https://github.com/coreos/kube-prometheus#quickstart">in the documentation</a>,
+copied here for convenience:</p>
+<div class="highlight"><pre><span></span>kubectl create -f manifests/
+</pre></div>
+
+
+<p>wait a moment, do not worry if some of the tasks fails, they should get fixed running:</p>
+<div class="highlight"><pre><span></span>kubectl apply -f manifests/
+</pre></div>
+
+
+<p>This creates several pods in the <code>monitoring</code> namespace:</p>
+<div class="highlight"><pre><span></span>kubectl get pods -n monitoring
+NAME                                   READY   STATUS    RESTARTS   AGE
+alertmanager-main-0                    2/2     Running   0          13m
+alertmanager-main-1                    2/2     Running   0          13m
+alertmanager-main-2                    2/2     Running   0          13m
+grafana-9d97dfdc7-zkfft                1/1     Running   0          14m
+kube-state-metrics-7c7979b6bc-srcvk    4/4     Running   0          12m
+node-exporter-b6n2w                    2/2     Running   0          14m
+node-exporter-cgp46                    2/2     Running   0          14m
+prometheus-adapter-b7d894c9c-z2ph7     1/1     Running   0          14m
+prometheus-k8s-0                       3/3     Running   1          13m
+prometheus-k8s-1                       3/3     Running   1          13m
+prometheus-operator-65c44fb7b7-8ltzs   1/1     Running   0          14m
+</pre></div>
+
+
+<p>Then you can setup forwarding on your laptop to export grafana locally:</p>
+<div class="highlight"><pre><span></span>kubectl --namespace monitoring port-forward svc/grafana 3000
+</pre></div>
+
+
+<p>Access <code>localhost:3000</code> with your browser and you should be able to navigate through all the statistics of your cluster,
+see for example this screenshot.</p>
+<p><img alt="Screenshot of the Grafana UI" src="/images/grafana.png"></p>
+<h2>Setup alerts</h2>
+<p>Grafana supports email alerts, but it needs a SMTP server, and it is not easy to setup and to avoid being filtered as spam.
+The easiest way is to setup an alert to Slack, and optionally be notified via email of Slack messages.</p>
+<p>Follow the <a href="https://grafana.com/docs/alerting/notifications/#slack">instructions for slack on the Grafana documentation</a></p>
+<ul>
+<li>Create a Slack app, name it e.g. Grafana</li>
+<li>Add feature "Incoming webhook"</li>
+<li>Create a incoming webhook in the workspace and channel your prefer on Slack</li>
+<li>In the Grafana Alerting menu, set the webhook incoming url, the channel name</li>
+</ul>
+<p><img alt="Screenshot of the Grafana slack notification" src="/images/grafana_slack.png"></p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2019-04-20T00:00:00-07:00">Sat 20 April 2019</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/kubernetes.html">kubernetes</a> 
+<a href="http://zonca.github.io/tag/kubespray.html">kubespray</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+<section class='footer'>
+    <div class="post social container row-fluid">
+        <div class="span3">
+            <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+        </div>
+        <div class="span3">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="andreazonca">Tweet</a>
+        </div>
+
+        <div class="span3">
+            <div class="g-plusone" data-size="medium" data-annotation="bubble"></div>
+        </div>
+
+        <div class="span3 hn">
+            <span id="hnews"></span>
+        </div>
+    </div>
+
+
+<script src="/theme/js/social.js"></script>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
