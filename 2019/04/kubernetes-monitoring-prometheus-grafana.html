@@ -95,6 +95,10 @@ prometheus-operator-65c44fb7b7-8ltzs   1/1     Running   0          14m
 <p>Access <code>localhost:3000</code> with your browser and you should be able to navigate through all the statistics of your cluster,
 see for example this screenshot.</p>
 <p><img alt="Screenshot of the Grafana UI" src="/images/grafana.png"></p>
+<h2>Monitor JupyterHub</h2>
+<p>Once we have <a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html">deployed JupyterHub with Helm</a>, we can pull up the
+"namespace" monitor and select the <code>jhub</code> namespace to visualize resource usage but also usage requests and limits of all pods created by JupyterHub and its users. See a screenshot below.</p>
+<p><img alt="Screenshot of the Grafana namespace UI" src="/images/grafana_jhub.png"></p>
 <h2>Setup alerts</h2>
 <p>Grafana supports email alerts, but it needs a SMTP server, and it is not easy to setup and to avoid being filtered as spam.
 The easiest way is to setup an alert to Slack, and optionally be notified via email of Slack messages.</p>
