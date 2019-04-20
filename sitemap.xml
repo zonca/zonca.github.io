@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2019-04-05T17:46:02-00:00</lastmod>
+<lastmod>2019-04-20T07:19:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2019-04-05T17:46:02-00:00</lastmod>
+<lastmod>2019-04-20T07:19:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2019-04-05T17:46:02-00:00</lastmod>
+<lastmod>2019-04-20T07:19:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2019-04-05T17:46:02-00:00</lastmod>
+<lastmod>2019-04-20T07:19:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -153,6 +153,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://zonca.github.io/2018/05/shared-dask-kubernetes-jetstream.html</loc>
 <lastmod>2018-05-04T18:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2018/04/kubernetes-monitoring-prometheus-grafana.html</loc>
+<lastmod>2018-04-20T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
