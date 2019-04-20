@@ -49,6 +49,7 @@
 Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
 to access those data and provide real-time plotting and inspection capability.
 Moreover, they both provide systems to send alerts in case some conditions on the state of the cluster are met, i.e. using more than 90% of RAM or CPU.</p>
+<p>The only downside is that the pods that handle monitoring consume some resource themselves, so this could be significant for small clusters below 5 nodes or so, but shouldn't be a problem for typical larger production deployments.</p>
 <p>Both Prometheus and Grafana can be installed separately with Helm recipes or using the Prometheus operator Helm recipe,
 however those deployments do not have any preconfigured dashboards, it is easier to get started thanks to the <code>kube-prometheus</code> project,
 which not only installs Prometheus and Grafana, but also preconfigures about 10 different Grafana dashboards to explore in depth
