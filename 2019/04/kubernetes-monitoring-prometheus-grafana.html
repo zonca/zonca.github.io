@@ -93,8 +93,20 @@ prometheus-operator-65c44fb7b7-8ltzs   1/1     Running   0          14m
 
 
 <p>Access <code>localhost:3000</code> with your browser and you should be able to navigate through all the statistics of your cluster,
-see for example this screenshot.</p>
+see for example this screenshot. The credentials are user <code>admin</code> and password <code>admin</code>.</p>
 <p><img alt="Screenshot of the Grafana UI" src="/images/grafana.png"></p>
+<h2>Access the UI from a different machine</h2>
+<p>In case you are running the configuration on a remote server and you would like to access the Grafana UI (or any other service) from your laptop, you can install <code>kubectl</code> also your my laptop, then copy the <code>.kube/config</code> to the laptop with:</p>
+<div class="highlight"><pre><span></span> scp -r KUBECTLMACHINE:~/.kube/config ~/.kube
+</pre></div>
+
+
+<p>and run:</p>
+<div class="highlight"><pre><span></span> ssh ubuntu@$IP -f -L 6443:localhost:6443 sleep 3h &amp;
+</pre></div>
+
+
+<p>from the laptop and then run the <code>port-forward</code> command locally on the laptop.</p>
 <h2>Monitor JupyterHub</h2>
 <p>Once we have <a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html">deployed JupyterHub with Helm</a>, we can pull up the
 "namespace" monitor and select the <code>jhub</code> namespace to visualize resource usage but also usage requests and limits of all pods created by JupyterHub and its users. See a screenshot below.</p>
