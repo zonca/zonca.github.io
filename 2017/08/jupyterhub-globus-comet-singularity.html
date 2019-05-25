@@ -46,8 +46,8 @@
         <div class='post-content'>
             <h2>Build Singularity containers to run single user notebook applications</h2>
 <p>Follow the instructions at <a href="https://github.com/zonca/singularity-comet">https://github.com/zonca/singularity-comet</a> to build images from the <code>ubuntu_anaconda_jupyterhub.def</code> and <code>centos_anaconda_jupyterhub.def</code> definition files, or use the containers I have already built on Comet:</p>
-<div class="highlight"><pre><span></span>/oasis/scratch/comet/zonca/temp_project/centos_anaconda_jupyterhub.img
-/oasis/scratch/comet/zonca/temp_project/ubuntu_anaconda_cmb_jupyterhub.img
+<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">oasis</span><span class="o">/</span><span class="n">scratch</span><span class="o">/</span><span class="n">comet</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">temp_project</span><span class="o">/</span><span class="n">centos_anaconda_jupyterhub</span><span class="p">.</span><span class="n">img</span>
+<span class="o">/</span><span class="n">oasis</span><span class="o">/</span><span class="n">scratch</span><span class="o">/</span><span class="n">comet</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">temp_project</span><span class="o">/</span><span class="n">ubuntu_anaconda_cmb_jupyterhub</span><span class="p">.</span><span class="n">img</span>
 </pre></div>
 
 
@@ -62,7 +62,7 @@ In particular check the example configuration file in the <code>host_vars/</code
 <h2>Setup Authentication with Globus</h2>
 <p>Next we can SSH into the Jupyterhub Virtual Machine and customize Jupyterhub configuration in <code>/etc/jupyterhub</code></p>
 <p><code>oauthenticator</code> should alrady be installed,, but it needs the Globus SDK to support authentication with Globus:</p>
-<div class="highlight"><pre><span></span>sudo /opt/conda/bin/pip install globus_sdk[jwt]
+<div class="highlight"><pre><span></span><span class="n">sudo</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">conda</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pip</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">globus_sdk</span><span class="o">[</span><span class="n">jwt</span><span class="o">]</span><span class="w"></span>
 </pre></div>
 
 
@@ -83,9 +83,9 @@ After login, don't worry if you get an error in starting your notebook.</p>
 In this scenario instead we imagine a Gateway system where the administrator shares their own allocation with the Gateway users. 
 Therefore you should create a SSH keypair for the <code>root</code> user on the Jupyterhub Virtual Machine and make sure you can login with no need for a password to Comet as the Gateway user.</p>
 <p>Then you need to install <code>batchspawner</code>:</p>
-<div class="highlight"><pre><span></span>git clone https://github.com/jupyterhub/batchspawner.git
-cd batchspawner/
-sudo /opt/conda/bin/pip install .
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">/</span><span class="n">batchspawner</span><span class="p">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">batchspawner</span><span class="o">/</span>
+<span class="n">sudo</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">conda</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pip</span> <span class="n">install</span> <span class="p">.</span>
 </pre></div>
 
 

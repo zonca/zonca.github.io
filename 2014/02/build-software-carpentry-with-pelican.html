@@ -67,40 +67,40 @@ Basicly the requirement is to make it easy for bootcamp instructors to setup the
 <li>Clone the <code>bootcamp-pelican</code> repository of your organization locally</li>
 <li>
 <p>Create a <code>Python</code> virtual environment and install requirements with:</p>
-<div class="highlight"><pre><span></span>cd bootcamp-pelican
-virtualenv swcpy
-. swcpy/bin/activate
-pip install -r requirements.txt
+<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">bootcamp</span><span class="o">-</span><span class="n">pelican</span>
+<span class="n">virtualenv</span> <span class="n">swcpy</span>
+<span class="p">.</span> <span class="n">swcpy</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
 </pre></div>
 
 
 </li>
 <li>
 <p>Clone the <code>swcarpentry-YYYY-MM-DD-INST.github.io</code> in the output folder as:</p>
-<div class="highlight"><pre><span></span>git clone git@github.com:swcarpentry-YYYY-MM-DD-INST.github.io.git output
+<div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="nl">com</span><span class="p">:</span><span class="n">swcarpentry</span><span class="o">-</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">INST</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">git</span><span class="w"> </span><span class="k">output</span><span class="w"></span>
 </pre></div>
 
 
 </li>
 <li>
 <p>Build or Update the website with Pelican running</p>
-<div class="highlight"><pre><span></span>fab build
+<div class="highlight"><pre><span></span><span class="n">fab</span> <span class="n">build</span>
 </pre></div>
 
 
 </li>
 <li>
 <p>You can display the website in your browser locally with:</p>
-<div class="highlight"><pre><span></span>fab serve
+<div class="highlight"><pre><span></span><span class="n">fab</span> <span class="n">serve</span>
 </pre></div>
 
 
 </li>
 <li>
 <p>Finally you can publish it to Github with:</p>
-<div class="highlight"><pre><span></span>cd output
-git add .
-git push origin master
+<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="k">output</span>
+<span class="n">git</span> <span class="k">add</span> <span class="p">.</span>
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>
 </pre></div>
 
 
@@ -114,7 +114,7 @@ git push origin master
 <li>Go to https://github.com/settings/tokens/new, create a new token with default permissions</li>
 <li>
 <p>Install the <code>travis</code> tool (in debian/ubuntu <code>sudo gem install travis</code>) and run from any machine (not necessary to have a clone of the repository):</p>
-<div class="highlight"><pre><span></span>travis encrypt -r swcarpentry-YYYY-MM-DD-INST/bootcamp-pelican GH_TOKEN=TOKENGOTATTHEPREVIOUSSTEP
+<div class="highlight"><pre><span></span><span class="n">travis</span> <span class="n">encrypt</span> <span class="o">-</span><span class="n">r</span> <span class="n">swcarpentry</span><span class="o">-</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">INST</span><span class="o">/</span><span class="n">bootcamp</span><span class="o">-</span><span class="n">pelican</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">TOKENGOTATTHEPREVIOUSSTEP</span>
 </pre></div>
 
 

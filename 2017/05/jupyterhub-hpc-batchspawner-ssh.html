@@ -53,7 +53,7 @@ connect to the Supercomputer on behalf of the user and submit the job to spawn a
 In any case it is necessary that all the users have both an account on the Supercomputer and on the Jupyterhub server, with the same username, this is tedious but is the simpler way to allow them to authenticate on the Supercomputer.
 Then we need to save the <strong>private</strong> SSH key into each user's <code>.ssh</code> folder and make sure they can SSH with no password required to the Supercomputer.</p>
 <p>Then we can install <code>batchspawner</code> and configure Jupyterhub to use it. In the <code>batchspawner</code> configuration in <code>jupyterhub_config.py</code>, you have to prefix the scheduler commands with ssh so that Jupyterhub can connect to the Supercomputer to submit the job:</p>
-<div class="highlight"><pre><span></span>c.SlurmSpawner.batch_submit_cmd = &#39;ssh {username}@{host} sbatch&#39;
+<div class="highlight"><pre><span></span><span class="k">c</span><span class="p">.</span><span class="n">SlurmSpawner</span><span class="p">.</span><span class="n">batch_submit_cmd</span> <span class="o">=</span> <span class="s1">&#39;ssh {username}@{host} sbatch&#39;</span>
 </pre></div>
 
 

@@ -56,31 +56,31 @@
 <p>Let's start from the public image already available, see just the first section "Create a Virtual Machine in OpenStack with the pre-built image" in <a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html">http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html</a> for instructions on how to get the Jupyterhub single server running.</p>
 <h3>Setup Docker Swarm</h3>
 <p>First of all we need to have Docker accessible remotely so we need to configure it to listen on a TCP port, edit <code>/etc/init/docker.conf</code> and replace <code>DOCKER_OPTS=</code> in the <code>start</code> section with:</p>
-<div class="highlight"><pre><span></span>DOCKER_OPTS=&quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&quot;
+<div class="highlight"><pre><span></span><span class="n">DOCKER_OPTS</span><span class="o">=</span><span class="ss">&quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&quot;</span>
 </pre></div>
 
 
 <p>Port 2375 is not open on the OpenStack configuration, so this is not a security issue.</p>
 <p>Then we need to run 2 swarm services in Docker containers, first a distributed key-store listening on port 8500 that is needed for Swarm to store information about all the available nodes, Consul:</p>
-<div class="highlight"><pre><span></span>docker run --restart=always  -d -p 8500:8500 --name=consul progrium/consul -server -bootstrap
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="c1">--restart=always  -d -p 8500:8500 --name=consul progrium/consul -server -bootstrap</span>
 </pre></div>
 
 
 <p>the manager which provides the interface to Docker Swarm:</p>
-<div class="highlight"><pre><span></span>HUB_LOCAL_IP=$(ip route get 8.8.8.8 | awk &#39;NR==1 {print $NF}&#39;)
-docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise $HUB_LOCAL_IP:4000 consul://$HUB_LOCAL_IP:8500
+<div class="highlight"><pre><span></span><span class="n">HUB_LOCAL_IP</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">ip</span> <span class="n">route</span> <span class="k">get</span> <span class="mi">8</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">8</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="p">)</span>
+<span class="n">docker</span> <span class="n">run</span> <span class="c1">--restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication --advertise $HUB_LOCAL_IP:4000 consul://$HUB_LOCAL_IP:8500</span>
 </pre></div>
 
 
 <p>This sets <code>HUB_LOCAL_IP</code> to the internal ip of the instance, then starts the Manager container.</p>
 <p>We are running both with automatic restarting, so that they are launched again in case of failure or after reboot.</p>
 <p>You can check if the containers are running with:</p>
-<div class="highlight"><pre><span></span>docker ps -a
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
 </pre></div>
 
 
 <p>and then you can check if connection works with Docker Swarm on port 4000:</p>
-<div class="highlight"><pre><span></span>docker -H :4000 ps -a
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="o">-</span><span class="n">H</span> <span class="p">:</span><span class="mi">4000</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
 </pre></div>
 
 
@@ -90,12 +90,12 @@ docker run --restart=always  -d -p 4000:4000 swarm manage -H :4000 --replication
 <h3>Share users home via NFS</h3>
 <p>We have now a distributed system and we need a central location to store the home folders of the users, so that even if they happen to get containers on different server, they can still access their files.</p>
 <p>Install NFS with the package manager:</p>
-<div class="highlight"><pre><span></span>sudo apt-get install nfs-kernel-server
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">nfs</span><span class="o">-</span><span class="n">kernel</span><span class="o">-</span><span class="n">server</span>
 </pre></div>
 
 
 <p>edit <code>/etc/exports</code>, add:</p>
-<div class="highlight"><pre><span></span>/home    *(rw,sync,no_root_squash)
+<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span>    <span class="o">*</span><span class="p">(</span><span class="n">rw</span><span class="p">,</span><span class="n">sync</span><span class="p">,</span><span class="n">no_root_squash</span><span class="p">)</span>
 </pre></div>
 
 
@@ -119,74 +119,74 @@ Now open the <code>jupyterhubsecgroup</code> group and add the same 2 rules, jus
 <p>Temporarily add a floating IP to this instance in order to SSH into it, see my first tutorial for more details.</p>
 <h3>Setup Docker Swarm</h3>
 <p>First install Docker engine:</p>
-<div class="highlight"><pre><span></span>sudo apt update
-sudo apt install apt-transport-https ca-certificates
-sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-echo &quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&quot; | sudo tee /etc/apt/sources.list.d/docker.list 
-sudo apt update
-sudo apt install -y docker-engine
-sudo usermod -aG docker ubuntu
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="k">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span> <span class="n">ca</span><span class="o">-</span><span class="n">certificates</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">key</span> <span class="n">adv</span> <span class="c1">--keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</span>
+<span class="n">echo</span> <span class="ss">&quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">list</span> 
+<span class="n">sudo</span> <span class="n">apt</span> <span class="k">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">docker</span><span class="o">-</span><span class="n">engine</span>
+<span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">aG</span> <span class="n">docker</span> <span class="n">ubuntu</span>
 </pre></div>
 
 
 <p>Then make the same edit we did on the hub, edit <code>/etc/init/docker.conf</code> and replace <code>DOCKER_OPTS=</code> in the <code>start</code> section with:</p>
-<div class="highlight"><pre><span></span>DOCKER_OPTS=&quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&quot;
+<div class="highlight"><pre><span></span><span class="n">DOCKER_OPTS</span><span class="o">=</span><span class="ss">&quot;-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock&quot;</span>
 </pre></div>
 
 
 <p>Restart Docker with:</p>
-<div class="highlight"><pre><span></span>sudo service docker restart
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">docker</span> <span class="k">restart</span>
 </pre></div>
 
 
 <p>Then run the container that interfaces with Swarm:</p>
-<div class="highlight"><pre><span></span>HUB_LOCAL_IP=10.XX.XX.XX
-NODE_LOCAL_IP=$(ip route get 8.8.8.8 | awk &#39;NR==1 {print $NF}&#39;)
-docker run --restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul://$HUB_LOCAL_IP:8500
+<div class="highlight"><pre><span></span><span class="n">HUB_LOCAL_IP</span><span class="o">=</span><span class="mi">10</span><span class="p">.</span><span class="n">XX</span><span class="p">.</span><span class="n">XX</span><span class="p">.</span><span class="n">XX</span>
+<span class="n">NODE_LOCAL_IP</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">ip</span> <span class="n">route</span> <span class="k">get</span> <span class="mi">8</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">8</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;NR==1 {print $NF}&#39;</span><span class="p">)</span>
+<span class="n">docker</span> <span class="n">run</span> <span class="c1">--restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul://$HUB_LOCAL_IP:8500</span>
 </pre></div>
 
 
 <p>Copy the address of the Jupyterhub server in the <code>HUB_LOCAL_IP</code> variable.</p>
 <h3>Setup mounting the home filesystem</h3>
-<div class="highlight"><pre><span></span>sudo apt-get install autofs
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">autofs</span>
 </pre></div>
 
 
 <p>add in <code>/etc/auto.master</code>:</p>
-<div class="highlight"><pre><span></span>/home         /etc/auto.home
+<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span>         <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">auto</span><span class="p">.</span><span class="n">home</span>
 </pre></div>
 
 
 <p>create <code>/etc/auto.home</code>:</p>
-<div class="highlight"><pre><span></span>echo &quot;* $HUB_LOCAL_IP:/home/&amp;&quot; | sudo tee /etc/auto.home
+<div class="highlight"><pre><span></span><span class="n">echo</span> <span class="ss">&quot;* $HUB_LOCAL_IP:/home/&amp;&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">auto</span><span class="p">.</span><span class="n">home</span>
 </pre></div>
 
 
 <p>using the internal IP of the hub.</p>
-<div class="highlight"><pre><span></span>sudo service autofs restart
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">autofs</span> <span class="k">restart</span>
 </pre></div>
 
 
 <p>verify by doing:</p>
-<div class="highlight"><pre><span></span>ls /home/ubuntu
+<div class="highlight"><pre><span></span><span class="n">ls</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span>
 </pre></div>
 
 
 <p>or </p>
-<div class="highlight"><pre><span></span>ls /home/training01
+<div class="highlight"><pre><span></span><span class="n">ls</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">training01</span>
 </pre></div>
 
 
 <p>you should see the same files that were on the Jupyterhub server.</p>
 <h3>Create users</h3>
 <p>As we are using system users and mounting the home filesystem it is important that users have the same UID on all nodes, so we are going to run on the node the same script we ran on the Jupyterhub server:</p>
-<div class="highlight"><pre><span></span> bash create_users.sh
+<div class="highlight"><pre><span></span> <span class="n">bash</span> <span class="n">create_users</span><span class="p">.</span><span class="n">sh</span>
 </pre></div>
 
 
 <h3>Test Jupyterhub</h3>
 <p>Login on the Jupyterhub instance with 2 or more different users, then check on the console of the Hub that the containers were launched on the <code>swarmnode</code> instance:</p>
-<div class="highlight"><pre><span></span> docker -H :4000 ps -a
+<div class="highlight"><pre><span></span> <span class="n">docker</span> <span class="o">-</span><span class="n">H</span> <span class="p">:</span><span class="mi">4000</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
 </pre></div>
 
 
@@ -194,13 +194,13 @@ docker run --restart=always -d swarm join --advertise=$NODE_LOCAL_IP:2375 consul
 <p>Now that we created a fully functioning node we can clone it to create more to accomodate more users.</p>
 <h3>Create a snapshot of the node</h3>
 <p>First we need to delete all Docker containers, ssh into the <code>swarmnode</code> and execute:</p>
-<div class="highlight"><pre><span></span> docker rm -f $(docker ps -a -q)
+<div class="highlight"><pre><span></span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
 
 
 <p>Docker has a unique identifying key, we need to remove that so that it will be regenerated by the clones.</p>
-<div class="highlight"><pre><span></span>sudo service docker stop
-sudo rm /etc/docker/key.json
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">docker</span> <span class="n">stop</span>
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="k">key</span><span class="p">.</span><span class="n">json</span>
 </pre></div>
 
 
@@ -236,7 +236,7 @@ CONTAINER ID        IMAGE                                     COMMAND           
 <p>At this level the deployment is quite complicated, so it is probably worth automating it with an <code>ansible</code> playbook, that will be the subject of the next blog post, I think the result will be a simplified version of <a href="https://github.com/compmodels/jupyterhub-deploy">Jess Hamrick's compmodels deployment</a>. Still, I recommend starting with a manual setup to understand how the different pieces work.</p>
 <h2>Troubleshooting</h2>
 <p>If <code>docker -H :4000 ps -a</code> gives the error:</p>
-<div class="highlight"><pre><span></span>Error response from daemon: No elected primary cluster manager
+<div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">response</span> <span class="k">from</span> <span class="n">daemon</span><span class="p">:</span> <span class="k">No</span> <span class="n">elected</span> <span class="k">primary</span> <span class="k">cluster</span> <span class="n">manager</span>
 </pre></div>
 
 

@@ -82,18 +82,18 @@ Here we can check content of existing buckets or create a new one.</p>
 <p>Then download the openstack RC file version 3 from: <a href="https://iu.jetstream-cloud.org/project/api_access/">https://iu.jetstream-cloud.org/project/api_access/</a></p>
 <p>At this point we need to transform it into Amazon-style credentials, you can do this on
 any host, not necessarily on Jetstream, install OpenStack client:</p>
-<div class="highlight"><pre><span></span>pip install python-openstackclient
+<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">openstackclient</span>
 </pre></div>
 
 
 <p>source the openstackRC file, put the password, this is the TACC password (the same used to access Horizon), NOT the XSEDE Password.</p>
 <p>Now we can check the content of the bucket we created above:</p>
-<div class="highlight"><pre><span></span>openstack object list my_bucket
+<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="k">object</span> <span class="n">list</span> <span class="n">my_bucket</span>
 </pre></div>
 
 
 <p>Now create ec2 credentials with:</p>
-<div class="highlight"><pre><span></span>openstack ec2 credentials create
+<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">ec2</span> <span class="n">credentials</span> <span class="k">create</span>
 </pre></div>
 
 

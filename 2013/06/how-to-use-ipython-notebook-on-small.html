@@ -58,8 +58,8 @@
 </li>
 <li>
 <p>Create the profile files:</p>
-<div class="highlight"><pre><span></span>ipython profile create # creates the configuration files
-vim .ipython/profile_default/ipython_notebook_config.py
+<div class="highlight"><pre><span></span><span class="n">ipython</span> <span class="n">profile</span> <span class="k">create</span> <span class="o">#</span> <span class="n">creates</span> <span class="n">the</span> <span class="n">configuration</span> <span class="n">files</span>
+<span class="n">vim</span> <span class="p">.</span><span class="n">ipython</span><span class="o">/</span><span class="n">profile_default</span><span class="o">/</span><span class="n">ipython_notebook_config</span><span class="p">.</span><span class="n">py</span>
 </pre></div>
 
 
@@ -67,14 +67,14 @@ vim .ipython/profile_default/ipython_notebook_config.py
 </li>
 <li>
 <p>Change the port to something specific to you, <strong>please change this to avoid conflict with other users</strong>:</p>
-<div class="highlight"><pre><span></span>c.NotebookApp.port = 8900
+<div class="highlight"><pre><span></span><span class="k">c</span><span class="p">.</span><span class="n">NotebookApp</span><span class="p">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">8900</span>
 </pre></div>
 
 
 </li>
 <li>
 <p>Set a certificate to serve the notebook over https:</p>
-<div class="highlight"><pre><span></span>c.NotebookApp.certfile = u&#39;/home/zonca/mycert.pem&#39;
+<div class="highlight"><pre><span></span><span class="k">c</span><span class="p">.</span><span class="n">NotebookApp</span><span class="p">.</span><span class="n">certfile</span> <span class="o">=</span> <span class="n">u</span><span class="s1">&#39;/home/zonca/mycert.pem&#39;</span>
 </pre></div>
 
 
@@ -82,7 +82,7 @@ vim .ipython/profile_default/ipython_notebook_config.py
 </li>
 <li>
 <p>Set:</p>
-<div class="highlight"><pre><span></span>c.NotebookApp.open_browser = False
+<div class="highlight"><pre><span></span><span class="k">c</span><span class="p">.</span><span class="n">NotebookApp</span><span class="p">.</span><span class="n">open_browser</span> <span class="o">=</span> <span class="k">False</span>
 </pre></div>
 
 
@@ -91,12 +91,12 @@ vim .ipython/profile_default/ipython_notebook_config.py
 <h2>2) Run the notebook for testing on the login node.</h2>
 <p>You can use IPython notebook on the login node if you do not use much memory, e.g. &lt; 300MB.
 ssh into the login node, at the terminal run:</p>
-<div class="highlight"><pre><span></span>ipython notebook --pylab=inline
+<div class="highlight"><pre><span></span><span class="n">ipython</span> <span class="n">notebook</span> <span class="c1">--pylab=inline</span>
 </pre></div>
 
 
 <p>open the browser on your local machine and connect to (always use https, replace 8900 with your port):</p>
-<div class="highlight"><pre><span></span>https://LOGINNODEURL:8900
+<div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">LOGINNODEURL</span><span class="p">:</span><span class="mi">8900</span>
 </pre></div>
 
 
@@ -110,12 +110,12 @@ ssh into the login node, at the terminal run:</p>
 <p>replace <code>LOGINNODEURL</code> with the url of the login node of your cluster.</p>
 <p>NOTICE: you need to ask the sysadmin to set <code>GatewayPorts yes</code> in <code>sshd_config</code> on the login node to allow access externally to the notebook.</p>
 <p>Submit the job to the queue running:</p>
-<div class="highlight"><pre><span></span>qsub runipynb.pbs
+<div class="highlight"><pre><span></span><span class="n">qsub</span> <span class="n">runipynb</span><span class="p">.</span><span class="n">pbs</span>
 </pre></div>
 
 
 <p>Then from your local machine connect to (replace 8900 with your port):</p>
-<div class="highlight"><pre><span></span>https://LOGINNODEURL:8900
+<div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">LOGINNODEURL</span><span class="p">:</span><span class="mi">8900</span>
 </pre></div>
 
 

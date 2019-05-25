@@ -49,16 +49,16 @@
 <h2>Install Globus toolkit</h2>
 <p>See http://toolkit.globus.org/toolkit/docs/latest-stable/admin/install/#install-toolkit</p>
 <p>On Ubuntu, download the deb of the Globus repo from:</p>
-<div class="highlight"><pre><span></span>wget http://www.globus.org/ftppub/gt6/installers/repo/globus-toolkit-repo_latest_all.deb
-sudo dpkg -i globus-toolkit-repo_latest_all.deb
-sudo apt-get install globus-data-management-client
+<div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">globus</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">ftppub</span><span class="o">/</span><span class="n">gt6</span><span class="o">/</span><span class="n">installers</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">globus</span><span class="o">-</span><span class="n">toolkit</span><span class="o">-</span><span class="n">repo_latest_all</span><span class="p">.</span><span class="n">deb</span>
+<span class="n">sudo</span> <span class="n">dpkg</span> <span class="o">-</span><span class="n">i</span> <span class="n">globus</span><span class="o">-</span><span class="n">toolkit</span><span class="o">-</span><span class="n">repo_latest_all</span><span class="p">.</span><span class="n">deb</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">globus</span><span class="o">-</span><span class="k">data</span><span class="o">-</span><span class="n">management</span><span class="o">-</span><span class="n">client</span>
 </pre></div>
 
 
 <h2>Install XSEDE certificates on your machine</h2>
-<div class="highlight"><pre><span></span>wget https://software.xsede.org/security/xsede-certs.tar.gz
-tar xvf xsede-certs.tar.gz
-sudo mv certificates /etc/grid-security
+<div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="p">.</span><span class="n">xsede</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="k">security</span><span class="o">/</span><span class="n">xsede</span><span class="o">-</span><span class="n">certs</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">xvf</span> <span class="n">xsede</span><span class="o">-</span><span class="n">certs</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>
+<span class="n">sudo</span> <span class="n">mv</span> <span class="n">certificates</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">grid</span><span class="o">-</span><span class="k">security</span>
 </pre></div>
 
 
@@ -66,20 +66,20 @@ sudo mv certificates /etc/grid-security
 <p><a href="https://software.xsede.org/production/CA/CA-install.html">https://software.xsede.org/production/CA/CA-install.html</a></p>
 <h2>Authenticate with the myproxy provided by XSEDE</h2>
 <p>Authenticate with your XSEDE user and password:</p>
-<div class="highlight"><pre><span></span>myproxy-logon -s myproxy.xsede.org -l $USER -t 36
+<div class="highlight"><pre><span></span><span class="n">myproxy</span><span class="o">-</span><span class="n">logon</span> <span class="o">-</span><span class="n">s</span> <span class="n">myproxy</span><span class="p">.</span><span class="n">xsede</span><span class="p">.</span><span class="n">org</span> <span class="o">-</span><span class="n">l</span> <span class="err">$</span><span class="k">USER</span> <span class="o">-</span><span class="n">t</span> <span class="mi">36</span>
 </pre></div>
 
 
 <p>You can specify the lifetime of the certificate in hours with <code>-t</code>.</p>
 <p>you should get a certificate:</p>
-<div class="highlight"><pre><span></span>A credential has been received for user zonca in /tmp/x509up_u1000.
+<div class="highlight"><pre><span></span><span class="nv">A</span> <span class="nv">credential</span> <span class="nv">has</span> <span class="nv">been</span> <span class="nv">received</span> <span class="k">for</span> <span class="nv">user</span> <span class="nv">zonca</span> <span class="nv">in</span> <span class="o">/</span><span class="nv">tmp</span><span class="o">/</span><span class="nv">x509up_u1000</span>.
 </pre></div>
 
 
 <p>You can check how much time is left on a certificate by running <code>grid-proxy-info</code>.</p>
 <h2>Run globus-url-copy</h2>
 <p>For example copy to my home on Comet:</p>
-<div class="highlight"><pre><span></span>globus-url-copy -vb -p 4 local_file.tar.gz gsiftp://oasis-dm.sdsc.edu///home/zonca/
+<div class="highlight"><pre><span></span><span class="n">globus</span><span class="o">-</span><span class="n">url</span><span class="o">-</span><span class="k">copy</span> <span class="o">-</span><span class="n">vb</span> <span class="o">-</span><span class="n">p</span> <span class="mi">4</span> <span class="n">local_file</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="n">gsiftp</span><span class="p">:</span><span class="o">//</span><span class="n">oasis</span><span class="o">-</span><span class="n">dm</span><span class="p">.</span><span class="n">sdsc</span><span class="p">.</span><span class="n">edu</span><span class="o">///</span><span class="n">home</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span>
 </pre></div>
 
 
@@ -87,10 +87,10 @@ sudo mv certificates /etc/grid-security
 <p><a href="http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/user/#gridftp-user-basic">http://toolkit.globus.org/toolkit/docs/latest-stable/gridftp/user/#gridftp-user-basic</a></p>
 <h2>Synchronize 2 folders</h2>
 <p>Only copy new files using the <code>-sync</code> and <code>-sync-level</code> options:</p>
-<div class="highlight"><pre><span></span>-sync
-  Only transfer files where the destination does not exist or differs from the source. -sync-level controls how to determine if files differ.
--sync-level number
-  Criteria for determining if files differ when performing a sync transfer. The default sync level is 2.\
+<div class="highlight"><pre><span></span><span class="o">-</span><span class="nv">sync</span>
+  <span class="nv">Only</span> <span class="nv">transfer</span> <span class="nv">files</span> <span class="nv">where</span> <span class="nv">the</span> <span class="nv">destination</span> <span class="nv">does</span> <span class="nv">not</span> <span class="nv">exist</span> <span class="nv">or</span> <span class="nv">differs</span> <span class="nv">from</span> <span class="nv">the</span> <span class="nv">source</span>. <span class="o">-</span><span class="nv">sync</span><span class="o">-</span><span class="nv">level</span> <span class="nv">controls</span> <span class="nv">how</span> <span class="nv">to</span> <span class="nv">determine</span> <span class="k">if</span> <span class="nv">files</span> <span class="nv">differ</span>.
+<span class="o">-</span><span class="nv">sync</span><span class="o">-</span><span class="nv">level</span> <span class="nv">number</span>
+  <span class="nv">Criteria</span> <span class="k">for</span> <span class="nv">determining</span> <span class="k">if</span> <span class="nv">files</span> <span class="nv">differ</span> <span class="nv">when</span> <span class="nv">performing</span> <span class="nv">a</span> <span class="nv">sync</span> <span class="nv">transfer</span>. <span class="nv">The</span> <span class="nv">default</span> <span class="nv">sync</span> <span class="nv">level</span> <span class="nv">is</span> <span class="mi">2</span>.\
 </pre></div>
 
 

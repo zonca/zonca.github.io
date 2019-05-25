@@ -60,29 +60,29 @@ and no issues on the OS if we get out of disk space.</p>
 <p>We can create a volume of 10/20 GB in the Jetstream control panel and attach it to
 the running Virtual Machine. This will be automatically mounted to <code>/vol_b</code>, we
 want to mount instead to <code>/var/lib/docker</code>:</p>
-<div class="highlight"><pre><span></span>sudo systemctl stop docker
-sudo mv /var/lib/docker/* /vol_b/
-sudo umount /vol_b
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">docker</span>
+<span class="n">sudo</span> <span class="n">mv</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">docker</span><span class="cm">/* /vol_b/</span>
+<span class="cm">sudo umount /vol_b</span>
 </pre></div>
 
 
 <p>Replace <code>/vol_b</code> with <code>/var/lib/docker</code> in <code>/etc/fstab</code>, e.g.:</p>
-<div class="highlight"><pre><span></span>zonca@js-xxx-xxx:~$ cat /etc/fstab
-LABEL=cloudimg-rootfs   /        ext4   defaults        0 0
-/dev/sdb /var/lib/docker ext4 defaults,nofail 0 2
+<div class="highlight"><pre><span></span><span class="n">zonca</span><span class="nv">@js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="nl">xxx</span><span class="p">:</span><span class="o">~</span><span class="err">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fstab</span><span class="w"></span>
+<span class="n">LABEL</span><span class="o">=</span><span class="n">cloudimg</span><span class="o">-</span><span class="n">rootfs</span><span class="w">   </span><span class="o">/</span><span class="w">        </span><span class="n">ext4</span><span class="w">   </span><span class="n">defaults</span><span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span><span class="w"> </span><span class="o">/</span><span class="nf">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">docker</span><span class="w"> </span><span class="n">ext4</span><span class="w"> </span><span class="n">defaults</span><span class="p">,</span><span class="n">nofail</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
 </pre></div>
 
 
 <p>Finally:</p>
-<div class="highlight"><pre><span></span>sudo mount /var/lib/docker
-sudo systemctl start docker
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mount</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">docker</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="k">start</span> <span class="n">docker</span>
 </pre></div>
 
 
 <h3>Update Docker</h3>
 <p>Docker in 16.04 is a bit old, we want to update it to a more recent version.</p>
 <p>We also want to make sure to remove the old <code>docker</code> and <code>docker-compose</code>:</p>
-<div class="highlight"><pre><span></span>sudo apt remove docker-compose docker
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">remove</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">docker</span>
 </pre></div>
 
 
@@ -92,12 +92,12 @@ we can follow the instructions from the docker website or use this script:</p>
 <p>I adapted it from <a href="https://github.com/data-8/kubeadm-bootstrap/blob/master/install-kubeadm.bash">kubeadm-bootstrap</a>.</p>
 <p>Finally install the latest <code>docker-compose</code>, see the <a href="https://docs.docker.com/compose/install/#install-compose">documentation</a></p>
 <p>Last step, add your user to the <code>docker</code> group:</p>
-<div class="highlight"><pre><span></span>sudo adduser $USER docker
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">adduser</span> <span class="err">$</span><span class="k">USER</span> <span class="n">docker</span>
 </pre></div>
 
 
 <p>logout and back in and make sure you can run <code>docker</code> commands without sudo:</p>
-<div class="highlight"><pre><span></span>docker ps
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span>
 </pre></div>
 
 
@@ -105,17 +105,17 @@ we can follow the instructions from the docker website or use this script:</p>
 <p>Follow the <a href="https://github.com/marius311/boinc-server-docker">instructions from <code>boinc-server-docker</code></a>
 to launch a test deployment, in the last step, specify a <code>URL_BASE</code> so that
 the deployment will be accessible from outside connections:</p>
-<div class="highlight"><pre><span></span>URL_BASE=http://$(hostname) docker-compose up -d
+<div class="highlight"><pre><span></span><span class="n">URL_BASE</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="err">$</span><span class="p">(</span><span class="n">hostname</span><span class="p">)</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
 </pre></div>
 
 
 <p>You can check that the 3 containers are running with:</p>
-<div class="highlight"><pre><span></span>docker ps
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span>
 </pre></div>
 
 
 <p>and inspect their logs with:</p>
-<div class="highlight"><pre><span></span>docker logs &lt;container_id&gt;
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">logs</span> <span class="o">&lt;</span><span class="n">container_id</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -137,37 +137,37 @@ that live independently from any virtual machine.</p>
 <p>Let's start by <code>mysql</code>, the same process can then be replicated for the other resources.</p>
 <p>We create another Jetstream volume from the Atmosphere, name it <code>mysql</code> and attach it to the virtual machine,
 this will be automatically mounted to <code>/vol_c</code>, we can rename it by:</p>
-<div class="highlight"><pre><span></span>sudo umount /vol_c
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">umount</span> <span class="o">/</span><span class="n">vol_c</span>
 </pre></div>
 
 
 <p>Replace <code>vol_c</code> with <code>mysql</code> in <code>/etc/fstab</code>, finally:</p>
-<div class="highlight"><pre><span></span>sudo mount /mysql
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mount</span> <span class="o">/</span><span class="n">mysql</span>
 </pre></div>
 
 
 <p>Finally you can modify the <code>docker-compose.yml</code> to use this folder instead of a Docker Volume:</p>
 <p>In the <code>volumes:</code> section, remove <code>mysql:</code>, in the definition of the MySQL service,
 replace:</p>
-<div class="highlight"><pre><span></span>volumes:
- - &quot;mysql:/var/lib/mysql&quot;
+<div class="highlight"><pre><span></span><span class="n">volumes</span><span class="p">:</span>
+ <span class="o">-</span> <span class="ss">&quot;mysql:/var/lib/mysql&quot;</span>
 </pre></div>
 
 
 <p>with:</p>
-<div class="highlight"><pre><span></span>volumes:
- - &quot;/mysql:/var/lib/mysql&quot;
+<div class="highlight"><pre><span></span><span class="n">volumes</span><span class="p">:</span>
+ <span class="o">-</span> <span class="ss">&quot;/mysql:/var/lib/mysql&quot;</span>
 </pre></div>
 
 
 <p>So that instead of using a Docker Volume named <code>mysql</code> is creating a bind-mount to <code>/mysql</code> on the host.</p>
 <h2>Test jobs</h2>
 <p>Open a terminal in the BOINC server container:</p>
-<div class="highlight"><pre><span></span>docker exec -it &lt;boincserver&gt; /bin/bash
+<div class="highlight"><pre><span></span><span class="nv">docker</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">it</span> <span class="o">&lt;</span><span class="nv">boincserver</span><span class="o">&gt;</span> <span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">bash</span>
 
 
-bin/boinc2docker_create_work.py \
-    python:alpine python -c &quot;open(&#39;/root/shared/results/hello.txt&#39;,&#39;w&#39;).write(&#39;Hello BOINC&#39;)&quot;
+<span class="nv">bin</span><span class="o">/</span><span class="nv">boinc2docker_create_work</span>.<span class="nv">py</span> \
+    <span class="nv">python</span>:<span class="nv">alpine</span> <span class="nv">python</span> <span class="o">-</span><span class="nv">c</span> <span class="s2">&quot;</span><span class="s">open(&#39;/root/shared/results/hello.txt&#39;,&#39;w&#39;).write(&#39;Hello BOINC&#39;)</span><span class="s2">&quot;</span>
 </pre></div>
 
 
@@ -176,55 +176,55 @@ bin/boinc2docker_create_work.py \
 <p>Follow the instructions on the <a href="https://boinc.berkeley.edu/">BOINC website</a> to install a client for your OS, install also VirtualBox, then set as the URL of the BOINC server the URL of the server we just created.</p>
 <h3>Test with a BOINC client in another Jetstream instance</h3>
 <p>Create another Ubuntu with Docker tiny instane on Jetstream, login,</p>
-<div class="highlight"><pre><span></span>sudo adduser $USER docker
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">adduser</span> <span class="err">$</span><span class="k">USER</span> <span class="n">docker</span>
 </pre></div>
 
 
 <p>We need Virtualbox:
 sudo apt install virtualbox-dkms</p>
 <p>and reboot to make sure VirtualBox is active.</p>
-<div class="highlight"><pre><span></span>URL=http://js-xxx-xxx.jetstream-cloud.org/boincserver/
-docker exec boinc boinccmd --create_account $URL email password name
+<div class="highlight"><pre><span></span><span class="nv">URL</span><span class="o">=</span><span class="nv">http</span>:<span class="o">//</span><span class="nv">js</span><span class="o">-</span><span class="nv">xxx</span><span class="o">-</span><span class="nv">xxx</span>.<span class="nv">jetstream</span><span class="o">-</span><span class="nv">cloud</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">boincserver</span><span class="o">/</span>
+<span class="nv">docker</span> <span class="k">exec</span> <span class="nv">boinc</span> <span class="nv">boinccmd</span> <span class="o">--</span><span class="nv">create_account</span> $<span class="nv">URL</span> <span class="nv">email</span> <span class="nv">password</span> <span class="nv">name</span>
 
-status: Success
-poll status: operation in progress
-poll status: operation in progress
-poll status: operation in progress
-account key: de9c4cc66b8c923d04f834a0609ae742
+<span class="nv">status</span>: <span class="nv">Success</span>
+<span class="nv">poll</span> <span class="nv">status</span>: <span class="nv">operation</span> <span class="nv">in</span> <span class="nv">progress</span>
+<span class="nv">poll</span> <span class="nv">status</span>: <span class="nv">operation</span> <span class="nv">in</span> <span class="nv">progress</span>
+<span class="nv">poll</span> <span class="nv">status</span>: <span class="nv">operation</span> <span class="nv">in</span> <span class="nv">progress</span>
+<span class="nv">account</span> <span class="nv">key</span>: <span class="nv">de9c4cc66b8c923d04f834a0609ae742</span>
 </pre></div>
 
 
 <p>We can save the account key in a environment variable:</p>
-<div class="highlight"><pre><span></span>URL=http://js-xxx-xxx.jetstream-cloud.org/boincserver/
-URL=http://js-xxx-xxx.jetstream-cloud.org/boincserver/
-account_key=de9c4cc66b8c923d04f834a0609ae742
-docker exec boinc boinccmd --project_attach $URL $account_key
+<div class="highlight"><pre><span></span><span class="nv">URL</span><span class="o">=</span><span class="nv">http</span>:<span class="o">//</span><span class="nv">js</span><span class="o">-</span><span class="nv">xxx</span><span class="o">-</span><span class="nv">xxx</span>.<span class="nv">jetstream</span><span class="o">-</span><span class="nv">cloud</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">boincserver</span><span class="o">/</span>
+<span class="nv">URL</span><span class="o">=</span><span class="nv">http</span>:<span class="o">//</span><span class="nv">js</span><span class="o">-</span><span class="nv">xxx</span><span class="o">-</span><span class="nv">xxx</span>.<span class="nv">jetstream</span><span class="o">-</span><span class="nv">cloud</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">boincserver</span><span class="o">/</span>
+<span class="nv">account_key</span><span class="o">=</span><span class="nv">de9c4cc66b8c923d04f834a0609ae742</span>
+<span class="nv">docker</span> <span class="k">exec</span> <span class="nv">boinc</span> <span class="nv">boinccmd</span> <span class="o">--</span><span class="nv">project_attach</span> $<span class="nv">URL</span> <span class="mh">$acc</span><span class="nv">ount_key</span>
 </pre></div>
 
 
 <p>Then we can check the logs for the job being received and executed:</p>
-<div class="highlight"><pre><span></span>docker logs boinc
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">logs</span> <span class="n">boinc</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>30-Mar-2018 13:02:04 [boincserver] Started download of layer_e9e858f6a2ba5a3e5a04b5799ef2de1c21a58602ffd400838ed10599f1b4a42c.tar.manual.gz
-30-Mar-2018 13:02:06 [boincserver] Finished download of layer_10ffed26db733866a346caf7c79558e4addb23ae085a991b5e7237edaa69f8e2.tar.manual.gz
-30-Mar-2018 13:02:06 [boincserver] Finished download of layer_e9e858f6a2ba5a3e5a04b5799ef2de1c21a58602ffd400838ed10599f1b4a42c.tar.manual.gz
-30-Mar-2018 13:02:06 [boincserver] Started download of layer_0e650ab7661f993eff514b84c6e7b775f5be8c6dde8b63eb584f0f22ea24005f.tar.manual.gz
-30-Mar-2018 13:02:06 [boincserver] Started download of image_4fcaf5fb5f2b8230c53b5fd4c4325df00021d45272dc4bfbb2148e5ca91ac166.tar.manual.gz
-30-Mar-2018 13:02:07 [boincserver] Finished download of layer_0e650ab7661f993eff514b84c6e7b775f5be8c6dde8b63eb584f0f22ea24005f.tar.manual.gz
-30-Mar-2018 13:02:07 [boincserver] Finished download of image_4fcaf5fb5f2b8230c53b5fd4c4325df00021d45272dc4bfbb2148e5ca91ac166.tar.manual.gz
-30-Mar-2018 13:02:07 [boincserver] Starting task boinc2docker_3766_1522410497.503524_0
-30-Mar-2018 13:02:07 [boincserver] Sending scheduler request: To fetch work.
-30-Mar-2018 13:02:07 [boincserver] Requesting new tasks for CPU
-30-Mar-2018 13:02:08 [boincserver] Scheduler request completed: got 1 new tasks
-30-Mar-2018 13:02:12 [---] Vbox app stderr indicates CPU VM extensions disabled
-30-Mar-2018 13:02:13 [boincserver] Computation for task boinc2docker_3766_1522410497.503524_0 finished
-30-Mar-2018 13:02:13 [boincserver] Output file boinc2docker_3766_1522410497.503524_0_r207563194_0.tgz for task boinc2docker_3766_1522410497.503524_0 absent
-30-Mar-2018 13:02:13 [boincserver] Starting task boinc2docker_3766_1522410497.503524_1
-30-Mar-2018 13:02:18 [---] Vbox app stderr indicates CPU VM extensions disabled
-30-Mar-2018 13:02:18 [boincserver] Computation for task boinc2docker_3766_1522410497.503524_1 finished
-30-Mar-2018 13:02:18 [boincserver] Output file boinc2docker_3766_1522410497.503524_1_r1095010587_0.tgz for task boinc2docker_3766_1522410497.503524_1 absent
+<div class="highlight"><pre><span></span><span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">04</span> [<span class="nv">boincserver</span>] <span class="nv">Started</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">layer_e9e858f6a2ba5a3e5a04b5799ef2de1c21a58602ffd400838ed10599f1b4a42c</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">06</span> [<span class="nv">boincserver</span>] <span class="nv">Finished</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">layer_10ffed26db733866a346caf7c79558e4addb23ae085a991b5e7237edaa69f8e2</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">06</span> [<span class="nv">boincserver</span>] <span class="nv">Finished</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">layer_e9e858f6a2ba5a3e5a04b5799ef2de1c21a58602ffd400838ed10599f1b4a42c</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">06</span> [<span class="nv">boincserver</span>] <span class="nv">Started</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">layer_0e650ab7661f993eff514b84c6e7b775f5be8c6dde8b63eb584f0f22ea24005f</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">06</span> [<span class="nv">boincserver</span>] <span class="nv">Started</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">image_4fcaf5fb5f2b8230c53b5fd4c4325df00021d45272dc4bfbb2148e5ca91ac166</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">07</span> [<span class="nv">boincserver</span>] <span class="nv">Finished</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">layer_0e650ab7661f993eff514b84c6e7b775f5be8c6dde8b63eb584f0f22ea24005f</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">07</span> [<span class="nv">boincserver</span>] <span class="nv">Finished</span> <span class="nv">download</span> <span class="nv">of</span> <span class="nv">image_4fcaf5fb5f2b8230c53b5fd4c4325df00021d45272dc4bfbb2148e5ca91ac166</span>.<span class="nv">tar</span>.<span class="nv">manual</span>.<span class="nv">gz</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">07</span> [<span class="nv">boincserver</span>] <span class="nv">Starting</span> <span class="nv">task</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_0</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">07</span> [<span class="nv">boincserver</span>] <span class="nv">Sending</span> <span class="nv">scheduler</span> <span class="nv">request</span>: <span class="nv">To</span> <span class="nv">fetch</span> <span class="nv">work</span>.
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">07</span> [<span class="nv">boincserver</span>] <span class="nv">Requesting</span> <span class="nv">new</span> <span class="nv">tasks</span> <span class="k">for</span> <span class="nv">CPU</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">08</span> [<span class="nv">boincserver</span>] <span class="nv">Scheduler</span> <span class="nv">request</span> <span class="nv">completed</span>: <span class="nv">got</span> <span class="mi">1</span> <span class="nv">new</span> <span class="nv">tasks</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">12</span> [<span class="o">---</span>] <span class="nv">Vbox</span> <span class="nv">app</span> <span class="nv">stderr</span> <span class="nv">indicates</span> <span class="nv">CPU</span> <span class="nv">VM</span> <span class="nv">extensions</span> <span class="nv">disabled</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">13</span> [<span class="nv">boincserver</span>] <span class="nv">Computation</span> <span class="k">for</span> <span class="nv">task</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_0</span> <span class="nv">finished</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">13</span> [<span class="nv">boincserver</span>] <span class="nv">Output</span> <span class="nv">file</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_0_r207563194_0</span>.<span class="nv">tgz</span> <span class="k">for</span> <span class="nv">task</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_0</span> <span class="nv">absent</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">13</span> [<span class="nv">boincserver</span>] <span class="nv">Starting</span> <span class="nv">task</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_1</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">18</span> [<span class="o">---</span>] <span class="nv">Vbox</span> <span class="nv">app</span> <span class="nv">stderr</span> <span class="nv">indicates</span> <span class="nv">CPU</span> <span class="nv">VM</span> <span class="nv">extensions</span> <span class="nv">disabled</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">18</span> [<span class="nv">boincserver</span>] <span class="nv">Computation</span> <span class="k">for</span> <span class="nv">task</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_1</span> <span class="nv">finished</span>
+<span class="mi">30</span><span class="o">-</span><span class="nv">Mar</span><span class="o">-</span><span class="mi">2018</span> <span class="mi">13</span>:<span class="mi">02</span>:<span class="mi">18</span> [<span class="nv">boincserver</span>] <span class="nv">Output</span> <span class="nv">file</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_1_r1095010587_0</span>.<span class="nv">tgz</span> <span class="k">for</span> <span class="nv">task</span> <span class="nv">boinc2docker_3766_1522410497</span>.<span class="mi">503524</span><span class="nv">_1</span> <span class="nv">absent</span>
 </pre></div>
         </div>
     </article>

@@ -56,7 +56,7 @@ Notice that for the <code>http://apt.kubernetes.io/</code> don't have yet Ubuntu
 <p>Deployment is just a single step because Pangeo published a Helm recipe that depends on the Zero-to-JupyterHub recipe and deploys both in a single step, therefore we <em>should not have deployed JupyterHub beforehand</em>.</p>
 <p>First we need to create a <code>yaml</code> configuration file for the package.
 Checkout the Github repository with all the configuration files on the master node of Kubernetes:</p>
-<div class="highlight"><pre><span></span>git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
 </pre></div>
 
 
@@ -68,18 +68,18 @@ Checkout the Github repository with all the configuration files on the master no
 <li>customize the memory and CPU requirements, currently they are very low so that this can be tested also in a single small instance</li>
 </ul>
 <p>We can then deploy with:</p>
-<div class="highlight"><pre><span></span>sudo helm install pangeo/pangeo -n pangeo --namespace pangeo -f config_pangeo_no_storage.yaml --version=v0.1.1-95ab292
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="n">install</span> <span class="n">pangeo</span><span class="o">/</span><span class="n">pangeo</span> <span class="o">-</span><span class="n">n</span> <span class="n">pangeo</span> <span class="c1">--namespace pangeo -f config_pangeo_no_storage.yaml --version=v0.1.1-95ab292</span>
 </pre></div>
 
 
 <p>You can optionally check if there are newer versions of the chart at <a href="https://pangeo-data.github.io/helm-chart/">https://pangeo-data.github.io/helm-chart/</a>.</p>
 <p>Then check that the pods start checking their status with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl -n pangeo get pods
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="o">-</span><span class="n">n</span> <span class="n">pangeo</span> <span class="k">get</span> <span class="n">pods</span>
 </pre></div>
 
 
 <p>If any is stuck in Pending, check with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl -n pangeo describe &lt;pod-name&gt;
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="o">-</span><span class="n">n</span> <span class="n">pangeo</span> <span class="k">describe</span> <span class="o">&lt;</span><span class="n">pod</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -98,7 +98,7 @@ The default workers for Pangeo are beefy, for testing we can reduce their requir
 
 <p>If we execute this cell <code>dask_kubernetes</code> contacts the Kubernetes API using the <a href="https://github.com/pangeo-data/helm-chart/blob/master/pangeo/templates/dask-kubernetes-rbac.yaml">serviceaccount <code>daskkubernetes</code></a> mounted on the pods by the Helm chart and requests new pods to be launched.
 In fact we can check on the terminal again with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl -n pangeo get pods
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="o">-</span><span class="n">n</span> <span class="n">pangeo</span> <span class="k">get</span> <span class="n">pods</span>
 </pre></div>
 
 
@@ -117,12 +117,12 @@ It also provides buttons to change the number of running workers, either manuall
 Notice that all configuration options inside the <code>config_pangeo_no_storage.yaml</code> are inside the <code>jupyterhub:</code> tag, this is due to the fact that <code>jupyterhub</code> is another Helm package which we are configuring through the <code>pangeo</code> Helm package.
 Therefore make sure that any configuration option found in my previous tutorials or on the <a href="https://zero-to-jupyterhub.readthedocs.io/en/latest/">Zero-to-Jupyterhub</a> documentation needs to be indented accordingly.</p>
 <p>Then we can either run:</p>
-<div class="highlight"><pre><span></span>sudo helm delete --purge pangeo
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="k">delete</span> <span class="c1">--purge pangeo</span>
 </pre></div>
 
 
 <p>and then install it from scratch again or just update the running cluster with:</p>
-<div class="highlight"><pre><span></span>sudo helm upgrade pangeo -f config_pangeo_no_storage.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="n">upgrade</span> <span class="n">pangeo</span> <span class="o">-</span><span class="n">f</span> <span class="n">config_pangeo_no_storage</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
         </div>
     </article>

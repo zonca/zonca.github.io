@@ -63,28 +63,28 @@ Make sure that port 80 and 443 are open to outside connections.</p>
 <p>SSH into the first server and follow the instructions at <a href="https://github.com/data-8/kubeadm-bootstrap">https://github.com/data-8/kubeadm-bootstrap</a> to "Setup a Master Node"
 this will install a more recent version of Docker.</p>
 <p>Once the initialization of the master node is completed, you should be able to check that several containers (pods in Kubernetes) are running:</p>
-<div class="highlight"><pre><span></span>zonca@js-xxx-xxx:~/kubeadm-bootstrap$ sudo kubectl get pods --all-namespaces
-NAMESPACE     NAME                                                    READY     STATUS    RESTARTS   AGE
-kube-system   etcd-js-169-xx.jetstream-cloud.org                      1/1       Running   0          1m
-kube-system   kube-apiserver-js-169-xx.jetstream-cloud.org            1/1       Running   0          1m
-kube-system   kube-controller-manager-js-169-xx.jetstream-cloud.org   1/1       Running   0          1m
-kube-system   kube-dns-6f4fd4bdf-nxxkh                                3/3       Running   0          2m
-kube-system   kube-flannel-ds-rlsgb                                   1/1       Running   1          2m
-kube-system   kube-proxy-ntmwx                                        1/1       Running   0          2m
-kube-system   kube-scheduler-js-169-xx.jetstream-cloud.org            1/1       Running   0          2m
-kube-system   tiller-deploy-69cb6984f-77nx2                           1/1       Running   0          2m
-support       support-nginx-ingress-controller-k4swb                  1/1       Running   0          36s
-support       support-nginx-ingress-default-backend-cb84895fb-qs9pp   1/1       Running   0          36s
+<div class="highlight"><pre><span></span><span class="n">zonca</span><span class="nv">@js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="nl">xxx</span><span class="p">:</span><span class="o">~/</span><span class="n">kubeadm</span><span class="o">-</span><span class="n">bootstrap</span><span class="err">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="n">pods</span><span class="w"> </span><span class="c1">--all-namespaces</span>
+<span class="n">NAMESPACE</span><span class="w">     </span><span class="n">NAME</span><span class="w">                                                    </span><span class="n">READY</span><span class="w">     </span><span class="n">STATUS</span><span class="w">    </span><span class="n">RESTARTS</span><span class="w">   </span><span class="n">AGE</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">etcd</span><span class="o">-</span><span class="n">js</span><span class="o">-</span><span class="mi">169</span><span class="o">-</span><span class="n">xx</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span><span class="w">                      </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">1</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">kube</span><span class="o">-</span><span class="n">apiserver</span><span class="o">-</span><span class="n">js</span><span class="o">-</span><span class="mi">169</span><span class="o">-</span><span class="n">xx</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span><span class="w">            </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">1</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">kube</span><span class="o">-</span><span class="n">controller</span><span class="o">-</span><span class="n">manager</span><span class="o">-</span><span class="n">js</span><span class="o">-</span><span class="mi">169</span><span class="o">-</span><span class="n">xx</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span><span class="w">   </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">1</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">kube</span><span class="o">-</span><span class="n">dns</span><span class="o">-</span><span class="mi">6</span><span class="n">f4fd4bdf</span><span class="o">-</span><span class="n">nxxkh</span><span class="w">                                </span><span class="mi">3</span><span class="o">/</span><span class="mi">3</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">2</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">kube</span><span class="o">-</span><span class="n">flannel</span><span class="o">-</span><span class="n">ds</span><span class="o">-</span><span class="n">rlsgb</span><span class="w">                                   </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">1</span><span class="w">          </span><span class="mi">2</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">kube</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">ntmwx</span><span class="w">                                        </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">2</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">kube</span><span class="o">-</span><span class="n">scheduler</span><span class="o">-</span><span class="n">js</span><span class="o">-</span><span class="mi">169</span><span class="o">-</span><span class="n">xx</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span><span class="w">            </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">2</span><span class="n">m</span><span class="w"></span>
+<span class="n">kube</span><span class="o">-</span><span class="k">system</span><span class="w">   </span><span class="n">tiller</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="mi">69</span><span class="n">cb6984f</span><span class="o">-</span><span class="mi">77</span><span class="n">nx2</span><span class="w">                           </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">2</span><span class="n">m</span><span class="w"></span>
+<span class="n">support</span><span class="w">       </span><span class="n">support</span><span class="o">-</span><span class="n">nginx</span><span class="o">-</span><span class="n">ingress</span><span class="o">-</span><span class="n">controller</span><span class="o">-</span><span class="n">k4swb</span><span class="w">                  </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">36</span><span class="n">s</span><span class="w"></span>
+<span class="n">support</span><span class="w">       </span><span class="n">support</span><span class="o">-</span><span class="n">nginx</span><span class="o">-</span><span class="n">ingress</span><span class="o">-</span><span class="k">default</span><span class="o">-</span><span class="n">backend</span><span class="o">-</span><span class="n">cb84895fb</span><span class="o">-</span><span class="n">qs9pp</span><span class="w">   </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">36</span><span class="n">s</span><span class="w"></span>
 </pre></div>
 
 
 <p>Make also sure routing is working by accessing with your web browser the address of the Virtual Machine <code>js-169-xx.jetstream-cloud.org</code> and verify you are getting the error message <code>default backend - 404</code>.</p>
 <p>Then SSH to the other server and set it up as a worker following the instructions in "Setup a Worker Node" at <a href="https://github.com/data-8/kubeadm-bootstrap">https://github.com/data-8/kubeadm-bootstrap</a>,</p>
 <p>Once the setup is complete on the worker, log back in to the master and check that the worker joined Kubernetes:</p>
-<div class="highlight"><pre><span></span>zonca@js-169-xx:~/kubeadm-bootstrap$ sudo kubectl get nodes
-NAME                             STATUS    ROLES     AGE       VERSION
-js-168-yyy.jetstream-cloud.org   Ready     &lt;none&gt;    1m        v1.9.2
-js-169-xx.jetstream-cloud.org    Ready     master    2h        v1.9.2
+<div class="highlight"><pre><span></span><span class="n">zonca</span><span class="nv">@js</span><span class="o">-</span><span class="mi">169</span><span class="o">-</span><span class="nl">xx</span><span class="p">:</span><span class="o">~/</span><span class="n">kubeadm</span><span class="o">-</span><span class="n">bootstrap</span><span class="err">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="n">nodes</span><span class="w"></span>
+<span class="n">NAME</span><span class="w">                             </span><span class="n">STATUS</span><span class="w">    </span><span class="n">ROLES</span><span class="w">     </span><span class="n">AGE</span><span class="w">       </span><span class="n">VERSION</span><span class="w"></span>
+<span class="n">js</span><span class="o">-</span><span class="mi">168</span><span class="o">-</span><span class="n">yyy</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span><span class="w">   </span><span class="n">Ready</span><span class="w">     </span><span class="o">&lt;</span><span class="k">none</span><span class="o">&gt;</span><span class="w">    </span><span class="mi">1</span><span class="n">m</span><span class="w">        </span><span class="n">v1</span><span class="mf">.9.2</span><span class="w"></span>
+<span class="n">js</span><span class="o">-</span><span class="mi">169</span><span class="o">-</span><span class="n">xx</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span><span class="w">    </span><span class="n">Ready</span><span class="w">     </span><span class="n">master</span><span class="w">    </span><span class="mi">2</span><span class="n">h</span><span class="w">        </span><span class="n">v1</span><span class="mf">.9.2</span><span class="w"></span>
 </pre></div>
 
 
@@ -94,17 +94,17 @@ We woud like to provide users with a permament home that would be available acro
 <p>First we want to login again to Jetstream web interface and create 2 Volumes (for example 10 GB) and attach them one each to the master and to the first node, these will be automatically mounted on <code>/vol_b</code>, with no need of rebooting the servers.</p>
 <p>Kubernetes has capability to provide Permanent Volumes but it needs a backend distributed file system. In this tutorial we will be using <a href="https://rook.io/">Rook</a> which sets up the Ceph distributed filesystem across the nodes.</p>
 <p>We can first use Helm to install the Rook services (I ran my tests with <code>v0.6.1</code>):</p>
-<div class="highlight"><pre><span></span>sudo helm repo add rook-alpha https://charts.rook.io/alpha
-sudo helm install rook-alpha/rook
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="n">repo</span> <span class="k">add</span> <span class="n">rook</span><span class="o">-</span><span class="n">alpha</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">charts</span><span class="p">.</span><span class="n">rook</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">alpha</span>
+<span class="n">sudo</span> <span class="n">helm</span> <span class="n">install</span> <span class="n">rook</span><span class="o">-</span><span class="n">alpha</span><span class="o">/</span><span class="n">rook</span>
 </pre></div>
 
 
 <p>Then check that the pods have started:</p>
-<div class="highlight"><pre><span></span>zonca@js-xxx-xxx:~/kubeadm-bootstrap$ sudo kubectl get pods
-NAME                            READY     STATUS    RESTARTS   AGE
-rook-agent-2v86r                1/1       Running   0          1h
-rook-agent-7dfl9                1/1       Running   0          1h
-rook-operator-88fb8f6f5-tss5t   1/1       Running   0          1h
+<div class="highlight"><pre><span></span><span class="n">zonca</span><span class="nv">@js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="nl">xxx</span><span class="p">:</span><span class="o">~/</span><span class="n">kubeadm</span><span class="o">-</span><span class="n">bootstrap</span><span class="err">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="n">pods</span><span class="w"></span>
+<span class="n">NAME</span><span class="w">                            </span><span class="n">READY</span><span class="w">     </span><span class="n">STATUS</span><span class="w">    </span><span class="n">RESTARTS</span><span class="w">   </span><span class="n">AGE</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">agent</span><span class="o">-</span><span class="mi">2</span><span class="n">v86r</span><span class="w">                </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">1</span><span class="n">h</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">agent</span><span class="o">-</span><span class="mi">7</span><span class="n">dfl9</span><span class="w">                </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">1</span><span class="n">h</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">operator</span><span class="o">-</span><span class="mi">88</span><span class="n">fb8f6f5</span><span class="o">-</span><span class="n">tss5t</span><span class="w">   </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">1</span><span class="n">h</span><span class="w"></span>
 </pre></div>
 
 
@@ -116,34 +116,34 @@ rook-operator-88fb8f6f5-tss5t   1/1       Running   0          1h
 <li><code>versionTag</code>: make sure this is the same as your <code>rook</code> version (you can find it with <code>sudo helm ls</code>)</li>
 </ul>
 <p>Then run it with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl create -f rook-cluster.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">rook</span><span class="o">-</span><span class="k">cluster</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
 <p>And wait for the services to launch:</p>
-<div class="highlight"><pre><span></span>zonca@js-xxx-xxx:~/kubeadm-bootstrap$ sudo kubectl -n rook get pods
-NAME                              READY     STATUS    RESTARTS   AGE
-rook-api-68b87d48d5-xmkpv         1/1       Running   0          6m
-rook-ceph-mgr0-5ddd685b65-kw9bz   1/1       Running   0          6m
-rook-ceph-mgr1-5fcf599447-j7bpn   1/1       Running   0          6m
-rook-ceph-mon0-g7xsk              1/1       Running   0          7m
-rook-ceph-mon1-zbfqt              1/1       Running   0          7m
-rook-ceph-mon2-c6rzf              1/1       Running   0          6m
-rook-ceph-osd-82lj5               1/1       Running   0          6m
-rook-ceph-osd-cpln8               1/1       Running   0          6m
+<div class="highlight"><pre><span></span><span class="n">zonca</span><span class="nv">@js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="nl">xxx</span><span class="p">:</span><span class="o">~/</span><span class="n">kubeadm</span><span class="o">-</span><span class="n">bootstrap</span><span class="err">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="n">rook</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="n">pods</span><span class="w"></span>
+<span class="n">NAME</span><span class="w">                              </span><span class="n">READY</span><span class="w">     </span><span class="n">STATUS</span><span class="w">    </span><span class="n">RESTARTS</span><span class="w">   </span><span class="n">AGE</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">api</span><span class="o">-</span><span class="mi">68</span><span class="n">b87d48d5</span><span class="o">-</span><span class="n">xmkpv</span><span class="w">         </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">6</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mgr0</span><span class="o">-</span><span class="mi">5</span><span class="n">ddd685b65</span><span class="o">-</span><span class="n">kw9bz</span><span class="w">   </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">6</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mgr1</span><span class="o">-</span><span class="mi">5</span><span class="n">fcf599447</span><span class="o">-</span><span class="n">j7bpn</span><span class="w">   </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">6</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon0</span><span class="o">-</span><span class="n">g7xsk</span><span class="w">              </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">7</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon1</span><span class="o">-</span><span class="n">zbfqt</span><span class="w">              </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">7</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon2</span><span class="o">-</span><span class="n">c6rzf</span><span class="w">              </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">6</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">osd</span><span class="o">-</span><span class="mi">82</span><span class="n">lj5</span><span class="w">               </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">6</span><span class="n">m</span><span class="w"></span>
+<span class="n">rook</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">osd</span><span class="o">-</span><span class="n">cpln8</span><span class="w">               </span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="w">       </span><span class="n">Running</span><span class="w">   </span><span class="mi">0</span><span class="w">          </span><span class="mi">6</span><span class="n">m</span><span class="w"></span>
 </pre></div>
 
 
 <p>This step launches the distributed file system Ceph on all nodes.</p>
 <p>Finally we can create a new StorageClass which provides block storage for the pods to store data persistently, get <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/storage_rook/rook-storageclass.yaml"><code>rook-storageclass.yaml</code> from the same repository we used before</a> and execute with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl create -f rook-storageclass.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">rook</span><span class="o">-</span><span class="n">storageclass</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
 <p>You should now have the rook storageclass available:</p>
-<div class="highlight"><pre><span></span>sudo kubectl get storageclass
-NAME         PROVISIONER
-rook-block   rook.io/block
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">storageclass</span>
+<span class="n">NAME</span>         <span class="n">PROVISIONER</span>
+<span class="n">rook</span><span class="o">-</span><span class="n">block</span>   <span class="n">rook</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">block</span>
 </pre></div>
 
 
@@ -151,27 +151,27 @@ rook-block   rook.io/block
 <p>Optionally, we can deploy a simple pod to verify that the storage system is working properly.</p>
 <p>You can copy <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/storage_rook/alpine-rook.yaml"><code>alpine-rook.yaml</code> from Github</a>
 and launch it with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl create -f alpine-rook.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">alpine</span><span class="o">-</span><span class="n">rook</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
 <p>It is a very small pod with Alpine Linux that creates a 2 GB volume from Rook and mounts it on <code>/data</code>.</p>
 <p>This creates a Pod with Alpine Linux that requests a Persistent Volume Claim to be mounted under <code>/data</code>. The Persistent Volume Claim specified the type of storage and its size. Once the Pod is created, it asks the Persistent Volume Claim to actually request Rook to prepare a Persistent Volume that is then mounted into the Pod.</p>
 <p>We can verify the Persistent Volumes are created and associated with the pod, check:</p>
-<div class="highlight"><pre><span></span>sudo kubectl get pv
-sudo kubectl get pvc
-sudo kubectl get logs alpine
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">pv</span>
+<span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">pvc</span>
+<span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">logs</span> <span class="n">alpine</span>
 </pre></div>
 
 
 <p>We can get a shell in the pod with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl exec -it alpine  -- /bin/sh
+<div class="highlight"><pre><span></span><span class="nv">sudo</span> <span class="nv">kubectl</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">it</span> <span class="nv">alpine</span>  <span class="o">--</span> <span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">sh</span>
 </pre></div>
 
 
 <p>access <code>/data/</code> and make sure we can write some files.</p>
 <p>Once you have completed testing, you can delete the pod and the Persistent Volume Claim with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl delete -f alpine-rook.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">delete</span> <span class="o">-</span><span class="n">f</span> <span class="n">alpine</span><span class="o">-</span><span class="n">rook</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
@@ -180,31 +180,31 @@ sudo kubectl get logs alpine
 <p>We need <code>kube-lego</code> to automatically get a HTTPS certificate from Letsencrypt,
 For more information see the Ingress section on the <a href="http://zero-to-jupyterhub.readthedocs.io/en/latest/advanced.html">Zero to Jupyterhub Advanced topics</a>.</p>
 <p>First we need to customize the Kube Lego configuration, edit the <code>config_kube-lego_helm.yaml</code> file from the repository and set your email address, then:</p>
-<div class="highlight"><pre><span></span>sudo helm install stable/kube-lego --namespace=support --name=lego -f config_kube-lego_helm.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="n">install</span> <span class="k">stable</span><span class="o">/</span><span class="n">kube</span><span class="o">-</span><span class="n">lego</span> <span class="c1">--namespace=support --name=lego -f config_kube-lego_helm.yaml</span>
 </pre></div>
 
 
 <p>Then after you deploy Jupyterhub if you have some HTTPS trouble, you should check the logs of the kube-lego pod. First find the name of the pod with:</p>
-<div class="highlight"><pre><span></span>sudo kubectl get pods -n support
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">support</span>
 </pre></div>
 
 
 <p>Then check its logs:</p>
-<div class="highlight"><pre><span></span>sudo kubectl logs -n support lego-kube-lego-xxxxx-xxx
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="n">logs</span> <span class="o">-</span><span class="n">n</span> <span class="n">support</span> <span class="n">lego</span><span class="o">-</span><span class="n">kube</span><span class="o">-</span><span class="n">lego</span><span class="o">-</span><span class="n">xxxxx</span><span class="o">-</span><span class="n">xxx</span>
 </pre></div>
 
 
 <h2>Install Jupyterhub</h2>
 <p>Read all of the documentation of "Zero to Jupyterhub", then download <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/config_jupyterhub_helm.yaml"><code>config_jupyterhub_helm.yaml</code> from the repository</a> and customize it with the URL of the master node (for Jetstream <code>js-xxx-xxx.jetstream-cloud.org</code>) and generate the random strings for security, finally run the Helm chart:</p>
-<div class="highlight"><pre><span></span>sudo helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-sudo helm repo update
-sudo helm install jupyterhub/jupyterhub --version=v0.6 --name=jup \
-    --namespace=jup -f config_jupyterhub_helm.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="n">repo</span> <span class="k">add</span> <span class="n">jupyterhub</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">jupyterhub</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">helm</span><span class="o">-</span><span class="n">chart</span><span class="o">/</span>
+<span class="n">sudo</span> <span class="n">helm</span> <span class="n">repo</span> <span class="k">update</span>
+<span class="n">sudo</span> <span class="n">helm</span> <span class="n">install</span> <span class="n">jupyterhub</span><span class="o">/</span><span class="n">jupyterhub</span> <span class="c1">--version=v0.6 --name=jup \</span>
+    <span class="c1">--namespace=jup -f config_jupyterhub_helm.yaml</span>
 </pre></div>
 
 
 <p>Once you modify the configuration you can update the deployment with:</p>
-<div class="highlight"><pre><span></span>sudo helm upgrade jup jupyterhub/jupyterhub -f config_jupyterhub_helm.yaml
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">helm</span> <span class="n">upgrade</span> <span class="n">jup</span> <span class="n">jupyterhub</span><span class="o">/</span><span class="n">jupyterhub</span> <span class="o">-</span><span class="n">f</span> <span class="n">config_jupyterhub_helm</span><span class="p">.</span><span class="n">yaml</span>
 </pre></div>
 
 
@@ -212,19 +212,19 @@ sudo helm install jupyterhub/jupyterhub --version=v0.6 --name=jup \
 <p>Connect to the public URL of your master node instance at: <a href="https://js-xxx-xxx.jetstream-cloud.org">https://js-xxx-xxx.jetstream-cloud.org</a></p>
 <p>Try to login with your XSEDE username and password and check if Jupyterhub works properly.</p>
 <p>If something is wrong, check:</p>
-<div class="highlight"><pre><span></span>sudo kubectl --namespace=jup get pods
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="c1">--namespace=jup get pods</span>
 </pre></div>
 
 
 <p>Get the name of the <code>hub</code> pod and check the logs:</p>
-<div class="highlight"><pre><span></span>sudo kubectl --namespace=jup logs hub-xxxx-xxxxxxx
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="c1">--namespace=jup logs hub-xxxx-xxxxxxx</span>
 </pre></div>
 
 
 <p>Check that Rook is working properly:</p>
-<div class="highlight"><pre><span></span>sudo kubectl --namespace=jup get pv
-sudo kubectl --namespace=jup get pvc
-sudo kubectl --namespace=jup describe pvc claim-YOURXSEDEUSERNAME
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="c1">--namespace=jup get pv</span>
+<span class="n">sudo</span> <span class="n">kubectl</span> <span class="c1">--namespace=jup get pvc</span>
+<span class="n">sudo</span> <span class="n">kubectl</span> <span class="c1">--namespace=jup describe pvc claim-YOURXSEDEUSERNAME</span>
 </pre></div>
 
 
@@ -234,8 +234,8 @@ sudo kubectl --namespace=jup describe pvc claim-YOURXSEDEUSERNAME
 Once the node joins Kubernetes, it will be automatically used as a node for the distributed filesystem by Rook and be available to host user containers.</p>
 <h3>Remove a server from Kubernetes</h3>
 <p>Launch first the <code>kubectl drain</code> command to move the currently active pods to other nodes:</p>
-<div class="highlight"><pre><span></span>sudo kubectl get nodes
-sudo kubectl drain &lt;node name&gt;
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">nodes</span>
+<span class="n">sudo</span> <span class="n">kubectl</span> <span class="n">drain</span> <span class="o">&lt;</span><span class="n">node</span> <span class="n">name</span><span class="o">&gt;</span>
 </pre></div>
 
 

@@ -89,34 +89,34 @@ Details about the setup:</p>
 <li>add the hostname of the machine (check by running <code>hostname</code>) to <code>/etc/hosts</code>, i.e. the first line should become something like <code>127.0.0.1 localhost jupyterhub</code> if <code>jupyterhub</code> is the hostname</li>
 </ul>
 <h2>Setup Jupyterhub</h2>
-<div class="highlight"><pre><span></span> wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
- bash Miniconda3-latest-Linux-x86_64.sh
- ```
+<div class="highlight"><pre><span></span> <span class="n">wget</span> <span class="c1">--no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh</span>
+ <span class="n">bash</span> <span class="n">Miniconda3</span><span class="o">-</span><span class="n">latest</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">x86_64</span><span class="p">.</span><span class="n">sh</span>
+ <span class="o">```</span>
 
- use all defaults, answer &quot;yes&quot; to modify PATH
+ <span class="n">use</span> <span class="k">all</span> <span class="k">defaults</span><span class="p">,</span> <span class="n">answer</span> <span class="ss">&quot;yes&quot;</span> <span class="k">to</span> <span class="k">modify</span> <span class="n">PATH</span>
 
- ```
-sudo apt-get install npm nodejs-legacy
-sudo npm install -g configurable-http-proxy
-conda install traitlets tornado jinja2 sqlalchemy 
-pip install jupyterhub
+ <span class="o">```</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">npm</span> <span class="n">nodejs</span><span class="o">-</span><span class="n">legacy</span>
+<span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="o">-</span><span class="k">g</span> <span class="n">configurable</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">proxy</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">traitlets</span> <span class="n">tornado</span> <span class="n">jinja2</span> <span class="n">sqlalchemy</span> 
+<span class="n">pip</span> <span class="n">install</span> <span class="n">jupyterhub</span>
 </pre></div>
 
 
 <p>For authentication to work, the <code>ubuntu</code> user needs to be able to read the <code>/etc/shadow</code> file:</p>
-<div class="highlight"><pre><span></span>sudo adduser ubuntu shadow
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">adduser</span> <span class="n">ubuntu</span> <span class="n">shadow</span>
 </pre></div>
 
 
 <h2>Setup the web server</h2>
 <p>We will use the NGINX web server to proxy Jupyterhub and handle HTTPS for us, this is recommended for deployments on the public internet.</p>
-<div class="highlight"><pre><span></span>sudo apt install nginx
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">nginx</span>
 </pre></div>
 
 
 <p><strong>SSL Certificate</strong>: Optionally later, once we have assigned a domain to the Virtual Machine, we can install <code>letsencrypt</code> and get a real certificate, <a href="http://zonca.github.io/2016/04/jupyterhub-image-sdsc-cloud.html">see my followup tutorial</a>, for simplicity here we are just using self-signed certificates that will give warnings on the first time users connect to the server, but still will keep the traffic encrypted.</p>
-<div class="highlight"><pre><span></span>sudo mkdir /etc/nginx/ssl
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">ssl</span>
+<span class="n">sudo</span> <span class="n">openssl</span> <span class="n">req</span> <span class="o">-</span><span class="n">x509</span> <span class="o">-</span><span class="n">nodes</span> <span class="o">-</span><span class="n">days</span> <span class="mi">365</span> <span class="o">-</span><span class="n">newkey</span> <span class="n">rsa</span><span class="p">:</span><span class="mi">2048</span> <span class="o">-</span><span class="n">keyout</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">ssl</span><span class="o">/</span><span class="n">nginx</span><span class="p">.</span><span class="k">key</span> <span class="o">-</span><span class="k">out</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">ssl</span><span class="o">/</span><span class="n">nginx</span><span class="p">.</span><span class="n">crt</span>
 </pre></div>
 
 
@@ -127,21 +127,21 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/
 <ul>
 <li>Source: https://docs.docker.com/engine/installation/linux/ubuntulinux/#prerequisites</li>
 </ul>
-<div class="highlight"><pre><span></span>sudo apt update
-sudo apt install apt-transport-https ca-certificates
-sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-echo &quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&quot; | sudo tee /etc/apt/sources.list.d/docker.list 
-sudo apt update
-sudo apt install docker-engine
-sudo usermod -aG docker ubuntu
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="k">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span> <span class="n">ca</span><span class="o">-</span><span class="n">certificates</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">key</span> <span class="n">adv</span> <span class="c1">--keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</span>
+<span class="n">echo</span> <span class="ss">&quot;deb https://apt.dockerproject.org/repo ubuntu-trusty main&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">docker</span><span class="p">.</span><span class="n">list</span> 
+<span class="n">sudo</span> <span class="n">apt</span> <span class="k">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">docker</span><span class="o">-</span><span class="n">engine</span>
+<span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">aG</span> <span class="n">docker</span> <span class="n">ubuntu</span>
 </pre></div>
 
 
 <p>Logout and login again for the group to take effect</p>
 <h2>Install and configure DockerSpawner</h2>
-<div class="highlight"><pre><span></span>pip install dockerspawner
-docker pull jupyter/systemuser
-conda install ipython jupyter
+<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">dockerspawner</span>
+<span class="n">docker</span> <span class="n">pull</span> <span class="n">jupyter</span><span class="o">/</span><span class="n">systemuser</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">ipython</span> <span class="n">jupyter</span>
 </pre></div>
 
 
@@ -162,9 +162,9 @@ conda install ipython jupyter
 Once you have a custom domain, you can configure letsencrypt to have a proper HTTPS certificate so that users do not get any warning when connecting to the instance. I will add this to the optional steps below.</p>
 <h1>Optional: Automatically start jupyterhub at boot</h1>
 <p>Save https://gist.github.com/zonca/aaeaf3c4e7339127b482d759866e5f39 as <code>/etc/init.d/jupyterhub</code></p>
-<div class="highlight"><pre><span></span>sudo chmod +x /etc/init.d/jupyterhub
-sudo service jupyterhub start
-sudo update-rc.d jupyterhub defaults
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">jupyterhub</span>
+<span class="n">sudo</span> <span class="n">service</span> <span class="n">jupyterhub</span> <span class="k">start</span>
+<span class="n">sudo</span> <span class="k">update</span><span class="o">-</span><span class="n">rc</span><span class="p">.</span><span class="n">d</span> <span class="n">jupyterhub</span> <span class="k">defaults</span>
 </pre></div>
 
 
@@ -197,17 +197,17 @@ sudo update-rc.d jupyterhub defaults
 <li><code>cd dockerspawner</code></li>
 </ul>
 <p>Modify the file <code>singleuser/Dockerfile</code>, replace <code>FROM jupyter/scipy-notebook</code> with <code>FROM jupyter/datascience-notebook</code></p>
-<div class="highlight"><pre><span></span>docker build -t datascience-singleuser singleuser
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">datascience</span><span class="o">-</span><span class="n">singleuser</span> <span class="n">singleuser</span>
 </pre></div>
 
 
 <p>Modify the file <code>systemuser/Dockerfile</code>, replace <code>FROM jupyter/singleuser</code> with <code>FROM datascience-singleuser</code></p>
-<div class="highlight"><pre><span></span>docker build -t datascience-systemuser systemuser
+<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">datascience</span><span class="o">-</span><span class="n">systemuser</span> <span class="n">systemuser</span>
 </pre></div>
 
 
 <p>Finally in <code>jupyterhub_config.py</code>, select the new docker image:</p>
-<div class="highlight"><pre><span></span>c.DockerSpawner.container_image = &quot;datascience-systemuser&quot;
+<div class="highlight"><pre><span></span><span class="k">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">container_image</span> <span class="o">=</span> <span class="ss">&quot;datascience-systemuser&quot;</span>
 </pre></div>
         </div>
     </article>

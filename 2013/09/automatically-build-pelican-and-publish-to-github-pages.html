@@ -64,14 +64,14 @@ Thanks to this, it is possible to create a quick blog post from the Github web i
 
 
 <p>In order to create the encrypted token under env, you can login to the Github web interface to get an <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use">Authentication Token</a>, and then install the <code>travis</code> command line tool with:</p>
-<div class="highlight"><pre><span></span># on Ubuntu you need ruby dev
-sudo apt-get install ruby1.9.1-dev
-sudo gem install travis
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">on</span> <span class="n">Ubuntu</span> <span class="n">you</span> <span class="n">need</span> <span class="n">ruby</span> <span class="n">dev</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">ruby1</span><span class="p">.</span><span class="mi">9</span><span class="p">.</span><span class="mi">1</span><span class="o">-</span><span class="n">dev</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">travis</span>
 </pre></div>
 
 
 <p>and run from inside the repository:</p>
-<div class="highlight"><pre><span></span>travis encrypt GH_TOKEN=LONGTOKENFROMGITHUB --add env.global
+<div class="highlight"><pre><span></span><span class="n">travis</span> <span class="n">encrypt</span> <span class="n">GH_TOKEN</span><span class="o">=</span><span class="n">LONGTOKENFROMGITHUB</span> <span class="c1">--add env.global</span>
 </pre></div>
 
 

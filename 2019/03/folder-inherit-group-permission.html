@@ -52,12 +52,12 @@ are working on and you can share data with your collaborators.</p>
 belong to the Unix group of that folder, and not your default group.
 You first set the right group on the folder, recursively so that older files will get
 the right permissions:</p>
-<div class="highlight"><pre><span></span>chown -R somegroup sharedfolder
+<div class="highlight"><pre><span></span><span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">somegroup</span> <span class="n">sharedfolder</span>
 </pre></div>
 
 
 <p>Then you set the SGID so future files will automatically belong to <code>somegroup</code>:</p>
-<div class="highlight"><pre><span></span>chmod g+s sharedfolder
+<div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="k">g</span><span class="o">+</span><span class="n">s</span> <span class="n">sharedfolder</span>
 </pre></div>
 
 

@@ -73,7 +73,7 @@ for SDSC Cloud the address is <code>http://xxx-xxx-xxx-xxx.compute.cloud.sdsc.ed
 <p>Set the configuration file, see <a href="https://gist.github.com/zonca/55f7949983e56088186e99db53548ded"><code>spawner.py</code> on this Gist</a> and copy it into the <code>/opt/tljh/config/jupyterhub_config.d</code> folder, then add the private SSH key of the tunnelbot user, which is a user on the Virtual Machine with no shell (set <code>/bin/false</code> in <code>/etc/passwd</code>) but that can setup a SSH tunnel from Comet back to the Hub.
 Also customize all paths and usernames in the file.</p>
 <p>Reload the Jupyterhub configuration with:</p>
-<div class="highlight"><pre><span></span>tljh-config reload
+<div class="highlight"><pre><span></span><span class="n">tljh</span><span class="o">-</span><span class="n">config</span> <span class="n">reload</span>
 </pre></div>
 
 

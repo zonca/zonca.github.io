@@ -72,7 +72,7 @@ In order to automate running the test scripts on Travis-CI, it is important that
 <ul>
 <li>
 <p>Create a new branch on your repository:</p>
-<div class="highlight"><pre><span></span>git checkout -b test_travis
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">test_travis</span>
 </pre></div>
 
 
@@ -100,21 +100,21 @@ In order to automate running the test scripts on Travis-CI, it is important that
 </ul>
 <h2>Python example</h2>
 <p>In the following example, Travis-CI will create 8 builds, each of the 4 versions of Python will be tested with the 2 versions of <code>numpy</code>:</p>
-<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
-<span class="n">python</span><span class="o">:</span>
-  <span class="o">-</span> <span class="s2">&quot;2.7&quot;</span>
-  <span class="o">-</span> <span class="s2">&quot;3.4&quot;</span>
-  <span class="o">-</span> <span class="s2">&quot;3.5&quot;</span>
-  <span class="o">-</span> <span class="s2">&quot;3.6&quot;</span>
-<span class="n">env</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">NUMPY_VERSION</span><span class="o">=</span><span class="mf">1.12</span><span class="o">.</span><span class="mi">1</span>
-  <span class="o">-</span> <span class="n">NUMPY_VERSION</span><span class="o">=</span><span class="mf">1.13</span><span class="o">.</span><span class="mi">1</span>
-<span class="err">#</span> <span class="n">command</span> <span class="n">to</span> <span class="n">install</span> <span class="n">dependencies</span><span class="o">,</span> <span class="n">requirements</span><span class="o">.</span><span class="na">txt</span> <span class="n">should</span> <span class="n">NOT</span> <span class="k">include</span> <span class="n">numpy</span>
-<span class="n">install</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="na">txt</span> <span class="n">numpy</span><span class="o">==</span><span class="n">$NUMPY_VERSION</span>
-<span class="err">#</span> <span class="n">command</span> <span class="n">to</span> <span class="n">run</span> <span class="n">tests</span>
-<span class="n">script</span><span class="o">:</span>
-  <span class="o">-</span> <span class="n">pytest</span> <span class="err">#</span> <span class="n">or</span> <span class="n">py</span><span class="o">.</span><span class="na">test</span> <span class="k">for</span> <span class="n">Python</span> <span class="n">versions</span> <span class="mf">3.5</span> <span class="n">and</span> <span class="n">below</span>
+<div class="highlight"><pre><span></span><span class="nv">language</span>: <span class="nv">python</span>
+<span class="nv">python</span>:
+  <span class="o">-</span> <span class="s2">&quot;</span><span class="s">2.7</span><span class="s2">&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;</span><span class="s">3.4</span><span class="s2">&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;</span><span class="s">3.5</span><span class="s2">&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;</span><span class="s">3.6</span><span class="s2">&quot;</span>
+<span class="nv">env</span>:
+  <span class="o">-</span> <span class="nv">NUMPY_VERSION</span><span class="o">=</span><span class="mi">1</span>.<span class="mi">12</span>.<span class="mi">1</span>
+  <span class="o">-</span> <span class="nv">NUMPY_VERSION</span><span class="o">=</span><span class="mi">1</span>.<span class="mi">13</span>.<span class="mi">1</span>
+# <span class="nv">command</span> <span class="nv">to</span> <span class="nv">install</span> <span class="nv">dependencies</span>, <span class="nv">requirements</span>.<span class="nv">txt</span> <span class="nv">should</span> <span class="nv">NOT</span> <span class="k">include</span> <span class="nv">numpy</span>
+<span class="nv">install</span>:
+  <span class="o">-</span> <span class="nv">pip</span> <span class="nv">install</span> <span class="o">-</span><span class="nv">r</span> <span class="nv">requirements</span>.<span class="nv">txt</span> <span class="nv">numpy</span><span class="o">==</span>$<span class="nv">NUMPY_VERSION</span>
+# <span class="nv">command</span> <span class="nv">to</span> <span class="nv">run</span> <span class="nv">tests</span>
+<span class="nv">script</span>:
+  <span class="o">-</span> <span class="nv">pytest</span> # <span class="nv">or</span> <span class="nv">py</span>.<span class="nv">test</span> <span class="k">for</span> <span class="nv">Python</span> <span class="nv">versions</span> <span class="mi">3</span>.<span class="mi">5</span> <span class="nv">and</span> <span class="nv">below</span>
 </pre></div>
 
 
