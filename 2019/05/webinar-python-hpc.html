@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Tag: Comet | Andrea Zonca's blog</title>
+        <title>Webinar about distributed computing with Python | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -18,6 +18,11 @@
         <link rel="stylesheet" href="/theme/css/pygments.css">
         <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
         <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
     </head>
     <body>
         <div class="header">
@@ -33,63 +38,47 @@
         </div>
 
         <div id="content">
-<div class="index">
-    <div class="list">
-        <h1>Tag: Comet</h1>
+<div class="post">
+    <article>
+        <header>
+            <h1>Webinar about distributed computing with Python</h1>
+        </header>
+        <div class='post-content'>
+            <p>Recording available of the webinar I gave about "Distributed computing with Python":</p>
+<ul>
+<li>Threads vs Processes, GIL</li>
+<li>Just-In-Time compilation with Numba</li>
+<li>Processing data larger than memory with Dask</li>
+<li>Distributed computing with Dask</li>
+</ul>
+<p>Live demo on my favorite Supercomputer Comet at the San Diego Supercomputer Center.</p>
+<ul>
+<li><a href="https://www.sdsc.edu/Events/training/webinars/distributed_parallel_computing_with_python_2019/recording/">Webinar recording</a></li>
+<li>Notebooks: <a href="https://github.com/zonca/python_hpc_tutorial">https://github.com/zonca/python_hpc_tutorial</a></li>
+</ul>
+        </div>
+    </article>
+
+    <div class="metadata">
         <ul>
             <li>
-                <a href='/2019/05/webinar-python-hpc.html'>
-                <h2>Webinar about distributed computing with Python</h2>
-                <span>[Thu 30 May 2019]</span>
-                </a>
+                <strong>Published:</strong>
+                <i><time datetime="2019-05-30T15:00:00-07:00">Thu 30 May 2019</time></i>
             </li>
             <li>
-                <a href='/2018/11/jupyterhub-supercomputer.html'>
-                <h2>Deploy JupyterHub on a Supercomputer for a workshop or tutorial 2018 edition</h2>
-                <span>[Wed 07 November 2018]</span>
-                </a>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
             </li>
             <li>
-                <a href='/2018/10/compute-at-sdsc.html'>
-                <h2>Bring your computing to the San Diego Supercomputer Center</h2>
-                <span>[Wed 24 October 2018]</span>
-                </a>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/webinar.html">webinar</a> 
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+<a href="http://zonca.github.io/tag/hpc.html">hpc</a> 
+<a href="http://zonca.github.io/tag/comet.html">Comet</a> 
             </li>
             <li>
-                <a href='/2018/07/pearc18-paper-deploy-jupyterhub-xsede.html'>
-                <h2>PEARC18 Paper on Deploying Jupyterhub at scale on XSEDE</h2>
-                <span>[Mon 23 July 2018]</span>
-                </a>
-            </li>
-            <li>
-                <a href='/2018/07/singularity-2.5-comet.html'>
-                <h2>Updated Singularity images for Comet</h2>
-                <span>[Sun 22 July 2018]</span>
-                </a>
-            </li>
-            <li>
-                <a href='/2017/11/modify-singularity-images.html'>
-                <h2>How to modify Singularity images on a Supercomputer</h2>
-                <span>[Mon 06 November 2017]</span>
-                </a>
-            </li>
-            <li>
-                <a href='/2017/05/jupyterhub-hpc-batchspawner-ssh.html'>
-                <h2>Deploy Jupyterhub on a Supercomputer with SSH Authentication</h2>
-                <span>[Tue 16 May 2017]</span>
-                </a>
-            </li>
-            <li>
-                <a href='/2017/02/sample-deployment-jupyterhub-hpc.html'>
-                <h2>Sample deployment of Jupyterhub in HPC on SDSC Comet</h2>
-                <span>[Sun 26 February 2017]</span>
-                </a>
-            </li>
-            <li>
-                <a href='/2017/01/singularity-hpc-comet.html'>
-                <h2>Run Ubuntu in HPC with Singularity</h2>
-                <span>[Fri 13 January 2017]</span>
-                </a>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
             </li>
         </ul>
     </div>
@@ -111,5 +100,20 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
         </script>
-     </body>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
 </html>

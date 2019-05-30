@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-04-20T00:00:00-07:00</updated><entry><title>Kubernetes monitoring with Prometheus and Grafana</title><link href="http://zonca.github.io/2019/04/kubernetes-monitoring-prometheus-grafana.html" rel="alternate"></link><published>2019-04-20T00:00:00-07:00</published><updated>2019-04-20T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-04-20:/2019/04/kubernetes-monitoring-prometheus-grafana.html</id><summary type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-05-30T15:00:00-07:00</updated><entry><title>Webinar about distributed computing with Python</title><link href="http://zonca.github.io/2019/05/webinar-python-hpc.html" rel="alternate"></link><published>2019-05-30T15:00:00-07:00</published><updated>2019-05-30T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-05-30:/2019/05/webinar-python-hpc.html</id><summary type="html">&lt;p&gt;Recording available of the webinar I gave about "Distributed computing with Python":&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Threads vs Processes, GIL&lt;/li&gt;
+&lt;li&gt;Just-In-Time compilation with Numba&lt;/li&gt;
+&lt;li&gt;Processing data larger than memory with Dask&lt;/li&gt;
+&lt;li&gt;Distributed computing with Dask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Live demo on my favorite Supercomputer Comet at the San Diego Supercomputer Center.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.sdsc.edu/Events/training/webinars/distributed_parallel_computing_with_python_2019/recording/"&gt;Webinar recording&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Notebooks: &lt;a href="https://github.com/zonca/python_hpc_tutorial"&gt;https://github.com …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Recording available of the webinar I gave about "Distributed computing with Python":&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Threads vs Processes, GIL&lt;/li&gt;
+&lt;li&gt;Just-In-Time compilation with Numba&lt;/li&gt;
+&lt;li&gt;Processing data larger than memory with Dask&lt;/li&gt;
+&lt;li&gt;Distributed computing with Dask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Live demo on my favorite Supercomputer Comet at the San Diego Supercomputer Center.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.sdsc.edu/Events/training/webinars/distributed_parallel_computing_with_python_2019/recording/"&gt;Webinar recording&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Notebooks: &lt;a href="https://github.com/zonca/python_hpc_tutorial"&gt;https://github.com/zonca/python_hpc_tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="webinar"></category><category term="python"></category><category term="hpc"></category><category term="Comet"></category></entry><entry><title>Kubernetes monitoring with Prometheus and Grafana</title><link href="http://zonca.github.io/2019/04/kubernetes-monitoring-prometheus-grafana.html" rel="alternate"></link><published>2019-04-20T00:00:00-07:00</published><updated>2019-04-20T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-04-20:/2019/04/kubernetes-monitoring-prometheus-grafana.html</id><summary type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
 Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
 to access those data and provide real-time plotting and inspection capability.
 Moreover, they both provide systems …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.

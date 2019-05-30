@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Andrea Zonca's blog - Andrea Zonca</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Sat, 20 Apr 2019 00:00:00 -0700</lastBuildDate><item><title>Kubernetes monitoring with Prometheus and Grafana</title><link>http://zonca.github.io/2019/04/kubernetes-monitoring-prometheus-grafana.html</link><description>&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
+<rss version="2.0"><channel><title>Andrea Zonca's blog - Andrea Zonca</title><link>http://zonca.github.io/</link><description></description><lastBuildDate>Thu, 30 May 2019 15:00:00 -0700</lastBuildDate><item><title>Webinar about distributed computing with Python</title><link>http://zonca.github.io/2019/05/webinar-python-hpc.html</link><description>&lt;p&gt;Recording available of the webinar I gave about "Distributed computing with Python":&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Threads vs Processes, GIL&lt;/li&gt;
+&lt;li&gt;Just-In-Time compilation with Numba&lt;/li&gt;
+&lt;li&gt;Processing data larger than memory with Dask&lt;/li&gt;
+&lt;li&gt;Distributed computing with Dask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Live demo on my favorite Supercomputer Comet at the San Diego Supercomputer Center.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.sdsc.edu/Events/training/webinars/distributed_parallel_computing_with_python_2019/recording/"&gt;Webinar recording&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Notebooks: &lt;a href="https://github.com/zonca/python_hpc_tutorial"&gt;https://github.com …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Thu, 30 May 2019 15:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2019-05-30:/2019/05/webinar-python-hpc.html</guid><category>webinar</category><category>python</category><category>hpc</category><category>Comet</category></item><item><title>Kubernetes monitoring with Prometheus and Grafana</title><link>http://zonca.github.io/2019/04/kubernetes-monitoring-prometheus-grafana.html</link><description>&lt;p&gt;In a production Kubernetes deployment it is necessary to make it easier to monitor the status of the cluster effectively.
 Kubernetes provides Prometheus to gather data from the different components of Kubernetes and Grafana
 to access those data and provide real-time plotting and inspection capability.
 Moreover, they both provide systems …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Andrea Zonca</dc:creator><pubDate>Sat, 20 Apr 2019 00:00:00 -0700</pubDate><guid isPermaLink="false">tag:zonca.github.io,2019-04-20:/2019/04/kubernetes-monitoring-prometheus-grafana.html</guid><category>kubernetes</category><category>kubespray</category><category>jetstream</category><category>jupyterhub</category></item><item><title>Inherit group permission in folder</title><link>http://zonca.github.io/2019/03/folder-inherit-group-permission.html</link><description>&lt;p&gt;I have googled this so many times...&lt;/p&gt;
