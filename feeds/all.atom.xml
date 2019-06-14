@@ -1,5 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-05-30T15:00:00-07:00</updated><entry><title>Webinar about distributed computing with Python</title><link href="http://zonca.github.io/2019/05/webinar-python-hpc.html" rel="alternate"></link><published>2019-05-30T15:00:00-07:00</published><updated>2019-05-30T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-05-30:/2019/05/webinar-python-hpc.html</id><summary type="html">&lt;p&gt;Recording available of the webinar I gave about "Distributed computing with Python":&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-06-14T00:00:00-07:00</updated><entry><title>Deploy Kubernetes and JupyterHub on Jetstream with Magnum</title><link href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</id><summary type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
+JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In my &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;previous tutorials&lt;/a&gt; I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
+JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In my &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;previous tutorials&lt;/a&gt; I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load on JupyterHub. I haven't tested that yet, though, that will come in a following tutorial.&lt;/p&gt;
+&lt;p&gt;Magnum is a technology built into Openstack to deploy Container Orchestration engines based on templates. The main difference with kubespray is that is way less configurable, the user does not have access to modify those templates but has just a number of parameters to set. Instead Kubespray is based on &lt;code&gt;ansible&lt;/code&gt; and the user has full control of how the system is setup, it also supports having more High Availability features like multiple master nodes.
+On the other hand, the &lt;code&gt;ansible&lt;/code&gt; recipe takes a very long time to run, ~30 min, while Magnum creates a cluster in about 10 minutes.&lt;/p&gt;
+&lt;h2&gt;Create the cluster with Magnum&lt;/h2&gt;
+&lt;p&gt;As usual, first checkout the repository with all the configuration files on the machine you will use the Jetstream API from, typically your laptop.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jupyterhub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;jetstream&lt;/span&gt;
+&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;jupyterhub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;jetstream&lt;/span&gt;
+&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;kubernetes_magnum&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then install the OpenStack client, please use these exact versions, also please run at Indiana, which currently has the Rocky release of Openstack, the TACC deployment has an older release of Openstack.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;openstackclient&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;magnumclient&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Load your API credentials from &lt;code&gt;openrc.sh&lt;/code&gt;, check &lt;a href="https://iujetstream.atlassian.net/wiki/spaces/JWT/pages/39682064/Setting+up+openrc.sh"&gt;documentation of the Jetstream wiki for details&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now we are ready to use Magnum to first create a cluster template and then the actual cluster:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;create_template&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;create_cluster&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I have setup a test cluster with only 1 master node and 1 normal node but you can modify that later.&lt;/p&gt;
+&lt;p&gt;Check the status of your cluster, after about 10 minutes, it should be in state &lt;code&gt;CREATE_COMPLETE&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;openstack&lt;/span&gt; &lt;span class="nv"&gt;coe&lt;/span&gt; &lt;span class="nv"&gt;cluster&lt;/span&gt; &lt;span class="k"&gt;show&lt;/span&gt; &lt;span class="nv"&gt;k8s&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Configure kubectl locally&lt;/h3&gt;
+&lt;p&gt;Install the &lt;code&gt;kubectl&lt;/code&gt; client locally, first check the version of the master node:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;floating&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;starts&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="mi"&gt;149&lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;
+&lt;span class="n"&gt;IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;149&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;
+&lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;fedora&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;IP&lt;/span&gt;
+&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;version&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now install the same version following the &lt;a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/"&gt;Kubernetes documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Now configure &lt;code&gt;kubectl&lt;/code&gt; on your laptop to connect to the Kubernetes cluster created with Magnum:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;kubectl_secret&lt;/span&gt;
+&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;kubectl_secret&lt;/span&gt;
+&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="n"&gt;coe&lt;/span&gt; &lt;span class="k"&gt;cluster&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="n"&gt;k8s&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This downloads a configuration file and the required certificates.&lt;/p&gt;
+&lt;p&gt;and returns  &lt;code&gt;export KUBECONFIG=/absolute/path/to/config&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;execute that and then:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;nodes&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Configure storage&lt;/h2&gt;
+&lt;p&gt;Magnum configures a provider that knows how to create Kubernetes volumes using Openstack Cinder,
+but does not configure a &lt;code&gt;storageclass&lt;/code&gt;, we can do that with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;storageclass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yaml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can test this creating a Persistent Volume Claim:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;persistent_volume_claim&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yaml&lt;/span&gt;
+
+&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;describe&lt;/span&gt; &lt;span class="n"&gt;pv&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Name&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;            &lt;span class="n"&gt;pvc&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e8b93455&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;898&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="n"&gt;e9&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a37c&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fa163efb4609&lt;/span&gt;
+&lt;span class="n"&gt;Labels&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;          &lt;span class="n"&gt;failure&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;domain&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;beta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zone&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;nova&lt;/span&gt;
+&lt;span class="n"&gt;Annotations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;     &lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;createdby&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;cinder&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kd"&gt;dynamic&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;provisioner&lt;/span&gt;
+                 &lt;span class="n"&gt;pv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bound&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;by&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;controller&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
+                 &lt;span class="n"&gt;pv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="sr"&gt;/provisioned-by: kubernetes.io/&lt;/span&gt;&lt;span class="n"&gt;cinder&lt;/span&gt;
+&lt;span class="n"&gt;Finalizers&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;      &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pv&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;protection&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;StorageClass&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;standard&lt;/span&gt;
+&lt;span class="n"&gt;Status&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;          &lt;span class="n"&gt;Bound&lt;/span&gt;
+&lt;span class="n"&gt;Claim&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;           &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pvc&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
+&lt;span class="n"&gt;Reclaim&lt;/span&gt; &lt;span class="n"&gt;Policy&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="n"&gt;Delete&lt;/span&gt;
+&lt;span class="n"&gt;Access&lt;/span&gt; &lt;span class="n"&gt;Modes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;    &lt;span class="n"&gt;RWO&lt;/span&gt;
+&lt;span class="n"&gt;Capacity&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;        &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="n"&gt;Gi&lt;/span&gt;
+&lt;span class="n"&gt;Node&lt;/span&gt; &lt;span class="n"&gt;Affinity&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;none&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="n"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;         
+&lt;span class="n"&gt;Source&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;       &lt;span class="n"&gt;Cinder&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;Persistent&lt;/span&gt; &lt;span class="n"&gt;Disk&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;OpenStack&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;VolumeID&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;   &lt;span class="mi"&gt;2795724&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ef11&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4053&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;9922&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d854107c731f&lt;/span&gt;
+    &lt;span class="n"&gt;FSType&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;     
+    &lt;span class="n"&gt;ReadOnly&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;   &lt;span class="kc"&gt;false&lt;/span&gt;
+    &lt;span class="n"&gt;SecretRef&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="n"&gt;nil&lt;/span&gt;
+&lt;span class="n"&gt;Events&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;         &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;none&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can also test creating an actual pod with a persistent volume and check
+that the volume is successfully mounted and the pod started:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="p"&gt;..&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;alpine&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;persistent&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;volume&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yaml&lt;/span&gt;
+&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;describe&lt;/span&gt; &lt;span class="n"&gt;pod&lt;/span&gt; &lt;span class="n"&gt;alpine&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Install Helm&lt;/h2&gt;
+&lt;p&gt;The Kubernetes deployment from Magnum is not as complete as the one out of Kubespray, we need
+to setup &lt;code&gt;helm&lt;/code&gt; and the NGINX ingress ourself. We would also need to setup a system to automatically
+deploy HTTPS certificates, I'll add this later on.&lt;/p&gt;
+&lt;p&gt;First &lt;a href="https://helm.sh/docs/using_helm/#installing-helm"&gt;install the Helm client on your laptop&lt;/a&gt;, make
+sure you have configured &lt;code&gt;kubectl&lt;/code&gt; correctly.&lt;/p&gt;
+&lt;p&gt;Then we can create the &lt;code&gt;tiller&lt;/code&gt; pod inside Kubernetes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;helm&lt;/span&gt; &lt;span class="nv"&gt;init&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;service&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;account&lt;/span&gt; &lt;span class="nv"&gt;tiller&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="k"&gt;wait&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;history&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;max&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;pods&lt;/span&gt; &lt;span class="c1"&gt;--all-namespaces&lt;/span&gt;
+&lt;span class="n"&gt;NAMESPACE&lt;/span&gt;     &lt;span class="n"&gt;NAME&lt;/span&gt;                                       &lt;span class="n"&gt;READY&lt;/span&gt;   &lt;span class="n"&gt;STATUS&lt;/span&gt;    &lt;span class="n"&gt;RESTARTS&lt;/span&gt;   &lt;span class="n"&gt;AGE&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;coredns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;78&lt;/span&gt;&lt;span class="n"&gt;df4bf8ff&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f2xvs&lt;/span&gt;                   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;0&lt;/span&gt;          &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;coredns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;78&lt;/span&gt;&lt;span class="n"&gt;df4bf8ff&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pnj7g&lt;/span&gt;                   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;0&lt;/span&gt;          &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;heapster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;74&lt;/span&gt;&lt;span class="n"&gt;f98f6489&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xsw52&lt;/span&gt;                  &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;0&lt;/span&gt;          &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;986&lt;/span&gt;&lt;span class="n"&gt;c49747&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;m64g&lt;/span&gt;        &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;0&lt;/span&gt;          &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dashboard&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;54&lt;/span&gt;&lt;span class="n"&gt;cb7b5997&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c2vwx&lt;/span&gt;      &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;0&lt;/span&gt;          &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;controller&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;manager&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;tf5mc&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;          &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;   &lt;span class="n"&gt;tiller&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="n"&gt;b5cd64488&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;fkff&lt;/span&gt;             &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;     &lt;span class="n"&gt;Running&lt;/span&gt;   &lt;span class="mi"&gt;0&lt;/span&gt;          &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And check that all the versions agree:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;helm&lt;/span&gt; &lt;span class="k"&gt;version&lt;/span&gt;
+&lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="k"&gt;version&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;Version&lt;/span&gt;&lt;span class="err"&gt;{&lt;/span&gt;&lt;span class="n"&gt;SemVer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;v2.11.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GitCommit&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;2e55dbe1fdb5fdb96b75ff144a339489417b146b&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GitTreeState&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;clean&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="k"&gt;version&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;Version&lt;/span&gt;&lt;span class="err"&gt;{&lt;/span&gt;&lt;span class="n"&gt;SemVer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;v2.11.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GitCommit&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;2e55dbe1fdb5fdb96b75ff144a339489417b146b&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GitTreeState&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;clean&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Setup NGINX ingress&lt;/h2&gt;
+&lt;p&gt;We need to have the NGINX web server to act as frontend to the services running inside the Kubernetes cluster.&lt;/p&gt;
+&lt;h3&gt;Open HTTP and HTTPS ports&lt;/h3&gt;
+&lt;p&gt;First we need to open the HTTP and HTTPS ports on the master node, you can either connect to the Horizon interface,
+create new rule named &lt;code&gt;http_https&lt;/code&gt;, then add 2 rules, in the Rule drop down choose HTTP and HTTPS; or from the command line:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="k"&gt;security&lt;/span&gt; &lt;span class="k"&gt;group&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="n"&gt;http_https&lt;/span&gt;
+&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="k"&gt;security&lt;/span&gt; &lt;span class="k"&gt;group&lt;/span&gt; &lt;span class="k"&gt;rule&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="c1"&gt;--ingress --protocol tcp --dst-port 80 http_https &lt;/span&gt;
+&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="k"&gt;security&lt;/span&gt; &lt;span class="k"&gt;group&lt;/span&gt; &lt;span class="k"&gt;rule&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="c1"&gt;--ingress --protocol tcp --dst-port 443 http_https&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then you can find the name of the master node in &lt;code&gt;openstack server list&lt;/code&gt; then add this security group to that instance:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="k"&gt;add&lt;/span&gt; &lt;span class="k"&gt;security&lt;/span&gt; &lt;span class="k"&gt;group&lt;/span&gt;  &lt;span class="n"&gt;k8s&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xxxxxxxxxxxx&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="n"&gt;http_https&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Install NGINX ingress with Helm&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;install_nginx_ingress&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note, the documentation says we should add this annotation to ingress with &lt;code&gt;kubectl edit ingress -n jhub&lt;/code&gt;, but I found out it is not necessary:&lt;/p&gt;
+&lt;p&gt;metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx&lt;/p&gt;
+&lt;p&gt;If this is correctly working, you should be able to run &lt;code&gt;curl localhost&lt;/code&gt; from the master node and get a &lt;code&gt;Default backend: 404&lt;/code&gt; message.&lt;/p&gt;
+&lt;h2&gt;Install JupyterHub&lt;/h2&gt;
+&lt;p&gt;Finally, we can go back to the root of the repository and install JupyterHub, first create the secrets file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;create_secrets&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then edit &lt;code&gt;secrets.yaml&lt;/code&gt; and modify the hostname under &lt;code&gt;hosts&lt;/code&gt; to display the hostname of your master Jetstream instance, i.e. if your instance public floating IP is &lt;code&gt;aaa.bbb.xxx.yyy&lt;/code&gt;, the hostname should be &lt;code&gt;js-xxx-yyy.jetstream-cloud.org&lt;/code&gt; (without &lt;code&gt;http://&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Finally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;install_jhub&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Connect with your browser to &lt;code&gt;js-xxx-yyy.jetstream-cloud.org&lt;/code&gt; to check if it works.&lt;/p&gt;
+&lt;h2&gt;Issues and feedback&lt;/h2&gt;
+&lt;p&gt;Please &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/"&gt;open an issue on the repository&lt;/a&gt; to report any issue or give feedback. Also you find out there there what I am working on next.&lt;/p&gt;
+&lt;h2&gt;Acknowledgments&lt;/h2&gt;
+&lt;p&gt;Many thanks to Jeremy Fischer and Mike Schmidt for solving all my tickets, this required a lot of work on their end to make it working.&lt;/p&gt;</content><category term="kubernetes"></category><category term="openstack"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Webinar about distributed computing with Python</title><link href="http://zonca.github.io/2019/05/webinar-python-hpc.html" rel="alternate"></link><published>2019-05-30T15:00:00-07:00</published><updated>2019-05-30T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-05-30:/2019/05/webinar-python-hpc.html</id><summary type="html">&lt;p&gt;Recording available of the webinar I gave about "Distributed computing with Python":&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Threads vs Processes, GIL&lt;/li&gt;
 &lt;li&gt;Just-In-Time compilation with Numba&lt;/li&gt;

@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2019-05-30T22:03:11-00:00</lastmod>
+<lastmod>2019-06-14T15:11:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2019-05-30T22:03:11-00:00</lastmod>
+<lastmod>2019-06-14T15:11:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2019-05-30T22:03:11-00:00</lastmod>
+<lastmod>2019-06-14T15:11:42-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2019-05-30T22:03:11-00:00</lastmod>
+<lastmod>2019-06-14T15:11:42-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</loc>
+<lastmod>2019-06-14T00:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -950,7 +957,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2019-05-30T15:00:00-07:53</lastmod>
+<lastmod>2019-06-14T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1019,8 +1026,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://zonca.github.io/tag/hackideas.html</loc>
-<lastmod>2013-01-28T21:06:00-07:53</lastmod>
+<loc>http://zonca.github.io/tag/openstack.html</loc>
+<lastmod>2019-06-14T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1068,6 +1075,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://zonca.github.io/tag/hackideas.html</loc>
+<lastmod>2013-01-28T21:06:00-07:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://zonca.github.io/tag/sdsc.html</loc>
 <lastmod>2018-10-24T18:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
@@ -1076,7 +1090,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jetstream.html</loc>
-<lastmod>2019-04-20T00:00:00-07:53</lastmod>
+<lastmod>2019-06-14T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1195,7 +1209,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/kubernetes.html</loc>
-<lastmod>2019-04-20T00:00:00-07:53</lastmod>
+<lastmod>2019-06-14T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1216,7 +1230,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyterhub.html</loc>
-<lastmod>2019-04-20T00:00:00-07:53</lastmod>
+<lastmod>2019-06-14T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1461,7 +1475,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2019-05-30T15:00:00-07:53</lastmod>
+<lastmod>2019-06-14T00:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
