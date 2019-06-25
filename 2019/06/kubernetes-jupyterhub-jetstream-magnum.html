@@ -146,7 +146,7 @@ that the volume is successfully mounted and the pod started:</p>
 
 <h2>Install Helm</h2>
 <p>The Kubernetes deployment from Magnum is not as complete as the one out of Kubespray, we need
-to setup <code>helm</code> and the NGINX ingress ourself. We would also need to setup a system to automatically
+to setup <code>helm</code> and the NGINX ingress ourselves. We would also need to setup a system to automatically
 deploy HTTPS certificates, I'll add this later on.</p>
 <p>First <a href="https://helm.sh/docs/using_helm/#installing-helm">install the Helm client on your laptop</a>, make
 sure you have configured <code>kubectl</code> correctly.</p>
@@ -175,7 +175,7 @@ sure you have configured <code>kubectl</code> correctly.</p>
 
 
 <h2>Setup NGINX ingress</h2>
-<p>We need to have the NGINX web server to act as frontend to the services running inside the Kubernetes cluster.</p>
+<p>We need to have the NGINX web server to act as front-end to the services running inside the Kubernetes cluster.</p>
 <h3>Open HTTP and HTTPS ports</h3>
 <p>First we need to open the HTTP and HTTPS ports on the master node, you can either connect to the Horizon interface,
 create new rule named <code>http_https</code>, then add 2 rules, in the Rule drop down choose HTTP and HTTPS; or from the command line:</p>
