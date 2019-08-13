@@ -108,7 +108,7 @@ deploy HTTPS certificates, I'll add this later on.&lt;/p&gt;
 &lt;p&gt;First &lt;a href="https://helm.sh/docs/using_helm/#installing-helm"&gt;install the Helm client on your laptop&lt;/a&gt;, make
 sure you have configured &lt;code&gt;kubectl&lt;/code&gt; correctly.&lt;/p&gt;
 &lt;p&gt;Then we can create the &lt;code&gt;tiller&lt;/code&gt; pod inside Kubernetes:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;helm&lt;/span&gt; &lt;span class="nv"&gt;init&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;service&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;account&lt;/span&gt; &lt;span class="nv"&gt;tiller&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="k"&gt;wait&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;history&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;max&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;helm&lt;/span&gt; &lt;span class="nv"&gt;init&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="k"&gt;wait&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;history&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;max&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
