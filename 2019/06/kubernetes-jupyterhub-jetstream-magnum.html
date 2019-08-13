@@ -150,8 +150,13 @@ to setup <code>helm</code> and the NGINX ingress ourselves. We would also need t
 deploy HTTPS certificates, I'll add this later on.</p>
 <p>First <a href="https://helm.sh/docs/using_helm/#installing-helm">install the Helm client on your laptop</a>, make
 sure you have configured <code>kubectl</code> correctly.</p>
+<p>Then we need to create a service account to give enough privilege to Helm to reconfigure the cluster:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">tiller_service_account</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
 <p>Then we can create the <code>tiller</code> pod inside Kubernetes:</p>
-<div class="highlight"><pre><span></span><span class="nv">helm</span> <span class="nv">init</span> <span class="o">--</span><span class="k">wait</span> <span class="o">--</span><span class="nv">history</span><span class="o">-</span><span class="nv">max</span> <span class="mi">200</span>
+<div class="highlight"><pre><span></span><span class="nv">helm</span> <span class="nv">init</span> <span class="o">--</span><span class="nv">service</span><span class="o">-</span><span class="nv">account</span> <span class="nv">tiller</span> <span class="o">--</span><span class="k">wait</span> <span class="o">--</span><span class="nv">history</span><span class="o">-</span><span class="nv">max</span> <span class="mi">200</span>
 </pre></div>
 
 

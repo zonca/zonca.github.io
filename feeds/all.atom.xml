@@ -107,8 +107,13 @@ to setup &lt;code&gt;helm&lt;/code&gt; and the NGINX ingress ourselves. We would
 deploy HTTPS certificates, I'll add this later on.&lt;/p&gt;
 &lt;p&gt;First &lt;a href="https://helm.sh/docs/using_helm/#installing-helm"&gt;install the Helm client on your laptop&lt;/a&gt;, make
 sure you have configured &lt;code&gt;kubectl&lt;/code&gt; correctly.&lt;/p&gt;
+&lt;p&gt;Then we need to create a service account to give enough privilege to Helm to reconfigure the cluster:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;tiller_service_account&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yaml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Then we can create the &lt;code&gt;tiller&lt;/code&gt; pod inside Kubernetes:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;helm&lt;/span&gt; &lt;span class="nv"&gt;init&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="k"&gt;wait&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;history&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;max&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;helm&lt;/span&gt; &lt;span class="nv"&gt;init&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;service&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;account&lt;/span&gt; &lt;span class="nv"&gt;tiller&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="k"&gt;wait&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;history&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;max&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
