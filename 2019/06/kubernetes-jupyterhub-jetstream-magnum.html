@@ -196,9 +196,12 @@ create new rule named <code>http_https</code>, then add 2 rules, in the Rule dro
 
 
 <p>Note, the documentation says we should add this annotation to ingress with <code>kubectl edit ingress -n jhub</code>, but I found out it is not necessary:</p>
-<p>metadata:
-    annotations:
-      kubernetes.io/ingress.class: nginx</p>
+<div class="highlight"><pre><span></span><span class="n">metadata</span><span class="o">:</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">ingress</span><span class="o">.</span><span class="na">class</span><span class="o">:</span> <span class="n">nginx</span>
+</pre></div>
+
+
 <p>If this is correctly working, you should be able to run <code>curl localhost</code> from the master node and get a <code>Default backend: 404</code> message.</p>
 <h2>Install JupyterHub</h2>
 <p>Finally, we can go back to the root of the repository and install JupyterHub, first create the secrets file:</p>
