@@ -144,6 +144,8 @@ that the volume is successfully mounted and the pod started:</p>
 </pre></div>
 
 
+<h3>Note about availability zones</h3>
+<p>By default Openstack servers and Openstack volumes are created in different availability zones. This created an issue with the default Magnum templates because we need to modify the Kubernetes scheduler policy to allow this. Kubespray does this by default, so I created a <a href="https://github.com/zonca/magnum/pull/1">fix to be applied to the Jetstream Magnum templates</a>, this needs to be re-applied after every Openstack upgrade.</p>
 <h2>Install Helm</h2>
 <p>The Kubernetes deployment from Magnum is not as complete as the one out of Kubespray, we need
 to setup <code>helm</code> and the NGINX ingress ourselves. We would also need to setup a system to automatically
