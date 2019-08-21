@@ -6,18 +6,6 @@ JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedo
 &lt;p&gt;In my &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;previous tutorials&lt;/a&gt; I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load on JupyterHub. I haven't tested that yet, though, that will come in a following tutorial.&lt;/p&gt;
 &lt;p&gt;Magnum is a technology built into Openstack to deploy Container Orchestration engines based on templates. The main difference with kubespray is that is way less configurable, the user does not have access to modify those templates but has just a number of parameters to set. Instead Kubespray is based on &lt;code&gt;ansible&lt;/code&gt; and the user has full control of how the system is setup, it also supports having more High Availability features like multiple master nodes.
 On the other hand, the &lt;code&gt;ansible&lt;/code&gt; recipe takes a very long time to run, ~30 min, while Magnum creates a cluster in about 10 minutes.&lt;/p&gt;
-&lt;h2&gt;Setup the Openstack client&lt;/h2&gt;
-&lt;p&gt;First you need to be able to use the Jetstream API with the &lt;code&gt;openstack&lt;/code&gt; command line tool.&lt;/p&gt;
-&lt;p&gt;Install it on Ubuntu via the &lt;code&gt;python3-openstackclient&lt;/code&gt; package or:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;openstackclient&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Then follow the "Request API Access" section in my &lt;a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html"&gt;initial tutorial&lt;/a&gt;. After this you should be able to run successfully openstack commands like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="n"&gt;flavor&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
 &lt;h2&gt;Create the cluster with Magnum&lt;/h2&gt;
 &lt;p&gt;As usual, first checkout the repository with all the configuration files on the machine you will use the Jetstream API from, typically your laptop.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zonca&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jupyterhub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;jetstream&lt;/span&gt;

@@ -49,18 +49,6 @@ JupyterHub on top of that using <a href="https://zero-to-jupyterhub.readthedocs.
 <p>In my <a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html">previous tutorials</a> I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load on JupyterHub. I haven't tested that yet, though, that will come in a following tutorial.</p>
 <p>Magnum is a technology built into Openstack to deploy Container Orchestration engines based on templates. The main difference with kubespray is that is way less configurable, the user does not have access to modify those templates but has just a number of parameters to set. Instead Kubespray is based on <code>ansible</code> and the user has full control of how the system is setup, it also supports having more High Availability features like multiple master nodes.
 On the other hand, the <code>ansible</code> recipe takes a very long time to run, ~30 min, while Magnum creates a cluster in about 10 minutes.</p>
-<h2>Setup the Openstack client</h2>
-<p>First you need to be able to use the Jetstream API with the <code>openstack</code> command line tool.</p>
-<p>Install it on Ubuntu via the <code>python3-openstackclient</code> package or:</p>
-<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">openstackclient</span>
-</pre></div>
-
-
-<p>Then follow the "Request API Access" section in my <a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray.html">initial tutorial</a>. After this you should be able to run successfully openstack commands like:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">flavor</span> <span class="n">list</span>
-</pre></div>
-
-
 <h2>Create the cluster with Magnum</h2>
 <p>As usual, first checkout the repository with all the configuration files on the machine you will use the Jetstream API from, typically your laptop.</p>
 <div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
