@@ -134,12 +134,12 @@ Go back to the AWS console to the Identity and Access Management (IAM) section, 
 <p>See the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_rw-bucket.html">AWS documentation</a></p>
 <p>Install <code>s3cmd</code>, then run <code>s3cmd --configure</code> to set it up and paste the Access and Secret keys, it will fail to test the configuration because it cannot list all the buckets, anyway choose to save the configuration.</p>
 <p>Test it:</p>
-<div class="highlight"><pre><span></span><span class="n">s3cmd</span> <span class="n">ls</span> <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">-</span><span class="n">name</span>
+<div class="highlight"><pre><span></span>    s3cmd ls s3://bucket-name
 </pre></div>
 
 
 <p>Then upload your files (reduced redundancy is cheaper):</p>
-<div class="highlight"><pre><span></span><span class="n">s3cmd</span> <span class="n">put</span> <span class="c1">--reduced-redundancy --acl-public *.fits s3://bucket-name</span>
+<div class="highlight"><pre><span></span>    s3cmd put --reduced-redundancy --acl-public *.fits s3://bucket-name
 </pre></div>
         </div>
     </article>

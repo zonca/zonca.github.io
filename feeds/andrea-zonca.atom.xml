@@ -92,12 +92,12 @@ Go back to the AWS console to the Identity and Access Management (IAM) section, 
 &lt;p&gt;See the &lt;a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_rw-bucket.html"&gt;AWS documentation&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Install &lt;code&gt;s3cmd&lt;/code&gt;, then run &lt;code&gt;s3cmd --configure&lt;/code&gt; to set it up and paste the Access and Secret keys, it will fail to test the configuration because it cannot list all the buckets, anyway choose to save the configuration.&lt;/p&gt;
 &lt;p&gt;Test it:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;s3cmd&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="n"&gt;s3&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;bucket&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    s3cmd ls s3://bucket-name
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then upload your files (reduced redundancy is cheaper):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;s3cmd&lt;/span&gt; &lt;span class="n"&gt;put&lt;/span&gt; &lt;span class="c1"&gt;--reduced-redundancy --acl-public *.fits s3://bucket-name&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    s3cmd put --reduced-redundancy --acl-public *.fits s3://bucket-name
 &lt;/pre&gt;&lt;/div&gt;</content><category term="python"></category></entry><entry><title>Deploy Kubernetes and JupyterHub on Jetstream with Magnum</title><link href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</id><summary type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
 JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In my &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;previous tutorials&lt;/a&gt; I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
