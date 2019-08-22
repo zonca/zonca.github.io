@@ -59,7 +59,8 @@ git commit -m &lt;span class="s2"&gt;&amp;quot;initial version of all FITS files
 &lt;p&gt;This method tracks the checksum of all the binary files and helps managing the history, even if only locally (make sure the folder is also regularly backed up). You could push it to GitHub, that would cost $5/month for each 50GB of storage.&lt;/p&gt;
 &lt;h3&gt;Host on Amazon S3 or other object store&lt;/h3&gt;
 &lt;p&gt;A public bucket on Amazon S3 or other object store provides cheap storage and built-in version control.
-First login to the AWS console and create a new bucket, set it public by turning of "Block all public access" and under "Access Control List" set "List objects" to Yes for "Public access".&lt;/p&gt;
+The cost currently is about $0.026/GB/month.&lt;/p&gt;
+&lt;p&gt;First login to the AWS console and create a new bucket, set it public by turning of "Block all public access" and under "Access Control List" set "List objects" to Yes for "Public access".&lt;/p&gt;
 &lt;p&gt;You could upload files with the browser, but for larger files command line is better.&lt;/p&gt;
 &lt;p&gt;The files will be available at &lt;a href="https://bucket-name.s3-us-west-1.amazonaws.com/"&gt;https://bucket-name.s3-us-west-1.amazonaws.com/&lt;/a&gt;, this changes based on the chosen region.&lt;/p&gt;
 &lt;h4&gt;(Advanced) Upload files from the command line&lt;/h4&gt;
