@@ -108,26 +108,26 @@ The cost currently is about $0.026/GB/month.</p>
 <h4>(Advanced) Upload files from the command line</h4>
 <p>This is optional and requires some more familiarity with AWS.
 Go back to the AWS console to the Identity and Access Management (IAM) section, then users, create, create a policy to give access only to 1 bucket (replace <code>bucket-name</code>):</p>
-<div class="highlight"><pre><span></span><span class="err">{</span>
-    <span class="ss">&quot;Version&quot;</span><span class="p">:</span> <span class="ss">&quot;2012-10-17&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="err">{</span>
-            <span class="ss">&quot;Sid&quot;</span><span class="p">:</span> <span class="ss">&quot;ListObjectsInBucket&quot;</span><span class="p">,</span>
-            <span class="ss">&quot;Effect&quot;</span><span class="p">:</span> <span class="ss">&quot;Allow&quot;</span><span class="p">,</span>
-            <span class="ss">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="ss">&quot;s3:ListBucket&quot;</span><span class="p">],</span>
-            <span class="ss">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span><span class="ss">&quot;arn:aws:s3:::bucket-name&quot;</span><span class="p">]</span>
-        <span class="err">}</span><span class="p">,</span>
-        <span class="err">{</span>
-            <span class="ss">&quot;Sid&quot;</span><span class="p">:</span> <span class="ss">&quot;AllObjectActions&quot;</span><span class="p">,</span>
-            <span class="ss">&quot;Effect&quot;</span><span class="p">:</span> <span class="ss">&quot;Allow&quot;</span><span class="p">,</span>
-            <span class="ss">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="ss">&quot;s3:*Object&quot;</span><span class="p">,</span>
-                <span class="ss">&quot;s3:PutObjectAcl&quot;</span>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ListObjectsInBucket&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">],</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;arn:aws:s3:::bucket-name&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;AllObjectActions&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;s3:*Object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3:PutObjectAcl&quot;</span>
             <span class="p">],</span>
-            <span class="ss">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span><span class="ss">&quot;arn:aws:s3:::bucket-name/*&quot;</span><span class="p">]</span>
-        <span class="err">}</span>
+            <span class="nt">&quot;Resource&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;arn:aws:s3:::bucket-name/*&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
     <span class="p">]</span>
-<span class="err">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
