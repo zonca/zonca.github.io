@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-06-14T00:00:00-07:00</updated><entry><title>Deploy Kubernetes and JupyterHub on Jetstream with Magnum</title><link href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</id><summary type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-08-21T18:00:00-07:00</updated><entry><title>Ship large files with Python packages</title><link href="http://zonca.github.io/2019/08/large-files-python-packages.html" rel="alternate"></link><published>2019-08-21T18:00:00-07:00</published><updated>2019-08-21T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-08-21:/2019/08/large-files-python-packages.html</id><summary type="html">&lt;p&gt;It is often useful to ship large data files together with a Python package,
+a couple of scenarios are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionalities of …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;It is often useful to ship large data files together with a Python package,
+a couple of scenarios are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionalities of the package or for all of it&lt;/li&gt;
+&lt;li&gt;data necessary for unit or integration testing, both example inputs and expected outputs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If data files are individually less than 10 MB and collectively less than 100 MB you can directly add them into the Python package. This is the easier and most convenient option, for example the &lt;a href="https://github.com/astropy/package-template"&gt;&lt;code&gt;astropy package template&lt;/code&gt;&lt;/a&gt; automatically adds to the package any file inside the &lt;code&gt;packagename/data&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;For larger datasets I recommend to host the files externally and use the &lt;a href="http://docs.astropy.org/en/stable/utils/#module-astropy.utils.data"&gt;&lt;code&gt;astropy.utils.data&lt;/code&gt; module&lt;/a&gt;.
+This module automates the process of retrieving a file from a remote server and caching it locally (in the users home folder), next time the user needs it, it is automatically retrieved from the cache:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;dataurl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://my-web-server.ucsd.edu/test-data/&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dataurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dataurl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;remote_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
+    &lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;filename&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pkg_data_filename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;myfile.jpg)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we need to host there files publicly, I have a few options.&lt;/p&gt;
+&lt;h3&gt;Host on a dedicated GitHub repository&lt;/h3&gt;
+&lt;p&gt;If files are individually less than 100MB and collectively a few GB, you can create a dedicated repository on GitHub and push there your files.
+Then &lt;a href="https://help.github.com/en/articles/what-is-github-pages"&gt;activate GitHub Pages&lt;/a&gt; so that those files are published at &lt;code&gt;https://your-organization.github.io/your-repository/&lt;/code&gt;.
+Then use this URL as &lt;code&gt;dataurl&lt;/code&gt; in the above script.&lt;/p&gt;
+&lt;h3&gt;Host on a Supercomputer or own server&lt;/h3&gt;
+&lt;p&gt;Some Supercomputers offer the feature of providing public web access from specific folders, for example NERSC allows user to publish webpages publicly, see &lt;a href="https://www.nersc.gov/users/computational-systems/pdsf/software-and-tools/hosting-webpages/"&gt;their documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is very useful for huge datasets because you can automatically detect if the package is being run at NERSC and then automatically access the files with their path instead of downloading them.&lt;/p&gt;
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_data_from_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Retrieves input templates from remote server,&lt;/span&gt;
+&lt;span class="sd"&gt;    in case data is available in one of the PREDEFINED_DATA_FOLDERS defined above,&lt;/span&gt;
+&lt;span class="sd"&gt;    e.g. at NERSC, those are directly returned.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;folder&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;PREDEFINED_DATA_FOLDERS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;full_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;folder&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;full_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Access data from {full_path}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;full_path&lt;/span&gt;
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dataurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DATAURL&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;remote_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
+    &lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Retrieve data for {filename} (if not cached already)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;map_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pkg_data_filename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;show_progress&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;map_out&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Similar setup can be achieved on a GNU/Linux server, for example a powerful machine used by all members of a scientific team, where a folder is dedicated to host these data and is also published online with Apache or NGINX.&lt;/p&gt;
+&lt;p&gt;The main downside of this approach is that there is no built-in version control. One possibility is to enforce a policy where no files are ever overwritten and version control is automatically achieved with filenames. Otherwise, use &lt;a href="https://git-lfs.github.com/"&gt;&lt;code&gt;git lfs&lt;/code&gt;&lt;/a&gt; in that folder to track any change in a dedicated local &lt;code&gt;git&lt;/code&gt; repository, e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git init
+git lfs track &lt;span class="s2"&gt;&amp;quot;*.fits&amp;quot;&lt;/span&gt;
+git add &lt;span class="s2"&gt;&amp;quot;*.fits&amp;quot;&lt;/span&gt;
+git commit -m &lt;span class="s2"&gt;&amp;quot;initial version of all FITS files&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This method tracks the checksum of all the binary files and helps managing the history, even if only locally (make sure the folder is also regularly backed up). You could push it to GitHub, that would cost $5/month for each 50GB of storage.&lt;/p&gt;
+&lt;h3&gt;Host on Amazon S3 or other object store&lt;/h3&gt;
+&lt;p&gt;A public bucket on Amazon S3 or other object store provides cheap storage and built-in version control.
+First login to the AWS console and create a new bucket, set it public by turning of "Block all public access" and under "Access Control List" set "List objects" to Yes for "Public access".&lt;/p&gt;</content><category term="python"></category></entry><entry><title>Deploy Kubernetes and JupyterHub on Jetstream with Magnum</title><link href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</id><summary type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
 JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In my &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;previous tutorials&lt;/a&gt; I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
 JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;

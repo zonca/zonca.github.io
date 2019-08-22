@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Ship large files with Python packages | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Ship large files with Python packages</h1>
+        </header>
+        <div class='post-content'>
+            <p>It is often useful to ship large data files together with a Python package,
+a couple of scenarios are:</p>
+<ul>
+<li>data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionalities of the package or for all of it</li>
+<li>data necessary for unit or integration testing, both example inputs and expected outputs</li>
+</ul>
+<p>If data files are individually less than 10 MB and collectively less than 100 MB you can directly add them into the Python package. This is the easier and most convenient option, for example the <a href="https://github.com/astropy/package-template"><code>astropy package template</code></a> automatically adds to the package any file inside the <code>packagename/data</code> folder.</p>
+<p>For larger datasets I recommend to host the files externally and use the <a href="http://docs.astropy.org/en/stable/utils/#module-astropy.utils.data"><code>astropy.utils.data</code> module</a>.
+This module automates the process of retrieving a file from a remote server and caching it locally (in the users home folder), next time the user needs it, it is automatically retrieved from the cache:</p>
+<div class="highlight"><pre><span></span>    <span class="n">dataurl</span> <span class="o">=</span> <span class="s2">&quot;https://my-web-server.ucsd.edu/test-data/&quot;</span>
+    <span class="k">with</span> <span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;dataurl&quot;</span><span class="p">,</span> <span class="n">dataurl</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span>
+        <span class="s2">&quot;remote_timeout&quot;</span><span class="p">,</span> <span class="mi">30</span>
+    <span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_pkg_data_filename</span><span class="p">(</span><span class="s2">&quot;myfile.jpg)</span>
+</pre></div>
+
+
+<p>Now we need to host there files publicly, I have a few options.</p>
+<h3>Host on a dedicated GitHub repository</h3>
+<p>If files are individually less than 100MB and collectively a few GB, you can create a dedicated repository on GitHub and push there your files.
+Then <a href="https://help.github.com/en/articles/what-is-github-pages">activate GitHub Pages</a> so that those files are published at <code>https://your-organization.github.io/your-repository/</code>.
+Then use this URL as <code>dataurl</code> in the above script.</p>
+<h3>Host on a Supercomputer or own server</h3>
+<p>Some Supercomputers offer the feature of providing public web access from specific folders, for example NERSC allows user to publish webpages publicly, see <a href="https://www.nersc.gov/users/computational-systems/pdsf/software-and-tools/hosting-webpages/">their documentation</a>.</p>
+<p>This is very useful for huge datasets because you can automatically detect if the package is being run at NERSC and then automatically access the files with their path instead of downloading them.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_data_from_url</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves input templates from remote server,</span>
+<span class="sd">    in case data is available in one of the PREDEFINED_DATA_FOLDERS defined above,</span>
+<span class="sd">    e.g. at NERSC, those are directly returned.&quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">PREDEFINED_DATA_FOLDERS</span><span class="p">:</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Access data from {full_path}&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">full_path</span>
+    <span class="k">with</span> <span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;dataurl&quot;</span><span class="p">,</span> <span class="n">DATAURL</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span>
+        <span class="s2">&quot;remote_timeout&quot;</span><span class="p">,</span> <span class="mi">30</span>
+    <span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Retrieve data for {filename} (if not cached already)&quot;</span><span class="p">)</span>
+        <span class="n">map_out</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_pkg_data_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">map_out</span>
+</pre></div>
+
+
+<p>Similar setup can be achieved on a GNU/Linux server, for example a powerful machine used by all members of a scientific team, where a folder is dedicated to host these data and is also published online with Apache or NGINX.</p>
+<p>The main downside of this approach is that there is no built-in version control. One possibility is to enforce a policy where no files are ever overwritten and version control is automatically achieved with filenames. Otherwise, use <a href="https://git-lfs.github.com/"><code>git lfs</code></a> in that folder to track any change in a dedicated local <code>git</code> repository, e.g.:</p>
+<div class="highlight"><pre><span></span>git init
+git lfs track <span class="s2">&quot;*.fits&quot;</span>
+git add <span class="s2">&quot;*.fits&quot;</span>
+git commit -m <span class="s2">&quot;initial version of all FITS files&quot;</span>
+</pre></div>
+
+
+<p>This method tracks the checksum of all the binary files and helps managing the history, even if only locally (make sure the folder is also regularly backed up). You could push it to GitHub, that would cost $5/month for each 50GB of storage.</p>
+<h3>Host on Amazon S3 or other object store</h3>
+<p>A public bucket on Amazon S3 or other object store provides cheap storage and built-in version control.
+First login to the AWS console and create a new bucket, set it public by turning of "Block all public access" and under "Access Control List" set "List objects" to Yes for "Public access".</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2019-08-21T18:00:00-07:00">Wed 21 August 2019</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/python.html">python</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
