@@ -295,7 +295,8 @@ create new rule named &lt;code&gt;http_https&lt;/code&gt;, then add 2 rules, in 
 
 &lt;p&gt;Then edit &lt;code&gt;secrets.yaml&lt;/code&gt; and modify the hostname under &lt;code&gt;hosts&lt;/code&gt; to display the hostname of your master Jetstream instance, i.e. if your instance public floating IP is &lt;code&gt;aaa.bbb.xxx.yyy&lt;/code&gt;, the hostname should be &lt;code&gt;js-xxx-yyy.jetstream-cloud.org&lt;/code&gt; (without &lt;code&gt;http://&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;Finally:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;install_jhub&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;configure_helm_jupyterhub&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="n"&gt;install_jhub&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
