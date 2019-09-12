@@ -66,7 +66,7 @@ if not:</p>
 
 <h2>Setup credentials</h2>
 <p>We first create the service account needed by the autoscaler to interact with the Kubernetes API:</p>
-<div class="highlight"><pre><span></span>    kubectl create -f cluster-autoscaler-svcaccount.yaml 
+<div class="highlight"><pre><span></span>kubectl create -f cluster-autoscaler-svcaccount.yaml 
 </pre></div>
 
 
@@ -74,14 +74,14 @@ if not:</p>
 those are contained in the <code>cloud-config</code> of our cluster available in the master node and setup
 by Magnum.
 Get the <code>IP</code> of your master node from:</p>
-<div class="highlight"><pre><span></span>    openstack server list
-    <span class="nv">IP</span><span class="o">=</span>xxx.xxx.xxx.xxx
+<div class="highlight"><pre><span></span>openstack server list
+<span class="nv">IP</span><span class="o">=</span>xxx.xxx.xxx.xxx
 </pre></div>
 
 
 <p>Now ssh into the master node and access the <code>cloud-config</code> file:</p>
-<div class="highlight"><pre><span></span>    ssh fedora@<span class="nv">$IP</span>
-    cat /etc/kubernetes/cloud-config 
+<div class="highlight"><pre><span></span>ssh fedora@<span class="nv">$IP</span>
+cat /etc/kubernetes/cloud-config 
 </pre></div>
 
 

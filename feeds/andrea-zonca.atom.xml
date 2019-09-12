@@ -25,7 +25,7 @@ if not:&lt;/p&gt;
 
 &lt;h2&gt;Setup credentials&lt;/h2&gt;
 &lt;p&gt;We first create the service account needed by the autoscaler to interact with the Kubernetes API:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    kubectl create -f cluster-autoscaler-svcaccount.yaml 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f cluster-autoscaler-svcaccount.yaml 
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -33,14 +33,14 @@ if not:&lt;/p&gt;
 those are contained in the &lt;code&gt;cloud-config&lt;/code&gt; of our cluster available in the master node and setup
 by Magnum.
 Get the &lt;code&gt;IP&lt;/code&gt; of your master node from:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    openstack server list
-    &lt;span class="nv"&gt;IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;xxx.xxx.xxx.xxx
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack server list
+&lt;span class="nv"&gt;IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;xxx.xxx.xxx.xxx
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Now ssh into the master node and access the &lt;code&gt;cloud-config&lt;/code&gt; file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    ssh fedora@&lt;span class="nv"&gt;$IP&lt;/span&gt;
-    cat /etc/kubernetes/cloud-config 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh fedora@&lt;span class="nv"&gt;$IP&lt;/span&gt;
+cat /etc/kubernetes/cloud-config 
 &lt;/pre&gt;&lt;/div&gt;
 
 
