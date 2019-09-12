@@ -105,11 +105,11 @@ I0905 &lt;span class="m"&gt;05&lt;/span&gt;:35:22.222387       &lt;span class="m
 
 &lt;p&gt;Check also in the Openstack API:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack coe cluster list
-+--------------------------------------+------+---------+------------+--------------+--------------------+
-&lt;span class="p"&gt;|&lt;/span&gt; uuid                                 &lt;span class="p"&gt;|&lt;/span&gt; name &lt;span class="p"&gt;|&lt;/span&gt; keypair &lt;span class="p"&gt;|&lt;/span&gt; node_count &lt;span class="p"&gt;|&lt;/span&gt; master_count &lt;span class="p"&gt;|&lt;/span&gt; status             &lt;span class="p"&gt;|&lt;/span&gt;
-+--------------------------------------+------+---------+------------+--------------+--------------------+
-&lt;span class="p"&gt;|&lt;/span&gt; 09fcf230-e806-4d6a-8aa5-a92558182b4f &lt;span class="p"&gt;|&lt;/span&gt; k8s  &lt;span class="p"&gt;|&lt;/span&gt; comet   &lt;span class="p"&gt;|&lt;/span&gt;          &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;            &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; UPDATE_IN_PROGRESS &lt;span class="p"&gt;|&lt;/span&gt;
-+--------------------------------------+------+---------+------------+--------------+--------------------+
++------+------+---------+------------+--------------+--------------------+
+&lt;span class="p"&gt;|&lt;/span&gt; uuid &lt;span class="p"&gt;|&lt;/span&gt; name &lt;span class="p"&gt;|&lt;/span&gt; keypair &lt;span class="p"&gt;|&lt;/span&gt; node_count &lt;span class="p"&gt;|&lt;/span&gt; master_count &lt;span class="p"&gt;|&lt;/span&gt; status             &lt;span class="p"&gt;|&lt;/span&gt;
++------+------+---------+------------+--------------+--------------------+
+&lt;span class="p"&gt;|&lt;/span&gt; 09fcf&lt;span class="p"&gt;|&lt;/span&gt; k8s  &lt;span class="p"&gt;|&lt;/span&gt; comet   &lt;span class="p"&gt;|&lt;/span&gt;          &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;            &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; UPDATE_IN_PROGRESS &lt;span class="p"&gt;|&lt;/span&gt;
++------+------+---------+------------+--------------+--------------------+
 &lt;/pre&gt;&lt;/div&gt;
 
 
