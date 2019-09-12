@@ -145,37 +145,37 @@ I0905 <span class="m">05</span>:35:22.222387       <span class="m">1</span> magn
 
 
 <p>Check also in the Openstack API:</p>
-<p>```openstack coe cluster list
+<div class="highlight"><pre><span></span>openstack coe cluster list
 +--------------------------------------+------+---------+------------+--------------+--------------------+
-| uuid                                 | name | keypair | node_count | master_count | status             |
+<span class="p">|</span> uuid                                 <span class="p">|</span> name <span class="p">|</span> keypair <span class="p">|</span> node_count <span class="p">|</span> master_count <span class="p">|</span> status             <span class="p">|</span>
 +--------------------------------------+------+---------+------------+--------------+--------------------+
-| 09fcf230-e806-4d6a-8aa5-a92558182b4f | k8s  | comet   |          2 |            1 | UPDATE_IN_PROGRESS |
-+--------------------------------------+------+---------+------------+--------------+--------------------+</p>
-<div class="highlight"><pre><span></span><span class="nv">It</span> <span class="nv">takes</span> <span class="nv">about</span> <span class="mi">4</span> <span class="nv">minutes</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">VM</span> <span class="nv">to</span> <span class="nv">boot</span>, <span class="nv">be</span> <span class="nv">configured</span> <span class="nv">by</span> <span class="nv">Magnum</span> <span class="nv">and</span> <span class="nv">join</span> <span class="nv">the</span> <span class="nv">Kubernetes</span> <span class="nv">cluster</span>.
-
-<span class="nv">Checking</span> <span class="nv">the</span> <span class="nv">logs</span> <span class="nv">again</span> <span class="nv">should</span> <span class="k">show</span> <span class="nv">another</span> <span class="nv">line</span>:
-
-    <span class="nv">I0912</span> <span class="mi">17</span>:<span class="mi">18</span>:<span class="mi">28</span>.<span class="mi">290987</span>       <span class="mi">1</span> <span class="nv">magnum_nodegroup</span>.<span class="nv">go</span>:<span class="mi">67</span>] <span class="nv">Waited</span> <span class="k">for</span> <span class="nv">cluster</span> <span class="nv">UPDATE_COMPLETE</span> <span class="nv">status</span>
-
-<span class="nv">Once</span> <span class="nv">in</span> <span class="nv">a</span> <span class="k">while</span> <span class="nv">it</span> <span class="nv">is</span> <span class="nv">possible</span> <span class="nv">that</span> <span class="nv">the</span> <span class="nv">update</span> <span class="nv">takes</span> <span class="nv">longer</span> <span class="nv">than</span> <span class="mi">10</span> <span class="nv">minutes</span> <span class="nv">and</span> <span class="nv">the</span> <span class="nv">autoscaler</span> <span class="nv">times</span> <span class="nv">out</span>,
-<span class="nv">unfortunately</span> <span class="nv">the</span> <span class="nb">timeout</span> <span class="nv">it</span> <span class="nv">hard</span><span class="o">-</span><span class="nv">coded</span> <span class="nv">into</span> <span class="nv">the</span> <span class="nv">cluster</span> <span class="nv">autoscaler</span> <span class="nv">container</span> <span class="nv">and</span> <span class="nv">it</span> <span class="nv">is</span> <span class="nv">necessary</span> <span class="nv">to</span> <span class="nv">rebuild</span>
-<span class="nv">the</span> <span class="nv">container</span> <span class="nv">to</span> <span class="nv">increase</span> <span class="nv">it</span>. <span class="nv">Please</span> [<span class="nv">open</span> <span class="nv">an</span> <span class="nv">issue</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">repository</span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">zonca</span><span class="o">/</span><span class="nv">jupyterhub</span><span class="o">-</span><span class="nv">deploy</span><span class="o">-</span><span class="nv">kubernetes</span><span class="o">-</span><span class="nv">jetstream</span><span class="o">/</span><span class="nv">issues</span><span class="ss">)</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">are</span> <span class="nv">affected</span> <span class="nv">by</span> <span class="nv">this</span> <span class="nv">issue</span>.
-
-<span class="k">Then</span> <span class="nv">you</span> <span class="nv">should</span> <span class="nv">have</span> <span class="nv">all</span> <span class="mi">3</span> <span class="nv">nodes</span> <span class="nv">available</span>:
+<span class="p">|</span> 09fcf230-e806-4d6a-8aa5-a92558182b4f <span class="p">|</span> k8s  <span class="p">|</span> comet   <span class="p">|</span>          <span class="m">2</span> <span class="p">|</span>            <span class="m">1</span> <span class="p">|</span> UPDATE_IN_PROGRESS <span class="p">|</span>
++--------------------------------------+------+---------+------------+--------------+--------------------+
 </pre></div>
 
 
-<p>kubectl get nodes
+<p>It takes about 4 minutes for a new VM to boot, be configured by Magnum and join the Kubernetes cluster.</p>
+<p>Checking the logs again should show another line:</p>
+<div class="highlight"><pre><span></span>I0912 <span class="m">17</span>:18:28.290987       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_COMPLETE status
+</pre></div>
+
+
+<p>Once in a while it is possible that the update takes longer than 10 minutes and the autoscaler times out,
+unfortunately the timeout it hard-coded into the cluster autoscaler container and it is necessary to rebuild
+the container to increase it. Please <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues">open an issue on the repository</a> if you are affected by this issue.</p>
+<p>Then you should have all 3 nodes available:</p>
+<div class="highlight"><pre><span></span>kubectl get nodes
 NAME                        STATUS   ROLES    AGE   VERSION
 k8s-6bawhy45wr5t-master-0   Ready    master   38m   v1.11.1
-k8s-6bawhy45wr5t-minion-0   Ready    <none>   38m   v1.11.1
-k8s-6bawhy45wr5t-minion-1   Ready    <none>   30m   v1.11.1</p>
-<div class="highlight"><pre><span></span><span class="k">and</span> <span class="k">all</span> <span class="mi">300</span> <span class="n">NGINX</span> <span class="n">containers</span> <span class="n">deployed</span><span class="p">:</span>
+k8s-6bawhy45wr5t-minion-0   Ready    &lt;none&gt;   38m   v1.11.1
+k8s-6bawhy45wr5t-minion-1   Ready    &lt;none&gt;   30m   v1.11.1
+</pre></div>
 
-<span class="o">```</span><span class="n">bash</span>
-<span class="n">kubectl</span> <span class="k">get</span> <span class="n">deployments</span>
-<span class="n">NAME</span>              <span class="n">DESIRED</span>   <span class="k">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="k">TO</span><span class="o">-</span><span class="nb">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
-<span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span>   <span class="mi">300</span>       <span class="mi">300</span>       <span class="mi">300</span>          <span class="mi">300</span>         <span class="mi">35</span><span class="n">m</span>
+
+<p>and all 300 NGINX containers deployed:</p>
+<div class="highlight"><pre><span></span>kubectl get deployments
+NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+autoscaler-demo   <span class="m">300</span>       <span class="m">300</span>       <span class="m">300</span>          <span class="m">300</span>         35m
 </pre></div>
 
 

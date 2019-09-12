@@ -104,37 +104,37 @@ I0905 &lt;span class="m"&gt;05&lt;/span&gt;:35:22.222387       &lt;span class="m
 
 
 &lt;p&gt;Check also in the Openstack API:&lt;/p&gt;
-&lt;p&gt;```openstack coe cluster list
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openstack coe cluster list
 +--------------------------------------+------+---------+------------+--------------+--------------------+
-| uuid                                 | name | keypair | node_count | master_count | status             |
+&lt;span class="p"&gt;|&lt;/span&gt; uuid                                 &lt;span class="p"&gt;|&lt;/span&gt; name &lt;span class="p"&gt;|&lt;/span&gt; keypair &lt;span class="p"&gt;|&lt;/span&gt; node_count &lt;span class="p"&gt;|&lt;/span&gt; master_count &lt;span class="p"&gt;|&lt;/span&gt; status             &lt;span class="p"&gt;|&lt;/span&gt;
 +--------------------------------------+------+---------+------------+--------------+--------------------+
-| 09fcf230-e806-4d6a-8aa5-a92558182b4f | k8s  | comet   |          2 |            1 | UPDATE_IN_PROGRESS |
-+--------------------------------------+------+---------+------------+--------------+--------------------+&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;It&lt;/span&gt; &lt;span class="nv"&gt;takes&lt;/span&gt; &lt;span class="nv"&gt;about&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="nv"&gt;minutes&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="nv"&gt;new&lt;/span&gt; &lt;span class="nv"&gt;VM&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;boot&lt;/span&gt;, &lt;span class="nv"&gt;be&lt;/span&gt; &lt;span class="nv"&gt;configured&lt;/span&gt; &lt;span class="nv"&gt;by&lt;/span&gt; &lt;span class="nv"&gt;Magnum&lt;/span&gt; &lt;span class="nv"&gt;and&lt;/span&gt; &lt;span class="nv"&gt;join&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;Kubernetes&lt;/span&gt; &lt;span class="nv"&gt;cluster&lt;/span&gt;.
-
-&lt;span class="nv"&gt;Checking&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;logs&lt;/span&gt; &lt;span class="nv"&gt;again&lt;/span&gt; &lt;span class="nv"&gt;should&lt;/span&gt; &lt;span class="k"&gt;show&lt;/span&gt; &lt;span class="nv"&gt;another&lt;/span&gt; &lt;span class="nv"&gt;line&lt;/span&gt;:
-
-    &lt;span class="nv"&gt;I0912&lt;/span&gt; &lt;span class="mi"&gt;17&lt;/span&gt;:&lt;span class="mi"&gt;18&lt;/span&gt;:&lt;span class="mi"&gt;28&lt;/span&gt;.&lt;span class="mi"&gt;290987&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;magnum_nodegroup&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;67&lt;/span&gt;] &lt;span class="nv"&gt;Waited&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;cluster&lt;/span&gt; &lt;span class="nv"&gt;UPDATE_COMPLETE&lt;/span&gt; &lt;span class="nv"&gt;status&lt;/span&gt;
-
-&lt;span class="nv"&gt;Once&lt;/span&gt; &lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="nv"&gt;it&lt;/span&gt; &lt;span class="nv"&gt;is&lt;/span&gt; &lt;span class="nv"&gt;possible&lt;/span&gt; &lt;span class="nv"&gt;that&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;update&lt;/span&gt; &lt;span class="nv"&gt;takes&lt;/span&gt; &lt;span class="nv"&gt;longer&lt;/span&gt; &lt;span class="nv"&gt;than&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="nv"&gt;minutes&lt;/span&gt; &lt;span class="nv"&gt;and&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;autoscaler&lt;/span&gt; &lt;span class="nv"&gt;times&lt;/span&gt; &lt;span class="nv"&gt;out&lt;/span&gt;,
-&lt;span class="nv"&gt;unfortunately&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nb"&gt;timeout&lt;/span&gt; &lt;span class="nv"&gt;it&lt;/span&gt; &lt;span class="nv"&gt;hard&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;coded&lt;/span&gt; &lt;span class="nv"&gt;into&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;cluster&lt;/span&gt; &lt;span class="nv"&gt;autoscaler&lt;/span&gt; &lt;span class="nv"&gt;container&lt;/span&gt; &lt;span class="nv"&gt;and&lt;/span&gt; &lt;span class="nv"&gt;it&lt;/span&gt; &lt;span class="nv"&gt;is&lt;/span&gt; &lt;span class="nv"&gt;necessary&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;rebuild&lt;/span&gt;
-&lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;container&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;increase&lt;/span&gt; &lt;span class="nv"&gt;it&lt;/span&gt;. &lt;span class="nv"&gt;Please&lt;/span&gt; [&lt;span class="nv"&gt;open&lt;/span&gt; &lt;span class="nv"&gt;an&lt;/span&gt; &lt;span class="nv"&gt;issue&lt;/span&gt; &lt;span class="nv"&gt;on&lt;/span&gt; &lt;span class="nv"&gt;the&lt;/span&gt; &lt;span class="nv"&gt;repository&lt;/span&gt;]&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;https&lt;/span&gt;:&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="nv"&gt;github&lt;/span&gt;.&lt;span class="nv"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;zonca&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;jupyterhub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;jetstream&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;issues&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;you&lt;/span&gt; &lt;span class="nv"&gt;are&lt;/span&gt; &lt;span class="nv"&gt;affected&lt;/span&gt; &lt;span class="nv"&gt;by&lt;/span&gt; &lt;span class="nv"&gt;this&lt;/span&gt; &lt;span class="nv"&gt;issue&lt;/span&gt;.
-
-&lt;span class="k"&gt;Then&lt;/span&gt; &lt;span class="nv"&gt;you&lt;/span&gt; &lt;span class="nv"&gt;should&lt;/span&gt; &lt;span class="nv"&gt;have&lt;/span&gt; &lt;span class="nv"&gt;all&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="nv"&gt;nodes&lt;/span&gt; &lt;span class="nv"&gt;available&lt;/span&gt;:
+&lt;span class="p"&gt;|&lt;/span&gt; 09fcf230-e806-4d6a-8aa5-a92558182b4f &lt;span class="p"&gt;|&lt;/span&gt; k8s  &lt;span class="p"&gt;|&lt;/span&gt; comet   &lt;span class="p"&gt;|&lt;/span&gt;          &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;            &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; UPDATE_IN_PROGRESS &lt;span class="p"&gt;|&lt;/span&gt;
++--------------------------------------+------+---------+------------+--------------+--------------------+
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;kubectl get nodes
+&lt;p&gt;It takes about 4 minutes for a new VM to boot, be configured by Magnum and join the Kubernetes cluster.&lt;/p&gt;
+&lt;p&gt;Checking the logs again should show another line:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;I0912 &lt;span class="m"&gt;17&lt;/span&gt;:18:28.290987       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_COMPLETE status
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once in a while it is possible that the update takes longer than 10 minutes and the autoscaler times out,
+unfortunately the timeout it hard-coded into the cluster autoscaler container and it is necessary to rebuild
+the container to increase it. Please &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues"&gt;open an issue on the repository&lt;/a&gt; if you are affected by this issue.&lt;/p&gt;
+&lt;p&gt;Then you should have all 3 nodes available:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get nodes
 NAME                        STATUS   ROLES    AGE   VERSION
 k8s-6bawhy45wr5t-master-0   Ready    master   38m   v1.11.1
-k8s-6bawhy45wr5t-minion-0   Ready    &lt;none&gt;   38m   v1.11.1
-k8s-6bawhy45wr5t-minion-1   Ready    &lt;none&gt;   30m   v1.11.1&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="k"&gt;all&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt; &lt;span class="n"&gt;NGINX&lt;/span&gt; &lt;span class="n"&gt;containers&lt;/span&gt; &lt;span class="n"&gt;deployed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+k8s-6bawhy45wr5t-minion-0   Ready    &amp;lt;none&amp;gt;   38m   v1.11.1
+k8s-6bawhy45wr5t-minion-1   Ready    &amp;lt;none&amp;gt;   30m   v1.11.1
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="o"&gt;```&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt;
-&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;deployments&lt;/span&gt;
-&lt;span class="n"&gt;NAME&lt;/span&gt;              &lt;span class="n"&gt;DESIRED&lt;/span&gt;   &lt;span class="k"&gt;CURRENT&lt;/span&gt;   &lt;span class="n"&gt;UP&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;DATE&lt;/span&gt;   &lt;span class="n"&gt;AVAILABLE&lt;/span&gt;   &lt;span class="n"&gt;AGE&lt;/span&gt;
-&lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;demo&lt;/span&gt;   &lt;span class="mi"&gt;300&lt;/span&gt;       &lt;span class="mi"&gt;300&lt;/span&gt;       &lt;span class="mi"&gt;300&lt;/span&gt;          &lt;span class="mi"&gt;300&lt;/span&gt;         &lt;span class="mi"&gt;35&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;
+
+&lt;p&gt;and all 300 NGINX containers deployed:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get deployments
+NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+autoscaler-demo   &lt;span class="m"&gt;300&lt;/span&gt;       &lt;span class="m"&gt;300&lt;/span&gt;       &lt;span class="m"&gt;300&lt;/span&gt;          &lt;span class="m"&gt;300&lt;/span&gt;         35m
 &lt;/pre&gt;&lt;/div&gt;
 
 
