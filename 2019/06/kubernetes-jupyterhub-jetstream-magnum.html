@@ -94,6 +94,7 @@ On the other hand, the <code>ansible</code> recipe takes a very long time to run
 
 <p>This downloads a configuration file and the required certificates.</p>
 <p>and returns  <code>export KUBECONFIG=/absolute/path/to/config</code></p>
+<p>See also the <code>update_kubectl_secret.sh</code> script to automate this step, but it requires to already have setup the environment variable.</p>
 <p>execute that and then:</p>
 <div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">nodes</span>
 </pre></div>

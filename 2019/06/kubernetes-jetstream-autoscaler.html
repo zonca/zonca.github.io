@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Deploy Cluster Autoscaler for Kubernetes on Jetstream | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Deploy Cluster Autoscaler for Kubernetes on Jetstream</h1>
+        </header>
+        <div class='post-content'>
+            <p>The <a href="https://github.com/kubernetes/autoscaler">Kubernetes Cluster Autoscaler</a> is a service
+that runs within a Kubernetes cluster and when there are not enough resources to accomodate
+the pods that are queued to run, it contacts the API of the cloud provider to create
+more Virtual Machines to join the Kubernetes Cluster.</p>
+<p>Initially the Cluster Autoscaler only supported commercial cloud provides, but back in
+March 2019 <a href="https://github.com/kubernetes/autoscaler/pull/1690">a user contributed Openstack support based on Magnum</a>.</p>
+<p>First step you should have a Magnum-based deployment running on Jetstream,
+see <a href="https://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html">my recent tutorial about that</a>.</p>
+<p>Therefore you should also have already a copy of the repository of all configuration
+files checked out on your local machine that you are using to interact with the openstack API,
+if not:</p>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span><span class="p">.</span><span class="n">git</span>
+</pre></div>
+
+
+<p>and enter the folder dedicated to the autoscaler:</p>
+<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span><span class="o">/</span><span class="n">kubernetes_magnum</span><span class="o">/</span><span class="n">autoscaler</span>
+</pre></div>
+
+
+<h2>Setup credentials</h2>
+<p>We first create the service account needed by the autoscaler to interact with the Kubernetes API:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="k">cluster</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">svcaccount</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<p>Then we need to provide all connection details for the autoscaler to interact with the Openstack API,
+those are contained in the <code>cloud-config</code> of our cluster available in the master node and setup
+by Magnum.
+Get the <code>IP</code> of your master node from:</p>
+<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">server</span> <span class="n">list</span>
+<span class="n">IP</span><span class="o">=</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span>
+</pre></div>
+
+
+<p>Now ssh into the master node and access the <code>cloud-config</code> file:</p>
+<div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">fedora</span><span class="o">@</span><span class="err">$</span><span class="n">IP</span>
+<span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">/</span><span class="n">cloud</span><span class="o">-</span><span class="n">config</span>
+</pre></div>
+
+
+<p>now copy the <code>[Global]</code> section at the end of <code>cluster-autoscaler-secret.yaml</code> on the local machine.
+Also remove the line of <code>ca-file</code></p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="k">cluster</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">secret</span><span class="p">.</span><span class="n">yaml</span>
+</pre></div>
+
+
+<h2>Launch the Autoscaler deployment</h2>
+<p>Create the Autoscaler deployment:</p>
+<p>kubectl create -f cluster-autoscaler-deployment-master.yaml</p>
+<p>Alternatively, I also added a version for a cluster where we are not deploying pods on master <code>cluster-autoscaler-deployment.yaml</code>.</p>
+<p>Check that the deployment is active:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="k">system</span> <span class="k">get</span> <span class="n">pods</span>
+<span class="n">NAME</span>                   <span class="n">DESIRED</span>   <span class="k">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="k">TO</span><span class="o">-</span><span class="nb">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
+<span class="k">cluster</span><span class="o">-</span><span class="n">autoscaler</span>     <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span>            <span class="mi">0</span>           <span class="mi">10</span><span class="n">s</span>
+</pre></div>
+
+
+<p>And check its logs:</p>
+<p>kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2</p>
+<div class="highlight"><pre><span></span><span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">21</span>.<span class="mi">589062</span>       <span class="mi">1</span> <span class="nv">leaderelection</span>.<span class="nv">go</span>:<span class="mi">217</span>] <span class="nv">attempting</span> <span class="nv">to</span> <span class="nv">acquire</span> <span class="nv">leader</span> <span class="nv">lease</span>  <span class="nv">kube</span><span class="o">-</span><span class="nv">system</span><span class="o">/</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">autoscaler</span>...
+<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">39</span>.<span class="mi">412449</span>       <span class="mi">1</span> <span class="nv">leaderelection</span>.<span class="nv">go</span>:<span class="mi">227</span>] <span class="nv">successfully</span> <span class="nv">acquired</span> <span class="nv">lease</span> <span class="nv">kube</span><span class="o">-</span><span class="nv">system</span><span class="o">/</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">autoscaler</span>
+<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">43</span>.<span class="mi">896557</span>       <span class="mi">1</span> <span class="nv">magnum_manager_heat</span>.<span class="nv">go</span>:<span class="mi">293</span>] <span class="k">For</span> <span class="nv">stack</span> <span class="nv">ID</span> <span class="mi">17</span><span class="nv">ab3ae7</span><span class="o">-</span><span class="mi">1</span><span class="nv">a81</span><span class="o">-</span><span class="mi">43</span><span class="nv">e6</span><span class="o">-</span><span class="mi">98</span><span class="nv">ec</span><span class="o">-</span><span class="nv">b6ffd04f91d3</span>, <span class="nv">stack</span> <span class="nv">name</span> <span class="nv">is</span> <span class="nv">k8s</span><span class="o">-</span><span class="nv">lu3bksbwsln3</span>
+<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">44</span>.<span class="mi">146319</span>       <span class="mi">1</span> <span class="nv">magnum_manager_heat</span>.<span class="nv">go</span>:<span class="mi">310</span>] <span class="nv">Found</span> <span class="nv">nested</span> <span class="nv">kube_minions</span> <span class="nv">stack</span>: <span class="nv">name</span> <span class="nv">k8s</span><span class="o">-</span><span class="nv">lu3bksbwsln3</span><span class="o">-</span><span class="nv">kube_minions</span><span class="o">-</span><span class="nv">r4lhlv5xuwu3</span>, <span class="nv">ID</span> <span class="nv">d0590824</span><span class="o">-</span><span class="nv">cc70</span><span class="o">-</span><span class="mi">4</span><span class="nv">da5</span><span class="o">-</span><span class="nv">b9ff</span><span class="o">-</span><span class="mi">8581</span><span class="nv">d99c666b</span>
+</pre></div>
+
+
+<p>If you redeploy the cluster and keep a older authentication, you'll see "Authentication failed" in the logs of the autoscaler pod, you need to update the secret every time you redeploy the cluster.</p>
+<h2>Test the autoscaler</h2>
+<p>Now we need to produce a significant load on the cluster so that the autoscaler is triggered to request Openstack Magnum to create more Virtual Machines.</p>
+<p>We can create a deployment of the NGINX container (any other would work for this test):</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="n">deployment</span> <span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span> <span class="c1">--image=nginx</span>
+</pre></div>
+
+
+<p>And then create a large number of replicas:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">scale</span> <span class="n">deployment</span> <span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span> <span class="c1">--replicas=300</span>
+</pre></div>
+
+
+<p>We are using 2 nodes with a large amount of memory and CPU, so they can accommodate more then 200 of those pods. The rest remains in the queue:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">deployment</span> <span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span>
+<span class="n">NAME</span>              <span class="n">DESIRED</span>   <span class="k">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="k">TO</span><span class="o">-</span><span class="nb">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
+<span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span>   <span class="mi">300</span>       <span class="mi">300</span>       <span class="mi">300</span>          <span class="mi">213</span>         <span class="mi">18</span><span class="n">m</span>
+</pre></div>
+
+
+<p>And this triggers the autoscaler:</p>
+<div class="highlight"><pre><span></span><span class="nv">kubectl</span> <span class="o">-</span><span class="nv">n</span> <span class="nv">kube</span><span class="o">-</span><span class="nv">system</span> <span class="nv">logs</span> <span class="nv">cluster</span><span class="o">-</span><span class="nv">autoscaler</span><span class="o">-</span><span class="mi">59</span><span class="nv">f4cf4f4</span><span class="o">-</span><span class="mi">4</span><span class="nv">k4p2</span>
+
+<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">34</span>:<span class="mi">47</span>.<span class="mi">401149</span>       <span class="mi">1</span> <span class="nv">scale_up</span>.<span class="nv">go</span>:<span class="mi">689</span>] <span class="nv">Scale</span><span class="o">-</span><span class="nv">up</span>: <span class="nv">setting</span> <span class="nv">group</span> <span class="nv">DefaultNodeGroup</span> <span class="nv">size</span> <span class="nv">to</span> <span class="mi">2</span>
+<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">34</span>:<span class="mi">49</span>.<span class="mi">267280</span>       <span class="mi">1</span> <span class="nv">magnum_nodegroup</span>.<span class="nv">go</span>:<span class="mi">101</span>] <span class="nv">Increasing</span> <span class="nv">size</span> <span class="nv">by</span> <span class="mi">1</span>, <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span>
+<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">35</span>:<span class="mi">22</span>.<span class="mi">222387</span>       <span class="mi">1</span> <span class="nv">magnum_nodegroup</span>.<span class="nv">go</span>:<span class="mi">67</span>] <span class="nv">Waited</span> <span class="k">for</span> <span class="nv">cluster</span> <span class="nv">UPDATE_IN_PROGRESS</span> <span class="nv">status</span>
+</pre></div>
+
+
+<p>Check also in the Openstack API:</p>
+<p>```openstack coe cluster list
++--------------------------------------+------+---------+------------+--------------+--------------------+
+| uuid                                 | name | keypair | node_count | master_count | status             |
++--------------------------------------+------+---------+------------+--------------+--------------------+
+| 09fcf230-e806-4d6a-8aa5-a92558182b4f | k8s  | comet   |          2 |            1 | UPDATE_IN_PROGRESS |
++--------------------------------------+------+---------+------------+--------------+--------------------+</p>
+<div class="highlight"><pre><span></span><span class="nv">It</span> <span class="nv">takes</span> <span class="nv">about</span> <span class="mi">4</span> <span class="nv">minutes</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">VM</span> <span class="nv">to</span> <span class="nv">boot</span>, <span class="nv">be</span> <span class="nv">configured</span> <span class="nv">by</span> <span class="nv">Magnum</span> <span class="nv">and</span> <span class="nv">join</span> <span class="nv">the</span> <span class="nv">Kubernetes</span> <span class="nv">cluster</span>.
+
+<span class="nv">Checking</span> <span class="nv">the</span> <span class="nv">logs</span> <span class="nv">again</span> <span class="nv">should</span> <span class="k">show</span> <span class="nv">another</span> <span class="nv">line</span>:
+
+    <span class="nv">I0912</span> <span class="mi">17</span>:<span class="mi">18</span>:<span class="mi">28</span>.<span class="mi">290987</span>       <span class="mi">1</span> <span class="nv">magnum_nodegroup</span>.<span class="nv">go</span>:<span class="mi">67</span>] <span class="nv">Waited</span> <span class="k">for</span> <span class="nv">cluster</span> <span class="nv">UPDATE_COMPLETE</span> <span class="nv">status</span>
+
+<span class="nv">Once</span> <span class="nv">in</span> <span class="nv">a</span> <span class="k">while</span> <span class="nv">it</span> <span class="nv">is</span> <span class="nv">possible</span> <span class="nv">that</span> <span class="nv">the</span> <span class="nv">update</span> <span class="nv">takes</span> <span class="nv">longer</span> <span class="nv">than</span> <span class="mi">10</span> <span class="nv">minutes</span> <span class="nv">and</span> <span class="nv">the</span> <span class="nv">autoscaler</span> <span class="nv">times</span> <span class="nv">out</span>,
+<span class="nv">unfortunately</span> <span class="nv">the</span> <span class="nb">timeout</span> <span class="nv">it</span> <span class="nv">hard</span><span class="o">-</span><span class="nv">coded</span> <span class="nv">into</span> <span class="nv">the</span> <span class="nv">cluster</span> <span class="nv">autoscaler</span> <span class="nv">container</span> <span class="nv">and</span> <span class="nv">it</span> <span class="nv">is</span> <span class="nv">necessary</span> <span class="nv">to</span> <span class="nv">rebuild</span>
+<span class="nv">the</span> <span class="nv">container</span> <span class="nv">to</span> <span class="nv">increase</span> <span class="nv">it</span>. <span class="nv">Please</span> [<span class="nv">open</span> <span class="nv">an</span> <span class="nv">issue</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">repository</span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">zonca</span><span class="o">/</span><span class="nv">jupyterhub</span><span class="o">-</span><span class="nv">deploy</span><span class="o">-</span><span class="nv">kubernetes</span><span class="o">-</span><span class="nv">jetstream</span><span class="o">/</span><span class="nv">issues</span><span class="ss">)</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">are</span> <span class="nv">affected</span> <span class="nv">by</span> <span class="nv">this</span> <span class="nv">issue</span>.
+
+<span class="k">Then</span> <span class="nv">you</span> <span class="nv">should</span> <span class="nv">have</span> <span class="nv">all</span> <span class="mi">3</span> <span class="nv">nodes</span> <span class="nv">available</span>:
+</pre></div>
+
+
+<p>kubectl get nodes
+NAME                        STATUS   ROLES    AGE   VERSION
+k8s-6bawhy45wr5t-master-0   Ready    master   38m   v1.11.1
+k8s-6bawhy45wr5t-minion-0   Ready    <none>   38m   v1.11.1
+k8s-6bawhy45wr5t-minion-1   Ready    <none>   30m   v1.11.1</p>
+<div class="highlight"><pre><span></span><span class="k">and</span> <span class="k">all</span> <span class="mi">300</span> <span class="n">NGINX</span> <span class="n">containers</span> <span class="n">deployed</span><span class="p">:</span>
+</pre></div>
+
+
+<p>k get deployments
+NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+autoscaler-demo   300       300       300          300         35m
+```</p>
+<h2>Note about images used by Magnum</h2>
+<p>I have tested this deployment using the <code>Fedora-Atomic-27-20180419</code> image on Jetstream at Indiana University.
+The Fedora Atomic 28 image had a long hang-up during boot and took more than 10 minutes to start and that caused timeout in the autoscaler and anyway it would have been too long for a user waiting to start a notebook.</p>
+<p>I also tried updating the Fedora Atomic 28 image with <code>sudo atomic host upgrade</code> and while this fixed the slow startup issue, it generated a broken Kubernetes installation, i.e. the Kubernetes services didn't detect the master node as part of the cluster, <code>kubectl get nodes</code> only showed the minion.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2019-06-14T00:00:00-07:00">Fri 14 June 2019</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/kubernetes.html">kubernetes</a> 
+<a href="http://zonca.github.io/tag/openstack.html">openstack</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>
