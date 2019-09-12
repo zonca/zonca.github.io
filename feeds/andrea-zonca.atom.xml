@@ -25,7 +25,7 @@ if not:&lt;/p&gt;
 
 &lt;h2&gt;Setup credentials&lt;/h2&gt;
 &lt;p&gt;We first create the service account needed by the autoscaler to interact with the Kubernetes API:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="k"&gt;cluster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;svcaccount&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yaml&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    kubectl create -f cluster-autoscaler-svcaccount.yaml 
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -33,40 +33,44 @@ if not:&lt;/p&gt;
 those are contained in the &lt;code&gt;cloud-config&lt;/code&gt; of our cluster available in the master node and setup
 by Magnum.
 Get the &lt;code&gt;IP&lt;/code&gt; of your master node from:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt;
-&lt;span class="n"&gt;IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    openstack server list
+    &lt;span class="nv"&gt;IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;xxx.xxx.xxx.xxx
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Now ssh into the master node and access the &lt;code&gt;cloud-config&lt;/code&gt; file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt; &lt;span class="n"&gt;fedora&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;IP&lt;/span&gt;
-&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    ssh fedora@&lt;span class="nv"&gt;$IP&lt;/span&gt;
+    cat /etc/kubernetes/cloud-config 
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;now copy the &lt;code&gt;[Global]&lt;/code&gt; section at the end of &lt;code&gt;cluster-autoscaler-secret.yaml&lt;/code&gt; on the local machine.
 Also remove the line of &lt;code&gt;ca-file&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="k"&gt;cluster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;secret&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yaml&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f cluster-autoscaler-secret.yaml
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;Launch the Autoscaler deployment&lt;/h2&gt;
 &lt;p&gt;Create the Autoscaler deployment:&lt;/p&gt;
-&lt;p&gt;kubectl create -f cluster-autoscaler-deployment-master.yaml&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create -f cluster-autoscaler-deployment-master.yaml
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Alternatively, I also added a version for a cluster where we are not deploying pods on master &lt;code&gt;cluster-autoscaler-deployment.yaml&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Check that the deployment is active:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="n"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;pods&lt;/span&gt;
-&lt;span class="n"&gt;NAME&lt;/span&gt;                   &lt;span class="n"&gt;DESIRED&lt;/span&gt;   &lt;span class="k"&gt;CURRENT&lt;/span&gt;   &lt;span class="n"&gt;UP&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;DATE&lt;/span&gt;   &lt;span class="n"&gt;AVAILABLE&lt;/span&gt;   &lt;span class="n"&gt;AGE&lt;/span&gt;
-&lt;span class="k"&gt;cluster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;autoscaler&lt;/span&gt;     &lt;span class="mi"&gt;1&lt;/span&gt;         &lt;span class="mi"&gt;1&lt;/span&gt;         &lt;span class="mi"&gt;1&lt;/span&gt;            &lt;span class="mi"&gt;0&lt;/span&gt;           &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl -n kube-system get pods
+NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+cluster-autoscaler     &lt;span class="m"&gt;1&lt;/span&gt;         &lt;span class="m"&gt;1&lt;/span&gt;         &lt;span class="m"&gt;1&lt;/span&gt;            &lt;span class="m"&gt;0&lt;/span&gt;           10s
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;And check its logs:&lt;/p&gt;
-&lt;p&gt;kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;29&lt;/span&gt;:&lt;span class="mi"&gt;21&lt;/span&gt;.&lt;span class="mi"&gt;589062&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;leaderelection&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;217&lt;/span&gt;] &lt;span class="nv"&gt;attempting&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;acquire&lt;/span&gt; &lt;span class="nv"&gt;leader&lt;/span&gt; &lt;span class="nv"&gt;lease&lt;/span&gt;  &lt;span class="nv"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;cluster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;autoscaler&lt;/span&gt;...
-&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;29&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;.&lt;span class="mi"&gt;412449&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;leaderelection&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;227&lt;/span&gt;] &lt;span class="nv"&gt;successfully&lt;/span&gt; &lt;span class="nv"&gt;acquired&lt;/span&gt; &lt;span class="nv"&gt;lease&lt;/span&gt; &lt;span class="nv"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;cluster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;autoscaler&lt;/span&gt;
-&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;29&lt;/span&gt;:&lt;span class="mi"&gt;43&lt;/span&gt;.&lt;span class="mi"&gt;896557&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;magnum_manager_heat&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;293&lt;/span&gt;] &lt;span class="k"&gt;For&lt;/span&gt; &lt;span class="nv"&gt;stack&lt;/span&gt; &lt;span class="nv"&gt;ID&lt;/span&gt; &lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="nv"&gt;ab3ae7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="nv"&gt;a81&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;43&lt;/span&gt;&lt;span class="nv"&gt;e6&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;98&lt;/span&gt;&lt;span class="nv"&gt;ec&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;b6ffd04f91d3&lt;/span&gt;, &lt;span class="nv"&gt;stack&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="nv"&gt;is&lt;/span&gt; &lt;span class="nv"&gt;k8s&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;lu3bksbwsln3&lt;/span&gt;
-&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;29&lt;/span&gt;:&lt;span class="mi"&gt;44&lt;/span&gt;.&lt;span class="mi"&gt;146319&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;magnum_manager_heat&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;310&lt;/span&gt;] &lt;span class="nv"&gt;Found&lt;/span&gt; &lt;span class="nv"&gt;nested&lt;/span&gt; &lt;span class="nv"&gt;kube_minions&lt;/span&gt; &lt;span class="nv"&gt;stack&lt;/span&gt;: &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="nv"&gt;k8s&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;lu3bksbwsln3&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;kube_minions&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;r4lhlv5xuwu3&lt;/span&gt;, &lt;span class="nv"&gt;ID&lt;/span&gt; &lt;span class="nv"&gt;d0590824&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;cc70&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="nv"&gt;da5&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;b9ff&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;8581&lt;/span&gt;&lt;span class="nv"&gt;d99c666b&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2
+
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:29:21.589062       &lt;span class="m"&gt;1&lt;/span&gt; leaderelection.go:217&lt;span class="o"&gt;]&lt;/span&gt; attempting to acquire leader lease  kube-system/cluster-autoscaler...
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:29:39.412449       &lt;span class="m"&gt;1&lt;/span&gt; leaderelection.go:227&lt;span class="o"&gt;]&lt;/span&gt; successfully acquired lease kube-system/cluster-autoscaler
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:29:43.896557       &lt;span class="m"&gt;1&lt;/span&gt; magnum_manager_heat.go:293&lt;span class="o"&gt;]&lt;/span&gt; For stack ID 17ab3ae7-1a81-43e6-98ec-b6ffd04f91d3, stack name is k8s-lu3bksbwsln3
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:29:44.146319       &lt;span class="m"&gt;1&lt;/span&gt; magnum_manager_heat.go:310&lt;span class="o"&gt;]&lt;/span&gt; Found nested kube_minions stack: name k8s-lu3bksbwsln3-kube_minions-r4lhlv5xuwu3, ID d0590824-cc70-4da5-b9ff-8581d99c666b
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -74,28 +78,28 @@ Also remove the line of &lt;code&gt;ca-file&lt;/code&gt;&lt;/p&gt;
 &lt;h2&gt;Test the autoscaler&lt;/h2&gt;
 &lt;p&gt;Now we need to produce a significant load on the cluster so that the autoscaler is triggered to request Openstack Magnum to create more Virtual Machines.&lt;/p&gt;
 &lt;p&gt;We can create a deployment of the NGINX container (any other would work for this test):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="n"&gt;deployment&lt;/span&gt; &lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;demo&lt;/span&gt; &lt;span class="c1"&gt;--image=nginx&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl create deployment autoscaler-demo --image&lt;span class="o"&gt;=&lt;/span&gt;nginx
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;And then create a large number of replicas:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;scale&lt;/span&gt; &lt;span class="n"&gt;deployment&lt;/span&gt; &lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;demo&lt;/span&gt; &lt;span class="c1"&gt;--replicas=300&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl scale deployment autoscaler-demo --replicas&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;300&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;We are using 2 nodes with a large amount of memory and CPU, so they can accommodate more then 200 of those pods. The rest remains in the queue:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;deployment&lt;/span&gt; &lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;demo&lt;/span&gt;
-&lt;span class="n"&gt;NAME&lt;/span&gt;              &lt;span class="n"&gt;DESIRED&lt;/span&gt;   &lt;span class="k"&gt;CURRENT&lt;/span&gt;   &lt;span class="n"&gt;UP&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;DATE&lt;/span&gt;   &lt;span class="n"&gt;AVAILABLE&lt;/span&gt;   &lt;span class="n"&gt;AGE&lt;/span&gt;
-&lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;demo&lt;/span&gt;   &lt;span class="mi"&gt;300&lt;/span&gt;       &lt;span class="mi"&gt;300&lt;/span&gt;       &lt;span class="mi"&gt;300&lt;/span&gt;          &lt;span class="mi"&gt;213&lt;/span&gt;         &lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl get deployment autoscaler-demo
+NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+autoscaler-demo   &lt;span class="m"&gt;300&lt;/span&gt;       &lt;span class="m"&gt;300&lt;/span&gt;       &lt;span class="m"&gt;300&lt;/span&gt;          &lt;span class="m"&gt;213&lt;/span&gt;         18m
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;And this triggers the autoscaler:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;kubectl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="nv"&gt;kube&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;system&lt;/span&gt; &lt;span class="nv"&gt;logs&lt;/span&gt; &lt;span class="nv"&gt;cluster&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="nv"&gt;f4cf4f4&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="nv"&gt;k4p2&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2
 
-&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;34&lt;/span&gt;:&lt;span class="mi"&gt;47&lt;/span&gt;.&lt;span class="mi"&gt;401149&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;scale_up&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;689&lt;/span&gt;] &lt;span class="nv"&gt;Scale&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;up&lt;/span&gt;: &lt;span class="nv"&gt;setting&lt;/span&gt; &lt;span class="nv"&gt;group&lt;/span&gt; &lt;span class="nv"&gt;DefaultNodeGroup&lt;/span&gt; &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
-&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;34&lt;/span&gt;:&lt;span class="mi"&gt;49&lt;/span&gt;.&lt;span class="mi"&gt;267280&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;magnum_nodegroup&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;101&lt;/span&gt;] &lt;span class="nv"&gt;Increasing&lt;/span&gt; &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="nv"&gt;by&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;, &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
-&lt;span class="nv"&gt;I0905&lt;/span&gt; &lt;span class="mi"&gt;05&lt;/span&gt;:&lt;span class="mi"&gt;35&lt;/span&gt;:&lt;span class="mi"&gt;22&lt;/span&gt;.&lt;span class="mi"&gt;222387&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;magnum_nodegroup&lt;/span&gt;.&lt;span class="nv"&gt;go&lt;/span&gt;:&lt;span class="mi"&gt;67&lt;/span&gt;] &lt;span class="nv"&gt;Waited&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;cluster&lt;/span&gt; &lt;span class="nv"&gt;UPDATE_IN_PROGRESS&lt;/span&gt; &lt;span class="nv"&gt;status&lt;/span&gt;
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:34:47.401149       &lt;span class="m"&gt;1&lt;/span&gt; scale_up.go:689&lt;span class="o"&gt;]&lt;/span&gt; Scale-up: setting group DefaultNodeGroup size to &lt;span class="m"&gt;2&lt;/span&gt;
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:34:49.267280       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:101&lt;span class="o"&gt;]&lt;/span&gt; Increasing size by &lt;span class="m"&gt;1&lt;/span&gt;, &lt;span class="m"&gt;1&lt;/span&gt;-&amp;gt;2
+I0905 &lt;span class="m"&gt;05&lt;/span&gt;:35:22.222387       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_IN_PROGRESS status
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -126,13 +130,14 @@ k8s-6bawhy45wr5t-master-0   Ready    master   38m   v1.11.1
 k8s-6bawhy45wr5t-minion-0   Ready    &lt;none&gt;   38m   v1.11.1
 k8s-6bawhy45wr5t-minion-1   Ready    &lt;none&gt;   30m   v1.11.1&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="k"&gt;all&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt; &lt;span class="n"&gt;NGINX&lt;/span&gt; &lt;span class="n"&gt;containers&lt;/span&gt; &lt;span class="n"&gt;deployed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="o"&gt;```&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt;
+&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;deployments&lt;/span&gt;
+&lt;span class="n"&gt;NAME&lt;/span&gt;              &lt;span class="n"&gt;DESIRED&lt;/span&gt;   &lt;span class="k"&gt;CURRENT&lt;/span&gt;   &lt;span class="n"&gt;UP&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;TO&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;DATE&lt;/span&gt;   &lt;span class="n"&gt;AVAILABLE&lt;/span&gt;   &lt;span class="n"&gt;AGE&lt;/span&gt;
+&lt;span class="n"&gt;autoscaler&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;demo&lt;/span&gt;   &lt;span class="mi"&gt;300&lt;/span&gt;       &lt;span class="mi"&gt;300&lt;/span&gt;       &lt;span class="mi"&gt;300&lt;/span&gt;          &lt;span class="mi"&gt;300&lt;/span&gt;         &lt;span class="mi"&gt;35&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;k get deployments
-NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-autoscaler-demo   300       300       300          300         35m
-```&lt;/p&gt;
 &lt;h2&gt;Note about images used by Magnum&lt;/h2&gt;
 &lt;p&gt;I have tested this deployment using the &lt;code&gt;Fedora-Atomic-27-20180419&lt;/code&gt; image on Jetstream at Indiana University.
 The Fedora Atomic 28 image had a long hang-up during boot and took more than 10 minutes to start and that caused timeout in the autoscaler and anyway it would have been too long for a user waiting to start a notebook.&lt;/p&gt;

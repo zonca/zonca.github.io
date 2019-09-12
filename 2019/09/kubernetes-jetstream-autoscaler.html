@@ -66,7 +66,7 @@ if not:</p>
 
 <h2>Setup credentials</h2>
 <p>We first create the service account needed by the autoscaler to interact with the Kubernetes API:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="k">cluster</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">svcaccount</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span>    kubectl create -f cluster-autoscaler-svcaccount.yaml 
 </pre></div>
 
 
@@ -74,40 +74,44 @@ if not:</p>
 those are contained in the <code>cloud-config</code> of our cluster available in the master node and setup
 by Magnum.
 Get the <code>IP</code> of your master node from:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">server</span> <span class="n">list</span>
-<span class="n">IP</span><span class="o">=</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span>
+<div class="highlight"><pre><span></span>    openstack server list
+    <span class="nv">IP</span><span class="o">=</span>xxx.xxx.xxx.xxx
 </pre></div>
 
 
 <p>Now ssh into the master node and access the <code>cloud-config</code> file:</p>
-<div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">fedora</span><span class="o">@</span><span class="err">$</span><span class="n">IP</span>
-<span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">kubernetes</span><span class="o">/</span><span class="n">cloud</span><span class="o">-</span><span class="n">config</span>
+<div class="highlight"><pre><span></span>    ssh fedora@<span class="nv">$IP</span>
+    cat /etc/kubernetes/cloud-config 
 </pre></div>
 
 
 <p>now copy the <code>[Global]</code> section at the end of <code>cluster-autoscaler-secret.yaml</code> on the local machine.
 Also remove the line of <code>ca-file</code></p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="k">cluster</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="n">secret</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span>kubectl create -f cluster-autoscaler-secret.yaml
 </pre></div>
 
 
 <h2>Launch the Autoscaler deployment</h2>
 <p>Create the Autoscaler deployment:</p>
-<p>kubectl create -f cluster-autoscaler-deployment-master.yaml</p>
+<div class="highlight"><pre><span></span>kubectl create -f cluster-autoscaler-deployment-master.yaml
+</pre></div>
+
+
 <p>Alternatively, I also added a version for a cluster where we are not deploying pods on master <code>cluster-autoscaler-deployment.yaml</code>.</p>
 <p>Check that the deployment is active:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="k">system</span> <span class="k">get</span> <span class="n">pods</span>
-<span class="n">NAME</span>                   <span class="n">DESIRED</span>   <span class="k">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="k">TO</span><span class="o">-</span><span class="nb">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
-<span class="k">cluster</span><span class="o">-</span><span class="n">autoscaler</span>     <span class="mi">1</span>         <span class="mi">1</span>         <span class="mi">1</span>            <span class="mi">0</span>           <span class="mi">10</span><span class="n">s</span>
+<div class="highlight"><pre><span></span>kubectl -n kube-system get pods
+NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+cluster-autoscaler     <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>            <span class="m">0</span>           10s
 </pre></div>
 
 
 <p>And check its logs:</p>
-<p>kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2</p>
-<div class="highlight"><pre><span></span><span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">21</span>.<span class="mi">589062</span>       <span class="mi">1</span> <span class="nv">leaderelection</span>.<span class="nv">go</span>:<span class="mi">217</span>] <span class="nv">attempting</span> <span class="nv">to</span> <span class="nv">acquire</span> <span class="nv">leader</span> <span class="nv">lease</span>  <span class="nv">kube</span><span class="o">-</span><span class="nv">system</span><span class="o">/</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">autoscaler</span>...
-<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">39</span>.<span class="mi">412449</span>       <span class="mi">1</span> <span class="nv">leaderelection</span>.<span class="nv">go</span>:<span class="mi">227</span>] <span class="nv">successfully</span> <span class="nv">acquired</span> <span class="nv">lease</span> <span class="nv">kube</span><span class="o">-</span><span class="nv">system</span><span class="o">/</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">autoscaler</span>
-<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">43</span>.<span class="mi">896557</span>       <span class="mi">1</span> <span class="nv">magnum_manager_heat</span>.<span class="nv">go</span>:<span class="mi">293</span>] <span class="k">For</span> <span class="nv">stack</span> <span class="nv">ID</span> <span class="mi">17</span><span class="nv">ab3ae7</span><span class="o">-</span><span class="mi">1</span><span class="nv">a81</span><span class="o">-</span><span class="mi">43</span><span class="nv">e6</span><span class="o">-</span><span class="mi">98</span><span class="nv">ec</span><span class="o">-</span><span class="nv">b6ffd04f91d3</span>, <span class="nv">stack</span> <span class="nv">name</span> <span class="nv">is</span> <span class="nv">k8s</span><span class="o">-</span><span class="nv">lu3bksbwsln3</span>
-<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">29</span>:<span class="mi">44</span>.<span class="mi">146319</span>       <span class="mi">1</span> <span class="nv">magnum_manager_heat</span>.<span class="nv">go</span>:<span class="mi">310</span>] <span class="nv">Found</span> <span class="nv">nested</span> <span class="nv">kube_minions</span> <span class="nv">stack</span>: <span class="nv">name</span> <span class="nv">k8s</span><span class="o">-</span><span class="nv">lu3bksbwsln3</span><span class="o">-</span><span class="nv">kube_minions</span><span class="o">-</span><span class="nv">r4lhlv5xuwu3</span>, <span class="nv">ID</span> <span class="nv">d0590824</span><span class="o">-</span><span class="nv">cc70</span><span class="o">-</span><span class="mi">4</span><span class="nv">da5</span><span class="o">-</span><span class="nv">b9ff</span><span class="o">-</span><span class="mi">8581</span><span class="nv">d99c666b</span>
+<div class="highlight"><pre><span></span>kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2
+
+I0905 <span class="m">05</span>:29:21.589062       <span class="m">1</span> leaderelection.go:217<span class="o">]</span> attempting to acquire leader lease  kube-system/cluster-autoscaler...
+I0905 <span class="m">05</span>:29:39.412449       <span class="m">1</span> leaderelection.go:227<span class="o">]</span> successfully acquired lease kube-system/cluster-autoscaler
+I0905 <span class="m">05</span>:29:43.896557       <span class="m">1</span> magnum_manager_heat.go:293<span class="o">]</span> For stack ID 17ab3ae7-1a81-43e6-98ec-b6ffd04f91d3, stack name is k8s-lu3bksbwsln3
+I0905 <span class="m">05</span>:29:44.146319       <span class="m">1</span> magnum_manager_heat.go:310<span class="o">]</span> Found nested kube_minions stack: name k8s-lu3bksbwsln3-kube_minions-r4lhlv5xuwu3, ID d0590824-cc70-4da5-b9ff-8581d99c666b
 </pre></div>
 
 
@@ -115,28 +119,28 @@ Also remove the line of <code>ca-file</code></p>
 <h2>Test the autoscaler</h2>
 <p>Now we need to produce a significant load on the cluster so that the autoscaler is triggered to request Openstack Magnum to create more Virtual Machines.</p>
 <p>We can create a deployment of the NGINX container (any other would work for this test):</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="n">deployment</span> <span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span> <span class="c1">--image=nginx</span>
+<div class="highlight"><pre><span></span>kubectl create deployment autoscaler-demo --image<span class="o">=</span>nginx
 </pre></div>
 
 
 <p>And then create a large number of replicas:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">scale</span> <span class="n">deployment</span> <span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span> <span class="c1">--replicas=300</span>
+<div class="highlight"><pre><span></span>kubectl scale deployment autoscaler-demo --replicas<span class="o">=</span><span class="m">300</span>
 </pre></div>
 
 
 <p>We are using 2 nodes with a large amount of memory and CPU, so they can accommodate more then 200 of those pods. The rest remains in the queue:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">deployment</span> <span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span>
-<span class="n">NAME</span>              <span class="n">DESIRED</span>   <span class="k">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="k">TO</span><span class="o">-</span><span class="nb">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
-<span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span>   <span class="mi">300</span>       <span class="mi">300</span>       <span class="mi">300</span>          <span class="mi">213</span>         <span class="mi">18</span><span class="n">m</span>
+<div class="highlight"><pre><span></span>kubectl get deployment autoscaler-demo
+NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+autoscaler-demo   <span class="m">300</span>       <span class="m">300</span>       <span class="m">300</span>          <span class="m">213</span>         18m
 </pre></div>
 
 
 <p>And this triggers the autoscaler:</p>
-<div class="highlight"><pre><span></span><span class="nv">kubectl</span> <span class="o">-</span><span class="nv">n</span> <span class="nv">kube</span><span class="o">-</span><span class="nv">system</span> <span class="nv">logs</span> <span class="nv">cluster</span><span class="o">-</span><span class="nv">autoscaler</span><span class="o">-</span><span class="mi">59</span><span class="nv">f4cf4f4</span><span class="o">-</span><span class="mi">4</span><span class="nv">k4p2</span>
+<div class="highlight"><pre><span></span>kubectl -n kube-system logs cluster-autoscaler-59f4cf4f4-4k4p2
 
-<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">34</span>:<span class="mi">47</span>.<span class="mi">401149</span>       <span class="mi">1</span> <span class="nv">scale_up</span>.<span class="nv">go</span>:<span class="mi">689</span>] <span class="nv">Scale</span><span class="o">-</span><span class="nv">up</span>: <span class="nv">setting</span> <span class="nv">group</span> <span class="nv">DefaultNodeGroup</span> <span class="nv">size</span> <span class="nv">to</span> <span class="mi">2</span>
-<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">34</span>:<span class="mi">49</span>.<span class="mi">267280</span>       <span class="mi">1</span> <span class="nv">magnum_nodegroup</span>.<span class="nv">go</span>:<span class="mi">101</span>] <span class="nv">Increasing</span> <span class="nv">size</span> <span class="nv">by</span> <span class="mi">1</span>, <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span>
-<span class="nv">I0905</span> <span class="mi">05</span>:<span class="mi">35</span>:<span class="mi">22</span>.<span class="mi">222387</span>       <span class="mi">1</span> <span class="nv">magnum_nodegroup</span>.<span class="nv">go</span>:<span class="mi">67</span>] <span class="nv">Waited</span> <span class="k">for</span> <span class="nv">cluster</span> <span class="nv">UPDATE_IN_PROGRESS</span> <span class="nv">status</span>
+I0905 <span class="m">05</span>:34:47.401149       <span class="m">1</span> scale_up.go:689<span class="o">]</span> Scale-up: setting group DefaultNodeGroup size to <span class="m">2</span>
+I0905 <span class="m">05</span>:34:49.267280       <span class="m">1</span> magnum_nodegroup.go:101<span class="o">]</span> Increasing size by <span class="m">1</span>, <span class="m">1</span>-&gt;2
+I0905 <span class="m">05</span>:35:22.222387       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_IN_PROGRESS status
 </pre></div>
 
 
@@ -167,13 +171,14 @@ k8s-6bawhy45wr5t-master-0   Ready    master   38m   v1.11.1
 k8s-6bawhy45wr5t-minion-0   Ready    <none>   38m   v1.11.1
 k8s-6bawhy45wr5t-minion-1   Ready    <none>   30m   v1.11.1</p>
 <div class="highlight"><pre><span></span><span class="k">and</span> <span class="k">all</span> <span class="mi">300</span> <span class="n">NGINX</span> <span class="n">containers</span> <span class="n">deployed</span><span class="p">:</span>
+
+<span class="o">```</span><span class="n">bash</span>
+<span class="n">kubectl</span> <span class="k">get</span> <span class="n">deployments</span>
+<span class="n">NAME</span>              <span class="n">DESIRED</span>   <span class="k">CURRENT</span>   <span class="n">UP</span><span class="o">-</span><span class="k">TO</span><span class="o">-</span><span class="nb">DATE</span>   <span class="n">AVAILABLE</span>   <span class="n">AGE</span>
+<span class="n">autoscaler</span><span class="o">-</span><span class="n">demo</span>   <span class="mi">300</span>       <span class="mi">300</span>       <span class="mi">300</span>          <span class="mi">300</span>         <span class="mi">35</span><span class="n">m</span>
 </pre></div>
 
 
-<p>k get deployments
-NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-autoscaler-demo   300       300       300          300         35m
-```</p>
 <h2>Note about images used by Magnum</h2>
 <p>I have tested this deployment using the <code>Fedora-Atomic-27-20180419</code> image on Jetstream at Indiana University.
 The Fedora Atomic 28 image had a long hang-up during boot and took more than 10 minutes to start and that caused timeout in the autoscaler and anyway it would have been too long for a user waiting to start a notebook.</p>
