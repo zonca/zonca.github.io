@@ -1,125 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-08-24T15:00:00-07:00</updated><entry><title>Create a Github account for your research group with free private repositories</title><link href="http://zonca.github.io/2019/08/github-for-research-groups.html" rel="alternate"></link><published>2019-08-24T15:00:00-07:00</published><updated>2019-08-24T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-08-24:/2019/08/github-for-research-groups.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; allows a research group to create their own webpage where they can host, share and develop their software using the &lt;code&gt;git&lt;/code&gt; version control system and the powerful Github online issue-tracking interface.&lt;/p&gt;
-&lt;p&gt;Github offers unlimited private and public repositories to research groups and classrooms.
-Private repositories are useful for early …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; allows a research group to create their own webpage where they can host, share and develop their software using the &lt;code&gt;git&lt;/code&gt; version control system and the powerful Github online issue-tracking interface.&lt;/p&gt;
-&lt;p&gt;Github offers unlimited private and public repositories to research groups and classrooms.
-Private repositories are useful for early stages of development or if it is necessary to keep software secret before publication, at publication they can easily switched to public repositories and free up their slot.&lt;/p&gt;
-&lt;p&gt;They also provide free data packs for &lt;a href="https://git-lfs.github.com/"&gt;&lt;code&gt;git-lfs&lt;/code&gt;(Large File Support)&lt;/a&gt; which is useful to store large amount of binary data together with your software in the same repository, without actually committing the files into &lt;code&gt;git&lt;/code&gt; but using a support server. Just go into "Settings" for your organization and under "Billing" add data packs, you will notice that the cost is $0.&lt;/p&gt;
-&lt;p&gt;Here the steps to set this up:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create a user account on Github and choose the free plan, use your &lt;code&gt;.edu&lt;/code&gt; email address&lt;/li&gt;
-&lt;li&gt;Create an organization account for your research group&lt;/li&gt;
-&lt;li&gt;Go to &lt;a href="https://education.github.com/"&gt;https://education.github.com/&lt;/a&gt; and click on "Get benefits"&lt;/li&gt;
-&lt;li&gt;Choose what is your position, e.g. Researcher and select you want a discount for an organization&lt;/li&gt;
-&lt;li&gt;Choose the organization you created earlier and confirm that it is a "Research group"&lt;/li&gt;
-&lt;li&gt;Add details about your Research group&lt;/li&gt;
-&lt;li&gt;Finally you need to upload a picture of your University ID card and write how you plan on using the repositories&lt;/li&gt;
-&lt;li&gt;Within a week at most, but generally in less than 24 hours, you will be approved for unlimited private repositories.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Once the organization is created, you can add key team members to the "Owners" group, and then create another group for students and collaborators.&lt;/p&gt;
-&lt;p&gt;Consider also that is not necessary for every collaborator to have write access to your repositories. My recommendation is to ask a more experienced team member to administer the central repository, ask the students to fork the repository under their user accounts (forks of private repositories are always private, free and don't use any slot), and then &lt;a href="https://help.github.com/articles/using-pull-requests"&gt;send a pull request&lt;/a&gt; to the central repository for the administrator to review, discuss and merge.&lt;/p&gt;
-&lt;p&gt;See for example the organization account of the &lt;a href="https://github.com/dib-lab"&gt;"The Lab for Data Intensive Biology" led by Dr. C. Titus Brown&lt;/a&gt; where they share code, documentation and papers. Open Science!!&lt;/p&gt;
-&lt;p&gt;Other suggestions on the setup very welcome!&lt;/p&gt;</content><category term="github"></category><category term="git"></category><category term="openscience"></category></entry><entry><title>Ship large files with Python packages</title><link href="http://zonca.github.io/2019/08/large-files-python-packages.html" rel="alternate"></link><published>2019-08-21T18:00:00-07:00</published><updated>2019-08-21T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-08-21:/2019/08/large-files-python-packages.html</id><summary type="html">&lt;p&gt;It is often useful to ship large data files together with a Python package,
-a couple of scenarios are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionality of …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;It is often useful to ship large data files together with a Python package,
-a couple of scenarios are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionality of the package or for all of it&lt;/li&gt;
-&lt;li&gt;data necessary for unit or integration testing, both example inputs and expected outputs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If data are collectively less than 2 GB compressed and do not change very often, a simple and a bit hacky solution is to use GitHub release assets. For each packaged release on GitHub it is possible to attach one or more assets smaller than 2 GB. You can then attach data to each release, the downside is that users need to make sure to use the correct dataset for the release they are using and the first time they use the software the need to install the Python package and also download the dataset and install it in the right folder. See &lt;a href="https://gist.github.com/zonca/52857f2425942725fb74595c4f8600e9"&gt;an example script to upload from the command line&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;If data files are individually less than 10 MB and collectively less than 100 MB you can directly add them into the Python package. This is the easiest and most convenient option, for example the &lt;a href="https://github.com/astropy/package-template"&gt;&lt;code&gt;astropy package template&lt;/code&gt;&lt;/a&gt; automatically adds to the package any file inside the &lt;code&gt;packagename/data&lt;/code&gt; folder.&lt;/p&gt;
-&lt;p&gt;For larger datasets I recommend to host the files externally and use the &lt;a href="http://docs.astropy.org/en/stable/utils/#module-astropy.utils.data"&gt;&lt;code&gt;astropy.utils.data&lt;/code&gt; module&lt;/a&gt;.
-This module automates the process of retrieving a file from a remote server and caching it locally (in the users home folder), next time the user needs it, it is automatically retrieved from the cache:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;dataurl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://my-web-server.ucsd.edu/test-data/&amp;quot;&lt;/span&gt;
-    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dataurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dataurl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-        &lt;span class="s2"&gt;&amp;quot;remote_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
-    &lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="n"&gt;local_file_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pkg_data_filename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;myfile.jpg)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Now we need to host there files publicly, I have a few options.&lt;/p&gt;
-&lt;h3&gt;Host on a dedicated GitHub repository&lt;/h3&gt;
-&lt;p&gt;If files are individually less than 100MB and collectively a few GB, you can create a dedicated repository on GitHub and push there your files.
-Then &lt;a href="https://help.github.com/en/articles/what-is-github-pages"&gt;activate GitHub Pages&lt;/a&gt; so that those files are published at &lt;code&gt;https://your-organization.github.io/your-repository/&lt;/code&gt;.
-Then use this URL as &lt;code&gt;dataurl&lt;/code&gt; in the above script.&lt;/p&gt;
-&lt;h3&gt;Host on a Supercomputer or own server&lt;/h3&gt;
-&lt;p&gt;Some Supercomputers offer the feature of providing public web access from specific folders, for example NERSC allows user to publish web-pages publicly, see &lt;a href="https://www.nersc.gov/users/computational-systems/pdsf/software-and-tools/hosting-webpages/"&gt;their documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This is very useful for huge datasets because you can automatically detect if the package is being run at NERSC and then automatically access the files with their path instead of downloading them.&lt;/p&gt;
-&lt;p&gt;For example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_data_from_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Retrieves input templates from remote server,&lt;/span&gt;
-&lt;span class="sd"&gt;    in case data is available in one of the PREDEFINED_DATA_FOLDERS defined above,&lt;/span&gt;
-&lt;span class="sd"&gt;    e.g. at NERSC, those are directly returned.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;folder&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;PREDEFINED_DATA_FOLDERS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="n"&gt;full_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;folder&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;full_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-            &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Access data from {full_path}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;full_path&lt;/span&gt;
-    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dataurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DATAURL&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-        &lt;span class="s2"&gt;&amp;quot;remote_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
-    &lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Retrieve data for {filename} (if not cached already)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;map_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pkg_data_filename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;show_progress&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;map_out&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Similar setup can be achieved on a GNU/Linux server, for example a powerful machine used by all members of a scientific team, where a folder is dedicated to host these data and is also published online with Apache or NGINX.&lt;/p&gt;
-&lt;p&gt;The main downside of this approach is that there is no built-in version control. One possibility is to enforce a policy where no files are ever overwritten and version control is automatically achieved with filenames. Otherwise, use &lt;a href="https://git-lfs.github.com/"&gt;&lt;code&gt;git lfs&lt;/code&gt;&lt;/a&gt; in that folder to track any change in a dedicated local &lt;code&gt;git&lt;/code&gt; repository, e.g.:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git init
-git lfs track &lt;span class="s2"&gt;&amp;quot;*.fits&amp;quot;&lt;/span&gt;
-git add &lt;span class="s2"&gt;&amp;quot;*.fits&amp;quot;&lt;/span&gt;
-git commit -m &lt;span class="s2"&gt;&amp;quot;initial version of all FITS files&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;This method tracks the checksum of all the binary files and helps managing the history, even if only locally (make sure the folder is also regularly backed up). You could push it to GitHub, that would cost $5/month for each 50GB of storage.&lt;/p&gt;
-&lt;h3&gt;Host on Amazon S3 or other object store&lt;/h3&gt;
-&lt;p&gt;A public bucket on Amazon S3 or other object store provides cheap storage and built-in version control.
-The cost currently is about $0.026/GB/month.&lt;/p&gt;
-&lt;p&gt;First login to the AWS console and create a new bucket, set it public by turning of "Block all public access" and under "Access Control List" set "List objects" to Yes for "Public access".&lt;/p&gt;
-&lt;p&gt;You could upload files with the browser, but for larger files command line is better.&lt;/p&gt;
-&lt;p&gt;The files will be available at &lt;a href="https://bucket-name.s3-us-west-1.amazonaws.com/"&gt;https://bucket-name.s3-us-west-1.amazonaws.com/&lt;/a&gt;, this changes based on the chosen region.&lt;/p&gt;
-&lt;h4&gt;(Advanced) Upload files from the command line&lt;/h4&gt;
-&lt;p&gt;This is optional and requires some more familiarity with AWS.
-Go back to the AWS console to the Identity and Access Management (IAM) section, then users, create, create a policy to give access only to 1 bucket (replace &lt;code&gt;bucket-name&lt;/code&gt;):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;quot;Version&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2012-10-17&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;quot;Statement&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Sid&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ListObjectsInBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;s3:ListBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-        &lt;span class="p"&gt;},&lt;/span&gt;
-        &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Sid&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;AllObjectActions&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;s3:*Object&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;s3:PutObjectAcl&amp;quot;&lt;/span&gt;
-            &lt;span class="p"&gt;],&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name/*&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;See the &lt;a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_rw-bucket.html"&gt;AWS documentation&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Install &lt;code&gt;s3cmd&lt;/code&gt;, then run &lt;code&gt;s3cmd --configure&lt;/code&gt; to set it up and paste the Access and Secret keys, it will fail to test the configuration because it cannot list all the buckets, anyway choose to save the configuration.&lt;/p&gt;
-&lt;p&gt;Test it:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    s3cmd ls s3://bucket-name
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Then upload your files (reduced redundancy is cheaper):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    s3cmd put --reduced-redundancy --acl-public *.fits s3://bucket-name
-&lt;/pre&gt;&lt;/div&gt;</content><category term="python"></category></entry><entry><title>Deploy Cluster Autoscaler for Kubernetes on Jetstream</title><link href="http://zonca.github.io/2019/06/kubernetes-jetstream-autoscaler.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jetstream-autoscaler.html</id><summary type="html">&lt;p&gt;The &lt;a href="https://github.com/kubernetes/autoscaler"&gt;Kubernetes Cluster Autoscaler&lt;/a&gt; is a service
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-09-12T12:00:00-07:00</updated><entry><title>Deploy Cluster Autoscaler for Kubernetes on Jetstream</title><link href="http://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html" rel="alternate"></link><published>2019-09-12T12:00:00-07:00</published><updated>2019-09-12T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-09-12:/2019/09/kubernetes-jetstream-autoscaler.html</id><summary type="html">&lt;p&gt;The &lt;a href="https://github.com/kubernetes/autoscaler"&gt;Kubernetes Cluster Autoscaler&lt;/a&gt; is a service
 that runs within a Kubernetes cluster and when there are not enough resources to accomodate
 the pods that are queued to run, it contacts the API of the cloud provider to create
 more Virtual Machines to join the Kubernetes Cluster.&lt;/p&gt;
@@ -256,7 +136,127 @@ autoscaler-demo   300       300       300          300         35m
 &lt;h2&gt;Note about images used by Magnum&lt;/h2&gt;
 &lt;p&gt;I have tested this deployment using the &lt;code&gt;Fedora-Atomic-27-20180419&lt;/code&gt; image on Jetstream at Indiana University.
 The Fedora Atomic 28 image had a long hang-up during boot and took more than 10 minutes to start and that caused timeout in the autoscaler and anyway it would have been too long for a user waiting to start a notebook.&lt;/p&gt;
-&lt;p&gt;I also tried updating the Fedora Atomic 28 image with &lt;code&gt;sudo atomic host upgrade&lt;/code&gt; and while this fixed the slow startup issue, it generated a broken Kubernetes installation, i.e. the Kubernetes services didn't detect the master node as part of the cluster, &lt;code&gt;kubectl get nodes&lt;/code&gt; only showed the minion.&lt;/p&gt;</content><category term="kubernetes"></category><category term="openstack"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Deploy Kubernetes and JupyterHub on Jetstream with Magnum</title><link href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</id><summary type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
+&lt;p&gt;I also tried updating the Fedora Atomic 28 image with &lt;code&gt;sudo atomic host upgrade&lt;/code&gt; and while this fixed the slow startup issue, it generated a broken Kubernetes installation, i.e. the Kubernetes services didn't detect the master node as part of the cluster, &lt;code&gt;kubectl get nodes&lt;/code&gt; only showed the minion.&lt;/p&gt;</content><category term="kubernetes"></category><category term="openstack"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Create a Github account for your research group with free private repositories</title><link href="http://zonca.github.io/2019/08/github-for-research-groups.html" rel="alternate"></link><published>2019-08-24T15:00:00-07:00</published><updated>2019-08-24T15:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-08-24:/2019/08/github-for-research-groups.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; allows a research group to create their own webpage where they can host, share and develop their software using the &lt;code&gt;git&lt;/code&gt; version control system and the powerful Github online issue-tracking interface.&lt;/p&gt;
+&lt;p&gt;Github offers unlimited private and public repositories to research groups and classrooms.
+Private repositories are useful for early …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://github.com/"&gt;Github&lt;/a&gt; allows a research group to create their own webpage where they can host, share and develop their software using the &lt;code&gt;git&lt;/code&gt; version control system and the powerful Github online issue-tracking interface.&lt;/p&gt;
+&lt;p&gt;Github offers unlimited private and public repositories to research groups and classrooms.
+Private repositories are useful for early stages of development or if it is necessary to keep software secret before publication, at publication they can easily switched to public repositories and free up their slot.&lt;/p&gt;
+&lt;p&gt;They also provide free data packs for &lt;a href="https://git-lfs.github.com/"&gt;&lt;code&gt;git-lfs&lt;/code&gt;(Large File Support)&lt;/a&gt; which is useful to store large amount of binary data together with your software in the same repository, without actually committing the files into &lt;code&gt;git&lt;/code&gt; but using a support server. Just go into "Settings" for your organization and under "Billing" add data packs, you will notice that the cost is $0.&lt;/p&gt;
+&lt;p&gt;Here the steps to set this up:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a user account on Github and choose the free plan, use your &lt;code&gt;.edu&lt;/code&gt; email address&lt;/li&gt;
+&lt;li&gt;Create an organization account for your research group&lt;/li&gt;
+&lt;li&gt;Go to &lt;a href="https://education.github.com/"&gt;https://education.github.com/&lt;/a&gt; and click on "Get benefits"&lt;/li&gt;
+&lt;li&gt;Choose what is your position, e.g. Researcher and select you want a discount for an organization&lt;/li&gt;
+&lt;li&gt;Choose the organization you created earlier and confirm that it is a "Research group"&lt;/li&gt;
+&lt;li&gt;Add details about your Research group&lt;/li&gt;
+&lt;li&gt;Finally you need to upload a picture of your University ID card and write how you plan on using the repositories&lt;/li&gt;
+&lt;li&gt;Within a week at most, but generally in less than 24 hours, you will be approved for unlimited private repositories.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Once the organization is created, you can add key team members to the "Owners" group, and then create another group for students and collaborators.&lt;/p&gt;
+&lt;p&gt;Consider also that is not necessary for every collaborator to have write access to your repositories. My recommendation is to ask a more experienced team member to administer the central repository, ask the students to fork the repository under their user accounts (forks of private repositories are always private, free and don't use any slot), and then &lt;a href="https://help.github.com/articles/using-pull-requests"&gt;send a pull request&lt;/a&gt; to the central repository for the administrator to review, discuss and merge.&lt;/p&gt;
+&lt;p&gt;See for example the organization account of the &lt;a href="https://github.com/dib-lab"&gt;"The Lab for Data Intensive Biology" led by Dr. C. Titus Brown&lt;/a&gt; where they share code, documentation and papers. Open Science!!&lt;/p&gt;
+&lt;p&gt;Other suggestions on the setup very welcome!&lt;/p&gt;</content><category term="github"></category><category term="git"></category><category term="openscience"></category></entry><entry><title>Ship large files with Python packages</title><link href="http://zonca.github.io/2019/08/large-files-python-packages.html" rel="alternate"></link><published>2019-08-21T18:00:00-07:00</published><updated>2019-08-21T18:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-08-21:/2019/08/large-files-python-packages.html</id><summary type="html">&lt;p&gt;It is often useful to ship large data files together with a Python package,
+a couple of scenarios are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionality of …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;It is often useful to ship large data files together with a Python package,
+a couple of scenarios are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;data necessary to the functionality provided by the package, for example images, any binary or large text dataset, they could be either required just for a subset of the functionality of the package or for all of it&lt;/li&gt;
+&lt;li&gt;data necessary for unit or integration testing, both example inputs and expected outputs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If data are collectively less than 2 GB compressed and do not change very often, a simple and a bit hacky solution is to use GitHub release assets. For each packaged release on GitHub it is possible to attach one or more assets smaller than 2 GB. You can then attach data to each release, the downside is that users need to make sure to use the correct dataset for the release they are using and the first time they use the software the need to install the Python package and also download the dataset and install it in the right folder. See &lt;a href="https://gist.github.com/zonca/52857f2425942725fb74595c4f8600e9"&gt;an example script to upload from the command line&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If data files are individually less than 10 MB and collectively less than 100 MB you can directly add them into the Python package. This is the easiest and most convenient option, for example the &lt;a href="https://github.com/astropy/package-template"&gt;&lt;code&gt;astropy package template&lt;/code&gt;&lt;/a&gt; automatically adds to the package any file inside the &lt;code&gt;packagename/data&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;For larger datasets I recommend to host the files externally and use the &lt;a href="http://docs.astropy.org/en/stable/utils/#module-astropy.utils.data"&gt;&lt;code&gt;astropy.utils.data&lt;/code&gt; module&lt;/a&gt;.
+This module automates the process of retrieving a file from a remote server and caching it locally (in the users home folder), next time the user needs it, it is automatically retrieved from the cache:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;dataurl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://my-web-server.ucsd.edu/test-data/&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dataurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dataurl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;remote_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
+    &lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;local_file_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pkg_data_filename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;myfile.jpg)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we need to host there files publicly, I have a few options.&lt;/p&gt;
+&lt;h3&gt;Host on a dedicated GitHub repository&lt;/h3&gt;
+&lt;p&gt;If files are individually less than 100MB and collectively a few GB, you can create a dedicated repository on GitHub and push there your files.
+Then &lt;a href="https://help.github.com/en/articles/what-is-github-pages"&gt;activate GitHub Pages&lt;/a&gt; so that those files are published at &lt;code&gt;https://your-organization.github.io/your-repository/&lt;/code&gt;.
+Then use this URL as &lt;code&gt;dataurl&lt;/code&gt; in the above script.&lt;/p&gt;
+&lt;h3&gt;Host on a Supercomputer or own server&lt;/h3&gt;
+&lt;p&gt;Some Supercomputers offer the feature of providing public web access from specific folders, for example NERSC allows user to publish web-pages publicly, see &lt;a href="https://www.nersc.gov/users/computational-systems/pdsf/software-and-tools/hosting-webpages/"&gt;their documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is very useful for huge datasets because you can automatically detect if the package is being run at NERSC and then automatically access the files with their path instead of downloading them.&lt;/p&gt;
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_data_from_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Retrieves input templates from remote server,&lt;/span&gt;
+&lt;span class="sd"&gt;    in case data is available in one of the PREDEFINED_DATA_FOLDERS defined above,&lt;/span&gt;
+&lt;span class="sd"&gt;    e.g. at NERSC, those are directly returned.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;folder&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;PREDEFINED_DATA_FOLDERS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;full_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;folder&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;full_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Access data from {full_path}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;full_path&lt;/span&gt;
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dataurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DATAURL&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_temp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;remote_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;
+    &lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Retrieve data for {filename} (if not cached already)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;map_out&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_pkg_data_filename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;show_progress&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;map_out&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Similar setup can be achieved on a GNU/Linux server, for example a powerful machine used by all members of a scientific team, where a folder is dedicated to host these data and is also published online with Apache or NGINX.&lt;/p&gt;
+&lt;p&gt;The main downside of this approach is that there is no built-in version control. One possibility is to enforce a policy where no files are ever overwritten and version control is automatically achieved with filenames. Otherwise, use &lt;a href="https://git-lfs.github.com/"&gt;&lt;code&gt;git lfs&lt;/code&gt;&lt;/a&gt; in that folder to track any change in a dedicated local &lt;code&gt;git&lt;/code&gt; repository, e.g.:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git init
+git lfs track &lt;span class="s2"&gt;&amp;quot;*.fits&amp;quot;&lt;/span&gt;
+git add &lt;span class="s2"&gt;&amp;quot;*.fits&amp;quot;&lt;/span&gt;
+git commit -m &lt;span class="s2"&gt;&amp;quot;initial version of all FITS files&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This method tracks the checksum of all the binary files and helps managing the history, even if only locally (make sure the folder is also regularly backed up). You could push it to GitHub, that would cost $5/month for each 50GB of storage.&lt;/p&gt;
+&lt;h3&gt;Host on Amazon S3 or other object store&lt;/h3&gt;
+&lt;p&gt;A public bucket on Amazon S3 or other object store provides cheap storage and built-in version control.
+The cost currently is about $0.026/GB/month.&lt;/p&gt;
+&lt;p&gt;First login to the AWS console and create a new bucket, set it public by turning of "Block all public access" and under "Access Control List" set "List objects" to Yes for "Public access".&lt;/p&gt;
+&lt;p&gt;You could upload files with the browser, but for larger files command line is better.&lt;/p&gt;
+&lt;p&gt;The files will be available at &lt;a href="https://bucket-name.s3-us-west-1.amazonaws.com/"&gt;https://bucket-name.s3-us-west-1.amazonaws.com/&lt;/a&gt;, this changes based on the chosen region.&lt;/p&gt;
+&lt;h4&gt;(Advanced) Upload files from the command line&lt;/h4&gt;
+&lt;p&gt;This is optional and requires some more familiarity with AWS.
+Go back to the AWS console to the Identity and Access Management (IAM) section, then users, create, create a policy to give access only to 1 bucket (replace &lt;code&gt;bucket-name&lt;/code&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;Version&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2012-10-17&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;Statement&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Sid&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ListObjectsInBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;s3:ListBucket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="p"&gt;},&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Sid&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;AllObjectActions&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Effect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Action&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+                &lt;span class="s2"&gt;&amp;quot;s3:*Object&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                &lt;span class="s2"&gt;&amp;quot;s3:PutObjectAcl&amp;quot;&lt;/span&gt;
+            &lt;span class="p"&gt;],&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;quot;Resource&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;arn:aws:s3:::bucket-name/*&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;See the &lt;a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_rw-bucket.html"&gt;AWS documentation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Install &lt;code&gt;s3cmd&lt;/code&gt;, then run &lt;code&gt;s3cmd --configure&lt;/code&gt; to set it up and paste the Access and Secret keys, it will fail to test the configuration because it cannot list all the buckets, anyway choose to save the configuration.&lt;/p&gt;
+&lt;p&gt;Test it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    s3cmd ls s3://bucket-name
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then upload your files (reduced redundancy is cheaper):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    s3cmd put --reduced-redundancy --acl-public *.fits s3://bucket-name
+&lt;/pre&gt;&lt;/div&gt;</content><category term="python"></category></entry><entry><title>Deploy Kubernetes and JupyterHub on Jetstream with Magnum</title><link href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html" rel="alternate"></link><published>2019-06-14T00:00:00-07:00</published><updated>2019-06-14T00:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-06-14:/2019/06/kubernetes-jupyterhub-jetstream-magnum.html</id><summary type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
 JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In my &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;previous tutorials&lt;/a&gt; I deployed Kubernetes using Kubespray. The main driver to using Magnum is that there is support for autoscaling, i.e. create and destroy Openstack instances based on the load …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This tutorial deploys Kubernetes on Jetstream with Magnum and then
 JupyterHub on top of that using &lt;a href="https://zero-to-jupyterhub.readthedocs.io/"&gt;zero-to-jupyterhub&lt;/a&gt;.&lt;/p&gt;
