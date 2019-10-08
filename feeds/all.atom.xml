@@ -838,6 +838,7 @@ two factor auth on all other services:&lt;/p&gt;
 a new device, so you need to do the verification just once in a while and it provides
 a lot of security. Many of those also support the security key.&lt;/p&gt;
 &lt;h2&gt;Password handling with Lastpass&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Update October 2019&lt;/strong&gt;: Fed up of using Lastpass, their interface is clunky and slow, both in Chrome and Android, I switched to &lt;a href="https://bitwarden.com"&gt;Bitwarden&lt;/a&gt;. Way better, it also allows sharing with another user, only downside is that the do not offer Duo push 2FA for free, you need premium, but still supports using Duo as a token generator.&lt;/p&gt;
 &lt;p&gt;As you are into security, just go all the way and also install a password manager.
 UCSD provides free enterprise accounts for all employees, see &lt;a href="https://blink.ucsd.edu/technology/security/services/lastpass/index.html"&gt;the details&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;With Lastpass, you just remember 1 strong password to descrypt all of your other passwords.
