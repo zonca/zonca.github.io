@@ -224,6 +224,7 @@ create new rule named <code>http_https</code>, then add 2 rules, in the Rule dro
 
 
 <p>Then edit <code>secrets.yaml</code> and modify the hostname under <code>hosts</code> to display the hostname of your master Jetstream instance, i.e. if your instance public floating IP is <code>aaa.bbb.xxx.yyy</code>, the hostname should be <code>js-xxx-yyy.jetstream-cloud.org</code> (without <code>http://</code>).</p>
+<p>You should also check that connecting with your browser to <code>js-xxx-yyy.jetstream-cloud.org</code> shows <code>default backend - 404</code>, this means NGINX is also reachable from the internet, i.e. the web port is open on the master node.</p>
 <p>Finally:</p>
 <div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">configure_helm_jupyterhub</span><span class="p">.</span><span class="n">sh</span>
 <span class="n">bash</span> <span class="n">install_jhub</span><span class="p">.</span><span class="n">sh</span>
