@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Simulate users on JupyterHub | Andrea Zonca's blog</title>
+        <meta name="author" content="Andrea Zonca">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="alternate" type="application/atom+xml" title="Andrea Zonca's blog blog atom feed"
+              href="/feeds/all.atom.xml" />
+
+        <link rel="stylesheet" href="/theme/css/normalize.min.css">
+        <link rel="stylesheet" href="/theme/css/fonts/proximanova.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-social.css">
+        <link rel="stylesheet" href="/theme/css/fonts/ss-standard.css">
+        <link rel="stylesheet" href="/theme/css/pygments.css">
+        <!-- <link rel="stylesheet" href="/theme/css/ipython.css"> -->
+        <link rel="stylesheet" href="/theme/css/main.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css">
+<script src="/theme/js/github-files/src/main/javascript/github-files.js"> </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="navbar">
+              <a href="/" class="ss-icon" title="home">home</a>
+              <a href="/tags.html" class="ss-icon" title="tags">tag</a>
+              <a href="http://about.me/andreazonca" class="ss-icon" title="about">user</a>
+              <a href="http://twitter.com/andreazonca" class="ss-icon ss-social" title="on twitter">twitter</a>
+              <a href="http://github.com/zonca" class="ss-icon ss-social" title="on github">octocat</a>
+              <a href="/feeds/all.atom.xml" class="ss-icon ss-social" title="rss feed">rss</a>
+              <a href="mailto:andrea.zonca|on the google mail service" class="ss-icon" title="email me">mail</a>
+            </div>
+        </div>
+
+        <div id="content">
+<div class="post">
+    <article>
+        <header>
+            <h1>Simulate users on JupyterHub</h1>
+        </header>
+        <div class='post-content'>
+            <p>I currently have 2 different strategies to deploy JupyterHub on top of Kubernetes on Jetstream:</p>
+<ul>
+<li>Using <a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html">Kubespray</a></li>
+<li>Using <a href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html">Magnum</a>, which also supports the <a href="http://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html">Cluster Autoscaler</a></li>
+</ul>
+<p>In this tutorial I'll show how to use Yuvi Pandas' <a href="https://github.com/yuvipanda/hubtraf"><code>hubtraf</code></a> to simulate load on JupyterHub, i.e. programmatically generate a predefined number of users connecting and executing notebooks on the system.</p>
+<p>This is especially useful to test the Cluster Autoscaler.</p>
+<p><code>hubtraf</code> assumes you are using the Dummy authenticator, which is the default installed by the <code>zero-to-jupyterhub</code> helm chart. If you have configured another authenticator, temporarily disable it for testing purposes.</p>
+<p>First go through the <a href="https://github.com/yuvipanda/hubtraf/blob/master/docs/index.rst#jupyterhub-traffic-simulator"><code>hubtraf</code> documentation</a> to understand its functionalities.</p>
+<p><code>hubtraf</code> also has a Helm recipe to run it within Kubernetes, but the simpler way is to test from your laptop, follow the [documentation of <code>hubtraf</code>] to install the package and then run:</p>
+<div class="highlight"><pre><span></span><span class="n">hubtraf</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">yyy</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span> <span class="mi">2</span>
+</pre></div>
+
+
+<p>To simulate 2 users connecting to the system, you can then check with:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
+</pre></div>
+
+
+<p>That the pods are being created successfully and check the logs on the command line from <code>hubtraf</code> which explains what it is doing and tracks the time every operation takes, so it is useful to debug any delay in providing resources to users.</p>
+<p>Consider that volumes created by JupyterHub for the test users will remain in Kubernetes and in Openstack, therefore if you would like to use the same deployment for production, remember to cleanup the Kubernetes <code>PersistentVolume</code> and <code>PersistentVolumeClaim</code> resources.</p>
+<p>Now we can test scalability of the deployment with:</p>
+<div class="highlight"><pre><span></span>    <span class="n">hubtraf</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">yyy</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span> <span class="mi">100</span>
+</pre></div>
+
+
+<p>Make sure you have asked the XSEDE support to increase the maximum number of volumes in Openstack in your allocation that by default is only 10.</p>
+        </div>
+    </article>
+
+    <div class="metadata">
+        <ul>
+            <li>
+                <strong>Published:</strong>
+                <i><time datetime="2019-10-30T12:00:00-07:00">Wed 30 October 2019</time></i>
+            </li>
+            <li>
+                <strong>In:</strong>
+                <a href="http://zonca.github.io/category/misc.html">misc</a>
+            </li>
+            <li>
+                <strong>Tags:</strong>
+<a href="http://zonca.github.io/tag/kubernetes.html">kubernetes</a> 
+<a href="http://zonca.github.io/tag/openstack.html">openstack</a> 
+<a href="http://zonca.github.io/tag/jetstream.html">jetstream</a> 
+<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+            </li>
+            <li>
+                <strong>Written by:</strong>
+                <a href="http://zonca.github.io/author/andrea-zonca.html">Andrea Zonca</a>
+            </li>
+        </ul>
+    </div>
+</div>
+        </div>
+
+        <footer>
+        </footer>
+
+
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-15291408-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+<script>
+$(document).ready(function () {
+    $("pre").each(function(i, e){
+        console.log(e);
+        if (e.textContent.match("^github")) {
+            var parts = e.textContent.split(":")[1].split("/");
+            $.getGithubFileByFilePath(parts[0], parts[1], parts.slice(2).join("/"), function(contents)
+            {
+                e.textContent = contents;
+                hljs.highlightBlock(e);
+            } );
+        };
+    });
+ });
+</script>
+    </body>
+</html>

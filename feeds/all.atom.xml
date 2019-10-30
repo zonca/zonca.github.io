@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-09-23T12:00:00-07:00</updated><entry><title>Execute Jupyter Notebooks not interactively</title><link href="http://zonca.github.io/2019/09/batch-notebook-execution.html" rel="alternate"></link><published>2019-09-23T12:00:00-07:00</published><updated>2019-09-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-09-23:/2019/09/batch-notebook-execution.html</id><summary type="html">&lt;p&gt;Over the years, I have explored how to scale up easily computation through
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/all.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-10-30T12:00:00-07:00</updated><entry><title>Simulate users on JupyterHub</title><link href="http://zonca.github.io/2019/10/loadtest-jupyterhub.html" rel="alternate"></link><published>2019-10-30T12:00:00-07:00</published><updated>2019-10-30T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-10-30:/2019/10/loadtest-jupyterhub.html</id><summary type="html">&lt;p&gt;I currently have 2 different strategies to deploy JupyterHub on top of Kubernetes on Jetstream:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Using &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;Kubespray&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Using &lt;a href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html"&gt;Magnum&lt;/a&gt;, which also supports the &lt;a href="http://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html"&gt;Cluster Autoscaler&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this tutorial I'll show how to use Yuvi Pandas' &lt;a href="https://github.com/yuvipanda/hubtraf"&gt;&lt;code&gt;hubtraf&lt;/code&gt;&lt;/a&gt; to simulate load on JupyterHub, i.e. programmatically generate a predefined number of users …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I currently have 2 different strategies to deploy JupyterHub on top of Kubernetes on Jetstream:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Using &lt;a href="https://zonca.github.io/2019/02/kubernetes-jupyterhub-jetstream-kubespray.html"&gt;Kubespray&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Using &lt;a href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html"&gt;Magnum&lt;/a&gt;, which also supports the &lt;a href="http://zonca.github.io/2019/09/kubernetes-jetstream-autoscaler.html"&gt;Cluster Autoscaler&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this tutorial I'll show how to use Yuvi Pandas' &lt;a href="https://github.com/yuvipanda/hubtraf"&gt;&lt;code&gt;hubtraf&lt;/code&gt;&lt;/a&gt; to simulate load on JupyterHub, i.e. programmatically generate a predefined number of users connecting and executing notebooks on the system.&lt;/p&gt;
+&lt;p&gt;This is especially useful to test the Cluster Autoscaler.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;hubtraf&lt;/code&gt; assumes you are using the Dummy authenticator, which is the default installed by the &lt;code&gt;zero-to-jupyterhub&lt;/code&gt; helm chart. If you have configured another authenticator, temporarily disable it for testing purposes.&lt;/p&gt;
+&lt;p&gt;First go through the &lt;a href="https://github.com/yuvipanda/hubtraf/blob/master/docs/index.rst#jupyterhub-traffic-simulator"&gt;&lt;code&gt;hubtraf&lt;/code&gt; documentation&lt;/a&gt; to understand its functionalities.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;hubtraf&lt;/code&gt; also has a Helm recipe to run it within Kubernetes, but the simpler way is to test from your laptop, follow the [documentation of &lt;code&gt;hubtraf&lt;/code&gt;] to install the package and then run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;hubtraf&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;js&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yyy&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jetstream&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To simulate 2 users connecting to the system, you can then check with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;pods&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="n"&gt;jhub&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That the pods are being created successfully and check the logs on the command line from &lt;code&gt;hubtraf&lt;/code&gt; which explains what it is doing and tracks the time every operation takes, so it is useful to debug any delay in providing resources to users.&lt;/p&gt;
+&lt;p&gt;Consider that volumes created by JupyterHub for the test users will remain in Kubernetes and in Openstack, therefore if you would like to use the same deployment for production, remember to cleanup the Kubernetes &lt;code&gt;PersistentVolume&lt;/code&gt; and &lt;code&gt;PersistentVolumeClaim&lt;/code&gt; resources.&lt;/p&gt;
+&lt;p&gt;Now we can test scalability of the deployment with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="n"&gt;hubtraf&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;js&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yyy&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jetstream&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Make sure you have asked the XSEDE support to increase the maximum number of volumes in Openstack in your allocation that by default is only 10.&lt;/p&gt;</content><category term="misc"></category><category term="kubernetes"></category><category term="openstack"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Execute Jupyter Notebooks not interactively</title><link href="http://zonca.github.io/2019/09/batch-notebook-execution.html" rel="alternate"></link><published>2019-09-23T12:00:00-07:00</published><updated>2019-09-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-09-23:/2019/09/batch-notebook-execution.html</id><summary type="html">&lt;p&gt;Over the years, I have explored how to scale up easily computation through
 Jupyter Notebooks by executing them not-interactively, possibily parametrized
 and remotely. This is mostly for reference.&lt;/p&gt;
 &lt;ul&gt;
