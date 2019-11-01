@@ -70,7 +70,67 @@
 </pre></div>
 
 
-<p>Make sure you have asked the XSEDE support to increase the maximum number of volumes in Openstack in your allocation that by default is only 10.</p>
+<p>Make sure you have asked the XSEDE support to increase the maximum number of volumes in Openstack in your allocation that by default is only 10. Otherwise edit <code>config_standard_storage.yaml</code> and set:</p>
+<div class="highlight"><pre><span></span><span class="n">singleuser</span><span class="o">:</span>
+  <span class="n">storage</span><span class="o">:</span>
+    <span class="n">type</span><span class="o">:</span> <span class="n">none</span>
+</pre></div>
+
+
+<h2>Test the Cluster Autoscaler</h2>
+<p>If you followed the tutorial to deploy the Cluster Autoscaler on Magnum, you can launch <code>hubtraf</code> to create a large number of pods, then check that some pods are "Running" and the ones that do not fit in the current nodes are "Pending":</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
+</pre></div>
+
+
+<p>and then check in the logs of the autoscaler that it detects that those pods are pending and requests additional nodes.
+For example:</p>
+<div class="highlight"><pre><span></span>&gt; kubectl logs -n kube-system cluster-autoscaler-hhhhhhh-uuuuuuu
+I1031 <span class="m">00</span>:48:39.807384       <span class="m">1</span> scale_up.go:689<span class="o">]</span> Scale-up: setting group DefaultNodeGroup size to <span class="m">2</span>
+I1031 <span class="m">00</span>:48:41.583449       <span class="m">1</span> magnum_nodegroup.go:101<span class="o">]</span> Increasing size by <span class="m">1</span>, <span class="m">1</span>-&gt;2
+I1031 <span class="m">00</span>:49:14.141351       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_IN_PROGRESS status
+</pre></div>
+
+
+<p>After 4 or 5 minutes the new node should be available and should show up in:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">nodes</span>
+</pre></div>
+
+
+<p>And we can check that some user pods are now running on the new node:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span>
+</pre></div>
+
+
+<p>In my case the Autoscaler actually requested a 3rd node to accomodate all the users pods:</p>
+<div class="highlight"><pre><span></span>I1031 <span class="m">00</span>:48:39.807384       <span class="m">1</span> scale_up.go:689<span class="o">]</span> Scale-up: setting group DefaultNodeGroup size to <span class="m">2</span>
+I1031 <span class="m">00</span>:48:41.583449       <span class="m">1</span> magnum_nodegroup.go:101<span class="o">]</span> Increasing size by <span class="m">1</span>, <span class="m">1</span>-&gt;2
+I1031 <span class="m">00</span>:49:14.141351       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_IN_PROGRESS status
+I1031 <span class="m">00</span>:52:51.308054       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_COMPLETE status
+I1031 <span class="m">00</span>:53:01.315179       <span class="m">1</span> scale_up.go:689<span class="o">]</span> Scale-up: setting group DefaultNodeGroup size to <span class="m">3</span>
+I1031 <span class="m">00</span>:53:02.996583       <span class="m">1</span> magnum_nodegroup.go:101<span class="o">]</span> Increasing size by <span class="m">1</span>, <span class="m">2</span>-&gt;3
+I1031 <span class="m">00</span>:53:35.607158       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_IN_PROGRESS status
+I1031 <span class="m">00</span>:56:41.834151       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_COMPLETE status
+</pre></div>
+
+
+<p>Moreover Cluster Autoscaler also provides useful information in the status of each "Pending" node. For example if it detects that it is useless to create a new node because the node is "Pending" for some other reason (e.g. volume quota reached), this infomation will be accessible using:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">describe</span> <span class="n">node</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span> <span class="n">jupyter</span><span class="o">-</span><span class="n">xxxxxxx</span>
+</pre></div>
+
+
+<p>When the simulated users disconnect, <code>hubtraf</code> has a default of about 5 minutes, the autoscaler waits for the configured amount of minutes, by default it is 10 minutes, in my deployment it is 1 minute to simplify testing, see the <code>cluster-autoscaler-deployment-master.yaml</code> file.
+After this delay, the autoscaler scales down the size of the cluster, it is a 2 step process, it first terminates the Openstack Virtual machine and then adjusts the size of the Magnum cluster (<code>node_count</code>), you can monitor the process using <code>openstack server list</code> and <code>openstack coe cluster list</code>, and the log of the autoscaler:</p>
+<div class="highlight"><pre><span></span>I1101 <span class="m">06</span>:31:10.223660       <span class="m">1</span> scale_down.go:882<span class="o">]</span> Scale-down: removing empty node k8s-e2iw7axmhym7-minion-1 
+I1101 <span class="m">06</span>:31:16.081223       <span class="m">1</span> magnum_manager_heat.go:276<span class="o">]</span> Waited <span class="k">for</span> stack UPDATE_IN_PROGRESS status
+I1101 <span class="m">06</span>:32:17.061860       <span class="m">1</span> magnum_manager_heat.go:276<span class="o">]</span> Waited <span class="k">for</span> stack UPDATE_COMPLETE status
+I1101 <span class="m">06</span>:32:49.826439       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_IN_PROGRESS status
+I1101 <span class="m">06</span>:33:21.588022       <span class="m">1</span> magnum_nodegroup.go:67<span class="o">]</span> Waited <span class="k">for</span> cluster UPDATE_COMPLETE status
+</pre></div>
+
+
+<h2>Acknowledgments</h2>
+<p>Thanks Yuvi Panda for providing <code>hubtraf</code>, thanks Julien Chastang for testing my deployments.</p>
         </div>
     </article>
 

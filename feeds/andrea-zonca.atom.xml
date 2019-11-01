@@ -30,7 +30,67 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Make sure you have asked the XSEDE support to increase the maximum number of volumes in Openstack in your allocation that by default is only 10.&lt;/p&gt;</content><category term="misc"></category><category term="kubernetes"></category><category term="openstack"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Execute Jupyter Notebooks not interactively</title><link href="http://zonca.github.io/2019/09/batch-notebook-execution.html" rel="alternate"></link><published>2019-09-23T12:00:00-07:00</published><updated>2019-09-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-09-23:/2019/09/batch-notebook-execution.html</id><summary type="html">&lt;p&gt;Over the years, I have explored how to scale up easily computation through
+&lt;p&gt;Make sure you have asked the XSEDE support to increase the maximum number of volumes in Openstack in your allocation that by default is only 10. Otherwise edit &lt;code&gt;config_standard_storage.yaml&lt;/code&gt; and set:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;singleuser&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;none&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Test the Cluster Autoscaler&lt;/h2&gt;
+&lt;p&gt;If you followed the tutorial to deploy the Cluster Autoscaler on Magnum, you can launch &lt;code&gt;hubtraf&lt;/code&gt; to create a large number of pods, then check that some pods are "Running" and the ones that do not fit in the current nodes are "Pending":&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;pods&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="n"&gt;jhub&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and then check in the logs of the autoscaler that it detects that those pods are pending and requests additional nodes.
+For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; kubectl logs -n kube-system cluster-autoscaler-hhhhhhh-uuuuuuu
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:48:39.807384       &lt;span class="m"&gt;1&lt;/span&gt; scale_up.go:689&lt;span class="o"&gt;]&lt;/span&gt; Scale-up: setting group DefaultNodeGroup size to &lt;span class="m"&gt;2&lt;/span&gt;
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:48:41.583449       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:101&lt;span class="o"&gt;]&lt;/span&gt; Increasing size by &lt;span class="m"&gt;1&lt;/span&gt;, &lt;span class="m"&gt;1&lt;/span&gt;-&amp;gt;2
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:49:14.141351       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_IN_PROGRESS status
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After 4 or 5 minutes the new node should be available and should show up in:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;nodes&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And we can check that some user pods are now running on the new node:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt; &lt;span class="n"&gt;pods&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="n"&gt;jhub&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="n"&gt;wide&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In my case the Autoscaler actually requested a 3rd node to accomodate all the users pods:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;I1031 &lt;span class="m"&gt;00&lt;/span&gt;:48:39.807384       &lt;span class="m"&gt;1&lt;/span&gt; scale_up.go:689&lt;span class="o"&gt;]&lt;/span&gt; Scale-up: setting group DefaultNodeGroup size to &lt;span class="m"&gt;2&lt;/span&gt;
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:48:41.583449       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:101&lt;span class="o"&gt;]&lt;/span&gt; Increasing size by &lt;span class="m"&gt;1&lt;/span&gt;, &lt;span class="m"&gt;1&lt;/span&gt;-&amp;gt;2
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:49:14.141351       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_IN_PROGRESS status
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:52:51.308054       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_COMPLETE status
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:53:01.315179       &lt;span class="m"&gt;1&lt;/span&gt; scale_up.go:689&lt;span class="o"&gt;]&lt;/span&gt; Scale-up: setting group DefaultNodeGroup size to &lt;span class="m"&gt;3&lt;/span&gt;
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:53:02.996583       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:101&lt;span class="o"&gt;]&lt;/span&gt; Increasing size by &lt;span class="m"&gt;1&lt;/span&gt;, &lt;span class="m"&gt;2&lt;/span&gt;-&amp;gt;3
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:53:35.607158       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_IN_PROGRESS status
+I1031 &lt;span class="m"&gt;00&lt;/span&gt;:56:41.834151       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_COMPLETE status
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Moreover Cluster Autoscaler also provides useful information in the status of each "Pending" node. For example if it detects that it is useless to create a new node because the node is "Pending" for some other reason (e.g. volume quota reached), this infomation will be accessible using:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;describe&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="n"&gt;jhub&lt;/span&gt; &lt;span class="n"&gt;jupyter&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xxxxxxx&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;When the simulated users disconnect, &lt;code&gt;hubtraf&lt;/code&gt; has a default of about 5 minutes, the autoscaler waits for the configured amount of minutes, by default it is 10 minutes, in my deployment it is 1 minute to simplify testing, see the &lt;code&gt;cluster-autoscaler-deployment-master.yaml&lt;/code&gt; file.
+After this delay, the autoscaler scales down the size of the cluster, it is a 2 step process, it first terminates the Openstack Virtual machine and then adjusts the size of the Magnum cluster (&lt;code&gt;node_count&lt;/code&gt;), you can monitor the process using &lt;code&gt;openstack server list&lt;/code&gt; and &lt;code&gt;openstack coe cluster list&lt;/code&gt;, and the log of the autoscaler:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;I1101 &lt;span class="m"&gt;06&lt;/span&gt;:31:10.223660       &lt;span class="m"&gt;1&lt;/span&gt; scale_down.go:882&lt;span class="o"&gt;]&lt;/span&gt; Scale-down: removing empty node k8s-e2iw7axmhym7-minion-1 
+I1101 &lt;span class="m"&gt;06&lt;/span&gt;:31:16.081223       &lt;span class="m"&gt;1&lt;/span&gt; magnum_manager_heat.go:276&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; stack UPDATE_IN_PROGRESS status
+I1101 &lt;span class="m"&gt;06&lt;/span&gt;:32:17.061860       &lt;span class="m"&gt;1&lt;/span&gt; magnum_manager_heat.go:276&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; stack UPDATE_COMPLETE status
+I1101 &lt;span class="m"&gt;06&lt;/span&gt;:32:49.826439       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_IN_PROGRESS status
+I1101 &lt;span class="m"&gt;06&lt;/span&gt;:33:21.588022       &lt;span class="m"&gt;1&lt;/span&gt; magnum_nodegroup.go:67&lt;span class="o"&gt;]&lt;/span&gt; Waited &lt;span class="k"&gt;for&lt;/span&gt; cluster UPDATE_COMPLETE status
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Acknowledgments&lt;/h2&gt;
+&lt;p&gt;Thanks Yuvi Panda for providing &lt;code&gt;hubtraf&lt;/code&gt;, thanks Julien Chastang for testing my deployments.&lt;/p&gt;</content><category term="misc"></category><category term="kubernetes"></category><category term="openstack"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Execute Jupyter Notebooks not interactively</title><link href="http://zonca.github.io/2019/09/batch-notebook-execution.html" rel="alternate"></link><published>2019-09-23T12:00:00-07:00</published><updated>2019-09-23T12:00:00-07:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-09-23:/2019/09/batch-notebook-execution.html</id><summary type="html">&lt;p&gt;Over the years, I have explored how to scale up easily computation through
 Jupyter Notebooks by executing them not-interactively, possibily parametrized
 and remotely. This is mostly for reference.&lt;/p&gt;
 &lt;ul&gt;
