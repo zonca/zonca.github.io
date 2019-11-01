@@ -160,9 +160,6 @@ I0905 <span class="m">05</span>:35:22.222387       <span class="m">1</span> magn
 </pre></div>
 
 
-<p>Once in a while it is possible that the update takes longer than 10 minutes and the autoscaler times out,
-unfortunately the timeout it hard-coded into the cluster autoscaler container and it is necessary to rebuild
-the container to increase it. Please <a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/issues">open an issue on the repository</a> if you are affected by this issue.</p>
 <p>Then you should have all 3 nodes available:</p>
 <div class="highlight"><pre><span></span>kubectl get nodes
 NAME                        STATUS   ROLES    AGE   VERSION
@@ -179,6 +176,13 @@ autoscaler-demo   <span class="m">300</span>       <span class="m">300</span>   
 </pre></div>
 
 
+<p>You can also test scaling down by scaling back the number of NGINX containers to only a few and check in the logs
+of the autoscaler that this process triggers the scale-down process.</p>
+<p>In <code>cluster-autoscaler-deployment-master.yaml</code> I have configured the scale down process to trigger just after 1 minute, to simplify testing. For production, better increase this to 10 minutes or more. Check the <a href="https://github.com/zonca/autoscaler/blob/cluster-autoscaler-1.14-magnum/cluster-autoscaler/FAQ.md">documentation of Cluster Autoscaler 1.14</a> for all other available options.</p>
+<h2>Note about the Cluster Autoscaler container</h2>
+<p>The Magnum provider was added in Cluster Autoscaler 1.15, however this version is not compatible with Kubernetes 1.11 which is currently available on Jetstream. Therefore I have taken the development version of Cluster Autoscaler 1.14 and compiled it myself. I also noticed that the scale down process was not working due to incompatible IDs when the Cloud Provider tried to lookup the ID of a Minion in the Stack. I am now directly using the MachineID instead of going through these indices. This version is available in <a href="https://github.com/zonca/autoscaler/tree/cluster-autoscaler-1.14-magnum">my fork of <code>autoscaler</code></a> and it is built into docker containers on the <a href="https://cloud.docker.com/repository/docker/zonca/k8s-cluster-autoscaler-jetstream"><code>zonca/k8s-cluster-autoscaler-jetstream</code> repository on Docker Hub</a>.
+The image tags are the short version of the repository git commit hash.</p>
+<p>I build the container using the <code>run_gobuilder.sh</code> and <code>run_build_autoscaler_container.sh</code> scripts included in the repository.</p>
 <h2>Note about images used by Magnum</h2>
 <p>I have tested this deployment using the <code>Fedora-Atomic-27-20180419</code> image on Jetstream at Indiana University.
 The Fedora Atomic 28 image had a long hang-up during boot and took more than 10 minutes to start and that caused timeout in the autoscaler and anyway it would have been too long for a user waiting to start a notebook.</p>
