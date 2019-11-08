@@ -107,6 +107,12 @@ for any other customizations, first authentication, you are in good hands as the
 </pre></div>
 
 
+<p>Eventually, you may need to update the certificate. This can be achieved with:</p>
+<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="n">secret</span> <span class="n">tls</span> <span class="n">cert</span><span class="o">-</span><span class="n">secret</span> <span class="c1">--key ssl.key --cert ssl.crt -n jhub \</span>
+    <span class="c1">--dry-run -o yaml | kubectl apply -f -</span>
+</pre></div>
+
+
 <h2>Modify the Kubernetes cluster size</h2>
 <p>See a followup short tutorial on <a href="https://zonca.github.io/2019/02/scale-kubernetes-jupyterhub-manually.html">scaling Kubernetes manually</a>.</p>
 <h2>Persistence of user data</h2>
