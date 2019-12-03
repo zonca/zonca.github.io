@@ -55,35 +55,35 @@ module maintained by NERSC, currently <code>python/3.6-anaconda-4.4</code>.</p>
 those should be installed on Global Common Software: <code>/global/common/software/projectname</code>
 which is specifically designed to access small files like Python packages.
 I generally create a subfolder and reference it with an environment variable:</p>
-<div class="highlight"><pre><span></span> <span class="n">export</span> <span class="k">PREFIX</span><span class="o">=/</span><span class="k">global</span><span class="o">/</span><span class="n">common</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">python_prefix</span>
+<div class="highlight"><pre><span></span><span class="err"> export PREFIX=/global/common/software/projectname/zonca/python_prefix</span>
 </pre></div>
 
 
 <p>Then I create a <code>env.sh</code> script in the source folder of the package (in Global Home) that loads
 the environment:</p>
-<div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">load</span> <span class="n">python</span><span class="o">/</span><span class="mf">3.6</span><span class="o">-</span><span class="n">anaconda-4</span><span class="mf">.4</span>
-<span class="k">export</span> <span class="n">PREFIX</span>=<span class="sr">/global/</span><span class="n">common</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">python_prefix</span>
-<span class="k">export</span> <span class="n">PATH</span>=<span class="nv">$PREFIX</span><span class="o">/</span><span class="n">bin:</span><span class="nv">$PATH</span>
-<span class="k">export</span> <span class="n">LD_LIBRARY_PATH</span>=<span class="nv">$PREFIX</span><span class="o">/</span><span class="n">lib:</span><span class="nv">$LD_LIBRARY_PATH</span>
-<span class="k">export</span> <span class="n">PYTHONPATH</span>=<span class="nv">$PREFIX</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.6</span><span class="o">/</span><span class="n">site-packages:</span><span class="nv">$PYTHONPATH</span>
+<div class="highlight"><pre><span></span><span class="err">module load python/3.6-anaconda-4.4</span>
+<span class="err">export PREFIX=/global/common/software/projectname/zonca/python_prefix</span>
+<span class="err">export PATH=$PREFIX/bin:$PATH</span>
+<span class="err">export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH</span>
+<span class="err">export PYTHONPATH=$PREFIX/lib/python3.6/site-packages:$PYTHONPATH</span>
 </pre></div>
 
 
 <p>This environment is automatically propagated to the computing nodes when I submit a SLURM script,
 therefore I do not add any of these environment details to my SLURM scripts.</p>
 <p>Then I can install a package there with:</p>
-<div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span> <span class="c1">--prefix=$PREFIX</span>
+<div class="highlight"><pre><span></span><span class="err">python setup.py install --prefix=$PREFIX</span>
 </pre></div>
 
 
 <p>or from pip:</p>
-<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">apackage</span> <span class="c1">--prefix=$PREFIX</span>
+<div class="highlight"><pre><span></span><span class="err">pip install apackage --prefix=$PREFIX</span>
 </pre></div>
 
 
 <p>It is also common to install a newer version of a package which is already provided by
 the base environment:</p>
-<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">apackage</span> <span class="c1">--ignore-installed --upgrade --no-deps --prefix=$PREFIX</span>
+<div class="highlight"><pre><span></span><span class="err">pip install apackage --ignore-installed --upgrade --no-deps --prefix=$PREFIX</span>
 </pre></div>
 
 
@@ -98,7 +98,7 @@ on Github and ask my collaborators to cross-check the configuration before a sub
 <p>Once a run has been validated, inside the simulation type folder I createa a subfolder <code>runs/201806_details_about_run</code> and
 add a <code>README.md</code>, this will include all the details about the simulation.
 I also tag both the core library I depend on and the simulation repository with the same name e.g.:</p>
-<div class="highlight"><pre><span></span><span class="nv">git</span> <span class="nv">tag</span> <span class="o">-</span><span class="nv">a</span> <span class="mi">201806</span><span class="nv">_details_about_run</span> <span class="o">-</span><span class="nv">m</span> <span class="s2">&quot;</span><span class="s">software version used for 201806_details_about_run</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><span class="err">git tag -a 201806_details_about_run -m &quot;software version used for 201806_details_about_run&quot;</span>
 </pre></div>
 
 
@@ -110,19 +110,19 @@ a reference to each previous version.</p>
 I always use the Global Scratch <code>$CSCRATCH</code> which is available both on Edison on Cori and also
 from the Jupyter Notebook environment at: <a href="https://jupyter.nersc.gov">https://jupyter.nersc.gov</a>.</p>
 <p>I create a root folder for the project at:</p>
-<div class="highlight"><pre><span></span><span class="err">$</span><span class="n">CSCRATCH</span><span class="o">/</span><span class="n">projectname</span>
+<div class="highlight"><pre><span></span><span class="err">$CSCRATCH/projectname</span>
 </pre></div>
 
 
 <p>Then a subfolder for each simulation type:</p>
-<div class="highlight"><pre><span></span><span class="err">$</span><span class="n">CSCRATCH</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">simulation_type_1</span>
-<span class="err">$</span><span class="n">CSCRATCH</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">simulation_type_2</span>
+<div class="highlight"><pre><span></span><span class="err">$CSCRATCH/projectname/simulation_type_1</span>
+<span class="err">$CSCRATCH/projectname/simulation_type_2</span>
 </pre></div>
 
 
 <p>Then I symlink those inside the simulation repository as the folder <code>out/</code>:</p>
-<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">simulation_type_1</span>
-<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="n">CSCRATCH</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">simulation_type_1</span> <span class="k">out</span>
+<div class="highlight"><pre><span></span><span class="err">cd $HOME/projectname/simulation_type_1</span>
+<span class="err">ln -s $CSCRATCH/projectname/simulation_type_1 out</span>
 </pre></div>
 
 
@@ -130,17 +130,17 @@ from the Jupyter Notebook environment at: <a href="https://jupyter.nersc.gov">ht
 and this is going to be written to <code>CSCRATCH</code>.</p>
 <p>This setup makes it very convenient to regularly backup everything to tape using <code>cput</code> which just backs up
 files that are not already on tape, e.g.:</p>
-<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="err">$</span><span class="n">CSCRATCH</span>
-<span class="n">hsi</span>
-<span class="n">cput</span> <span class="o">-</span><span class="n">R</span> <span class="n">projectname</span>
+<div class="highlight"><pre><span></span><span class="err">cd $CSCRATCH</span>
+<span class="err">hsi</span>
+<span class="err">cput -R projectname</span>
 </pre></div>
 
 
 <p>This is going to synchronize the backup on tape with the latest results on <code>CSCRATCH</code>.</p>
 <p>I do the same for input files:</p>
-<div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="err">$</span><span class="n">CSCRATCH</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">input_simulation_type_1</span>
-<span class="n">cd</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">simulation_type_1</span>
-<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="n">CSCRATCH</span><span class="o">/</span><span class="n">projectname</span><span class="o">/</span><span class="n">input_simulation_type_1</span> <span class="k">input</span>
+<div class="highlight"><pre><span></span><span class="err">mkdir $CSCRATCH/projectname/input_simulation_type_1</span>
+<span class="err">cd $HOME/projectname/simulation_type_1</span>
+<span class="err">ln -s $CSCRATCH/projectname/input_simulation_type_1 input</span>
 </pre></div>
         </div>
     </article>

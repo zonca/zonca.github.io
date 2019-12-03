@@ -49,29 +49,29 @@
 <p>It is very common in Astrophysics to work with sky pixels. The sky is tassellated in patches with specific properties and a sky map is then a collection of intensity values for each pixel. The most common pixelization used in Cosmology is <a href="http://healpix.jpl.nasa.gov">HEALPix</a>.</p>
 <p>Measurements from telescopes are then represented as an array of pixels that encode the pointing of the instrument at each timestamp and the measurement output.</p>
 <h2>Sample timeline</h2>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numba</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 
 
 <p>For simplicity let's assume we have a sky with 50K pixels:</p>
-<div class="highlight"><pre><span></span><span class="n">NPIX</span> <span class="o">=</span> <span class="mi">50000</span>
+<div class="highlight"><pre><span></span><span class="err">NPIX = 50000</span>
 </pre></div>
 
 
 <p>And we have 50 million measurement from our instrument:</p>
-<div class="highlight"><pre><span></span><span class="n">NTIME</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">50</span> <span class="o">*</span> <span class="mi">1</span><span class="n">e6</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="err">NTIME = int(50 * 1e6)</span>
 </pre></div>
 
 
 <p>The pointing of our instrument is an array of pixels, random in our sample case:</p>
-<div class="highlight"><pre><span></span><span class="nv">pixels</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randint</span><span class="ss">(</span><span class="mi">0</span>, <span class="nv">NPIX</span><span class="o">-</span><span class="mi">1</span>, <span class="nv">NTIME</span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><span class="err">pixels = np.random.randint(0, NPIX-1, NTIME)</span>
 </pre></div>
 
 
 <p>Our data are also random:</p>
-<div class="highlight"><pre><span></span><span class="nv">timeline</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randn</span><span class="ss">(</span><span class="nv">NTIME</span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><span class="err">timeline = np.random.randn(NTIME)</span>
 </pre></div>
 
 
@@ -132,10 +132,10 @@ The easiest way is to use the <code>groupby</code> operation in <code>pandas</co
 <p>Performance improvement is about 100x compared to Python and 20x compared to Pandas, pretty good!</p>
 <h2>Use numba.jit as a decorator</h2>
 <p>The exact same result is obtained if we use <code>numba.jit</code> as a decorator:</p>
-<div class="highlight"><pre><span></span>@<span class="nv">numba</span>.<span class="nv">jit</span><span class="ss">(</span><span class="nv">nopython</span><span class="o">=</span><span class="nv">True</span><span class="ss">)</span>
-<span class="nv">def</span> <span class="nv">groupby_numba</span><span class="ss">(</span><span class="nv">index</span>, <span class="nv">value</span>, <span class="nv">output</span><span class="ss">)</span>:
-    <span class="k">for</span> <span class="nv">i</span> <span class="nv">in</span> <span class="nv">range</span><span class="ss">(</span><span class="nv">index</span>.<span class="nv">shape</span>[<span class="mi">0</span>]<span class="ss">)</span>:
-        <span class="nv">output</span>[<span class="nv">index</span>[<span class="nv">i</span>]] <span class="o">+=</span> <span class="nv">value</span>[<span class="nv">i</span>]
+<div class="highlight"><pre><span></span><span class="nv">@numba</span><span class="p">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">groupby_numba</span><span class="p">(</span><span class="k">index</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">,</span><span class="w"> </span><span class="k">output</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="k">range</span><span class="p">(</span><span class="k">index</span><span class="p">.</span><span class="n">shape</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">output</span><span class="o">[</span><span class="n">index[i</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">value</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"></span>
 </pre></div>
         </div>
     </article>

@@ -74,23 +74,23 @@
 <h3>Setup a SSL Certificate</h3>
 <p><a href="https://letsencrypt.org/">Letsencrypt</a> provides free SSL certificates by using a command line client.</p>
 <p>SSH into the server, run:</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">letsencrypt</span>
-<span class="n">cd</span> <span class="n">letsencrypt</span>
-<span class="n">sudo</span> <span class="n">service</span> <span class="n">nginx</span> <span class="n">stop</span>
-<span class="p">.</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">-</span><span class="n">auto</span> <span class="n">certonly</span> <span class="c1">--standalone -d jupyterhubdeploy.ddns.net</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/letsencrypt/letsencrypt</span>
+<span class="err">cd letsencrypt</span>
+<span class="err">sudo service nginx stop</span>
+<span class="err">./letsencrypt-auto certonly --standalone -d jupyterhubdeploy.ddns.net</span>
 </pre></div>
 
 
 <p>Follow instructions at the terminal to obtain a certificate</p>
 <p>Now open the nginx configuration file: <code>sudo vim /etc/nginx/nginx.conf</code></p>
 <p>And modify the SSL certificate lines:</p>
-<div class="highlight"><pre><span></span><span class="n">ssl_certificate</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">yoursub</span><span class="p">.</span><span class="k">domain</span><span class="p">.</span><span class="n">edu</span><span class="o">/</span><span class="n">cert</span><span class="p">.</span><span class="n">pem</span><span class="p">;</span>
-<span class="n">ssl_certificate_key</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">letsencrypt</span><span class="o">/</span><span class="n">live</span><span class="o">/</span><span class="n">yoursub</span><span class="p">.</span><span class="k">domain</span><span class="p">.</span><span class="n">edu</span><span class="o">/</span><span class="n">privkey</span><span class="p">.</span><span class="n">pem</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="err">ssl_certificate /etc/letsencrypt/live/yoursub.domain.edu/cert.pem;</span>
+<span class="err">ssl_certificate_key /etc/letsencrypt/live/yoursub.domain.edu/privkey.pem;</span>
 </pre></div>
 
 
 <p>Start NGINX:</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">nginx</span> <span class="k">start</span>
+<div class="highlight"><pre><span></span><span class="err">sudo service nginx start</span>
 </pre></div>
 
 

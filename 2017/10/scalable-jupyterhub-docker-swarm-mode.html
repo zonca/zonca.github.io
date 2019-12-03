@@ -56,13 +56,13 @@ The same setup would work on a bare-metal server.</p>
 <p>Add your user to the <code>docker</code> group so you do not need <code>sudo</code> to run <code>docker</code> commands. Check that <code>docker</code> works running <code>docker info</code>.</p>
 <h3>Clone the config files repository</h3>
 <p>I recommend to create the folder <code>/etc/jupyterhub</code>, set ownership to your user and clone my configuration repository there:</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">deploy</span><span class="o">-</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">dockerswarm</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">jupyterhub</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/zonca/deploy-jupyterhub-dockerswarm /etc/jupyterhub</span>
 </pre></div>
 
 
 <h3>Setup Swarm</h3>
 <p>The first node is going to be the <em>Master</em> node of the Swarm, launch:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">swarm</span> <span class="n">init</span> <span class="c1">--advertise-addr INTERNAL_IP_ADDRESS</span>
+<div class="highlight"><pre><span></span><span class="err">docker swarm init --advertise-addr INTERNAL_IP_ADDRESS</span>
 </pre></div>
 
 
@@ -70,15 +70,15 @@ The same setup would work on a bare-metal server.</p>
 <p>This command will print out the string that the other nodes will need to run to join this swarm, save it for later (you can recover it with <code>docker swarm join-token</code>)</p>
 <h3>Install the NGINX web server</h3>
 <p>NGINX is going to sit in front of Jupyterhub as a proxy and handle SSL (at the end of this tutorial), we are going to have also NGINX as a Docker service:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">nginx</span><span class="p">:</span><span class="n">latest</span>
+<div class="highlight"><pre><span></span><span class="err">docker pull nginx:latest</span>
 </pre></div>
 
 
 <p>Now let's test that Docker and the networking is working correctly, launch <code>nginx</code> with the default configuration:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">service</span> <span class="k">create</span> <span class="err">\</span>
-  <span class="c1">--name nginx \</span>
-  <span class="c1">--publish 80:80 \</span>
-  <span class="n">nginx</span>
+<div class="highlight"><pre><span></span><span class="err">docker service create \</span>
+<span class="err">  --name nginx \</span>
+<span class="err">  --publish 80:80 \</span>
+<span class="err">  nginx</span>
 </pre></div>
 
 
@@ -86,28 +86,28 @@ The same setup would work on a bare-metal server.</p>
 Now if you connect to your instance from an external machine you should see the NGINX welcome page.
 If this is not the case check <code>docker ps -a</code> and <code>docker logs INSTANCE_ID</code> to debug the issue.</p>
 <p>Finally remove the service with:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">service</span> <span class="n">rm</span> <span class="n">nginx</span>
+<div class="highlight"><pre><span></span><span class="err">docker service rm nginx</span>
 </pre></div>
 
 
 <p>Now run the service with the configuration for Jupyterhub, edit <code>nginx.conf</code> and replace <code>SERVER_URL</code> then launch:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">ngnx_service</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash ngnx_service.sh</span>
 </pre></div>
 
 
 <p>At this point you should gate a Gateway error if you connect with a browser to your instance.</p>
 <h3>Install Jupyterhub</h3>
 <p>Before launching Jupyterhub you need to create a Docker network so that the containers in the swarm can communicate easily:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">network</span> <span class="k">create</span> <span class="c1">--driver overlay jupyterhub</span>
+<div class="highlight"><pre><span></span><span class="err">docker network create --driver overlay jupyterhub</span>
 </pre></div>
 
 
 <p>You can launch the official Jupyterhub 0.8.0 container as a service with:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">service</span> <span class="k">create</span> <span class="err">\</span>
-  <span class="c1">--name jupyterhubserver \</span>
-  <span class="c1">--network jupyterhub \</span>
-  <span class="c1">--detach=true \</span>
-  <span class="n">jupyterhub</span><span class="o">/</span><span class="n">jupyterhub</span><span class="p">:</span><span class="mi">0</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">0</span>
+<div class="highlight"><pre><span></span><span class="err">docker service create \</span>
+<span class="err">  --name jupyterhubserver \</span>
+<span class="err">  --network jupyterhub \</span>
+<span class="err">  --detach=true \</span>
+<span class="err">  jupyterhub/jupyterhub:0.8.0</span>
 </pre></div>
 
 
@@ -129,7 +129,7 @@ At the bottom of <code>jupyterhub_config.py</code> we can also customize CPU and
 <p>Follow the documentation of <code>oauthenticator</code> to setup authentication.</p>
 <p>Create the folder <code>/var/nfs</code> that we will configure later but it is harcoded in the script to launch the service.</p>
 <p>Temporarily remove from <code>launch_service_jupyterhub.sh</code> the line:</p>
-<div class="highlight"><pre><span></span><span class="c1">--mount src=nfsvolume,dst=/var/nfs \</span>
+<div class="highlight"><pre><span></span><span class="err">--mount src=nfsvolume,dst=/var/nfs \</span>
 </pre></div>
 
 
@@ -153,32 +153,32 @@ In order to achieve a simpler setup that I believe could easily handle few tens 
 <p>First we need to decide which server acts as NFS server, for small deployments we can have just the first server which runs the hub also handle this, for more performance we might want to have a dedicated server that only runs NFS and which is part of the internal network but does not participate in the Swarm so that it won't have user containers running on it.</p>
 <p>In a Cloud environment like Jetstream or Amazon, it is useful to create a Volume and attach it to that instance so that we can enlarge it later or back it up independently from the Instance and that would survive the Hub instance. Make sure to choose the XFS filesystem if you need to setup disk space contraints. Mount it in <code>/var/nfs/</code> and make sure it is writable by any user.</p>
 <p>On that server we can install NFS following the OS instructions and setup <code>/etc/exports</code> with:</p>
-<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">nfs</span>        <span class="o">*</span><span class="p">(</span><span class="n">rw</span><span class="p">,</span><span class="n">sync</span><span class="p">,</span><span class="n">no_subtree_check</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="err">/var/nfs        *(rw,sync,no_subtree_check)</span>
 </pre></div>
 
 
 <p>The NFS port is accessible only on the internal network anyway so we can just accept any connection.</p>
 <p>SSH into any of the Swarm nodes and check this works fine with:</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mount</span> <span class="mi">192</span><span class="p">.</span><span class="n">NFS</span><span class="p">.</span><span class="n">SRV</span><span class="p">.</span><span class="n">IP</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">nfs</span> <span class="o">/</span><span class="n">mnt</span>
-<span class="n">touch</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">writing_works</span>
+<div class="highlight"><pre><span></span><span class="err">sudo mount 192.NFS.SRV.IP:/var/nfs /mnt</span>
+<span class="err">touch /mnt/writing_works</span>
 </pre></div>
 
 
 <h3>Setup Jupyterhub to use Docker Volumes over NFS</h3>
 <p>In <code>/etc/jupyterhub/jupyterhub_config.py</code> we should configure the mounts to <code>swarmspawner</code>:</p>
-<div class="highlight"><pre><span></span><span class="n">mounts</span> <span class="o">=</span> <span class="p">[</span><span class="err">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;volume&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;jupyterhub-user-{username}&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="n">notebook_dir</span><span class="p">,</span>
-        <span class="s1">&#39;no_copy&#39;</span> <span class="p">:</span> <span class="k">True</span><span class="p">,</span>
-        <span class="s1">&#39;driver_config&#39;</span> <span class="p">:</span> <span class="err">{</span>
-          <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="s1">&#39;local&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;options&#39;</span> <span class="p">:</span> <span class="err">{</span>
-             <span class="s1">&#39;type&#39;</span> <span class="p">:</span> <span class="s1">&#39;nfs4&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;o&#39;</span> <span class="p">:</span> <span class="s1">&#39;addr=SERVER_IP,rw&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;device&#39;</span> <span class="p">:</span> <span class="s1">&#39;:/var/nfs/{username}/&#39;</span>
-           <span class="err">}</span>
-        <span class="err">}</span><span class="p">,</span>
-<span class="err">}</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="err">mounts = [{&#39;type&#39;: &#39;volume&#39;,</span>
+<span class="err">           &#39;source&#39;: &#39;jupyterhub-user-{username}&#39;,</span>
+<span class="err">           &#39;target&#39;: notebook_dir,</span>
+<span class="err">        &#39;no_copy&#39; : True,</span>
+<span class="err">        &#39;driver_config&#39; : {</span>
+<span class="err">          &#39;name&#39; : &#39;local&#39;,</span>
+<span class="err">          &#39;options&#39; : {</span>
+<span class="err">             &#39;type&#39; : &#39;nfs4&#39;,</span>
+<span class="err">             &#39;o&#39; : &#39;addr=SERVER_IP,rw&#39;,</span>
+<span class="err">             &#39;device&#39; : &#39;:/var/nfs/{username}/&#39;</span>
+<span class="err">           }</span>
+<span class="err">        },</span>
+<span class="err">}]</span>
 </pre></div>
 
 
@@ -188,7 +188,7 @@ See the branch <code>createfolder</code> on <a href="https://github.com/zonca/Sw
 In order to install this you need to modify your custom <code>jupyterhub-docker</code> to install from there (see the commented out section in <code>hub/Dockerfile</code>).
 Often the <code>Authenticator</code> transform the username into a hash, so I added a feature on this spawner to also create a text file <code>HASH_email.txt</code> and save the email of the user there so that it is easier to check directly from the filesystem who owns a specific folder.</p>
 <p>For this to work the Hub needs access to <code>/var/nfs/</code>, the best way to achieve this is to create another Volume, add the <code>NFS_SERVER_IP</code> and launch on the first server:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">create_volume_nfs</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash create_volume_nfs.sh</span>
 </pre></div>
 
 
@@ -197,12 +197,12 @@ Often the <code>Authenticator</code> transform the username into a hash, so I ad
 <h3>Setup user quota</h3>
 <p>The Docker local Volume driver does not support setting a user quota so we have to resort to our filesystem. You can modify <code>/etc/fstab</code> to mount the XFS volume with the <code>pquota</code> option that supports setting a limit to a folders and all of its subfolders. We cannot use user quotas because all of the users are running under the same UNIX account.</p>
 <p>Create a folder <code>/var/nfs/testquota</code> and then test that setting quota is working with:</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">set_quota</span><span class="p">.</span><span class="n">sh</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">nfs</span> <span class="n">testquota</span>
+<div class="highlight"><pre><span></span><span class="err">sudo set_quota.sh /var/nfs testquota</span>
 </pre></div>
 
 
 <p>There should be a space between <code>/var/nfs</code> and <code>testquota</code>, then check with:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">get_quota</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash get_quota.sh</span>
 </pre></div>
 
 
@@ -218,29 +218,29 @@ Often the <code>Authenticator</code> transform the username into a hash, so I ad
 <h3>Modify networking setup</h3>
 <p>One complication is that this container requires additional privileges to handle networking that are not availble in Swarm mode, so we will run this container outside of the Swarm on the first node.</p>
 <p>We need to make the <code>jupyterhub</code> network that we created before attachable by containers outside the Swarm.</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">service</span> <span class="n">rm</span> <span class="n">nginx</span>
-<span class="n">bash</span> <span class="n">remove_service_jupyterhub</span><span class="p">.</span><span class="n">sh</span>
-<span class="n">docker</span> <span class="n">network</span> <span class="n">rm</span> <span class="n">jupyterhub</span>
-<span class="n">docker</span> <span class="n">network</span> <span class="k">create</span> <span class="c1">--driver overlay --attachable jupyterhub</span>
+<div class="highlight"><pre><span></span><span class="err">docker service rm nginx</span>
+<span class="err">bash remove_service_jupyterhub.sh</span>
+<span class="err">docker network rm jupyterhub</span>
+<span class="err">docker network create --driver overlay --attachable jupyterhub</span>
 </pre></div>
 
 
 <p>Then add <code>--publish 8000</code> to <code>launch_service_juputerhub.sh</code> and start Jupyterhub again. Make sure that if you SSH to the first node you can <code>wget localhost:8000</code> successfully but if you try to access <code>yourdomain:8000</code> from the internet you <strong>should not</strong> be able to connect (the port should be closed by the networking configuration on OpenStack for example).</p>
 <h3>Test the NGINX/Letsencrypt container</h3>
 <p>Create a volume to save the configuration and the logs (optionally on the NFS volume):</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">volume</span> <span class="k">create</span> <span class="c1">--driver local nginx_volume</span>
+<div class="highlight"><pre><span></span><span class="err">docker volume create --driver local nginx_volume</span>
 </pre></div>
 
 
 <p>Test the container running:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
-<span class="w">  </span><span class="c1">--cap-add=NET_ADMIN \</span>
-<span class="w">  </span><span class="c1">--name nginx \</span>
-<span class="w">  </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="mi">443</span><span class="err">:</span><span class="mi">443</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
-<span class="w">  </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">EMAIL</span><span class="o">=</span><span class="n">your_email</span><span class="nv">@domain</span><span class="p">.</span><span class="n">edu</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
-<span class="w">  </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">URL</span><span class="o">=</span><span class="n">your</span><span class="p">.</span><span class="k">domain</span><span class="p">.</span><span class="n">org</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
-<span class="w">  </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="nl">nginx_volume</span><span class="p">:</span><span class="o">/</span><span class="n">config</span><span class="w"> </span><span class="err">\</span><span class="w"></span>
-<span class="w">  </span><span class="n">linuxserver</span><span class="o">/</span><span class="n">letsencrypt</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="err">docker run \</span>
+<span class="err">  --cap-add=NET_ADMIN \</span>
+<span class="err">  --name nginx \</span>
+<span class="err">  -p 443:443 \</span>
+<span class="err">  -e EMAIL=your_email@domain.edu \</span>
+<span class="err">  -e URL=your.domain.org \</span>
+<span class="err">  -v nginx_volume:/config \</span>
+<span class="err">  linuxserver/letsencrypt</span>
 </pre></div>
 
 

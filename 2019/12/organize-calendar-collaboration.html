@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Use your own Python installation (kernel) in Jupyterhub | Andrea Zonca's blog</title>
+        <title>Organize calendars for a large scientific collaboration | Andrea Zonca's blog</title>
         <meta name="author" content="Andrea Zonca">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
@@ -41,38 +41,11 @@
 <div class="post">
     <article>
         <header>
-            <h1>Use your own Python installation (kernel) in Jupyterhub</h1>
+            <h1>Organize calendars for a large scientific collaboration</h1>
         </header>
         <div class='post-content'>
-            <p><strong>Updated February 2017</strong></p>
-<p>You have access to a Jupyterhub server but the Python installation provided does not satisfy your needs,
-how to use your own?</p>
-<h2>Install Anaconda</h2>
-<p>If you haven't already your own Python installation on the Jupyterhub server you have access to, you can install Anaconda in your home folder. I assume here you have a permanent home folder on the server.</p>
-<p>In order to type commands, you can either
-get a Jupyterhub Terminal, or run in the IPython notebook with <code>!</code>.</p>
-<ul>
-<li><code>!wget https://repo.continuum.io/archive/Anaconda3-2.3.0-Linux-x86_64.sh</code></li>
-<li><code>!bash ./Anacon*</code></li>
-</ul>
-<h2>Create a kernel file for Jupyterhub</h2>
-<p>You probably already know you can have Python 2 and Python 3 kernels on the same Jupyter notebook installation. In the same way you can create your own <code>KernelSpec</code> that launches instead another Python installation.</p>
-<p>IPython can automatically create a <code>KernelSpec</code> for you, from the IPython notebook, run:</p>
-<div class="highlight"><pre><span></span><span class="err">!~/anaconda3/bin/ipython kernel install --user --name anaconda</span>
-</pre></div>
-
-
-<p>In case your path is different, just insert the full path to <code>ipython</code> from the Python installation you would like to use.</p>
-<p>This will create a file <code>kernel.json</code> in <code>~/.local/share/jupyter/kernels/anaconda</code>.</p>
-<p>You can also add KernelSpecs for other <code>conda</code> environments doing:</p>
-<div class="highlight"><pre><span></span><span class="sx">!source activate environmentname</span>
-<span class="sx">!ipython kernel install --user --name environmentname</span>
-</pre></div>
-
-
-<h2>Launch a Notebook</h2>
-<p>Go back to the Jupyterhub dashboard, reload the page, now you should have another option in the <code>New</code> menu that says <code>My Anaconda</code>.</p>
-<p>In order to use your new kernel with an existing notebook, click on the notebook file in the dashboard, it will launch with the default kernel, then you can change kernel from the top menu <code>Kernel</code> &gt; <code>Change kernel</code>.</p>
+            <p>Scientific collaboration</p>
+<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FLos_Angeles&amp;src=dTI2dnBkNnZvcm1qNHVucnVtajMzZzdwcGNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;src=c2FwazM1OTVmcHRiZHVtOWdqZnJwdWxkbnNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23DD4477&amp;color=%236633CC" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
         </div>
     </article>
 
@@ -80,7 +53,7 @@ get a Jupyterhub Terminal, or run in the IPython notebook with <code>!</code>.</
         <ul>
             <li>
                 <strong>Published:</strong>
-                <i><time datetime="2015-10-05T12:00:00-07:00">Mon 05 October 2015</time></i>
+                <i><time datetime="2019-12-02T12:00:00-08:00">Mon 02 December 2019</time></i>
             </li>
             <li>
                 <strong>In:</strong>
@@ -88,8 +61,7 @@ get a Jupyterhub Terminal, or run in the IPython notebook with <code>!</code>.</
             </li>
             <li>
                 <strong>Tags:</strong>
-<a href="http://zonca.github.io/tag/ipython.html">ipython</a> 
-<a href="http://zonca.github.io/tag/jupyterhub.html">jupyterhub</a> 
+<a href="http://zonca.github.io/tag/google-calendar.html">google-calendar</a> 
             </li>
             <li>
                 <strong>Written by:</strong>

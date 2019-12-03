@@ -48,19 +48,19 @@
 <p><a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream">https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream</a></p>
 <h2>Install Jupyterhub</h2>
 <p>First run</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">create_secrets</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash create_secrets.sh</span>
 </pre></div>
 
 
 <p>to create the secret strings needed by JupyterHub then edit its output
 <code>secrets.yaml</code> to make sure it is consistent, edit the <code>hosts</code> lines if needed. For example, supply the Jetstream DNS name of the master node <code>js-XXX-YYY.jetstream-cloud.org</code> (XXX and YYY are the last 2 groups of the floating IP of the instance AAA.BBB.XXX.YYY). See <a href="https://zonca.github.io/2018/09/kubernetes-jetstream-kubespray-explore.html">part 2</a>, "Publish service externally with ingress".</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">configure_helm_jupyterhub</span><span class="p">.</span><span class="n">sh</span>
-<span class="n">bash</span> <span class="n">install_jhub</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash configure_helm_jupyterhub.sh</span>
+<span class="err">bash install_jhub.sh</span>
 </pre></div>
 
 
 <p>Check some preliminary pods running with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pods -n jhub</span>
 </pre></div>
 
 
@@ -75,23 +75,23 @@ for any other customizations, first authentication, you are in good hands as the
 <h2>Setup HTTPS with letsencrypt</h2>
 <p>Kubespray instead of installing <code>kube-lego</code>, installs <a href="https://cert-manager.readthedocs.io/en/latest/index.html"><code>certmanager</code></a> to handle HTTPS certificates.</p>
 <p>First we need to create a Issuer, set your email inside <code>setup_https_kubespray/https_issuer.yml</code> and create it with the usual:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">setup_https_kubespray</span><span class="o">/</span><span class="n">https_issuer</span><span class="p">.</span><span class="n">yml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f setup_https_kubespray/https_issuer.yml</span>
 </pre></div>
 
 
 <p>Then we can manually create a HTTPS certificate, <code>certmanager</code> can be configured to handle this automatically, but as we only need a domain this is pretty quick, edit <code>setup_https_kubespray/https_certificate.yml</code> and set the domain name of your master node, then create the certificate resource with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">setup_https_kubespray</span><span class="o">/</span><span class="n">https_certificate</span><span class="p">.</span><span class="n">yml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f setup_https_kubespray/https_certificate.yml</span>
 </pre></div>
 
 
 <p>Finally we can configure JupyterHub to use this certificate, first edit your <code>secrets.yaml</code> following as an example the file <code>setup_https_kubespray/example_letsencrypt_secrets.yaml</code>, then update your JupyterHub configuration running again:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">install_jhub</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash install_jhub.sh</span>
 </pre></div>
 
 
 <h2>Setup HTTPS with custom certificates</h2>
 <p>In case you have custom certificates for your domain, first create a secret in the jupyterhub namespace with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="n">secret</span> <span class="n">tls</span> <span class="n">cert</span><span class="o">-</span><span class="n">secret</span> <span class="c1">--key ssl.key --cert ssl.crt -n jhub</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create secret tls cert-secret --key ssl.key --cert ssl.crt -n jhub</span>
 </pre></div>
 
 
@@ -108,8 +108,8 @@ for any other customizations, first authentication, you are in good hands as the
 
 
 <p>Eventually, you may need to update the certificate. This can be achieved with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="n">secret</span> <span class="n">tls</span> <span class="n">cert</span><span class="o">-</span><span class="n">secret</span> <span class="c1">--key ssl.key --cert ssl.crt -n jhub \</span>
-    <span class="c1">--dry-run -o yaml | kubectl apply -f -</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create secret tls cert-secret --key ssl.key --cert ssl.crt -n jhub \</span>
+<span class="err">    --dry-run -o yaml | kubectl apply -f -</span>
 </pre></div>
 
 
@@ -117,70 +117,70 @@ for any other customizations, first authentication, you are in good hands as the
 <p>See a followup short tutorial on <a href="https://zonca.github.io/2019/02/scale-kubernetes-jupyterhub-manually.html">scaling Kubernetes manually</a>.</p>
 <h2>Persistence of user data</h2>
 <p>When a JupyterHub user logs in for the first time, a Kubernetes <code>PersistentVolumeClaim</code> of the size defined in the configuration file is created. This is a Kubernetes resource that defines a request for storage.</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pvc</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
-<span class="n">NAME</span>          <span class="n">STATUS</span>   <span class="n">VOLUME</span>                                     <span class="n">CAPACITY</span>   <span class="k">ACCESS</span> <span class="n">MODES</span>   <span class="n">STORAGECLASS</span>   <span class="n">AGE</span>
-<span class="n">claim</span><span class="o">-</span><span class="n">zonca</span>   <span class="n">Bound</span>    <span class="n">pvc</span><span class="o">-</span><span class="n">c469967a</span><span class="o">-</span><span class="mi">3968</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">aaad</span><span class="o">-</span><span class="n">fa163e9c7d08</span>   <span class="mi">1</span><span class="n">Gi</span>        <span class="n">RWO</span>            <span class="n">standard</span>       <span class="mi">2</span><span class="n">m34s</span>
-<span class="n">hub</span><span class="o">-</span><span class="n">db</span><span class="o">-</span><span class="n">dir</span>    <span class="n">Bound</span>    <span class="n">pvc</span><span class="o">-</span><span class="mi">353114</span><span class="n">a7</span><span class="o">-</span><span class="mi">3968</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">aaad</span><span class="o">-</span><span class="n">fa163e9c7d08</span>   <span class="mi">1</span><span class="n">Gi</span>        <span class="n">RWO</span>            <span class="n">standard</span>       <span class="mi">6</span><span class="n">m34s</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pvc -n jhub</span>
+<span class="err">NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE</span>
+<span class="err">claim-zonca   Bound    pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            standard       2m34s</span>
+<span class="err">hub-db-dir    Bound    pvc-353114a7-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            standard       6m34s</span>
 </pre></div>
 
 
 <p>Inspecting the claims we find out that we have a claim for the user and a claim to store the database of JupyterHub. Currently they are already Bound because they are already satistied.</p>
 <p>Those claims are then satisfied by our Openstack Cinder provisioner to create a Openstack volume and wrap it into a Kubernetes <code>PersistentVolume</code> resource:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pv</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
-<span class="n">NAME</span>                                       <span class="n">CAPACITY</span>   <span class="k">ACCESS</span> <span class="n">MODES</span>   <span class="n">RECLAIM</span> <span class="n">POLICY</span>   <span class="n">STATUS</span>   <span class="n">CLAIM</span>              <span class="n">STORAGECLASS</span>   <span class="n">REASON</span>   <span class="n">AGE</span>
-<span class="n">pvc</span><span class="o">-</span><span class="mi">353114</span><span class="n">a7</span><span class="o">-</span><span class="mi">3968</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">aaad</span><span class="o">-</span><span class="n">fa163e9c7d08</span>   <span class="mi">1</span><span class="n">Gi</span>        <span class="n">RWO</span>            <span class="k">Delete</span>           <span class="n">Bound</span>    <span class="n">jhub</span><span class="o">/</span><span class="n">hub</span><span class="o">-</span><span class="n">db</span><span class="o">-</span><span class="n">dir</span>    <span class="n">standard</span>                <span class="mi">8</span><span class="n">m52s</span>
-<span class="n">pvc</span><span class="o">-</span><span class="n">c469967a</span><span class="o">-</span><span class="mi">3968</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">aaad</span><span class="o">-</span><span class="n">fa163e9c7d08</span>   <span class="mi">1</span><span class="n">Gi</span>        <span class="n">RWO</span>            <span class="k">Delete</span>           <span class="n">Bound</span>    <span class="n">jhub</span><span class="o">/</span><span class="n">claim</span><span class="o">-</span><span class="n">zonca</span>   <span class="n">standard</span>                <span class="mi">5</span><span class="n">m4s</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pv -n jhub</span>
+<span class="err">NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM              STORAGECLASS   REASON   AGE</span>
+<span class="err">pvc-353114a7-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete           Bound    jhub/hub-db-dir    standard                8m52s</span>
+<span class="err">pvc-c469967a-3968-11e9-aaad-fa163e9c7d08   1Gi        RWO            Delete           Bound    jhub/claim-zonca   standard                5m4s</span>
 </pre></div>
 
 
 <p>This corresponds to Openstack volumes automatically mounted onto the node that is executing the user pod:</p>
-<div class="highlight"><pre><span></span><span class="o">+</span><span class="c1">--------------------------------------+-------------------------------------------------------------+-----------+------+----------------------------------------------+</span>
-<span class="o">|</span> <span class="n">ID</span>                                   <span class="o">|</span> <span class="n">Name</span>                                                        <span class="o">|</span> <span class="n">Status</span>    <span class="o">|</span> <span class="k">Size</span> <span class="o">|</span> <span class="n">Attached</span> <span class="k">to</span>                                  <span class="o">|</span>
-<span class="o">+</span><span class="c1">--------------------------------------+-------------------------------------------------------------+-----------+------+----------------------------------------------+</span>
-<span class="o">|</span> <span class="n">e6eddaaa</span><span class="o">-</span><span class="n">d40d</span><span class="o">-</span><span class="mi">4832</span><span class="o">-</span><span class="n">addd</span><span class="o">-</span><span class="n">a05343ec3a80</span> <span class="o">|</span> <span class="n">kubernetes</span><span class="o">-</span><span class="k">dynamic</span><span class="o">-</span><span class="n">pvc</span><span class="o">-</span><span class="n">c469967a</span><span class="o">-</span><span class="mi">3968</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">aaad</span><span class="o">-</span><span class="n">fa163e9c7d08</span> <span class="o">|</span> <span class="k">in</span><span class="o">-</span><span class="n">use</span>    <span class="o">|</span>    <span class="mi">1</span> <span class="o">|</span> <span class="n">Attached</span> <span class="k">to</span> <span class="n">zonca</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">nf</span><span class="o">-</span><span class="mi">1</span> <span class="k">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdc</span>  <span class="o">|</span>
-<span class="o">|</span> <span class="mi">00</span><span class="n">f1e822</span><span class="o">-</span><span class="mi">8098</span><span class="o">-</span><span class="mi">4633</span><span class="o">-</span><span class="mi">804</span><span class="n">e</span><span class="o">-</span><span class="mi">46</span><span class="n">ba44d7de7e</span> <span class="o">|</span> <span class="n">kubernetes</span><span class="o">-</span><span class="k">dynamic</span><span class="o">-</span><span class="n">pvc</span><span class="o">-</span><span class="mi">353114</span><span class="n">a7</span><span class="o">-</span><span class="mi">3968</span><span class="o">-</span><span class="mi">11</span><span class="n">e9</span><span class="o">-</span><span class="n">aaad</span><span class="o">-</span><span class="n">fa163e9c7d08</span> <span class="o">|</span> <span class="k">in</span><span class="o">-</span><span class="n">use</span>    <span class="o">|</span>    <span class="mi">1</span> <span class="o">|</span> <span class="n">Attached</span> <span class="k">to</span> <span class="n">zonca</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">nf</span><span class="o">-</span><span class="mi">1</span> <span class="k">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span>  <span class="o">|</span>
+<div class="highlight"><pre><span></span><span class="err">+--------------------------------------+-------------------------------------------------------------+-----------+------+----------------------------------------------+</span>
+<span class="err">| ID                                   | Name                                                        | Status    | Size | Attached to                                  |</span>
+<span class="err">+--------------------------------------+-------------------------------------------------------------+-----------+------+----------------------------------------------+</span>
+<span class="err">| e6eddaaa-d40d-4832-addd-a05343ec3a80 | kubernetes-dynamic-pvc-c469967a-3968-11e9-aaad-fa163e9c7d08 | in-use    |    1 | Attached to zonca-k8s-node-nf-1 on /dev/sdc  |</span>
+<span class="err">| 00f1e822-8098-4633-804e-46ba44d7de7e | kubernetes-dynamic-pvc-353114a7-3968-11e9-aaad-fa163e9c7d08 | in-use    |    1 | Attached to zonca-k8s-node-nf-1 on /dev/sdb  |</span>
 </pre></div>
 
 
 <p>If the user disconnects, the Openstack volume is un-attached from the instance but it is not delete and it is mounted back, optionally on another instance, if the user logs back in.</p>
 <h3>Delete and reinstall JupyterHub</h3>
 <p>Helm release deleted:</p>
-<div class="highlight"><pre><span></span><span class="n">helm</span> <span class="k">delete</span> <span class="c1">--purge jhub</span>
+<div class="highlight"><pre><span></span><span class="err">helm delete --purge jhub</span>
 </pre></div>
 
 
 <p>As long as you do not delete the whole namespace, the volumes are not deleted, therefore you can re-deploy the same version or a newer version using <code>helm</code> and the same volume is mounted back for the user</p>
 <h3>Delete and recreate Openstack instances</h3>
 <p>When we run terraform to delete all Openstack resources:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">terraform_destroy</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash terraform_destroy.sh</span>
 </pre></div>
 
 
 <p>this does not include the Openstack volumes that are created by the Kubernetes persistent volume provisioner.</p>
 <p>In case we are interested in keeping the same ip address, run instead:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">terraform_destroy_keep_floatingip</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash terraform_destroy_keep_floatingip.sh</span>
 </pre></div>
 
 
 <p>The problem is that if we recreate Kubernetes again, it doesn't know how to link the Openstack volume to the Persistent Volume of a user.
 Therefore we need to backup the Persistent Volumes and the Persistent Volume Claims resources before tearing Kubernetes down:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pvc</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span> <span class="o">-</span><span class="n">o</span> <span class="n">yaml</span> <span class="o">&gt;</span> <span class="n">pvc</span><span class="p">.</span><span class="n">yaml</span>
-<span class="n">kubectl</span> <span class="k">get</span> <span class="n">pv</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span> <span class="o">-</span><span class="n">o</span> <span class="n">yaml</span> <span class="o">&gt;</span> <span class="n">pv</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pvc -n jhub -o yaml &gt; pvc.yaml</span>
+<span class="err">kubectl get pv -n jhub -o yaml &gt; pv.yaml</span>
 </pre></div>
 
 
 <p>I recommend always to run <code>kubectl</code> on the local machine instead of the master node, because if you delete the master instance you loose any temporary modification to your scripts. In this case, even more importantly, if you are running on the master node please backup <code>pvc.yaml</code> and <code>pv.yaml</code> locally before running <code>terraform_destroy.sh</code> or they will be wiped out.</p>
 <p>Then open the files with a text editor and delete the Persistent Volume and the Persistent Volume Claim related to <code>hub-db-dir</code>.</p>
 <p>Edit <code>pv.yaml</code> and set:</p>
-<div class="highlight"><pre><span></span>  <span class="n">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="n">Retain</span>
+<div class="highlight"><pre><span></span><span class="err">  persistentVolumeReclaimPolicy:Retain</span>
 </pre></div>
 
 
 <p>Otherwise if you create the PV first, it is deleted because there is no PVC.</p>
 <p>Also remove the <code>ClaimRef</code> section of all the volumes in <code>pv.yaml</code>, otherwise you get the error "two claims are bound to the same volume, this one is bound incorrectly" on the PVC.</p>
 <p>Now we can proceed to create the cluster again and then restore the volumes with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">pv</span><span class="p">.</span><span class="n">yaml</span>
-<span class="n">kubectl</span> <span class="n">apply</span> <span class="o">-</span><span class="n">f</span> <span class="n">pvc</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl apply -f pv.yaml</span>
+<span class="err">kubectl apply -f pvc.yaml</span>
 </pre></div>
 
 

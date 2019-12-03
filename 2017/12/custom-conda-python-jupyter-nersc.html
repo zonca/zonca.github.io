@@ -53,25 +53,25 @@ Cori <code>$SCRATCH</code>, not only <code>/project</code> and <code>$HOME</code
 <p>The easiest way is to install a custom Python environment is to create another conda environment and then register the Kernel with Jupyter.</p>
 <p>Create a new conda environment, best choice is <code>/project</code> if you have one, otherwise <code>$HOME</code> would work.
 Access <a href="http://jupyter.nersc.gov">http://jupyter.nersc.gov</a>, open a terminal with "New"-&gt;"Terminal".</p>
-<div class="highlight"><pre><span></span><span class="n">conda</span> <span class="k">create</span> <span class="c1">--prefix $HOME/myconda python=3.6 ipykernel</span>
+<div class="highlight"><pre><span></span><span class="err">conda create --prefix $HOME/myconda python=3.6 ipykernel</span>
 </pre></div>
 
 
 <p>This is the minimal requirement, you could just add <code>anaconda</code> to get all the latest packages, you can also specify <code>conda-forge</code> to install other packages, e.g.:</p>
-<div class="highlight"><pre><span></span><span class="k">source</span> <span class="n">activate</span> <span class="n">myconda</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="k">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">healpy</span>
+<div class="highlight"><pre><span></span><span class="err">source activate myconda</span>
+<span class="err">conda install -c conda-forge healpy</span>
 </pre></div>
 
 
 <p>Register the kernel with the Jupyter Notebook:</p>
-<div class="highlight"><pre><span></span><span class="n">ipython</span> <span class="n">kernel</span> <span class="n">install</span> <span class="c1">--name myconda --user</span>
+<div class="highlight"><pre><span></span><span class="err">ipython kernel install --name myconda --user</span>
 </pre></div>
 
 
 <p>The name of the kernel specified here doesn't need to be the same as the conda environment name, but it is simpler.</p>
 <p>Once the conda environment is active, you can also install packages with <code>pip</code>.</p>
-<div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">pip</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">somepackage</span>
+<div class="highlight"><pre><span></span><span class="err">conda install pip</span>
+<span class="err">pip install somepackage</span>
 </pre></div>
         </div>
     </article>

@@ -54,19 +54,19 @@
 <p><code>hubtraf</code> assumes you are using the Dummy authenticator, which is the default installed by the <code>zero-to-jupyterhub</code> helm chart. If you have configured another authenticator, temporarily disable it for testing purposes.</p>
 <p>First go through the <a href="https://github.com/yuvipanda/hubtraf/blob/master/docs/index.rst#jupyterhub-traffic-simulator"><code>hubtraf</code> documentation</a> to understand its functionalities.</p>
 <p><code>hubtraf</code> also has a Helm recipe to run it within Kubernetes, but the simpler way is to test from your laptop, follow the [documentation of <code>hubtraf</code>] to install the package and then run:</p>
-<div class="highlight"><pre><span></span><span class="n">hubtraf</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">yyy</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span> <span class="mi">2</span>
+<div class="highlight"><pre><span></span><span class="err">hubtraf http://js-xxx-yyy.jetstream-cloud.org 2</span>
 </pre></div>
 
 
 <p>To simulate 2 users connecting to the system, you can then check with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pods -n jhub</span>
 </pre></div>
 
 
 <p>That the pods are being created successfully and check the logs on the command line from <code>hubtraf</code> which explains what it is doing and tracks the time every operation takes, so it is useful to debug any delay in providing resources to users.</p>
 <p>Consider that volumes created by JupyterHub for the test users will remain in Kubernetes and in Openstack, therefore if you would like to use the same deployment for production, remember to cleanup the Kubernetes <code>PersistentVolume</code> and <code>PersistentVolumeClaim</code> resources.</p>
 <p>Now we can test scalability of the deployment with:</p>
-<div class="highlight"><pre><span></span>    <span class="n">hubtraf</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">js</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">yyy</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span> <span class="mi">100</span>
+<div class="highlight"><pre><span></span><span class="err">    hubtraf http://js-xxx-yyy.jetstream-cloud.org 100</span>
 </pre></div>
 
 
@@ -79,7 +79,7 @@
 
 <h2>Test the Cluster Autoscaler</h2>
 <p>If you followed the tutorial to deploy the Cluster Autoscaler on Magnum, you can launch <code>hubtraf</code> to create a large number of pods, then check that some pods are "Running" and the ones that do not fit in the current nodes are "Pending":</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pods -n jhub</span>
 </pre></div>
 
 
@@ -93,12 +93,12 @@ I1031 <span class="m">00</span>:49:14.141351       <span class="m">1</span> magn
 
 
 <p>After 4 or 5 minutes the new node should be available and should show up in:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">nodes</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get nodes</span>
 </pre></div>
 
 
 <p>And we can check that some user pods are now running on the new node:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pods -n jhub -o wide</span>
 </pre></div>
 
 
@@ -115,7 +115,7 @@ I1031 <span class="m">00</span>:56:41.834151       <span class="m">1</span> magn
 
 
 <p>Moreover Cluster Autoscaler also provides useful information in the status of each "Pending" node. For example if it detects that it is useless to create a new node because the node is "Pending" for some other reason (e.g. volume quota reached), this infomation will be accessible using:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">describe</span> <span class="n">node</span> <span class="o">-</span><span class="n">n</span> <span class="n">jhub</span> <span class="n">jupyter</span><span class="o">-</span><span class="n">xxxxxxx</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl describe node -n jhub jupyter-xxxxxxx</span>
 </pre></div>
 
 

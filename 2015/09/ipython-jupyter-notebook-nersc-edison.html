@@ -67,7 +67,7 @@ This setup is a bit more complicated than other supercomputers, i.e. see <a href
 Anaconda 64bit from http://continuum.io/downloads#py34. Choose Python 3.</p>
 <p>You need to be able to SSH from a node to another node on Edison with no need of a password. Create a new SSH certificate with <code>ssh-keygen</code>, hit enter to keep all default options, DO NOT ENTER A PASSWORD. Then use <code>ssh-copy-id edison.nersc.gov</code>, enter your password to make sure the key is copied in the authorized hosts.
 Now you can check it works by executing:</p>
-<div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">edison</span><span class="p">.</span><span class="n">nersc</span><span class="p">.</span><span class="n">gov</span>
+<div class="highlight"><pre><span></span><span class="err">ssh edison.nersc.gov</span>
 </pre></div>
 
 
@@ -78,18 +78,18 @@ Now you can check it works by executing:</p>
 <p>Change the port number in the <code>launch_notebook_and_tunnel_to_login.sh</code> script to a port of your choosing between 7000 and 9999, referenced as YOURPORT in the rest of the tutorial. Two users on the same login node on the same port would not be allowed to forward, so try to avoid common port numbers as 8000, 9000, 8080 or 8888.</p>
 <p>Choose a duration of your job, for initial testing better keep 30 minutes so your job starts sooner.</p>
 <p>Submit the job to the scheduler:</p>
-<div class="highlight"><pre><span></span><span class="n">qsub</span> <span class="n">notebook_job</span><span class="p">.</span><span class="n">pbs</span>
+<div class="highlight"><pre><span></span><span class="err">qsub notebook_job.pbs</span>
 </pre></div>
 
 
 <p>Wait for the job to start running, you should see <code>R</code> in:</p>
-<div class="highlight"><pre><span></span><span class="n">qstat</span> <span class="o">-</span><span class="n">u</span> <span class="err">$</span><span class="k">USER</span>
+<div class="highlight"><pre><span></span><span class="err">qstat -u $USER</span>
 </pre></div>
 
 
 <p>The script launches an IPython notebook on a computing node and tunnels its port to the login node.</p>
 <p>You can check that everything worked by checking that no errors show up in the <code>notebook.log</code> file, and that you can access the notebook page with <code>wget</code>:</p>
-<div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">localhost</span><span class="p">:</span><span class="n">YOURPORT</span>
+<div class="highlight"><pre><span></span><span class="err">wget localhost:YOURPORT</span>
 </pre></div>
 
 

@@ -60,18 +60,18 @@ otherwise you need to <code>ssh</code> into the master node and type <code>helm<
 <p>Pangeo publishes a <a href="https://github.com/pangeo-data/helm-chart">Helm chart</a> (a software package for Kubernetes) and we can leverage that
 to setup the deployment.</p>
 <p>First add the repository:</p>
-<div class="highlight"><pre><span></span><span class="n">helm</span> <span class="n">repo</span> <span class="k">add</span> <span class="n">pangeo</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pangeo</span><span class="o">-</span><span class="k">data</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">helm</span><span class="o">-</span><span class="n">chart</span><span class="o">/</span>
-<span class="n">helm</span> <span class="n">repo</span> <span class="k">update</span>
+<div class="highlight"><pre><span></span><span class="err">helm repo add pangeo https://pangeo-data.github.io/helm-chart/</span>
+<span class="err">helm repo update</span>
 </pre></div>
 
 
 <p>Then download my repository with all the configuration files and helper scripts:</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream</span>
 </pre></div>
 
 
 <p>Create a <code>secrets.yaml</code> file running:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">create_secrets</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash create_secrets.sh</span>
 </pre></div>
 
 
@@ -83,7 +83,7 @@ to setup the deployment.</p>
 <li>Customize <code>ingress</code> - <code>hosts</code> with the hostname of your master instance</li>
 </ul>
 <p>Finally you can deploy it running:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">install_pangeo</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash install_pangeo.sh</span>
 </pre></div>
 
 

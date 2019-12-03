@@ -53,8 +53,8 @@ If you are already familiar with Kubernetes you can skip to <a href="https://zon
 Jupyterhub using the zerotojupyterhub helm recipe</a>.</p>
 <p>All the files for the examples below are available on Github,
 first SSH to the master node (or do this locally if you setup <code>kubectl</code> locally):</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
-<span class="n">cd</span> <span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream</span>
+<span class="err">cd jupyterhub-deploy-kubernetes-jetstream</span>
 </pre></div>
 
 
@@ -67,35 +67,35 @@ redundancy via the Cinder project, part of OpenStack.</p>
 it talks to the Openstack API and have a dedicated volume (the same type you can create with the
 Jetstream Horizon Web interfaces) automatically created and exposed to Kubernetes.</p>
 <p>This is achieved through a storageclass:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">storageclass</span>
-<span class="n">NAME</span>                 <span class="n">PROVISIONER</span>            <span class="n">AGE</span>
-<span class="n">standard</span> <span class="p">(</span><span class="k">default</span><span class="p">)</span>   <span class="n">kubernetes</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">cinder</span>   <span class="mi">1</span><span class="n">h</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get storageclass</span>
+<span class="err">NAME                 PROVISIONER            AGE</span>
+<span class="err">standard (default)   kubernetes.io/cinder   1h</span>
 </pre></div>
 
 
 <p>See the file <code>alpine-persistent-volume.yaml</code> in the repository on how we can request a Cinder volume
 to be created and attached to a pod.</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">alpine</span><span class="o">-</span><span class="n">persistent</span><span class="o">-</span><span class="n">volume</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f alpine-persistent-volume.yaml</span>
 </pre></div>
 
 
 <p>We can test it by getting a terminal inside the container (<code>alpine</code> has no <code>bash</code>):</p>
-<div class="highlight"><pre><span></span><span class="nv">kubectl</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">it</span> <span class="nv">alpine</span> <span class="o">--</span> <span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">sh</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl exec -it alpine -- /bin/sh</span>
 </pre></div>
 
 
 <p>look into <code>df -h</code>, check that there is a 5GB mounted file system which is persistent.</p>
 <p>Also, back to the machine with <code>openstack</code> access, see how an Openstack volume was dynamically created and attached to the running instance:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">volume</span> <span class="n">list</span>
+<div class="highlight"><pre><span></span><span class="err">openstack volume list</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">volume</span> <span class="n">list</span>
-<span class="o">+</span><span class="c1">--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+</span>
-<span class="o">|</span> <span class="n">ID</span>                                   <span class="o">|</span> <span class="n">Name</span>                                                        <span class="o">|</span> <span class="n">Status</span> <span class="o">|</span> <span class="k">Size</span> <span class="o">|</span> <span class="n">Attached</span> <span class="k">to</span>                                      <span class="o">|</span>
-<span class="o">+</span><span class="c1">--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+</span>
-<span class="o">|</span> <span class="mi">508</span><span class="n">f1ee7</span><span class="o">-</span><span class="mi">9654</span><span class="o">-</span><span class="mi">4</span><span class="n">c84</span><span class="o">-</span><span class="n">b1fc</span><span class="o">-</span><span class="mi">76</span><span class="n">dd8751cd6e</span> <span class="o">|</span> <span class="n">kubernetes</span><span class="o">-</span><span class="k">dynamic</span><span class="o">-</span><span class="n">pvc</span><span class="o">-</span><span class="n">e83ec4d6</span><span class="o">-</span><span class="n">bb9f</span><span class="o">-</span><span class="mi">11</span><span class="n">e8</span><span class="o">-</span><span class="mi">8344</span><span class="o">-</span><span class="n">fa163eb22e63</span> <span class="o">|</span> <span class="k">in</span><span class="o">-</span><span class="n">use</span> <span class="o">|</span>    <span class="mi">5</span> <span class="o">|</span> <span class="n">Attached</span> <span class="k">to</span> <span class="n">kubespray</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">nf</span><span class="o">-</span><span class="mi">1</span> <span class="k">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span>  <span class="o">|</span>
-<span class="o">+</span><span class="c1">--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+</span>
+<div class="highlight"><pre><span></span><span class="err">openstack volume list</span>
+<span class="err">+--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+</span>
+<span class="err">| ID                                   | Name                                                        | Status | Size | Attached to                                      |</span>
+<span class="err">+--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+</span>
+<span class="err">| 508f1ee7-9654-4c84-b1fc-76dd8751cd6e | kubernetes-dynamic-pvc-e83ec4d6-bb9f-11e8-8344-fa163eb22e63 | in-use |    5 | Attached to kubespray-k8s-node-nf-1 on /dev/sdb  |</span>
+<span class="err">+--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------------------------+</span>
 </pre></div>
 
 
@@ -105,13 +105,13 @@ simple example included in the book <a href="https://github.com/luksa/kubernetes
 which by the way I highly recommend to get started with Kubernetes.</p>
 <p>First let's deploy a service in our Kubernetes cluster,
 this service just answers to HTTP requests on port 8080 with the message "You've hit kubia-manual":</p>
-<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">kubia_test_ingress</span>
-<span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">kubia</span><span class="o">-</span><span class="n">manual</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">cd kubia_test_ingress</span>
+<span class="err">kubectl create -f kubia-manual.yaml</span>
 </pre></div>
 
 
 <p>We can test it by checking at which IP Kubernetes created the pod:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">o</span> <span class="n">wide</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pods -o wide</span>
 </pre></div>
 
 
@@ -122,20 +122,20 @@ You<span class="err">&#39;</span>ve hit kubia-manual
 
 
 <p>Finally close it:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">delete</span> <span class="o">-</span><span class="n">f</span> <span class="n">kubia</span><span class="o">-</span><span class="n">manual</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl delete -f kubia-manual.yaml</span>
 </pre></div>
 
 
 <h3>Load balancing with ReplicaSets and Services</h3>
 <p>Now we want to scale this service up and provide a set of 3 pods instead of just 1:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">kubia</span><span class="o">-</span><span class="n">replicaset</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f kubia-replicaset.yaml</span>
 </pre></div>
 
 
 <p>Now we could access those services on 3 different IP addresses, but we would like to have
 a single entry point and automatic load balancing across those instances, so we create
 a Kubernetes "Service" resource:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">kubia</span><span class="o">-</span><span class="n">service</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f kubia-service.yaml</span>
 </pre></div>
 
 
@@ -147,7 +147,7 @@ kubia        ClusterIP   <span class="m">10</span>.233.28.205   &lt;none&gt;    
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">curl</span> <span class="err">$</span><span class="n">KUBIA_SERVICE_IP</span>
+<div class="highlight"><pre><span></span><span class="err">curl $KUBIA_SERVICE_IP</span>
 </pre></div>
 
 
@@ -155,7 +155,7 @@ kubia        ClusterIP   <span class="m">10</span>.233.28.205   &lt;none&gt;    
 Run many times and check different kubia services answer.</p>
 <h3>Publish service externally with ingress</h3>
 <p>Try to open browser and access the hostname of your master node at:</p>
-<div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">js</span><span class="o">-</span><span class="n">XXX</span><span class="o">-</span><span class="n">YYY</span><span class="p">.</span><span class="n">jetstream</span><span class="o">-</span><span class="n">cloud</span><span class="p">.</span><span class="n">org</span>
+<div class="highlight"><pre><span></span><span class="c">http://js-XXX-YYY.jetstream-cloud.org</span>
 </pre></div>
 
 
@@ -164,8 +164,8 @@ i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.</p>
 <p>The connection should respond with 404.</p>
 <p>At this point, edit the <code>kubia-ingress.yaml</code> file and replace the <code>host</code> value with the master node domain name you just derived.</p>
 <p>Now:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">kubia</span><span class="o">-</span><span class="n">ingress</span><span class="p">.</span><span class="n">yaml</span>
-<span class="n">kubectl</span> <span class="k">get</span> <span class="n">ingress</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f kubia-ingress.yaml</span>
+<span class="err">kubectl get ingress</span>
 </pre></div>
 
 
@@ -173,7 +173,7 @@ i.e. AAA.BBB.XXX.YYY, each of them could also be 1 or 2 digits instead of 3.</p>
 <p>"You've hit kubia-jqwwp"</p>
 <p>Force reload the browser page a few times and you will see you are hitting a different kubia service.</p>
 <p>Finally,</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">delete</span> <span class="o">-</span><span class="n">f</span> <span class="n">kubia</span><span class="o">-</span><span class="n">ingress</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl delete -f kubia-ingress.yaml</span>
 </pre></div>
         </div>
     </article>

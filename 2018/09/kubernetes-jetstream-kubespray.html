@@ -68,65 +68,65 @@ Any other platform works as well, also install <code>terraform</code> by copying
 <p>Login to the TACC Horizon panel at <a href="https://tacc.jetstream-cloud.org/dashboard">https://tacc.jetstream-cloud.org/dashboard</a>, this is basically the low level web interface to OpenStack, a lot more complex and powerful than Atmosphere available at <a href="https://use.jetstream-cloud.org/application">https://use.jetstream-cloud.org/application</a>. Use <code>tacc</code> as domain, your TACC username (generally the same as your XSEDE username) and your TACC password.</p>
 <p>First choose the right project you would like to charge to in the top dropdown menu (see the XSEDE website if you don't recognize the grant code).</p>
 <p>Click on Compute / API Access and download the OpenRC V3 authentication file to your machine. Source it typing:</p>
-<div class="highlight"><pre><span></span><span class="k">source</span> <span class="n">XX</span><span class="o">-</span><span class="n">XXXXXXXX</span><span class="o">-</span><span class="n">openrc</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">source XX-XXXXXXXX-openrc.sh</span>
 </pre></div>
 
 
 <p>it should ask for your TACC password. This configures all the environment variables needed by the <code>openstack</code> command line tool to interface with the Openstack API.</p>
 <p>Test with:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">flavor</span> <span class="n">list</span>
+<div class="highlight"><pre><span></span><span class="err">openstack flavor list</span>
 </pre></div>
 
 
 <p>This should return the list of available "sizes" of the Virtual Machines.</p>
 <h3>Clone kubespray</h3>
 <p>I had to make a few modifications to <code>kubespray</code> to adapt it to Jetstream or backport bug fixes not merged yet, so currently better use my fork of <code>kubespray</code>:</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jetstream_kubespray</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/zonca/jetstream_kubespray</span>
 </pre></div>
 
 
 <p>See an <a href="https://github.com/zonca/jetstream_kubespray/pull/2">overview of my changes compared to the standard <code>kubespray</code> release 2.6.0</a>.</p>
 <h3>Run Terraform</h3>
 <p>Inside <code>jetstream_kubespray</code>, copy from my template:</p>
-<div class="highlight"><pre><span></span><span class="n">export</span> <span class="k">CLUSTER</span><span class="o">=</span><span class="err">$</span><span class="k">USER</span>
-<span class="n">cp</span> <span class="o">-</span><span class="n">LRp</span> <span class="n">inventory</span><span class="o">/</span><span class="n">zonca_kubespray</span> <span class="n">inventory</span><span class="o">/</span><span class="err">$</span><span class="k">CLUSTER</span>
-<span class="n">cd</span> <span class="n">inventory</span><span class="o">/</span><span class="err">$</span><span class="k">CLUSTER</span>
+<div class="highlight"><pre><span></span><span class="err">export CLUSTER=$USER</span>
+<span class="err">cp -LRp inventory/zonca_kubespray inventory/$CLUSTER</span>
+<span class="err">cd inventory/$CLUSTER</span>
 </pre></div>
 
 
 <p>Open and modify <code>cluster.tf</code>, choose your image and number of nodes.
 Make sure to change the network name to something unique, like the expanded form of <code>$CLUSTER_network</code>.</p>
 <p>You can find suitable images (they need to be JS-API-Featured, you cannot use the same instances used in Atmosphere):</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">image</span> <span class="n">list</span> <span class="o">|</span> <span class="n">grep</span> <span class="ss">&quot;JS-API&quot;</span>
+<div class="highlight"><pre><span></span><span class="err">openstack image list | grep &quot;JS-API&quot;</span>
 </pre></div>
 
 
 <p>I already preconfigured the network UUID both for IU and TACC, but you can crosscheck
 looking for the <code>public</code> network in:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">network</span> <span class="n">list</span>
+<div class="highlight"><pre><span></span><span class="err">openstack network list</span>
 </pre></div>
 
 
 <p>Initialize Terraform:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">terraform_init</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash terraform_init.sh</span>
 </pre></div>
 
 
 <p>Create the resources:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">terraform_apply</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash terraform_apply.sh</span>
 </pre></div>
 
 
 <p>The last output log of Terraform should contain the IP of the master node <code>k8s_master_fips</code>, wait for it to boot then
 SSH in with:</p>
-<div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">ubuntu</span><span class="o">@</span><span class="err">$</span><span class="n">IP</span>
+<div class="highlight"><pre><span></span><span class="err">ssh ubuntu@$IP</span>
 </pre></div>
 
 
 <p>or <code>centos@$IP</code> for CentOS images.</p>
 <p>Inspect with Openstack the resources created:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">server</span> <span class="n">list</span>
-<span class="n">openstack</span> <span class="n">network</span> <span class="n">list</span>
+<div class="highlight"><pre><span></span><span class="err">openstack server list</span>
+<span class="err">openstack network list</span>
 </pre></div>
 
 
@@ -135,37 +135,37 @@ SSH in with:</p>
 <p>Change folder back to the root of the <code>jetstream_kubespray</code> repository,</p>
 <p>First make sure you have a recent version of <code>ansible</code> installed, you also need additional modules,
 so first run:</p>
-<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
+<div class="highlight"><pre><span></span><span class="err">pip install -r requirements.txt</span>
 </pre></div>
 
 
 <p>It is useful to create a <code>virtualenv</code> and install packages inside that.
 This will also install <code>ansible</code>, it is important to install <code>ansible</code> with <code>pip</code> so that the path to access the modules is correct. So remove any pre-installed <code>ansible</code>.</p>
 <p>Then following the <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/contrib/terraform/openstack/README.md#ansible"><code>kubespray</code> documentation</a>, we setup <code>ssh-agent</code> so that <code>ansible</code> can SSH from the machine with public IP to the others:</p>
-<div class="highlight"><pre><span></span><span class="n">eval</span> <span class="err">$</span><span class="p">(</span><span class="n">ssh</span><span class="o">-</span><span class="n">agent</span> <span class="o">-</span><span class="n">s</span><span class="p">)</span>
-<span class="n">ssh</span><span class="o">-</span><span class="k">add</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span>
+<div class="highlight"><pre><span></span><span class="err">eval $(ssh-agent -s)</span>
+<span class="err">ssh-add ~/.ssh/id_rsa</span>
 </pre></div>
 
 
 <p>Test the connection through ansible:</p>
-<div class="highlight"><pre><span></span><span class="n">ansible</span> <span class="o">-</span><span class="n">i</span> <span class="n">inventory</span><span class="o">/</span><span class="err">$</span><span class="k">CLUSTER</span><span class="o">/</span><span class="n">hosts</span> <span class="o">-</span><span class="n">m</span> <span class="n">ping</span> <span class="k">all</span>
+<div class="highlight"><pre><span></span><span class="err">ansible -i inventory/$CLUSTER/hosts -m ping all</span>
 </pre></div>
 
 
 <p>If a server is not answering to ping, first try to reboot it:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">server</span> <span class="n">reboot</span> <span class="err">$</span><span class="k">CLUSTER</span><span class="o">-</span><span class="n">k8s</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">nf</span><span class="o">-</span><span class="mi">1</span>
+<div class="highlight"><pre><span></span><span class="err">openstack server reboot $CLUSTER-k8s-node-nf-1</span>
 </pre></div>
 
 
 <p>Or delete it and run <code>terraform_apply.sh</code> to create it again.</p>
 <p>check <code>inventory/$CLUSTER/group_vars/all.yml</code>, in particular <code>bootstrap_os</code>, I setup <code>ubuntu</code>, change it to <code>centos</code> if you used the Centos 7 base image.</p>
 <p>Due to a bug in the recipe, run ( see details in the Troubleshooting notes below):</p>
-<div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">OS_TENANT_ID</span><span class="o">=</span><span class="err">$</span><span class="n">OS_PROJECT_ID</span>
+<div class="highlight"><pre><span></span><span class="err">export OS_TENANT_ID=$OS_PROJECT_ID</span>
 </pre></div>
 
 
 <p>Finally run the full playbook, it is going to take a good 10 minutes:</p>
-<div class="highlight"><pre><span></span><span class="n">ansible</span><span class="o">-</span><span class="n">playbook</span> <span class="c1">--become -i inventory/$CLUSTER/hosts cluster.yml</span>
+<div class="highlight"><pre><span></span><span class="err">ansible-playbook --become -i inventory/$CLUSTER/hosts cluster.yml</span>
 </pre></div>
 
 
@@ -222,7 +222,7 @@ If any of the tests hangs or cannot connect, there is probably a networking issu
 <p>We also set <code>kubectl_localhost: true</code> and <code>kubeconfig_localhost: true</code>.
 so that <code>kubectl</code> is installed on your local machine</p>
 <p>it also copies <code>admin.conf</code> to:</p>
-<div class="highlight"><pre><span></span><span class="n">inventory</span><span class="o">/</span><span class="err">$</span><span class="k">CLUSTER</span><span class="o">/</span><span class="n">artifacts</span>
+<div class="highlight"><pre><span></span><span class="err">inventory/$CLUSTER/artifacts</span>
 </pre></div>
 
 
@@ -231,7 +231,7 @@ so that <code>kubectl</code> is installed on your local machine</p>
 We cannot replace it with the public floating ip because the certificate is not valid for that.
 Best workaround is to replace it with <code>127.0.0.1</code> inside <code>~/.kube/config</code> at the <code>server:</code> key.
 Then make a SSH tunnel:</p>
-<div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">ubuntu</span><span class="o">@</span><span class="err">$</span><span class="n">IP</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="n">L</span> <span class="mi">6443</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="mi">6443</span> <span class="n">sleep</span> <span class="mi">3</span><span class="n">h</span>
+<div class="highlight"><pre><span></span><span class="err">ssh ubuntu@$IP -f -L 6443:localhost:6443 sleep 3h</span>
 </pre></div>
 
 
@@ -241,13 +241,13 @@ Then make a SSH tunnel:</p>
 </ul>
 <h2>(Optional) Setup helm locally</h2>
 <p>ssh into the master node, check helm version with:</p>
-<div class="highlight"><pre><span></span><span class="n">helm</span> <span class="k">version</span>
+<div class="highlight"><pre><span></span><span class="err">helm version</span>
 </pre></div>
 
 
 <p>Download the same binary version from <a href="https://github.com/helm/helm/releases">the release page on Github</a>
 and copy the binary to <code>/url/local/bin</code>.</p>
-<div class="highlight"><pre><span></span><span class="n">helm</span> <span class="n">ls</span>
+<div class="highlight"><pre><span></span><span class="err">helm ls</span>
 </pre></div>
         </div>
     </article>

@@ -71,10 +71,10 @@ SDSC Cloud already provides a DNS entry in the form <code>xxx-xxx-xxx-xxx.comput
 <p>On your local machine, install <code>Ansible</code>, at least version 2.1, see <a href="http://docs.ansible.com/ansible/intro_installation.html#getting-ansible">Ansible docs</a>, for Ubuntu just add the <a href="https://launchpad.net/~ansible/+archive/ubuntu/ansible">Ansible PPA repository</a>.
 I tested this with Ansible version 2.2.1.0</p>
 <p>Then you need to configure passwordless SSH connection to your Virtual Machine. Download your SSH key from the OpenStack dashboard, copy it to your <code>~/.ssh</code> folder and then add an entry to <code>.ssh/config</code> for the server:</p>
-<div class="highlight"><pre><span></span><span class="k">Host</span> <span class="n">xxx</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">xxx</span><span class="p">.</span><span class="n">compute</span><span class="p">.</span><span class="n">cloud</span><span class="p">.</span><span class="n">sdsc</span><span class="p">.</span><span class="n">edu</span>
-    <span class="n">HostName</span> <span class="n">xxx</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="n">xxx</span><span class="p">.</span><span class="n">compute</span><span class="p">.</span><span class="n">cloud</span><span class="p">.</span><span class="n">sdsc</span><span class="p">.</span><span class="n">edu</span>
-    <span class="k">User</span> <span class="n">ubuntu</span>
-    <span class="n">IdentityFile</span> <span class="ss">&quot;~/.ssh/sdsccloud.key&quot;</span>
+<div class="highlight"><pre><span></span><span class="err">Host xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</span>
+<span class="err">    HostName xxx-xxx-xxx-xxx.compute.cloud.sdsc.edu</span>
+<span class="err">    User ubuntu</span>
+<span class="err">    IdentityFile &quot;~/.ssh/sdsccloud.key&quot;</span>
 </pre></div>
 
 
@@ -104,23 +104,23 @@ replace <code>remote_user=root</code> with <code>remote_user=ubuntu</code>.</p>
 </ul>
 <h3>Install dockerspawner</h3>
 <p>Then install the Jupyterhub plugin <code>dockerspawner</code> that handles launching single user Notebooks inside Docker containers, we want to install from master instead of pypi to avoid an error setting the memory limit.</p>
-<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">/</span><span class="n">dockerspawner</span>
+<div class="highlight"><pre><span></span><span class="err">pip install git+https://github.com/jupyterhub/dockerspawner</span>
 </pre></div>
 
 
 <h3>Setup the Docker container to run user Notebooks</h3>
 <p>We can first get the standard <code>systemuser</code> container, this Docker container mounts the home folder of the users inside the container, this way we can have persistent data even if the container gets deleted.</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">jupyterhub</span><span class="o">/</span><span class="n">systemuser</span>
+<div class="highlight"><pre><span></span><span class="err">docker pull jupyterhub/systemuser</span>
 </pre></div>
 
 
 <p>If you do not need <a href="http://nbgrader.readthedocs.io"><code>nbgrader</code></a> this image is enough, otherwise we have to build our own image, first checkout my Github repository in the home folder of the <code>ubuntu</code> user on the server with:</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">systemuser</span><span class="o">-</span><span class="n">nbgrader</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/zonca/systemuser-nbgrader</span>
 </pre></div>
 
 
 <p>then edit the <code>nbgrader_config.py</code> file to set the correct <code>course_id</code>, and build the container image running inside the <code>systemuser-nbgrader</code> folder:</p>
-<div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">systemuser</span><span class="o">-</span><span class="n">nbgrader</span> <span class="p">.</span>
+<div class="highlight"><pre><span></span><span class="err">docker build -t systemuser-nbgrader .</span>
 </pre></div>
 
 

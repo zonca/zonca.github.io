@@ -79,13 +79,13 @@ Then use this URL as <code>dataurl</code> in the above script.</p>
     <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">PREDEFINED_DATA_FOLDERS</span><span class="p">:</span>
         <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Access data from {full_path}&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Access data from </span><span class="si">{full_path}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">full_path</span>
     <span class="k">with</span> <span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span><span class="s2">&quot;dataurl&quot;</span><span class="p">,</span> <span class="n">DATAURL</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set_temp</span><span class="p">(</span>
         <span class="s2">&quot;remote_timeout&quot;</span><span class="p">,</span> <span class="mi">30</span>
     <span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Retrieve data for {filename} (if not cached already)&quot;</span><span class="p">)</span>
-        <span class="n">map_out</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_pkg_data_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrieve data for </span><span class="si">{filename}</span><span class="s2"> (if not cached already)&quot;</span><span class="p">)</span>
+        <span class="n">map_out</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_pkg_data_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">map_out</span>
 </pre></div>
 

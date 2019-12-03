@@ -51,7 +51,7 @@ JupyterHub on top of that using <a href="https://zero-to-jupyterhub.readthedocs.
 On the other hand, the <code>ansible</code> recipe takes a very long time to run, ~30 min, while Magnum creates a cluster in about 10 minutes.</p>
 <h2>Setup access to the Jetstream API</h2>
 <p>First install the OpenStack client, please use these exact versions, also please run at Indiana, which currently has the Rocky release of Openstack, the TACC deployment has an older release of Openstack.</p>
-<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">openstackclient</span><span class="o">==</span><span class="mi">3</span><span class="p">.</span><span class="mi">16</span> <span class="n">python</span><span class="o">-</span><span class="n">magnumclient</span><span class="o">==</span><span class="mi">2</span><span class="p">.</span><span class="mi">10</span>
+<div class="highlight"><pre><span></span><span class="err">pip install python-openstackclient==3.16 python-magnumclient==2.10</span>
 </pre></div>
 
 
@@ -59,40 +59,40 @@ On the other hand, the <code>ansible</code> recipe takes a very long time to run
 <p>You need to have a keypair uploaded to Openstack, this just needs to be done once per account. See <a href="https://iujetstream.atlassian.net/wiki/spaces/JWT/pages/35913730/OpenStack+command+line">the Jetstream documentation</a> under the section "Upload SSH key - do this once".</p>
 <h2>Create the cluster with Magnum</h2>
 <p>As usual, checkout the repository with all the configuration files on the machine you will use the Jetstream API from, typically your laptop.</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">zonca</span><span class="o">/</span><span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
-<span class="n">cd</span> <span class="n">jupyterhub</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="n">kubernetes</span><span class="o">-</span><span class="n">jetstream</span>
-<span class="n">cd</span> <span class="n">kubernetes_magnum</span>
+<div class="highlight"><pre><span></span><span class="err">git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream</span>
+<span class="err">cd jupyterhub-deploy-kubernetes-jetstream</span>
+<span class="err">cd kubernetes_magnum</span>
 </pre></div>
 
 
 <p>Now we are ready to use Magnum to first create a cluster template and then the actual cluster, edit first <code>create_cluster.sh</code> and set the parameters of the cluster on the top. Also make sure to set the keypair name.
 Finally run:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">create_network</span><span class="p">.</span><span class="n">sh</span>
-<span class="n">bash</span> <span class="n">create_template</span><span class="p">.</span><span class="n">sh</span>
-<span class="n">bash</span> <span class="n">create_cluster</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash create_network.sh</span>
+<span class="err">bash create_template.sh</span>
+<span class="err">bash create_cluster.sh</span>
 </pre></div>
 
 
 <p>I have setup a test cluster with only 1 master node and 1 normal node but you can modify that later.</p>
 <p>Check the status of your cluster, after about 10 minutes, it should be in state <code>CREATE_COMPLETE</code>:</p>
-<div class="highlight"><pre><span></span><span class="nv">openstack</span> <span class="nv">coe</span> <span class="nv">cluster</span> <span class="k">show</span> <span class="nv">k8s</span>
+<div class="highlight"><pre><span></span><span class="err">openstack coe cluster show k8s</span>
 </pre></div>
 
 
 <h3>Configure kubectl locally</h3>
 <p>Install the <code>kubectl</code> client locally, first check the version of the master node:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">server</span> <span class="n">list</span> <span class="o">#</span> <span class="n">find</span> <span class="n">the</span> <span class="n">floating</span> <span class="k">public</span> <span class="n">IP</span> <span class="k">of</span> <span class="n">the</span> <span class="n">master</span> <span class="n">node</span> <span class="p">(</span><span class="n">starts</span> <span class="k">with</span> <span class="mi">149</span><span class="n">_</span>
-<span class="n">IP</span><span class="o">=</span><span class="mi">149</span><span class="p">.</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span><span class="p">.</span><span class="n">xxx</span>
-<span class="n">ssh</span> <span class="n">fedora</span><span class="o">@</span><span class="err">$</span><span class="n">IP</span>
-<span class="n">kubectl</span> <span class="k">version</span>
+<div class="highlight"><pre><span></span><span class="err">openstack server list # find the floating public IP of the master node (starts with 149_</span>
+<span class="err">IP=149.xxx.xxx.xxx</span>
+<span class="err">ssh fedora@$IP</span>
+<span class="err">kubectl version</span>
 </pre></div>
 
 
 <p>Now install the same version following the <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">Kubernetes documentation</a></p>
 <p>Now configure <code>kubectl</code> on your laptop to connect to the Kubernetes cluster created with Magnum:</p>
-<div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">kubectl_secret</span>
-<span class="n">cd</span> <span class="n">kubectl_secret</span>
-<span class="n">openstack</span> <span class="n">coe</span> <span class="k">cluster</span> <span class="n">config</span> <span class="n">k8s</span>
+<div class="highlight"><pre><span></span><span class="err">mkdir kubectl_secret</span>
+<span class="err">cd kubectl_secret</span>
+<span class="err">openstack coe cluster config k8s</span>
 </pre></div>
 
 
@@ -100,14 +100,14 @@ Finally run:</p>
 <p>and returns  <code>export KUBECONFIG=/absolute/path/to/config</code></p>
 <p>See also the <code>update_kubectl_secret.sh</code> script to automate this step, but it requires to already have setup the environment variable.</p>
 <p>execute that and then:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">nodes</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get nodes</span>
 </pre></div>
 
 
 <h2>Configure storage</h2>
 <p>Magnum configures a provider that knows how to create Kubernetes volumes using Openstack Cinder,
 but does not configure a <code>storageclass</code>, we can do that with:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">storageclass</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f storageclass.yaml</span>
 </pre></div>
 
 
@@ -146,8 +146,8 @@ but does not configure a <code>storageclass</code>, we can do that with:</p>
 
 <p>We can also test creating an actual pod with a persistent volume and check
 that the volume is successfully mounted and the pod started:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="p">..</span><span class="o">/</span><span class="n">alpine</span><span class="o">-</span><span class="n">persistent</span><span class="o">-</span><span class="n">volume</span><span class="p">.</span><span class="n">yaml</span>
-<span class="n">kubectl</span> <span class="k">describe</span> <span class="n">pod</span> <span class="n">alpine</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f ../alpine-persistent-volume.yaml</span>
+<span class="err">kubectl describe pod alpine</span>
 </pre></div>
 
 
@@ -160,31 +160,31 @@ deploy HTTPS certificates, I'll add this later on.</p>
 <p>First <a href="https://helm.sh/docs/using_helm/#installing-helm">install the Helm client on your laptop</a>, make
 sure you have configured <code>kubectl</code> correctly.</p>
 <p>Then we need to create a service account to give enough privilege to Helm to reconfigure the cluster:</p>
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">tiller_service_account</span><span class="p">.</span><span class="n">yaml</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl create -f tiller_service_account.yaml</span>
 </pre></div>
 
 
 <p>Then we can create the <code>tiller</code> pod inside Kubernetes:</p>
-<div class="highlight"><pre><span></span><span class="nv">helm</span> <span class="nv">init</span> <span class="o">--</span><span class="nv">service</span><span class="o">-</span><span class="nv">account</span> <span class="nv">tiller</span> <span class="o">--</span><span class="k">wait</span> <span class="o">--</span><span class="nv">history</span><span class="o">-</span><span class="nv">max</span> <span class="mi">200</span>
+<div class="highlight"><pre><span></span><span class="err">helm init --service-account tiller --wait --history-max 200</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="k">get</span> <span class="n">pods</span> <span class="c1">--all-namespaces</span>
-<span class="n">NAMESPACE</span>     <span class="n">NAME</span>                                       <span class="n">READY</span>   <span class="n">STATUS</span>    <span class="n">RESTARTS</span>   <span class="n">AGE</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">coredns</span><span class="o">-</span><span class="mi">78</span><span class="n">df4bf8ff</span><span class="o">-</span><span class="n">f2xvs</span>                   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">coredns</span><span class="o">-</span><span class="mi">78</span><span class="n">df4bf8ff</span><span class="o">-</span><span class="n">pnj7g</span>                   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">heapster</span><span class="o">-</span><span class="mi">74</span><span class="n">f98f6489</span><span class="o">-</span><span class="n">xsw52</span>                  <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">kube</span><span class="o">-</span><span class="n">dns</span><span class="o">-</span><span class="n">autoscaler</span><span class="o">-</span><span class="mi">986</span><span class="n">c49747</span><span class="o">-</span><span class="mi">2</span><span class="n">m64g</span>        <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">kubernetes</span><span class="o">-</span><span class="n">dashboard</span><span class="o">-</span><span class="mi">54</span><span class="n">cb7b5997</span><span class="o">-</span><span class="n">c2vwx</span>      <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">openstack</span><span class="o">-</span><span class="n">cloud</span><span class="o">-</span><span class="n">controller</span><span class="o">-</span><span class="n">manager</span><span class="o">-</span><span class="n">tf5mc</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">3</span>          <span class="mi">2</span><span class="n">d</span>
-<span class="n">kube</span><span class="o">-</span><span class="k">system</span>   <span class="n">tiller</span><span class="o">-</span><span class="n">deploy</span><span class="o">-</span><span class="mi">6</span><span class="n">b5cd64488</span><span class="o">-</span><span class="mi">4</span><span class="n">fkff</span>             <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>     <span class="n">Running</span>   <span class="mi">0</span>          <span class="mi">20</span><span class="n">s</span>
+<div class="highlight"><pre><span></span><span class="err">kubectl get pods --all-namespaces</span>
+<span class="err">NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE</span>
+<span class="err">kube-system   coredns-78df4bf8ff-f2xvs                   1/1     Running   0          2d</span>
+<span class="err">kube-system   coredns-78df4bf8ff-pnj7g                   1/1     Running   0          2d</span>
+<span class="err">kube-system   heapster-74f98f6489-xsw52                  1/1     Running   0          2d</span>
+<span class="err">kube-system   kube-dns-autoscaler-986c49747-2m64g        1/1     Running   0          2d</span>
+<span class="err">kube-system   kubernetes-dashboard-54cb7b5997-c2vwx      1/1     Running   0          2d</span>
+<span class="err">kube-system   openstack-cloud-controller-manager-tf5mc   1/1     Running   3          2d</span>
+<span class="err">kube-system   tiller-deploy-6b5cd64488-4fkff             1/1     Running   0          20s</span>
 </pre></div>
 
 
 <p>And check that all the versions agree:</p>
-<div class="highlight"><pre><span></span><span class="n">helm</span> <span class="k">version</span>
-<span class="n">Client</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">version</span><span class="p">.</span><span class="k">Version</span><span class="err">{</span><span class="n">SemVer</span><span class="p">:</span><span class="ss">&quot;v2.11.0&quot;</span><span class="p">,</span> <span class="n">GitCommit</span><span class="p">:</span><span class="ss">&quot;2e55dbe1fdb5fdb96b75ff144a339489417b146b&quot;</span><span class="p">,</span> <span class="n">GitTreeState</span><span class="p">:</span><span class="ss">&quot;clean&quot;</span><span class="err">}</span>
-<span class="n">Server</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">version</span><span class="p">.</span><span class="k">Version</span><span class="err">{</span><span class="n">SemVer</span><span class="p">:</span><span class="ss">&quot;v2.11.0&quot;</span><span class="p">,</span> <span class="n">GitCommit</span><span class="p">:</span><span class="ss">&quot;2e55dbe1fdb5fdb96b75ff144a339489417b146b&quot;</span><span class="p">,</span> <span class="n">GitTreeState</span><span class="p">:</span><span class="ss">&quot;clean&quot;</span><span class="err">}</span>
+<div class="highlight"><pre><span></span><span class="err">helm version</span>
+<span class="c">Client: &amp;version.Version{SemVer:&quot;v2.11.0&quot;, GitCommit:&quot;2e55dbe1fdb5fdb96b75ff144a339489417b146b&quot;, GitTreeState:&quot;clean&quot;}</span>
+<span class="c">Server: &amp;version.Version{SemVer:&quot;v2.11.0&quot;, GitCommit:&quot;2e55dbe1fdb5fdb96b75ff144a339489417b146b&quot;, GitTreeState:&quot;clean&quot;}</span>
 </pre></div>
 
 
@@ -193,19 +193,19 @@ sure you have configured <code>kubectl</code> correctly.</p>
 <h3>Open HTTP and HTTPS ports</h3>
 <p>First we need to open the HTTP and HTTPS ports on the master node, you can either connect to the Horizon interface,
 create new rule named <code>http_https</code>, then add 2 rules, in the Rule drop down choose HTTP and HTTPS; or from the command line:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="k">security</span> <span class="k">group</span> <span class="k">create</span> <span class="n">http_https</span>
-<span class="n">openstack</span> <span class="k">security</span> <span class="k">group</span> <span class="k">rule</span> <span class="k">create</span> <span class="c1">--ingress --protocol tcp --dst-port 80 http_https </span>
-<span class="n">openstack</span> <span class="k">security</span> <span class="k">group</span> <span class="k">rule</span> <span class="k">create</span> <span class="c1">--ingress --protocol tcp --dst-port 443 http_https</span>
+<div class="highlight"><pre><span></span><span class="err">openstack security group create http_https</span>
+<span class="err">openstack security group rule create --ingress --protocol tcp --dst-port 80 http_https </span>
+<span class="err">openstack security group rule create --ingress --protocol tcp --dst-port 443 http_https</span>
 </pre></div>
 
 
 <p>Then you can find the name of the master node in <code>openstack server list</code> then add this security group to that instance:</p>
-<div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">server</span> <span class="k">add</span> <span class="k">security</span> <span class="k">group</span>  <span class="n">k8s</span><span class="o">-</span><span class="n">xxxxxxxxxxxx</span><span class="o">-</span><span class="n">master</span><span class="o">-</span><span class="mi">0</span> <span class="n">http_https</span>
+<div class="highlight"><pre><span></span><span class="err">openstack server add security group  k8s-xxxxxxxxxxxx-master-0 http_https</span>
 </pre></div>
 
 
 <h3>Install NGINX ingress with Helm</h3>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">install_nginx_ingress</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash install_nginx_ingress.sh</span>
 </pre></div>
 
 
@@ -219,15 +219,15 @@ create new rule named <code>http_https</code>, then add 2 rules, in the Rule dro
 <p>If this is correctly working, you should be able to run <code>curl localhost</code> from the master node and get a <code>Default backend: 404</code> message.</p>
 <h2>Install JupyterHub</h2>
 <p>Finally, we can go back to the root of the repository and install JupyterHub, first create the secrets file:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">create_secrets</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash create_secrets.sh</span>
 </pre></div>
 
 
 <p>Then edit <code>secrets.yaml</code> and modify the hostname under <code>hosts</code> to display the hostname of your master Jetstream instance, i.e. if your instance public floating IP is <code>aaa.bbb.xxx.yyy</code>, the hostname should be <code>js-xxx-yyy.jetstream-cloud.org</code> (without <code>http://</code>).</p>
 <p>You should also check that connecting with your browser to <code>js-xxx-yyy.jetstream-cloud.org</code> shows <code>default backend - 404</code>, this means NGINX is also reachable from the internet, i.e. the web port is open on the master node.</p>
 <p>Finally:</p>
-<div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">configure_helm_jupyterhub</span><span class="p">.</span><span class="n">sh</span>
-<span class="n">bash</span> <span class="n">install_jhub</span><span class="p">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><span class="err">bash configure_helm_jupyterhub.sh</span>
+<span class="err">bash install_jhub.sh</span>
 </pre></div>
 
 
