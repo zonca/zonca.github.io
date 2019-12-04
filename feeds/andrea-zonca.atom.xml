@@ -1119,6 +1119,23 @@ for any other customizations, first authentication, you are in good hands as the
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;h2&gt;Setup custom HTTP headers&lt;/h2&gt;
+&lt;p&gt;After you have deployed JupyterHub, edit ingress:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;kubectl edit ingress -n jhub&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Add a &lt;code&gt;configuration-snippet&lt;/code&gt; line inside annotations:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;metadata&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;annotations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tls&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;acme&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;true&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;ingress&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;kubernetes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;io&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;snippet&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;
+      &lt;span class="n"&gt;more_set_headers&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;X-Frame-Options: DENY&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+      &lt;span class="n"&gt;more_set_headers&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;X-Xss-Protection: 1&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This doesn't require to restart or modify any other resource.&lt;/p&gt;
 &lt;h2&gt;Modify the Kubernetes cluster size&lt;/h2&gt;
 &lt;p&gt;See a followup short tutorial on &lt;a href="https://zonca.github.io/2019/02/scale-kubernetes-jupyterhub-manually.html"&gt;scaling Kubernetes manually&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Persistence of user data&lt;/h2&gt;
