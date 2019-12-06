@@ -194,7 +194,7 @@ Therefore we need to backup the Persistent Volumes and the Persistent Volume Cla
 
 
 <p>Otherwise if you create the PV first, it is deleted because there is no PVC.</p>
-<p>Also remove the <code>ClaimRef</code> section of all the volumes in <code>pv.yaml</code>, otherwise you get the error "two claims are bound to the same volume, this one is bound incorrectly" on the PVC.</p>
+<p>Also remove the <code>claimRef</code> section of all the volumes in <code>pv.yaml</code>, otherwise you get the error "two claims are bound to the same volume, this one is bound incorrectly" on the PVC.</p>
 <p>Now we can proceed to create the cluster again and then restore the volumes with:</p>
 <div class="highlight"><pre><span></span><span class="err">kubectl apply -f pv.yaml</span>
 <span class="err">kubectl apply -f pvc.yaml</span>
