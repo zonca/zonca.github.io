@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2019-12-02T12:00:00-08:00</updated><entry><title>Organize calendars for a large scientific collaboration</title><link href="http://zonca.github.io/2019/12/organize-calendar-collaboration.html" rel="alternate"></link><published>2019-12-02T12:00:00-08:00</published><updated>2019-12-02T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-12-02:/2019/12/organize-calendar-collaboration.html</id><summary type="html">&lt;p&gt;Many scientific collaborations have a central calendar, often hosted on Google Calendar,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andrea Zonca's blog - Andrea Zonca</title><link href="http://zonca.github.io/" rel="alternate"></link><link href="http://zonca.github.io/feeds/andrea-zonca.atom.xml" rel="self"></link><id>http://zonca.github.io/</id><updated>2020-02-26T13:00:00-08:00</updated><entry><title>Deploy CVMFS on Kubernetes</title><link href="http://zonca.github.io/2020/02/cvmfs-kubernetes.html" rel="alternate"></link><published>2020-02-26T13:00:00-08:00</published><updated>2020-02-26T13:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2020-02-26:/2020/02/cvmfs-kubernetes.html</id><summary type="html">&lt;p&gt;&lt;a href="https://cvmfs.readthedocs.io/"&gt;CVMFS&lt;/a&gt; is a software distribution service, it is used by High Energy Physics experiments at CERN
+to synchronize software environments across the whole collaborations.&lt;/p&gt;
+&lt;p&gt;In the context of a Kubernetes + JupyterHub deployment on Jetstream, for example &lt;a href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html"&gt;deployed using Magnum following my tutorial&lt;/a&gt;, it is useful to use CVMFS to make …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://cvmfs.readthedocs.io/"&gt;CVMFS&lt;/a&gt; is a software distribution service, it is used by High Energy Physics experiments at CERN
+to synchronize software environments across the whole collaborations.&lt;/p&gt;
+&lt;p&gt;In the context of a Kubernetes + JupyterHub deployment on Jetstream, for example &lt;a href="http://zonca.github.io/2019/06/kubernetes-jupyterhub-jetstream-magnum.html"&gt;deployed using Magnum following my tutorial&lt;/a&gt;, it is useful to use CVMFS to make the software tools of a collaboration to all the users connected to JupyterHub, so that we can keep the base Docker image simpler and smaller.&lt;/p&gt;
+&lt;h2&gt;Alternatives&lt;/h2&gt;
+&lt;p&gt;A already existing solution is &lt;a href="https://github.com/cernops/cvmfs-csi"&gt;the CVMFS CSI driver&lt;/a&gt;, however it doesn't have much documentation, so I haven't tested it. It would be useful for larger deployments, but we are designing for a 5 (possibly up to 10) nodes Kubernetes cluster.&lt;/p&gt;
+&lt;h2&gt;Architecture&lt;/h2&gt;
+&lt;p&gt;We have a pod running in Kubernetes (running as a privileged Docker container) which runs the CVMFS client and caches locally
+(on a dedicated Openstack volume) some pre-defined CVMFS repositories (at the moment we do not support automounting).&lt;/p&gt;
+&lt;p&gt;Currently we are using the &lt;code&gt;DIRECT&lt;/code&gt; connection for the CVMFS client, due to having just a single client which accesses
+a small amount of data. Using a proxy is required instead for heavier usage, and it could also be deployed inside Kubernetes.&lt;/p&gt;
+&lt;p&gt;The same pod also runs a NFS server and exposes it internally into the Kubernetes cluster, over the local Jetstream network,
+to any other pod which can use a NFS volume and mount it to the &lt;code&gt;/cvmfs&lt;/code&gt; folder inside the container.
+We also activate the CVMFS configuration options for NFS support, following the &lt;a href="https://cvmfs.readthedocs.io/en/stable/cpt-configure.html#nfs-server-mode"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Deployment&lt;/h2&gt;
+&lt;p&gt;The repositories used in this deployment are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/zonca/docker-cvmfs-client"&gt;Github repository for the Docker image of the CVMFS client&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Docker Hub repositories where the 2 containers are built: &lt;a href="https://hub.docker.com/r/zonca/cvmfs-client"&gt;&lt;code&gt;cvmfs-client&lt;/code&gt;&lt;/a&gt; and &lt;a href="https://hub.docker.com/r/zonca/cvmfs-client-nfs"&gt;&lt;code&gt;cvmfs-client-nfs&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/tree/master/cvmfs"&gt;&lt;code&gt;jupyterhub-deploy-kubernetes-jetstream&lt;/code&gt;&lt;/a&gt; Github repositories with the Kubernetes configuration files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;First we need to checkout the &lt;code&gt;jupyterhub-deploy-kubernetes-jetstream&lt;/code&gt; repository:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream.git&lt;/span&gt;
+&lt;span class="err"&gt;cd jupyterhub-deploy-kubernetes-jetstream/cvmfs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then configure the CVMFS pod with the required repositories, see the &lt;code&gt;CVMFS_REPOSITORIES&lt;/code&gt; variable in &lt;a href="https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream/blob/master/cvmfs/pod_cvmfs_nfs.yaml"&gt;&lt;code&gt;pod_cvmfs_nfs.yaml&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then deploy the pod with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;kubectl create -f pod_cvmfs_nfs.yaml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This creates 2 Openstack volumes, a 20 GB volume for the CVMFS cache, and a 1 GB volume which is just necessary as the &lt;code&gt;/cvmfs&lt;/code&gt; root folder of the NFS server.
+It also creates the &lt;code&gt;nfs-service&lt;/code&gt; Service, with a fixed IP, so that we can use it in the pod using this.&lt;/p&gt;
+&lt;p&gt;Finally we can create a pod using mounting the folder via NFS:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;kubectl create -f test_nfs_mount.yaml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then get a terminal in the pod with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;bash ../terminal_pod.sh test-nfs-mount&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This creates a volume which mounts the &lt;code&gt;/cvmfs&lt;/code&gt; folder shared with NFS, this automatically also shares also all the subfolders.&lt;/p&gt;
+&lt;p&gt;Finally we can check the content of the &lt;code&gt;/cvmfs&lt;/code&gt; folder.&lt;/p&gt;</content><category term="misc"></category><category term="kubernetes"></category><category term="jetstream"></category><category term="jupyterhub"></category></entry><entry><title>Organize calendars for a large scientific collaboration</title><link href="http://zonca.github.io/2019/12/organize-calendar-collaboration.html" rel="alternate"></link><published>2019-12-02T12:00:00-08:00</published><updated>2019-12-02T12:00:00-08:00</updated><author><name>Andrea Zonca</name></author><id>tag:zonca.github.io,2019-12-02:/2019/12/organize-calendar-collaboration.html</id><summary type="html">&lt;p&gt;Many scientific collaborations have a central calendar, often hosted on Google Calendar,
 to coordinate Teleconferences, meetings and events across timezones.&lt;/p&gt;
 &lt;h3&gt;The issue&lt;/h3&gt;
 &lt;p&gt;Most users are only interested in a small subset of the events, however Google Calendar

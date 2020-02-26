@@ -5,29 +5,36 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/index.html</loc>
-<lastmod>2019-12-06T00:35:28-00:00</lastmod>
+<lastmod>2020-02-26T21:48:19-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/archives.html</loc>
-<lastmod>2019-12-06T00:35:28-00:00</lastmod>
+<lastmod>2020-02-26T21:48:19-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/tags.html</loc>
-<lastmod>2019-12-06T00:35:28-00:00</lastmod>
+<lastmod>2020-02-26T21:48:19-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://zonca.github.io/categories.html</loc>
-<lastmod>2019-12-06T00:35:28-00:00</lastmod>
+<lastmod>2020-02-26T21:48:19-00:00</lastmod>
 <changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://zonca.github.io/2020/02/cvmfs-kubernetes.html</loc>
+<lastmod>2020-02-26T13:00:00-08:00</lastmod>
+<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -999,7 +1006,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/category/misc.html</loc>
-<lastmod>2019-12-02T12:00:00-07:53</lastmod>
+<lastmod>2020-02-26T13:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1146,7 +1153,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jetstream.html</loc>
-<lastmod>2019-10-30T12:00:00-07:53</lastmod>
+<lastmod>2020-02-26T13:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1265,7 +1272,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/kubernetes.html</loc>
-<lastmod>2019-10-30T12:00:00-07:53</lastmod>
+<lastmod>2020-02-26T13:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1286,7 +1293,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/tag/jupyterhub.html</loc>
-<lastmod>2019-10-30T12:00:00-07:53</lastmod>
+<lastmod>2020-02-26T13:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1538,7 +1545,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://zonca.github.io/author/andrea-zonca.html</loc>
-<lastmod>2019-12-02T12:00:00-07:53</lastmod>
+<lastmod>2020-02-26T13:00:00-07:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
